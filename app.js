@@ -239,7 +239,7 @@ function renderCms() {
   $('cms-table-wrap').innerHTML = table(
     ['State', 'Telehealth use', 'Users', 'Eligible service users'],
     rankedRows.map((s) => [
-      `<button data-state="${s.abbr}" aria-pressed="${s.abbr === state.selected}">${esc(s.name)} <span aria-hidden="true">↗</span></button>`,
+      `<button data-state="${s.abbr}" aria-pressed="${s.abbr === state.selected}">${esc(s.name)}</button>`,
       percent(s.telehealthPct),
       number(s.telehealthUsers),
       number(s.eligibleUsers),
