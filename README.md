@@ -3,9 +3,13 @@ email: jic4015@med.cornell.edu -->
 
 # Weill Cornell Medicine Telehealth Insights
 
+## Live Demo
+
+[WCM Telehealth Insight Dashboard Demo](https://bettercallcarson.github.io/WCM-TelehealthInsight-Dashboard/)
+
 ## Research and technical report
 
-**Team**: CHERY Lab - Team formed in Weill Cornell Medicine HINF 5001 Introduction to Health Informatic Course
+**Team**: CHERY Lab - Team formed in Weill Cornell Medicine HINF 5001 Introduction to Health Informatics Course
 **Team member**: Jiajun Carson Chen, Yao Yao, Yimeng Du, Hao Chen, Ruining Wang
 **Course Director**:Yunyu Xiao, PhD, Assistant Professor, Department of Population Health Sciences and Department of Psychiatry.
 
