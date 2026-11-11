@@ -1,0 +1,527 @@
+<!doctype html>
+<!-- Author: Jiajun (Carson) Chen
+email: jic4015@med.cornell.edu -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta
+      name="description"
+      content="Explore U.S. telehealth use across states, population groups, and office-based visits. Weill Cornell Medicine Telehealth Insights, a CHERY Lab research resource."
+    />
+    <title>Weill Cornell Medicine Telehealth Insights</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%20fill%3D%22none%22%20role%3D%22img%22%20aria-label%3D%22WCM-TI%20icon%22%3E%0A%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%228%22%20fill%3D%22%23B31B1B%22%2F%3E%0A%3Cg%20fill%3D%22%23FFFFFF%22%20transform%3D%22translate%28-144.4%209.8%29%20scale%28.6%29%22%3E%3Cpath%20d%3D%22M254%208H306L302%2022H288V66H272V22H254Z%22%2F%3E%3Cpath%20d%3D%22M316%208H332V62L328%2066H316Z%22%2F%3E%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <aside class="sidebar">
+      <a
+        class="project-brand"
+        href="#states"
+        aria-label="Weill Cornell Medicine Telehealth Insights home"
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 336 76"
+          fill="none"
+          aria-hidden="true"
+        >
+          <g fill="#B31B1B">
+            <path
+              d="M4 8H17L27 46L38 10Q38.6 8 40.5 8H51.5Q53.4 8 54 10L65 46L75 8H88L73 64Q72.5 66 70.5 66H60Q58.5 66 58 64L46 27L34 64Q33.5 66 32 66H21.5Q19.5 66 19 64Z"
+            />
+            <path
+              d="M145 14L139 26C135 21 130 19 124 19C114 19 108 26 108 37C108 48 114 55 124 55C130 55 135 52 139 48L147 59C141 66 134 69 124 69C105 69 93 56 93 37C93 18 106 6 124 6C133 6 140 9 145 14Z"
+            />
+            <path
+              d="M155 66V8H169Q171 8 172 10L186 38L200 10Q201 8 203 8H217V66H203V33L192 54H180L169 33V66Z"
+            />
+          </g>
+          <path d="M228 33H246V41H226V35Z" fill="#B31B1B" />
+          <g fill="#E7751D">
+            <path d="M254 8H306L302 22H288V66H272V22H254Z" />
+            <path d="M316 8H332V62L328 66H316Z" />
+          </g></svg
+      ></a>
+      <div class="sidebar-title">
+        <span class="institution-name">Weill Cornell Medicine</span
+        ><span class="product-name">Telehealth<br />Insights</span>
+      </div>
+      <p class="sidebar-description">
+        Understanding telehealth use across the United States.
+      </p>
+      <nav aria-label="Research modules">
+        <a href="#states" data-view="states" class="active"
+          ><span>01</span> States &amp; access <b>↗</b></a
+        >
+        <a href="#people" data-view="people"
+          ><span>02</span> Population differences <b>↗</b></a
+        >
+        <a href="#visits" data-view="visits"
+          ><span>03</span> Visits &amp; payments <b>↗</b></a
+        >
+        <a href="#quality" data-view="quality"
+          ><span>04</span> Data &amp; methods <b>↗</b></a
+        >
+      </nav>
+      <div class="lab-credit">
+        <span class="brand-mark"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 64 64"
+            fill="none"
+            aria-hidden="true"
+          >
+            <rect width="64" height="64" rx="18" fill="#B31B1B" />
+            <g transform="translate(7 6) scale(.78)">
+              <path
+                d="M19 34.5C20.4 25.9 26 21.2 34 15.5C34.2 24.1 39.2 27.8 44 34.5"
+                stroke="white"
+                stroke-width="4.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M34 15.5C35.2 8.5 40.7 5.3 48 6C47.4 12.6 42.6 16.9 34 15.5Z"
+                fill="white"
+              />
+              <path
+                d="M19.5 31C12.6 31 7.5 36.1 7.5 43C7.5 50.2 12.9 56 19.5 56C26.1 56 31.5 50.2 31.5 43C31.5 36.1 26.4 31 19.5 31Z"
+                fill="white"
+              />
+              <path
+                d="M44.5 31C37.6 31 32.5 36.1 32.5 43C32.5 50.2 37.9 56 44.5 56C51.1 56 56.5 50.2 56.5 43C56.5 36.1 51.4 31 44.5 31Z"
+                fill="white"
+              />
+            </g>
+          </svg>
+        </span>
+        <div>
+          <span class="eyebrow">A research resource by</span
+          ><span class="brand-name"
+            >CHERY <span class="brand-lab">LAB</span></span
+          >
+        </div>
+      </div>
+      <div class="sidebar-bottom">
+        <a class="documentation-link" href="./documentation.html"
+          >Data documentation <span aria-hidden="true">↗</span></a
+        >
+      </div>
+    </aside>
+    <main id="main">
+      <header class="topbar">
+        <span>The U.S. telehealth landscape</span
+        ><a href="./documentation.html#data-quality">Sources & methodology</a>
+      </header>
+      <section class="hero">
+        <div>
+          <div class="eyebrow" id="hero-kicker">
+            01 / Geography & connectivity
+          </div>
+          <h1 id="hero-title">Telehealth, across states</h1>
+          <p id="hero-description">
+            Explore how telehealth use varies across U.S. states—and the context
+            of broadband access and household income.
+          </p>
+        </div>
+      </section>
+      <div class="edition">
+        <span>Data snapshot</span
+        ><span>2024 focus · Verified CMS trends 2020–2025</span
+        ><span>Data retrieved Nov 11, 2026</span>
+      </div>
+      <div id="loading" role="status" class="loading">
+        Loading the research data…
+      </div>
+      <div id="error" role="alert" hidden class="notice"></div>
+      <section id="view-states" class="view" hidden>
+        <section class="source-update" aria-labelledby="cms-update-heading">
+          <div class="update-heading">
+            <div>
+              <h2 id="cms-update-heading">CMS data updates</h2>
+              <p>
+                Check the official source for additional periods or revised
+                estimates
+              </p>
+            </div>
+            <button id="cms-refresh" class="primary-button" disabled>
+              Check latest CMS data
+            </button>
+          </div>
+          <p
+            id="cms-refresh-status"
+            class="update-status"
+            role="status"
+            aria-live="polite"
+          >
+            Showing the verified snapshot retrieved November 11, 2026
+          </p>
+          <div class="update-links">
+            <a
+              href="https://data.cms.gov/summary-statistics-on-use-and-payments/medicare-medicaid-service-type-reports/medicare-telehealth-trends"
+              target="_blank"
+              rel="noreferrer"
+              >Visit the CMS source ↗</a
+            ><a href="./documentation.html#data-quality"
+              >How live updates are handled ↗</a
+            ><button id="cms-reset" class="text-button" hidden>
+              Restore verified snapshot
+            </button>
+          </div>
+        </section>
+        <p id="cms-live-note" class="live-note" hidden>
+          <strong>Live CMS data · not revalidated</strong> The map, table,
+          summary counts, trend chart, and annual comparisons use data fetched
+          in this session. The 2024 state comparisons and adjusted model below
+          retain the verified snapshot.
+        </p>
+        <div class="metric-grid" id="cms-metrics"></div>
+        <section class="panel map-panel">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">The geography of use</span>
+              <h2>One country, different patterns</h2>
+            </div>
+            <button class="text-button" id="cms-download">
+              Download data ↓
+            </button>
+          </div>
+          <div class="toolbar">
+            <div class="segmented" aria-label="State display">
+              <button id="map-view" aria-pressed="true">Map</button
+              ><button id="table-view" aria-pressed="false">Table</button>
+            </div>
+            <label
+              >Period
+              <select id="cms-period"></select></label
+            ><label class="state-search"
+              >Find a state
+              <select id="cms-state">
+                <option value="US">United States</option>
+              </select></label
+            >
+          </div>
+          <div id="map-content">
+            <div class="map-layout">
+              <div>
+                <div
+                  id="state-map"
+                  class="tile-map"
+                  aria-label="Telehealth use by state"
+                ></div>
+                <div class="map-legend">
+                  <span>Lower <strong id="map-min"></strong></span>
+                  <div></div>
+                  <span>Higher <strong id="map-max"></strong></span
+                  ><span class="missing-key">□ Unavailable</span>
+                </div>
+                <p class="caption">
+                  Select a state to see its rate and context. Tile positions are
+                  schematic; color shows use within the selected period.
+                </p>
+              </div>
+              <aside
+                id="state-detail"
+                class="state-detail"
+                aria-live="polite"
+              ></aside>
+            </div>
+          </div>
+          <div id="cms-table-wrap" class="table-wrap" hidden></div>
+          <p class="source-line" id="cms-source"></p>
+        </section>
+        <div class="two-column">
+          <section class="panel">
+            <div class="section-heading">
+              <div>
+                <span class="eyebrow">Over time</span>
+                <h2 id="trend-title">A changing pattern of use</h2>
+              </div>
+            </div>
+            <div id="trend-legend" class="chart-legend"></div>
+            <div id="trend-chart" class="chart"></div>
+            <p class="caption">
+              Quarterly users of telehealth ÷ users of telehealth-eligible
+              services. Annual rates are not the average of quarterly rates.
+            </p>
+          </section>
+          <section class="panel">
+            <div class="section-heading">
+              <div>
+                <span class="eyebrow">State context · 2024</span>
+                <h2>State context and telehealth use</h2>
+              </div>
+            </div>
+            <label class="inline-label"
+              >Compare with
+              <select id="acs-measure">
+                <option value="broadband_pct">Broadband subscription</option>
+                <option value="income">Median household income</option>
+              </select></label
+            >
+            <div id="scatter-chart" class="chart"></div>
+            <p class="caption" id="scatter-caption">
+              State-level association is descriptive; it cannot establish
+              individual access or causation.
+            </p>
+          </section>
+        </div>
+        <section class="panel annual-change-panel">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Annual change</span>
+              <h2>How state use has changed</h2>
+            </div>
+            <button id="cms-change-download" class="text-button">
+              Download changes ↓
+            </button>
+          </div>
+          <div class="toolbar">
+            <label
+              >Baseline year
+              <select id="cms-change-from"></select></label
+            ><label
+              >Comparison year
+              <select id="cms-change-to"></select></label
+            ><label
+              >Show
+              <select id="cms-change-scope">
+                <option value="largest">10 largest changes</option>
+                <option value="all">All states + D.C.</option>
+              </select></label
+            >
+          </div>
+          <div id="cms-change-chart" class="comparison-chart"></div>
+          <p id="cms-change-caption" class="caption"></p>
+          <details class="comparison-details">
+            <summary>View all annual comparisons</summary>
+            <div id="cms-change-table" class="table-wrap"></div>
+          </details>
+        </section>
+        <section id="cms-model" class="panel model-panel"></section>
+        <div class="interpretation">
+          <span class="eyebrow">Read this view as</span>
+          <p>
+            Telehealth use among
+            <strong>Medicare Part B fee-for-service beneficiaries</strong> who
+            used eligible services. This is a measure of use, not a measure of
+            care quality or all U.S. residents.
+          </p>
+        </div>
+      </section>
+      <section id="view-people" class="view" hidden>
+        <div id="nhis-metrics" class="metric-grid"></div>
+        <section class="panel">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow"
+                >National Health Interview Survey · 2024</span
+              >
+              <h2>Who reports using telehealth?</h2>
+            </div>
+            <button id="nhis-download" class="text-button">
+              Download data ↓
+            </button>
+          </div>
+          <p class="section-intro">
+            Adults reporting a phone or video appointment in the past 12 months.
+            Compare weighted estimates across population groups.
+          </p>
+          <div class="toolbar">
+            <label
+              >Compare by
+              <select id="nhis-group">
+                <option value="insurance">Insurance coverage</option>
+                <option value="age">Age group</option>
+                <option value="education">Education</option>
+                <option value="internet">Internet access</option>
+                <option value="health">Self-rated health</option>
+              </select></label
+            ><span class="pill"
+              >● Estimate &nbsp; ━ 95% confidence interval</span
+            >
+          </div>
+          <div id="nhis-chart" class="dot-chart"></div>
+          <div id="nhis-table" class="table-wrap"></div>
+          <p class="source-line" id="nhis-source"></p>
+        </section>
+        <section id="nhis-model" class="panel model-panel"></section>
+        <div class="interpretation">
+          <span class="eyebrow">Interpretation</span>
+          <p>
+            The population comparison above shows
+            <strong>unadjusted, survey-weighted estimates</strong>. Differences
+            may reflect age, health, coverage, and other factors. They are not
+            causal effects. The separate adjusted comparisons account for the
+            listed covariates, but unmeasured confounding may remain.
+          </p>
+        </div>
+      </section>
+      <section id="view-visits" class="view" hidden>
+        <div id="meps-metrics" class="metric-grid"></div>
+        <section class="panel">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow"
+                >Medical Expenditure Panel Survey · 2024</span
+              >
+              <h2>How care is delivered and paid for</h2>
+            </div>
+            <button id="meps-download" class="text-button">
+              Download data ↓
+            </button>
+          </div>
+          <p class="section-intro">
+            Office-based visits, across all ages. Explore the visit mix and mean
+            payments per visit by insurance coverage.
+          </p>
+          <div class="toolbar">
+            <label
+              >Insurance
+              <select id="meps-insurance"></select></label
+            ><label
+              >Payment measure
+              <select id="payment-measure">
+                <option value="total">Total payments</option>
+                <option value="family">Out-of-pocket payments</option>
+              </select></label
+            >
+          </div>
+          <div class="two-column inner">
+            <div>
+              <h3>Visit types</h3>
+              <p class="caption">
+                Share of office-based visits, survey weighted
+              </p>
+              <div id="modality-chart" class="bar-chart"></div>
+            </div>
+            <div>
+              <h3 id="payment-title">Mean total payments per visit</h3>
+              <p class="caption">
+                2024 U.S. dollars · 95% confidence intervals
+              </p>
+              <div id="payment-chart" class="dot-chart"></div>
+            </div>
+          </div>
+          <div id="meps-table" class="table-wrap"></div>
+          <p class="source-line" id="meps-source"></p>
+        </section>
+        <section class="panel">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Insurance comparison · 2024</span>
+              <h2>Telehealth use across insurance groups</h2>
+            </div>
+            <button id="meps-comparison-download" class="text-button">
+              Download comparison ↓
+            </button>
+          </div>
+          <p class="section-intro">
+            Share of office-based visits delivered remotely within each annual
+            insurance group. The denominator is visits, not people.
+          </p>
+          <div id="meps-insurance-chart" class="comparison-chart"></div>
+          <div id="meps-insurance-table" class="table-wrap"></div>
+          <p class="caption">
+            MEPS HC-254G + HC-256 · Survey-weighted estimates with 95%
+            confidence intervals. The uninsured telehealth estimate is not shown
+            because only 26 sampled people contributed telehealth visits
+            (minimum 30). The overall visit denominator contains 362 uninsured
+            sampled people. Differences are descriptive and do not establish an
+            insurance effect.
+          </p>
+        </section>
+        <div class="interpretation">
+          <span class="eyebrow">A note on payments</span>
+          <p>
+            Payments are <strong>amounts paid, not charges</strong>. Released
+            values include imputation and zero-payment visits. Out-of-pocket
+            payments refer to the family payment variable; these are not
+            estimates of savings from telehealth.
+          </p>
+        </div>
+      </section>
+      <section id="view-quality" class="view" hidden>
+        <div class="quality-intro">
+          <p class="serif-lead">Three sources, distinct populations</p>
+          <p>
+            The sources answer complementary questions and are not pooled into a
+            single telehealth rate. This overview describes the verified
+            snapshot. Optional live CMS updates are labelled separately in
+            States & access.
+          </p>
+          <a class="primary-link" href="./documentation.html#data-quality"
+            >Read the data quality note ↗</a
+          >
+        </div>
+        <div id="quality-cards" class="quality-grid"></div>
+        <section class="panel">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Transparency by design</span>
+              <h2>From source file to display</h2>
+            </div>
+          </div>
+          <div id="quality-table" class="table-wrap"></div>
+          <div class="methods-grid">
+            <div>
+              <h3>Missing is not zero</h3>
+              <p>
+                Suppressed, unknown, inapplicable, and missing values stay
+                distinct. Survey outcome nonresponse is excluded from that
+                outcome’s denominator and reported separately.
+              </p>
+            </div>
+            <div>
+              <h3>Uncertainty stays visible</h3>
+              <p>
+                Survey estimates use weights, strata, and primary sampling
+                units. Confidence intervals show sampling uncertainty; they do
+                not remove nonresponse or measurement bias.
+              </p>
+            </div>
+            <div>
+              <h3>Reproducible releases</h3>
+              <p>
+                Source links, retrieval dates, file checksums, and analysis
+                scripts document how the estimates were produced. The dashboard
+                opens with a verified data snapshot. The CMS update button can
+                load current descriptive data into the session; these values are
+                labelled as not revalidated.
+              </p>
+            </div>
+            <div>
+              <h3>Analytical scope</h3>
+              <p>
+                Explore geographic patterns, population differences, visit
+                payments, and adjusted cross-sectional associations. The
+                estimates describe use and payments within each source
+                population.
+              </p>
+            </div>
+          </div>
+        </section>
+        <div class="resource-row">
+          <a href="./documentation.html#data-manual">Data manual ↗</a
+          ><a href="./data/cms.json" download
+            >Verified CMS + ACS snapshot (JSON) ↓</a
+          ><a href="./data/nhis.json" download>NHIS data (JSON) ↓</a
+          ><a href="./data/meps.json" download>MEPS data (JSON) ↓</a>
+        </div>
+      </section>
+      <footer>
+        <span>WCM-TI · CHERY Lab</span
+        ><span>For research · Not clinical decision support</span
+        ><a href="#quality">About the data ↗</a>
+      </footer>
+    </main>
+    <div id="tooltip" role="tooltip" hidden></div>
+    <div id="announcement" class="sr-only" aria-live="polite"></div>
+  </body>
+</html>

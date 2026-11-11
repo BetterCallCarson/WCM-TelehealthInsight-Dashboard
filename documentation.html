@@ -1,0 +1,2944 @@
+<!doctype html>
+<!-- Author: Jiajun (Carson) Chen
+email: jic4015@med.cornell.edu -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta
+      name="description"
+      content="Data quality, source provenance, variable definitions, and analytical methods for Weill Cornell Medicine Telehealth Insights."
+    />
+    <title>
+      Data documentation — Weill Cornell Medicine Telehealth Insights
+    </title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%20fill%3D%22none%22%20role%3D%22img%22%20aria-label%3D%22WCM-TI%20icon%22%3E%0A%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%228%22%20fill%3D%22%23B31B1B%22%2F%3E%0A%3Cg%20fill%3D%22%23FFFFFF%22%20transform%3D%22translate%28-144.4%209.8%29%20scale%28.6%29%22%3E%3Cpath%20d%3D%22M254%208H306L302%2022H288V66H272V22H254Z%22%2F%3E%3Cpath%20d%3D%22M316%208H332V62L328%2066H316Z%22%2F%3E%3C%2Fg%3E%0A%3C%2Fsvg%3E%0A"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./documentation.css" />
+    <script defer src="./documentation.js"></script>
+  </head>
+  <body class="documentation-page">
+    <a class="skip" href="#main">Skip to documentation</a>
+    <aside class="sidebar">
+      <a
+        class="project-brand"
+        href="./index.html#states"
+        aria-label="Weill Cornell Medicine Telehealth Insights home"
+        ><svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 336 76"
+          fill="none"
+          aria-hidden="true"
+        >
+          <g fill="#B31B1B">
+            <path
+              d="M4 8H17L27 46L38 10Q38.6 8 40.5 8H51.5Q53.4 8 54 10L65 46L75 8H88L73 64Q72.5 66 70.5 66H60Q58.5 66 58 64L46 27L34 64Q33.5 66 32 66H21.5Q19.5 66 19 64Z"
+            />
+            <path
+              d="M145 14L139 26C135 21 130 19 124 19C114 19 108 26 108 37C108 48 114 55 124 55C130 55 135 52 139 48L147 59C141 66 134 69 124 69C105 69 93 56 93 37C93 18 106 6 124 6C133 6 140 9 145 14Z"
+            />
+            <path
+              d="M155 66V8H169Q171 8 172 10L186 38L200 10Q201 8 203 8H217V66H203V33L192 54H180L169 33V66Z"
+            />
+          </g>
+          <path d="M228 33H246V41H226V35Z" fill="#B31B1B" />
+          <g fill="#E7751D">
+            <path d="M254 8H306L302 22H288V66H272V22H254Z" />
+            <path d="M316 8H332V62L328 66H316Z" />
+          </g></svg
+      ></a>
+      <div class="sidebar-title">
+        <span class="institution-name">Weill Cornell Medicine</span
+        ><span class="product-name">Telehealth<br />Insights</span>
+      </div>
+      <p class="sidebar-description">
+        Understanding telehealth use across the United States.
+      </p>
+      <nav aria-label="Research modules">
+        <a href="./index.html#states"
+          ><span>01</span> States &amp; access <b>↗</b></a
+        >
+        <a href="./index.html#people"
+          ><span>02</span> Population differences <b>↗</b></a
+        >
+        <a href="./index.html#visits"
+          ><span>03</span> Visits &amp; payments <b>↗</b></a
+        >
+        <a href="./index.html#quality"
+          ><span>04</span> Data &amp; methods <b>↗</b></a
+        >
+      </nav>
+      <div class="lab-credit">
+        <span class="brand-mark"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 64 64"
+            fill="none"
+            aria-hidden="true"
+          >
+            <rect width="64" height="64" rx="18" fill="#B31B1B" />
+            <g transform="translate(7 6) scale(.78)">
+              <path
+                d="M19 34.5C20.4 25.9 26 21.2 34 15.5C34.2 24.1 39.2 27.8 44 34.5"
+                stroke="white"
+                stroke-width="4.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M34 15.5C35.2 8.5 40.7 5.3 48 6C47.4 12.6 42.6 16.9 34 15.5Z"
+                fill="white"
+              />
+              <path
+                d="M19.5 31C12.6 31 7.5 36.1 7.5 43C7.5 50.2 12.9 56 19.5 56C26.1 56 31.5 50.2 31.5 43C31.5 36.1 26.4 31 19.5 31Z"
+                fill="white"
+              />
+              <path
+                d="M44.5 31C37.6 31 32.5 36.1 32.5 43C32.5 50.2 37.9 56 44.5 56C51.1 56 56.5 50.2 56.5 43C56.5 36.1 51.4 31 44.5 31Z"
+                fill="white"
+              />
+            </g>
+          </svg>
+        </span>
+        <div>
+          <span class="eyebrow">A research resource by</span
+          ><span class="brand-name"
+            >CHERY <span class="brand-lab">LAB</span></span
+          >
+        </div>
+      </div>
+      <div class="sidebar-bottom">
+        <a
+          class="documentation-link active"
+          aria-current="page"
+          href="./documentation.html"
+          >Data documentation <span aria-hidden="true">↗</span></a
+        >
+      </div>
+    </aside>
+    <main id="main">
+      <header class="topbar">
+        <span>The U.S. telehealth landscape</span
+        ><a href="./index.html#states">Return to dashboard ↗</a>
+      </header>
+      <section class="hero">
+        <div class="eyebrow">Data &amp; methods</div>
+        <h1>Data documentation</h1>
+        <p>
+          Understand the sources, analytical decisions, and fields behind Weill
+          Cornell Medicine Telehealth Insights.
+        </p>
+      </section>
+      <nav class="document-switcher" aria-label="Documentation sections">
+        <a href="#data-quality" data-document="data-quality" aria-current="true"
+          >Data quality note</a
+        ><a href="#data-manual" data-document="data-manual">Data manual</a>
+      </nav>
+      <section
+        class="research-document"
+        id="data-quality"
+        aria-labelledby="data-quality-title"
+      >
+        <div class="document-heading">
+          <h2 id="data-quality-title">Data quality note</h2>
+          <p>
+            Sources, analytical populations, processing decisions, and
+            interpretation limits
+          </p>
+        </div>
+        <div class="document-layout">
+          <aside class="document-contents">
+            <details open>
+              <summary>On this page</summary>
+              <nav aria-label="Data quality note contents">
+                <a
+                  href="#data-quality-verified-snapshot-scope-and-analytical-units"
+                  >Verified snapshot: scope and analytical units</a
+                ><a href="#data-quality-live-source-updates"
+                  >Live source updates</a
+                ><a href="#data-quality-source-versions-and-provenance"
+                  >Source versions and provenance</a
+                ><a href="#data-quality-sha-256-fingerprints" class="subsection"
+                  >SHA-256 fingerprints</a
+                ><a href="#data-quality-cms-and-acs-processing"
+                  >CMS and ACS processing</a
+                ><a href="#data-quality-nhis-sample-and-missingness"
+                  >NHIS sample and missingness</a
+                ><a
+                  href="#data-quality-nhis-adjusted-association-model"
+                  class="subsection"
+                  >NHIS adjusted association model</a
+                ><a
+                  href="#data-quality-meps-sample-unknown-modality-and-payments"
+                  >MEPS sample, unknown modality, and payments</a
+                ><a href="#data-quality-checks-completed-and-remaining-limits"
+                  >Checks completed and remaining limits</a
+                ><a href="#data-quality-reproduction-and-updates"
+                  >Reproduction and updates</a
+                >
+              </nav>
+            </details>
+          </aside>
+          <article class="document-body" aria-label="Data quality note">
+            <p>
+              <strong
+                >Verified snapshot sources retrieved November 11, 2026 · CHERY
+                Lab</strong
+              >
+            </p>
+            <p>
+              This dashboard describes telehealth use using three separate
+              analytical modules. It publishes aggregates computed from official
+              public files, with source-specific populations and denominators.
+              It does not pool CMS, NHIS, and MEPS into one national telehealth
+              rate.
+            </p>
+            <p>
+              The dashboard contains descriptive estimates, a CMS–ACS state
+              regression, and a survey-weighted NHIS association model. Adjusted
+              associations are distinguished from unadjusted comparisons.
+              Neither statistical adjustment nor correlation establishes a
+              causal effect.
+            </p>
+            <p>
+              CMS refers to the Centers for Medicare &amp; Medicaid Services;
+              ACS to the American Community Survey; NHIS to the National Health
+              Interview Survey; and MEPS to the Medical Expenditure Panel
+              Survey.
+            </p>
+            <h3
+              id="data-quality-verified-snapshot-scope-and-analytical-units"
+              tabindex="-1"
+            >
+              Verified snapshot: scope and analytical units
+            </h3>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="Verified snapshot: scope and analytical units table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Module</th>
+                    <th scope="col">Period</th>
+                    <th scope="col">Population and unit</th>
+                    <th scope="col">Main denominator</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>CMS Medicare Telehealth Trends</td>
+                    <td>Annual and quarterly, 2020–2025</td>
+                    <td>
+                      Medicare Part B fee-for-service service users; published
+                      geographic aggregates
+                    </td>
+                    <td>
+                      Unique users of telehealth-eligible services during the
+                      reporting period
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>ACS state context</td>
+                    <td>2024 1-year estimates</td>
+                    <td>All households in 50 states and DC</td>
+                    <td>
+                      All households for broadband subscription; household
+                      income distribution for median income
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>NHIS Sample Adult</td>
+                    <td>2024 interviews</td>
+                    <td>
+                      Civilian noninstitutionalized adults aged 18 or older;
+                      sampled adult
+                    </td>
+                    <td>
+                      Adults with a valid telehealth response and a valid value
+                      for the selected grouping variable
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>MEPS office-based visits</td>
+                    <td>Calendar year 2024</td>
+                    <td>
+                      Office-based medical provider visits at all ages in the
+                      civilian noninstitutionalized population; sampled visit
+                    </td>
+                    <td>
+                      Positive-weight office visits for shares; visits in the
+                      selected insurance/modality domain for mean payments
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              Only CMS–ACS supplies state comparisons. NHIS and MEPS provide
+              national subgroup estimates. No person-level records are linked
+              across these sources; MEPS events are linked only to their own
+              MEPS person file. The published site provides aggregate data; it
+              does not distribute individual-level source records.
+            </p>
+            <h3 id="data-quality-live-source-updates" tabindex="-1">
+              Live source updates
+            </h3>
+            <p>
+              “Live” means fetched on demand from the currently published CMS
+              release, not real-time clinical activity.
+            </p>
+            <p>
+              The default view uses the verified snapshot described in this
+              note. Selecting <strong>Check latest CMS data</strong> requests
+              available Medicare Telehealth Trends records from the
+              <a
+                href="https://data.cms.gov/data.json"
+                target="_blank"
+                rel="noreferrer"
+                >official CMS catalog and data API</a
+              >. After basic structural and numeric checks, the response can
+              update the CMS map, table, summary counts, quarterly trend,
+              annual-change comparisons, and CMS CSV download for the current
+              browser session. These records are explicitly labelled
+              <strong>not revalidated</strong>: accepting an API response does
+              not repeat the full source review, numerical validation, or model
+              assessment documented below.
+            </p>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="Live source updates table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Data or analysis</th>
+                    <th scope="col">Effect of the CMS source check</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      CMS map, table, summary counts, quarterly trend,
+                      annual-change comparisons, and CMS CSV
+                    </td>
+                    <td>
+                      May use the accepted API response; the retrieval time,
+                      source version, and validation status identify the
+                      displayed data
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>ACS household broadband and income</td>
+                    <td>Remain at the verified 2024 values</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      CMS–ACS scatterplot, Pearson correlations, and adjusted
+                      state model
+                    </td>
+                    <td>
+                      Remain based on the verified 2024 CMS–ACS data, even if
+                      the live CMS response revises 2024
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>NHIS descriptive comparisons and adjusted model</td>
+                    <td>Remain at the verified 2024 analysis</td>
+                  </tr>
+                  <tr>
+                    <td>MEPS visit shares and payments</td>
+                    <td>Remain at the verified 2024 analysis</td>
+                  </tr>
+                  <tr>
+                    <td>Aggregate JSON downloads</td>
+                    <td>Continue to provide the verified snapshot files</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              Live data are held in browser memory and are not saved into the
+              published dataset. <strong>Restore verified snapshot</strong>, or
+              refreshing the page, returns the descriptive CMS view to the
+              shipped data. A repeated check compares the new response with the
+              CMS data currently displayed. If the request fails or times out,
+              the current data and their status remain in place; inability to
+              check the source is not evidence that no updates exist.
+            </p>
+            <p>
+              The pinned CMS source file already contains 2026 Q1, while the
+              verified dashboard retained 2020–2025. Making an additional period
+              visible through the API therefore does not, by itself, mean CMS
+              published a new release. Source revisions may also change values
+              for previously available periods.
+            </p>
+            <p>
+              The CMS action does not establish that ACS, NHIS, or MEPS are the
+              newest available releases.
+              <a
+                href="https://www.cdc.gov/nchs/nhis/documentation/2025-nhis.html"
+                target="_blank"
+                rel="noreferrer"
+                >NHIS 2025 data and documentation</a
+              >
+              are available, but this dashboard retains the verified 2024
+              analysis.
+              <a
+                href="https://www.census.gov/data/developers/data-sets/acs-1year.2023.html"
+                target="_blank"
+                rel="noreferrer"
+                >ACS data queries require an API key</a
+              >; ACS updates and the survey-file processing needed for NHIS and
+              MEPS are separate analytical tasks. Review the official source
+              documentation when selecting a release for a new analysis.
+            </p>
+            <p>
+              For reproducing a CMS view loaded from the API, retain its CSV
+              export and provenance columns. The fixed aggregate JSON and model
+              downloads do not represent that live session. The
+              <a href="./documentation.html#data-manual">data manual</a> defines
+              the export fields.
+            </p>
+            <h3 id="data-quality-source-versions-and-provenance" tabindex="-1">
+              Source versions and provenance
+            </h3>
+            <p>
+              The verified snapshot files below were retrieved on
+              <strong>2026-11-11</strong>. The aggregate data files preserve the
+              full source URLs and checksums. Optional live CMS records instead
+              carry the retrieval time and source version recorded for that
+              session.
+            </p>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="Source versions and provenance table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Source</th>
+                    <th scope="col">Exact release or version used</th>
+                    <th scope="col">Official source</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>CMS</td>
+                    <td>
+                      <code>TMEDTREND_PUBLIC_260914.csv</code>; catalog release
+                      date 2026-09-17
+                    </td>
+                    <td>
+                      <a
+                        href="https://data.cms.gov/sites/default/files/2026-09/TMEDTREND_PUBLIC_260914.csv"
+                        target="_blank"
+                        rel="noreferrer"
+                        >CSV download</a
+                      >,
+                      <a
+                        href="https://data.cms.gov/summary-statistics-on-use-and-payments/medicare-medicaid-service-type-reports/medicare-telehealth-trends"
+                        target="_blank"
+                        rel="noreferrer"
+                        >dataset</a
+                      >,
+                      <a
+                        href="https://data.cms.gov/data-api/v1/dataset/21e3fb54-7f6c-4de9-9731-027213c2cdb3/dictionary"
+                        target="_blank"
+                        rel="noreferrer"
+                        >dictionary</a
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>ACS broadband</td>
+                    <td>
+                      <code>acsdt1y2024-b28002.dat</code>; 2024 1-year release,
+                      2025-09-11
+                    </td>
+                    <td>
+                      <a
+                        href="https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/1YRData/acsdt1y2024-b28002.dat"
+                        target="_blank"
+                        rel="noreferrer"
+                        >Table download</a
+                      >,
+                      <a
+                        href="https://api.census.gov/data/2024/acs/acs1/groups/B28002.html"
+                        target="_blank"
+                        rel="noreferrer"
+                        >definitions</a
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>ACS income</td>
+                    <td>
+                      <code>acsdt1y2024-b19013.dat</code>; 2024 1-year release,
+                      2025-09-11
+                    </td>
+                    <td>
+                      <a
+                        href="https://www2.census.gov/programs-surveys/acs/summary_file/2024/table-based-SF/data/1YRData/acsdt1y2024-b19013.dat"
+                        target="_blank"
+                        rel="noreferrer"
+                        >Table download</a
+                      >,
+                      <a
+                        href="https://api.census.gov/data/2024/acs/acs1/groups/B19013.html"
+                        target="_blank"
+                        rel="noreferrer"
+                        >definitions</a
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>NHIS</td>
+                    <td>
+                      <code>adult24csv.zip</code> / <code>adult24.csv</code>;
+                      2024 Sample Adult; codebook dated 2025-06-18
+                    </td>
+                    <td>
+                      <a
+                        href="https://ftp.cdc.gov/pub/health_Statistics/nchs/Datasets/NHIS/2024/adult24csv.zip"
+                        target="_blank"
+                        rel="noreferrer"
+                        >Archive</a
+                      >,
+                      <a
+                        href="https://www.cdc.gov/nchs/nhis/documentation/2024-nhis.html"
+                        target="_blank"
+                        rel="noreferrer"
+                        >documentation</a
+                      >,
+                      <a
+                        href="https://ftp.cdc.gov/pub/Health_Statistics/NCHS/Dataset_Documentation/NHIS/2024/Adult-codebook.pdf"
+                        target="_blank"
+                        rel="noreferrer"
+                        >codebook</a
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>MEPS visits</td>
+                    <td>
+                      HC-254G, <code>h254gdat.zip</code>; documentation dated
+                      June 2026
+                    </td>
+                    <td>
+                      <a
+                        href="https://meps.ahrq.gov/mepsweb/data_files/pufs/h254g/h254gdat.zip"
+                        target="_blank"
+                        rel="noreferrer"
+                        >Archive</a
+                      >,
+                      <a
+                        href="https://meps.ahrq.gov/data_stats/download_data/pufs/h254g/h254gdoc.shtml"
+                        target="_blank"
+                        rel="noreferrer"
+                        >documentation</a
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>MEPS persons</td>
+                    <td>
+                      HC-256, <code>h256dat.zip</code>; documentation dated
+                      August 2026
+                    </td>
+                    <td>
+                      <a
+                        href="https://meps.ahrq.gov/mepsweb/data_files/pufs/h256/h256dat.zip"
+                        target="_blank"
+                        rel="noreferrer"
+                        >Archive</a
+                      >,
+                      <a
+                        href="https://meps.ahrq.gov/data_stats/download_data/pufs/h256/h256doc.shtml"
+                        target="_blank"
+                        rel="noreferrer"
+                        >documentation</a
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              MEPS fixed-width columns are read from the official
+              <a
+                href="https://meps.ahrq.gov/mepsweb/data_stats/download_data/pufs/h254g/h254gstu.txt"
+                target="_blank"
+                rel="noreferrer"
+                >HC-254G Stata specification</a
+              >
+              and
+              <a
+                href="https://meps.ahrq.gov/mepsweb/data_stats/download_data/pufs/h256/h256stu.txt"
+                target="_blank"
+                rel="noreferrer"
+                >HC-256 Stata specification</a
+              >. ACS estimates are read from the official table-based downloads.
+            </p>
+            <h4 id="data-quality-sha-256-fingerprints" tabindex="-1">
+              SHA-256 fingerprints
+            </h4>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="SHA-256 fingerprints table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">File</th>
+                    <th scope="col">SHA-256</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>CMS CSV</td>
+                    <td>
+                      <code
+                        >09e80f29d3b5825a88c1d04a2a71681142dadb5f06eb90805e9397afee3f37c0</code
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>ACS B28002</td>
+                    <td>
+                      <code
+                        >ac6ff542ba9778fce91895dd6c611e0cb22be32696b124e063d93f5e4d73e8e2</code
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>ACS B19013</td>
+                    <td>
+                      <code
+                        >f78748dc0221551890494e08d8239d7aecbfff9777e96a18d24f5df6a570cd86</code
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>NHIS ZIP</td>
+                    <td>
+                      <code
+                        >5f926b2ec0af508fa84ebc791c83bfefa6f020724754aab599004706981abdaf</code
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>NHIS extracted CSV</td>
+                    <td>
+                      <code
+                        >31c5be8d630c13f6d0a232831a79654de7038d97fc4f33d803d8d2c84705c9d5</code
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>MEPS HC-254G ZIP</td>
+                    <td>
+                      <code
+                        >0b5c802880e9bb5ebe952017c98c5653ea2c8e4d1fd392b42f3e3312025a0de1</code
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>MEPS HC-256 ZIP</td>
+                    <td>
+                      <code
+                        >d0779e49de4f5ff0b0fff6774167023382366a0ef0905e6a3c40126114f988c9</code
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>MEPS HC-254G Stata specification</td>
+                    <td>
+                      <code
+                        >bffcd6f820de0b43219967743615023f0022542df0c5151d4554c573dfccaccd</code
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>MEPS HC-256 Stata specification</td>
+                    <td>
+                      <code
+                        >f1545cbef3a8ebb872d0996ec8fef17cebbb6d7bc5b1310f469730835ad65ee9</code
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              Checksums identify the exact bytes used; they do not establish
+              statistical accuracy. CMS–ACS checks pinned hashes before
+              processing. NHIS and MEPS record hashes in the output; their
+              current scripts do not reject a changed source solely because its
+              hash differs from this table. Review changed hashes and rerun all
+              numerical checks before replacing a published snapshot.
+            </p>
+            <h3 id="data-quality-cms-and-acs-processing" tabindex="-1">
+              CMS and ACS processing
+            </h3>
+            <p>
+              CMS contains <strong>37,324 source rows</strong>. Every subgroup
+              dimension must equal <code>All</code>; after restricting geography
+              and period, <strong>1,560 rows</strong> remain: 306 state-year
+              records, 1,224 state-quarter records, and 30 published national
+              records. The other 35,764 rows are outside this descriptive
+              selection, including subgroup rows, other geographies, and 2026
+              Q1. There are no duplicate retained geography–year–quarter keys
+              and no missing retained rates or counts.
+            </p>
+            <p>
+              The map excludes national totals, Puerto Rico, the Virgin Islands,
+              other territories, and unknown geography. The national reference
+              series is CMS&#39;s published national aggregate; it is not
+              reconstructed from mapped states and may include additional
+              geographic categories. Beneficiary location follows mailing
+              address.
+            </p>
+            <p>
+              <code>Pct_Telehealth</code> is a fraction in this CSV and is
+              multiplied by 100. The denominator is
+              <code>Total_Bene_TH_Elig</code>, not enrollment. Annual estimates
+              use the source&#39;s <code>quarter=Overall</code> rows, preserving
+              unique annual users. Quarterly users can recur across quarters;
+              neither quarterly counts nor quarterly percentages are summed to
+              obtain annual use. CMS source revisions, changing coverage and
+              service eligibility, and coding or reimbursement changes can
+              affect trends.
+            </p>
+            <p>
+              The ACS broadband file contains 8,105 geography rows and the
+              income file 8,155. State identifiers select
+              <strong>50 states and D.C. (51 jurisdictions)</strong>, excluding
+              Puerto Rico and all other geographic levels. All 51 match 2024 CMS
+              annual records; broadband, income, and the associated margins of
+              error are present for every match. No household microdata are
+              linked to Medicare beneficiaries.
+            </p>
+            <p>
+              Broadband is the household share with any broadband subscription,
+              including cellular-only service. It does not measure connection
+              speed, reliability, or digital literacy. Income is median
+              household income in
+              <strong>2024 inflation-adjusted dollars</strong>. ACS context is
+              paired only with 2024 CMS annual use, even when other CMS years
+              are available.
+            </p>
+            <p>
+              The annual-change chart compares two selected annual periods only.
+              Each difference is the comparison-year rate minus the
+              baseline-year rate, in <strong>percentage points</strong>, not
+              relative percent change. The chart can show the ten largest
+              absolute changes or all 51 jurisdictions; its CSV always includes
+              all 51. Published annual rates are used directly, and no
+              confidence intervals or significance claims are attached to these
+              administrative differences. Optional live CMS data also feed this
+              descriptive comparison and retain the not-revalidated label.
+            </p>
+            <p>
+              The state correlations are unweighted Pearson correlations across
+              51 observations. They have no confounder or measurement-error
+              adjustment and no inferential interval in this release. State
+              associations cannot identify whether individuals with broadband or
+              higher income were more likely to use telehealth.
+            </p>
+            <p>
+              The separate adjusted state model uses ordinary least squares for
+              <code
+                >2024 annual telehealth percentage ~ broadband percentage +
+                median income / 10,000</code
+              >. All <strong>50 states and D.C. (51 jurisdictions)</strong> have
+              complete data, receive equal weight, and enter the model. There
+              are three parameters including the intercept and 48 residual
+              degrees of freedom. Coefficients describe differences in
+              telehealth <strong>percentage points</strong> per one broadband
+              percentage point or <strong>$10,000</strong> of income, holding
+              the other covariate fixed.
+            </p>
+            <p>
+              The model uses HC3 heteroskedasticity-robust standard errors and
+              approximate <strong>95% normal intervals</strong>, not t
+              intervals. Broadband has a coefficient of
+              <strong>0.749</strong> (95% CI <strong>−1.018 to 2.515</strong>);
+              income has a coefficient of <strong>3.491</strong> (95% CI
+              <strong>1.315 to 5.666</strong>) per $10,000. The observed-sample
+              R-squared is 0.518; it is not a predictive performance score. HC3
+              does not address spatial dependence, ACS measurement error, or
+              omitted confounders. Alternative functional forms,
+              influential-state sensitivity, and spatial residuals have not been
+              evaluated. The intercept corresponds to zero broadband and zero
+              income, outside the observed range, and has no substantive
+              interpretation here.
+            </p>
+            <p>
+              ACS uncertainty uses <strong>90%</strong>, not 95%, margins of
+              error. Income MOEs are published values. Broadband MOEs are
+              approximate derived-proportion MOEs using the numerator and
+              denominator MOEs, with the ratio fallback when the subtraction
+              would be negative. These values accompany the state context
+              details. The calculation follows the
+              <a
+                href="https://www2.census.gov/programs-surveys/acs/tech_docs/statistical_testing/2024_Instructions_for_Stat_Testing_ACS.pdf"
+                target="_blank"
+                rel="noreferrer"
+                >Census statistical testing instructions</a
+              >. CMS supplies administrative aggregates without survey sampling
+              intervals; absence of an interval does not imply absence of error.
+            </p>
+            <h3 id="data-quality-nhis-sample-and-missingness" tabindex="-1">
+              NHIS sample and missingness
+            </h3>
+            <p>
+              The downloaded file contains <strong>32,629 adults</strong>. All
+              have usable positive final weights and survey design identifiers.
+              <code>VIRAPP12M_A</code> has 32,324 valid yes/no responses,
+              including <strong>8,293 yes</strong> responses; 305 responses are
+              missing or unknown (<strong>0.935%</strong>). No additional
+              imputation is performed in this analysis.
+            </p>
+            <p>
+              Each descriptive comparison uses available cases for its own
+              grouping variable. It does not restrict every view to adults
+              complete on all covariates. The adjusted model uses the separate
+              complete-case sample described below.
+            </p>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="NHIS sample and missingness table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Field or derived grouping</th>
+                    <th scope="col" class="numeric">
+                      Missing in source adults
+                    </th>
+                    <th scope="col" class="numeric">
+                      Missing among 32,324 valid outcomes
+                    </th>
+                    <th scope="col" class="numeric">
+                      Combined group analytical N
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Telehealth outcome</td>
+                    <td class="numeric">305</td>
+                    <td class="numeric">—</td>
+                    <td class="numeric">32,324</td>
+                  </tr>
+                  <tr>
+                    <td>Insurance hierarchy</td>
+                    <td class="numeric">118</td>
+                    <td class="numeric">104</td>
+                    <td class="numeric">32,220</td>
+                  </tr>
+                  <tr>
+                    <td>Age</td>
+                    <td class="numeric">52</td>
+                    <td class="numeric">47</td>
+                    <td class="numeric">32,277</td>
+                  </tr>
+                  <tr>
+                    <td>Education</td>
+                    <td class="numeric">147</td>
+                    <td class="numeric">141</td>
+                    <td class="numeric">32,183</td>
+                  </tr>
+                  <tr>
+                    <td>Internet access</td>
+                    <td class="numeric">285</td>
+                    <td class="numeric">12</td>
+                    <td class="numeric">32,312</td>
+                  </tr>
+                  <tr>
+                    <td>Self-rated health</td>
+                    <td class="numeric">16</td>
+                    <td class="numeric">16</td>
+                    <td class="numeric">32,308</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              These missingness counts overlap and must not be added as though
+              they were different people. The supplemental insured/uninsured
+              recode has a different available-case denominator of 32,245.
+            </p>
+            <p>
+              Insurance is measured at interview; telehealth refers to the
+              preceding 12 months. The three-category insurance hierarchy
+              distinguishes any private coverage, public/other coverage without
+              private, and uninsured. Private coverage can coexist with other
+              plans. These groups are not mutually exclusive underlying payer
+              types, and they do not match MEPS annual insurance categories
+              exactly. Age is top-coded at 85. Internet access is not equivalent
+              to ACS household broadband subscription.
+            </p>
+            <p>
+              The full survey design is built before domain selection using the
+              final adult weight (<code>WTFA_A</code>), stratum
+              (<code>PSTRAT</code>), and nested primary sampling unit
+              (<code>PPSU</code>):
+              <strong>52 strata and 662 primary sampling units (PSUs)</strong>.
+              R <code>survey</code> estimates weighted proportions and
+              Taylor-linearized standard errors. The
+              <strong>95% logit-transformed intervals</strong> use domain design
+              degrees of freedom; the overall design has 610 degrees of freedom.
+              The analysis used R 4.6.2, <code>survey</code> 4.5, and
+              <code>jsonlite</code> 2.0.0. See the
+              <a
+                href="https://ftp.cdc.gov/pub/Health_Statistics/NCHS/Dataset_Documentation/NHIS/2024/srvydesc-508.pdf"
+                target="_blank"
+                rel="noreferrer"
+                >NHIS survey description</a
+              >.
+            </p>
+            <p>
+              The dashboard’s screening rule suppresses domains with fewer than
+              30 valid sampled adults and flags those domains or relative
+              standard error above 30%. No current NHIS group triggers the rule.
+              This limited screen is
+              <strong
+                >not a complete implementation of NCHS presentation
+                standards</strong
+              >
+              and does not establish that all possible comparisons are reliable.
+            </p>
+            <h4 id="data-quality-nhis-adjusted-association-model" tabindex="-1">
+              NHIS adjusted association model
+            </h4>
+            <p>
+              The survey-weighted quasibinomial logistic model includes the
+              insurance hierarchy, age in years, education, Internet access, and
+              self-rated health simultaneously. It uses
+              <strong>32,027 complete-case adults</strong>, including
+              <strong>8,233 telehealth users</strong>; 602 adults are excluded.
+              No missing values are imputed in this analysis. The full survey
+              design is constructed before selecting the complete-case domain.
+            </p>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="NHIS adjusted association model table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Sequential exclusion step</th>
+                    <th scope="col" class="numeric">Newly excluded</th>
+                    <th scope="col" class="numeric">Remaining adults</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Missing telehealth outcome</td>
+                    <td class="numeric">305</td>
+                    <td class="numeric">32,324</td>
+                  </tr>
+                  <tr>
+                    <td>Missing insurance hierarchy</td>
+                    <td class="numeric">104</td>
+                    <td class="numeric">32,220</td>
+                  </tr>
+                  <tr>
+                    <td>Missing age</td>
+                    <td class="numeric">42</td>
+                    <td class="numeric">32,178</td>
+                  </tr>
+                  <tr>
+                    <td>Missing education</td>
+                    <td class="numeric">130</td>
+                    <td class="numeric">32,048</td>
+                  </tr>
+                  <tr>
+                    <td>Missing Internet access</td>
+                    <td class="numeric">7</td>
+                    <td class="numeric">32,041</td>
+                  </tr>
+                  <tr>
+                    <td>Missing self-rated health</td>
+                    <td class="numeric">14</td>
+                    <td class="numeric">32,027</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              These sequential counts depend on the displayed order and do not
+              double-count adults; they therefore differ from the marginal
+              missingness table above. Complete-case selection may introduce
+              bias if missingness is related to use or covariates.
+            </p>
+            <p>
+              Reference categories are any private coverage, bachelor&#39;s
+              degree or higher, Internet access, and excellent self-rated
+              health. Age is modeled linearly per additional year and remains
+              top-coded at 85. Reported effects are
+              <strong>adjusted odds ratios</strong>, not risk ratios or
+              probability differences. The model has rank 12, survey design
+              degrees of freedom 610, and residual degrees of freedom
+              <strong>599</strong>. Its
+              <strong>95% Wald t intervals</strong> use Taylor-linearized
+              covariance and those residual degrees of freedom.
+            </p>
+            <p>
+              The adjusted-association forest plot selects one covariate group
+              at a time from the same 11 fitted non-intercept terms. It displays
+              the 95% intervals on a logarithmic odds-ratio axis with a
+              reference line at <strong>1</strong>. Reference categories are
+              stated beside the selected comparison; changing the displayed
+              covariate does not refit the model.
+            </p>
+            <p>
+              Relative to any private coverage, the adjusted odds ratio is
+              <strong>1.100</strong> (95% CI <strong>1.016–1.191</strong>) for
+              public/other coverage without private and
+              <strong>0.460</strong> (95% CI <strong>0.391–0.542</strong>) for
+              uninsured adults. These are conditional cross-sectional
+              associations. The interview-time insurance/past-year telehealth
+              mismatch remains, and adjustment does not resolve unmeasured
+              confounding. Age nonlinearity, interactions, alternative insurance
+              definitions, and missing-data sensitivity have not been assessed.
+              The model estimates associations in the observed sample and is not
+              validated for predicting individual outcomes.
+            </p>
+            <h3
+              id="data-quality-meps-sample-unknown-modality-and-payments"
+              tabindex="-1"
+            >
+              MEPS sample, unknown modality, and payments
+            </h3>
+            <p>
+              HC-254G contains <strong>145,818 visits</strong>; HC-256 contains
+              <strong>19,140 persons</strong>. Person identifiers are unique in
+              HC-256, event identifiers are unique in HC-254G, and every event
+              matches a person. Linked weights, strata, and PSU identifiers
+              agree. Excluding <strong>1,612 zero-weight visits</strong> leaves
+              <strong>144,206 visits from 14,198 sampled persons</strong>. All
+              analytical visits have known annual insurance and nonnegative
+              released payment values.
+            </p>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="MEPS sample, unknown modality, and payments table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Analytical group</th>
+                    <th scope="col" class="numeric">Visits</th>
+                    <th scope="col" class="numeric">
+                      Distinct sampled persons
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Any private coverage during 2024</td>
+                    <td class="numeric">87,942</td>
+                    <td class="numeric">8,711</td>
+                  </tr>
+                  <tr>
+                    <td>Public only during 2024</td>
+                    <td class="numeric">54,812</td>
+                    <td class="numeric">5,125</td>
+                  </tr>
+                  <tr>
+                    <td>Uninsured all year</td>
+                    <td class="numeric">1,452</td>
+                    <td class="numeric">362</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              The source has <strong>13,619 remote visits</strong>, of which
+              13,494 have positive weights. <code>VISITTYPE=-1</code> occurs in
+              <strong>132,199 nonremote source visits</strong> and is structural
+              inapplicability, not ordinary missingness. There are
+              <strong>70 unknown remote-modality visits</strong>
+              (<code>-8</code>), all retained in the positive-weight sample.
+              They remain an explicit category and remain in the office-visit
+              denominator.
+            </p>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="MEPS sample, unknown modality, and payments table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Modality after weight selection</th>
+                    <th scope="col" class="numeric">Visits</th>
+                    <th scope="col" class="numeric">
+                      Distinct sampled persons
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>In person / not remote</td>
+                    <td class="numeric">130,712</td>
+                    <td class="numeric">14,066</td>
+                  </tr>
+                  <tr>
+                    <td>Phone</td>
+                    <td class="numeric">3,273</td>
+                    <td class="numeric">693</td>
+                  </tr>
+                  <tr>
+                    <td>Video</td>
+                    <td class="numeric">10,049</td>
+                    <td class="numeric">1,170</td>
+                  </tr>
+                  <tr>
+                    <td>Other remote</td>
+                    <td class="numeric">102</td>
+                    <td class="numeric">48</td>
+                  </tr>
+                  <tr>
+                    <td>Unknown remote</td>
+                    <td class="numeric">70</td>
+                    <td class="numeric">22</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              Persons can appear in several modality rows, so person counts in
+              this table must not be summed. Shares describe visits, not the
+              proportion of people using telehealth. Payments are weighted mean
+              amounts paid per visit in the displayed domain; they retain
+              zero-payment visits. Total payments and family/out-of-pocket
+              payments are separate measures, in 2024 US dollars. They are not
+              billed charges, standardized prices, or savings attributable to
+              telehealth.
+            </p>
+            <p>
+              There are no missing released payment values, but many are
+              imputed. Source <code>IMPFLAG</code> counts are: not eligible for
+              imputation 311; complete household data 25,251; complete provider
+              data 32,220; fully imputed 57,478; partially imputed 28,425;
+              capitation imputation 2,133. The analysis retains released values
+              and does not claim they were all directly observed.
+            </p>
+            <p>
+              MEPS estimates use <code>PERWT24F</code>, <code>VARSTR</code>, and
+              <code>VARPSU</code>, retaining the full positive-weight
+              person-file PSU universe for domain variance estimation:
+              <strong
+                >105 strata, 264 PSUs, 159 design degrees of freedom</strong
+              >. A with-replacement Taylor ratio estimator produces standard
+              errors. Intervals use <strong>95% normal approximation</strong>,
+              <code>estimate ± 1.959964 × SE</code>; percentages are clipped to
+              0–100 and payment lower limits to zero. These intervals are
+              approximate, particularly for rare modalities and skewed payments;
+              they do not separately estimate additional uncertainty from
+              imputation.
+            </p>
+            <p>
+              The dashboard flags domains with fewer than 30 sampled persons,
+              relative standard error above 30%, or boundary proportions. For
+              modality shares, the small-sample screen also checks persons
+              contributing to the modality numerator. For example, uninsured
+              phone and video visits arise from only 11 and 18 sampled persons,
+              respectively. This screen is not an official AHRQ publication
+              rule.
+            </p>
+            <p>
+              The dashboard applies an additional display rule: modality
+              estimates based on
+              <strong>fewer than 30 sampled persons, including zero</strong>,
+              are withheld from charts, tables, and CSV exports as “Not shown”
+              or unavailable. Overall telehealth shares within each insurance
+              group use the same threshold applied to
+              <strong
+                >distinct sampled persons contributing remote visits</strong
+              >, rather than the larger denominator count of all people with
+              office visits. Categories and sampled visit/person counts remain
+              visible.
+            </p>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="MEPS sample, unknown modality, and payments table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Insurance domain</th>
+                    <th scope="col" class="numeric">
+                      Sampled people contributing telehealth visits
+                    </th>
+                    <th scope="col">Telehealth share display</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>All insurance groups</td>
+                    <td class="numeric">1,721</td>
+                    <td>Displayed</td>
+                  </tr>
+                  <tr>
+                    <td>Any private</td>
+                    <td class="numeric">1,202</td>
+                    <td>Displayed</td>
+                  </tr>
+                  <tr>
+                    <td>Public only</td>
+                    <td class="numeric">493</td>
+                    <td>Displayed</td>
+                  </tr>
+                  <tr>
+                    <td>Uninsured all year</td>
+                    <td class="numeric">26</td>
+                    <td>Withheld</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              The insurance comparison chart places the three insurance-specific
+              telehealth visit shares and their 95% intervals side by side; its
+              denominator is all positive-weight office visits in the respective
+              insurance group. The uninsured estimate is withheld in this
+              comparison, its CSV, and the selected-group headline. These are
+              visit shares, not the percentage of people using telehealth.
+              Insurance reflects annual coverage rather than the payer at a
+              particular visit.
+            </p>
+            <p>
+              Estimates passing the count threshold but with relative standard
+              error above 30% remain displayed with an
+              <strong>Unstable</strong> flag. Aggregate JSON retains computed
+              estimates and flags for reproducibility and is therefore distinct
+              from a display-ready export; downstream users must apply the same
+              display rule. Empty payment domains are <code>null</code>, not
+              zero. An observed zero share remains a flagged boundary result in
+              JSON, even when withheld from the interface.
+            </p>
+            <h3
+              id="data-quality-checks-completed-and-remaining-limits"
+              tabindex="-1"
+            >
+              Checks completed and remaining limits
+            </h3>
+            <p>
+              The independent numerical audit on November 11, 2026 checked the
+              verified snapshot against the raw source files. It does not
+              revalidate records loaded by the optional CMS source check:
+            </p>
+            <ul>
+              <li>
+                <strong>CMS:</strong> all
+                <strong>1,560 retained national/state-period records</strong>
+                match the source data. Rates recalculated from unique-user
+                counts differ from published rates by at most
+                <strong>0.00499522 percentage points</strong>, within the
+                <strong>0.005001</strong> source-rounding tolerance. Geography,
+                keys, source scale, and fingerprints were checked.
+              </li>
+              <li>
+                <strong>ACS:</strong> all
+                <strong>51 state/DC records</strong> match the source tables,
+                including broadband numerator/denominator, income, and margins
+                of error.
+              </li>
+              <li>
+                <strong>CMS–ACS model:</strong> a separate base-R QR regression
+                and manually calculated HC3 covariance reproduce coefficients,
+                standard errors, and confidence limits with a maximum absolute
+                difference of <strong>5.3 × 10⁻⁹</strong>. This checks numerical
+                implementation, not model adequacy.
+              </li>
+              <li>
+                <strong>NHIS:</strong> independent raw-data calculations
+                reproduce all <strong>21 overall/subgroup estimates</strong>,
+                standard errors, and logit intervals within
+                <strong>1.32 × 10⁻⁷ percentage points</strong>. All six
+                missingness summaries and both source fingerprints match. The
+                32,629 source adults and 8,293 telehealth responses agree with
+                the codebook.
+              </li>
+              <li>
+                <strong>NHIS model:</strong> a separate base-R weighted logistic
+                fit and manually assembled full-design stratified PSU score
+                covariance reproduce all <strong>11 adjusted terms</strong>. The
+                largest absolute difference across coefficients, standard
+                errors, odds ratios, interval limits, and p-values is
+                <strong>2.91 × 10⁻⁶</strong>, below the displayed precision. The
+                complete-case sample of <strong>32,027</strong> and residual
+                degrees of freedom <strong>599</strong> match.
+              </li>
+              <li>
+                <strong>MEPS:</strong> an independent raw-file audit reproduces
+                <strong>70 share/payment metrics</strong>, including standard
+                errors and interval limits, with a maximum absolute discrepancy
+                of <strong>4.9973 × 10⁻⁷</strong> in the corresponding
+                metric&#39;s units. Linkage, identifiers, weight/design
+                agreement, payment values, and modality totals reconcile.
+                Weighted office visits round to
+                <strong>2,410.1 million</strong>; mean total payment/SE round to
+                <strong>$308/$7.9</strong>, and family payment/SE to
+                <strong>$57/$3.0</strong>, matching official rounded benchmarks.
+              </li>
+              <li>
+                <strong>MEPS display support:</strong> the audit identified only
+                <strong
+                  >26 distinct uninsured people contributing telehealth
+                  visits</strong
+                >. The overall uninsured telehealth share is now withheld using
+                that numerator support, consistently with the sparse-modality
+                display rule. Numerical estimates remain available in aggregate
+                JSON for reproducibility, accompanied by counts and caution
+                flags.
+              </li>
+            </ul>
+            <p>
+              These checks are not external validation of every subgroup or
+              proof that the data are unbiased. Recall error, nonresponse,
+              survey coverage, imputation, residual confounding, and policy or
+              measurement changes remain. Overlapping confidence intervals are
+              not a formal test of a group difference. These numerical checks do
+              not evaluate task-based usability, model specification
+              sensitivity, or predictive performance.
+            </p>
+            <h3 id="data-quality-reproduction-and-updates" tabindex="-1">
+              Reproduction and updates
+            </h3>
+            <p>
+              The analytical scripts are
+              <a href="./scripts/cms_acs.py"><code>cms_acs.py</code></a
+              >, <a href="./scripts/nhis.py"><code>nhis.py</code></a> with
+              <a href="./scripts/nhis.R"><code>nhis.R</code></a
+              >, and <a href="./scripts/meps.py"><code>meps.py</code></a
+              >. Aggregate outputs are
+              <a href="./data/cms.json"><code>cms.json</code></a
+              >, <a href="./data/nhis.json"><code>nhis.json</code></a
+              >, and <a href="./data/meps.json"><code>meps.json</code></a
+              >; field meanings are in the
+              <a href="./documentation.html#data-manual">data manual</a>.
+            </p>
+            <p>
+              Refreshing the page restores the verified snapshot. The optional
+              CMS source check does not replace the analytical files. Adopting a
+              new verified snapshot requires a deliberate source review and
+              rebuild: record actual retrieval dates, compare fingerprints and
+              codebooks, reassess recodes and denominators, rerun numerical
+              checks, and update this note with the resulting analytical sample
+              sizes. Preserve the distinction between survey confidence levels,
+              between annual and quarterly counts, and between the three source
+              populations.
+            </p>
+          </article>
+        </div>
+      </section>
+      <section
+        class="research-document"
+        id="data-manual"
+        aria-labelledby="data-manual-title"
+      >
+        <div class="document-heading">
+          <h2 id="data-manual-title">Data manual</h2>
+          <p>
+            Field definitions, units, recodes, and downloadable data structures
+          </p>
+        </div>
+        <div class="document-layout">
+          <aside class="document-contents">
+            <details open>
+              <summary>On this page</summary>
+              <nav aria-label="Data manual contents">
+                <a href="#data-manual-common-conventions">Common conventions</a
+                ><a href="#data-manual-live-source-updates"
+                  >Live source updates</a
+                ><a href="#data-manual-cms-csv-provenance" class="subsection"
+                  >CMS CSV provenance</a
+                ><a href="#data-manual-cms-annual-change-csv" class="subsection"
+                  >CMS annual-change CSV</a
+                ><a href="#data-manual-cms-source-variables"
+                  >CMS source variables</a
+                ><a href="#data-manual-acs-source-variables"
+                  >ACS source variables</a
+                ><a href="#data-manual-cms-and-acs-data-fields"
+                  >CMS and ACS data fields</a
+                ><a
+                  href="#data-manual-cms-adjusted-model-fields"
+                  class="subsection"
+                  >CMS adjusted model fields</a
+                ><a href="#data-manual-nhis-source-variables-and-recodes"
+                  >NHIS source variables and recodes</a
+                ><a href="#data-manual-nhis-data-fields">NHIS data fields</a
+                ><a
+                  href="#data-manual-nhis-adjusted-model-fields"
+                  class="subsection"
+                  >NHIS adjusted model fields</a
+                ><a href="#data-manual-meps-source-variables-and-recodes"
+                  >MEPS source variables and recodes</a
+                ><a href="#data-manual-meps-data-fields">MEPS data fields</a
+                ><a
+                  href="#data-manual-meps-insurance-comparison-csv"
+                  class="subsection"
+                  >MEPS insurance-comparison CSV</a
+                >
+              </nav>
+            </details>
+          </aside>
+          <article class="document-body" aria-label="Data manual">
+            <p>
+              <strong
+                >Data manual version 1.1 · Verified snapshot sources retrieved
+                2026-11-11</strong
+              >
+            </p>
+            <p>
+              This manual describes the verified analytical fields, aggregate
+              JSON downloads, and provenance attached to optional live CMS
+              exports. Detailed methods, source versions, checksums, analytical
+              sample sizes, and limitations are in the
+              <a href="./documentation.html#data-quality">data quality note</a>.
+              Each source remains a separate analytical module.
+            </p>
+            <h3 id="data-manual-common-conventions" tabindex="-1">
+              Common conventions
+            </h3>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="Common conventions table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Convention</th>
+                    <th scope="col">Meaning</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Percent</td>
+                    <td>
+                      A numeric value on the 0–100 scale, without a percent sign
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Percentage points (pp)</td>
+                    <td>
+                      Unit for percentage standard errors, margins of error, and
+                      absolute differences; distinct from relative percent
+                      change
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>null</code></td>
+                    <td>
+                      Unavailable or inapplicable numerical result; never
+                      substitute zero
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Unweighted N</td>
+                    <td>
+                      Number of sampled records or persons; not a population
+                      estimate
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Weighted denominator</td>
+                    <td>
+                      Sum of final survey weights in the estimate&#39;s domain;
+                      adults for NHIS, visits for MEPS
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Confidence interval (CI)</td>
+                    <td>NHIS and MEPS use 95% confidence intervals</td>
+                  </tr>
+                  <tr>
+                    <td>Margin of error (MOE)</td>
+                    <td>
+                      ACS uncertainty is reported at the 90% confidence level
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Relative standard error (RSE)</td>
+                    <td>
+                      Standard error divided by the estimate, expressed as a
+                      percentage
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Primary sampling unit (PSU)</td>
+                    <td>Survey sampling cluster used in variance estimation</td>
+                  </tr>
+                  <tr>
+                    <td><code>unstable</code></td>
+                    <td>
+                      Dashboard screening rule triggered; not a causal claim or
+                      a formal significance test
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Annual insurance</td>
+                    <td>
+                      Applies to MEPS calendar-year coverage; NHIS instead uses
+                      insurance at interview
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              JSON status strings describe processing state. In particular, NHIS
+              <code>verified_descriptive</code> means the checks recorded in its
+              <code>quality.audit</code> object passed; it is not an official
+              NCHS certification or a declaration that the estimates are free of
+              bias.
+            </p>
+            <h3 id="data-manual-live-source-updates" tabindex="-1">
+              Live source updates
+            </h3>
+            <p>
+              “Live” means fetched on demand from the currently published CMS
+              release, not real-time clinical activity.
+            </p>
+            <p>
+              The dashboard starts with its verified snapshot.
+              <strong>Check latest CMS data</strong> discovers the Medicare
+              Telehealth Trends series through the
+              <a
+                href="https://data.cms.gov/data.json"
+                target="_blank"
+                rel="noreferrer"
+                >CMS catalog</a
+              >
+              and can load available periods into the descriptive CMS view after
+              basic structural and numeric checks. It updates only the CMS map,
+              table, summary counts, quarterly trend, annual-change comparisons,
+              and CMS CSV export. The accepted API records are labelled
+              <strong>not revalidated</strong>, remain in browser memory, and
+              are removed by <strong>Restore verified snapshot</strong> or a
+              page refresh.
+            </p>
+            <p>
+              A repeated check compares the response with the CMS records
+              currently displayed. A timeout or failed request preserves those
+              records and reports that the source could not be checked. It must
+              not be interpreted as confirmation that no updates are available.
+            </p>
+            <p>
+              ACS context, the entire 2024 CMS–ACS scatterplot/correlation/model
+              analysis, NHIS, and MEPS stay fixed to the verified snapshot. This
+              includes the CMS 2024 values used in the ACS analysis: they are
+              not replaced by a live revision. Aggregate JSON downloads remain
+              the verified files described in the data fields below. Source
+              checks do not write back to those files.
+            </p>
+            <h4 id="data-manual-cms-csv-provenance" tabindex="-1">
+              CMS CSV provenance
+            </h4>
+            <p>
+              The CMS CSV contains the displayed descriptive CMS estimates and
+              the fixed 2024 ACS context. The following fields distinguish the
+              provenance of those two sources:
+            </p>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="CMS CSV provenance table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">CSV field</th>
+                    <th scope="col">Meaning</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>validation_status</code></td>
+                    <td>
+                      Whether the exported descriptive CMS values belong to the
+                      verified snapshot or an API response that has not been
+                      revalidated
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>cms_retrieved_at</code></td>
+                    <td>
+                      Recorded retrieval time or date for the CMS values in the
+                      export
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>cms_api_url</code></td>
+                    <td>
+                      CMS API source URL associated with an API-loaded view; it
+                      does not describe the ACS source
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>cms_source_version</code></td>
+                    <td>
+                      CMS source version associated with the exported values
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>acs_validation_status</code></td>
+                    <td>
+                      Status of the unchanged, verified ACS context in the same
+                      export
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              Keep these fields with the exported data. The presence of 2024 ACS
+              columns does not make newer CMS periods contemporaneous with ACS,
+              and live CMS values must not be substituted into the verified 2024
+              model without rebuilding and checking that analysis. Model CSV
+              exports and aggregate JSON downloads continue to describe the
+              verified analysis.
+            </p>
+            <p>
+              The verified CMS series retain 2020–2025. The pinned source CSV
+              also contains 2026 Q1, so a period newly displayed after an API
+              check need not come from a newly released file. An unchanged
+              response means only that the checked CMS view has not changed; it
+              says nothing about the currency of the other sources.
+              <a
+                href="https://www.cdc.gov/nchs/nhis/documentation/2025-nhis.html"
+                target="_blank"
+                rel="noreferrer"
+                >NHIS 2025 documentation</a
+              >
+              is available while the dashboard’s NHIS analysis remains 2024.
+              ACS, NHIS, and MEPS refreshes require separate source selection
+              and analytical processing.
+            </p>
+            <h4 id="data-manual-cms-annual-change-csv" tabindex="-1">
+              CMS annual-change CSV
+            </h4>
+            <p>
+              The annual-change view uses annual source records only.
+              <code
+                >change_percentage_points = comparison_annual_percent −
+                baseline_annual_percent</code
+              >; this is an absolute difference in percentage points, not
+              relative percent change. The chart offers the ten largest absolute
+              changes or all 51 states/DC. The CSV includes all 51 regardless of
+              the chart&#39;s display setting. Both selected years must be
+              available annual periods, with the comparison year later than the
+              baseline year. It uses the current descriptive CMS view, including
+              accepted live records when present, and does not alter the
+              verified 2024 CMS–ACS analysis.
+            </p>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="CMS annual-change CSV table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">CSV field</th>
+                    <th scope="col">Meaning</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>source</code></td>
+                    <td>CMS Medicare Telehealth Trends attribution</td>
+                  </tr>
+                  <tr>
+                    <td><code>state</code>, <code>abbreviation</code></td>
+                    <td>State/DC name and two-letter abbreviation</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <code>baseline_year</code>, <code>comparison_year</code>
+                    </td>
+                    <td>Earlier and later annual reporting years</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <code>baseline_annual_percent</code>,
+                      <code>comparison_annual_percent</code>
+                    </td>
+                    <td>
+                      Published annual telehealth rates on the 0–100 scale
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>change_percentage_points</code></td>
+                    <td>Comparison-year rate minus baseline-year rate</td>
+                  </tr>
+                  <tr>
+                    <td><code>validation_status</code></td>
+                    <td>Verified snapshot or live values not revalidated</td>
+                  </tr>
+                  <tr>
+                    <td><code>cms_retrieved_at</code></td>
+                    <td>Retrieval date or timestamp for the CMS view</td>
+                  </tr>
+                  <tr>
+                    <td><code>cms_source_version</code></td>
+                    <td>Recorded source version, when available</td>
+                  </tr>
+                  <tr>
+                    <td><code>cms_api_url</code></td>
+                    <td>
+                      API endpoint for live values; blank for the fixed snapshot
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <h3 id="data-manual-cms-source-variables" tabindex="-1">
+              CMS source variables
+            </h3>
+            <p>
+              Source:
+              <a
+                href="https://data.cms.gov/data-api/v1/dataset/21e3fb54-7f6c-4de9-9731-027213c2cdb3/dictionary"
+                target="_blank"
+                rel="noreferrer"
+                >Medicare Telehealth Trends dictionary</a
+              >.
+            </p>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="CMS source variables table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Source field</th>
+                    <th scope="col">Use and units</th>
+                    <th scope="col">Processing rule</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>Year</code></td>
+                    <td>Claims reporting year</td>
+                    <td>
+                      The verified snapshot retains 2020–2025; optional
+                      API-loaded descriptive series can include other available
+                      periods
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>quarter</code></td>
+                    <td>
+                      Reporting quarter: <code>1</code>–<code>4</code>, or
+                      <code>Overall</code> for annual records
+                    </td>
+                    <td>
+                      Annual records are taken directly from
+                      <code>Overall</code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>Bene_Geo_Desc</code></td>
+                    <td>Beneficiary mailing-address geography</td>
+                    <td>
+                      Match 50 states and DC; retain published
+                      <code>National</code> separately
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>Bene_Mdcd_Mdcr_Enrl_Stus</code></td>
+                    <td>Medicare/Medicaid enrollment subgroup</td>
+                    <td>Require <code>All</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>Bene_Race_Desc</code></td>
+                    <td>Race/ethnicity subgroup</td>
+                    <td>Require <code>All</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>Bene_Sex_Desc</code></td>
+                    <td>Sex subgroup</td>
+                    <td>Require <code>All</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>Bene_Mdcr_Entlmt_Stus</code></td>
+                    <td>Entitlement subgroup</td>
+                    <td>Require <code>All</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>Bene_Age_Desc</code></td>
+                    <td>Age subgroup</td>
+                    <td>Require <code>All</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>Bene_RUCA_Desc</code></td>
+                    <td>Rural/urban subgroup</td>
+                    <td>Require <code>All</code></td>
+                  </tr>
+                  <tr>
+                    <td><code>Total_Bene_TH_Elig</code></td>
+                    <td>
+                      Unique beneficiaries with at least one telehealth-eligible
+                      service in the period
+                    </td>
+                    <td>
+                      Rate denominator; includes eligible services delivered in
+                      person
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>Total_Bene_Telehealth</code></td>
+                    <td>
+                      Unique beneficiaries with a telehealth service, including
+                      audio-only
+                    </td>
+                    <td>Rate numerator</td>
+                  </tr>
+                  <tr>
+                    <td><code>Total_PartB_Enrl</code></td>
+                    <td>
+                      Person-year or person-quarter Part B FFS enrollment
+                      measure
+                    </td>
+                    <td>
+                      Retain for context; do not use as the rate denominator
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>Pct_Telehealth</code></td>
+                    <td>Published telehealth fraction in this release</td>
+                    <td>
+                      Multiply by 100; verify against counts within source
+                      rounding tolerance
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              Blank, suppressed, nonnumeric, or negative source values become
+              <code>null</code>. The retained snapshot has no missing values in
+              these numerical fields. Counting the same beneficiary in several
+              quarters is possible, so annual unique users cannot be obtained by
+              summing quarterly users.
+            </p>
+            <h3 id="data-manual-acs-source-variables" tabindex="-1">
+              ACS source variables
+            </h3>
+            <p>
+              Sources:
+              <a
+                href="https://api.census.gov/data/2024/acs/acs1/groups/B28002.html"
+                target="_blank"
+                rel="noreferrer"
+                >B28002 definitions</a
+              >,
+              <a
+                href="https://api.census.gov/data/2024/acs/acs1/groups/B19013.html"
+                target="_blank"
+                rel="noreferrer"
+                >B19013 definitions</a
+              >.
+            </p>
+            <p>
+              The dashboard uses the 2024 <strong>1-year</strong> release.
+              Table-based file names put <code>E</code> or <code>M</code> before
+              the line number; API names put it after the line number.
+            </p>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="ACS source variables table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Table-based field</th>
+                    <th scope="col">Equivalent API field</th>
+                    <th scope="col">Meaning and units</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>GEO_ID</code></td>
+                    <td>Geography identifier</td>
+                    <td>
+                      <code>0400000US</code> plus two-digit state FIPS selects
+                      state estimates
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>B28002_E001</code></td>
+                    <td><code>B28002_001E</code></td>
+                    <td>Estimated total households</td>
+                  </tr>
+                  <tr>
+                    <td><code>B28002_E004</code></td>
+                    <td><code>B28002_004E</code></td>
+                    <td>
+                      Households with broadband of any type, including cellular
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>B28002_M001</code></td>
+                    <td><code>B28002_001M</code></td>
+                    <td>90% MOE for total households, households</td>
+                  </tr>
+                  <tr>
+                    <td><code>B28002_M004</code></td>
+                    <td><code>B28002_004M</code></td>
+                    <td>90% MOE for broadband households, households</td>
+                  </tr>
+                  <tr>
+                    <td><code>B19013_E001</code></td>
+                    <td><code>B19013_001E</code></td>
+                    <td>
+                      Median household income, 2024 inflation-adjusted US
+                      dollars
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>B19013_M001</code></td>
+                    <td><code>B19013_001M</code></td>
+                    <td>90% MOE for median household income, dollars</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              <code>broadbandPct = 100 × B28002_E004 / B28002_E001</code>.
+              Negative Census sentinel values are missing. For proportion
+              <code>p</code>, the approximate derived MOE is
+              <code>100 × sqrt(M_num² − p² × M_den²) / denominator</code>. The
+              plus-sign ratio formula is used if the radicand is negative. These
+              are uncertainty measures for household estimates, not for Medicare
+              beneficiaries.
+            </p>
+            <h3 id="data-manual-cms-and-acs-data-fields" tabindex="-1">
+              CMS and ACS data fields
+            </h3>
+            <p>
+              Verified snapshot file:
+              <a href="./data/cms.json"><code>data/cms.json</code></a
+              >. The live source check does not overwrite this file. Top-level
+              keys include <code>schemaVersion</code>, <code>status</code>,
+              <code>accessDate</code>, <code>years</code>,
+              <code>national</code>, <code>states</code>,
+              <code>associations</code>, <code>quality</code>,
+              <code>sources</code>, <code>definitions</code>, and
+              <code>limitations</code>.
+            </p>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="CMS and ACS data fields table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">JSON path or field</th>
+                    <th scope="col">Type and meaning</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <code>national.annual[]</code>,
+                      <code>national.quarterly[]</code>
+                    </td>
+                    <td>Published national reporting series</td>
+                  </tr>
+                  <tr>
+                    <td><code>states[]</code></td>
+                    <td>
+                      One object per state/DC; <code>name</code>, two-letter
+                      <code>abbr</code>, two-digit string <code>fips</code>,
+                      <code>annual[]</code>, <code>quarterly[]</code>, and
+                      <code>acs2024</code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Series <code>year</code> / <code>quarter</code> /
+                      <code>period</code>
+                    </td>
+                    <td>
+                      Integer year; integer quarter or <code>null</code> for
+                      annual; display label such as <code>2024 Q1</code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Series <code>telehealthPct</code></td>
+                    <td>Published fraction converted to percent</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Series <code>telehealthUsers</code> /
+                      <code>eligibleUsers</code>
+                    </td>
+                    <td>Published unique-user numerator and denominator</td>
+                  </tr>
+                  <tr>
+                    <td>Series <code>partBEnrollment</code></td>
+                    <td>Published enrollment measure; may be fractional</td>
+                  </tr>
+                  <tr>
+                    <td>Series <code>recalculatedPct</code></td>
+                    <td>
+                      Independent
+                      <code>100 × telehealthUsers / eligibleUsers</code>,
+                      retained for checking
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Series <code>status</code></td>
+                    <td>
+                      <code>available</code> or
+                      <code>suppressed_or_missing</code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>acs2024.broadbandPct</code></td>
+                    <td>Household broadband share, percent</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <code>acs2024.households</code> /
+                      <code>broadbandHouseholds</code>
+                    </td>
+                    <td>Household estimates underlying that share</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <code>acs2024.medianIncome</code> /
+                      <code>incomeMoe90</code>
+                    </td>
+                    <td>Median income and its 90% MOE, dollars</td>
+                  </tr>
+                  <tr>
+                    <td><code>acs2024.broadbandMoe90</code></td>
+                    <td>
+                      Approximate 90% MOE of the broadband percentage,
+                      percentage points
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <code>acs2024.householdMoe90</code> /
+                      <code>broadbandNumeratorMoe90</code>
+                    </td>
+                    <td>Source 90% household-count MOEs</td>
+                  </tr>
+                  <tr>
+                    <td><code>acs2024.broadbandMoeMethod</code></td>
+                    <td>
+                      <code>subset_proportion</code> or
+                      <code>ratio_fallback</code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>associations</code></td>
+                    <td>
+                      2024 complete-pair count and unweighted state-level
+                      Pearson correlations; the nested
+                      <code>adjustedModel</code> is a separate regression
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>sources[]</code></td>
+                    <td>
+                      Source identifiers, official URLs, release/access dates,
+                      byte counts, and SHA-256 hashes
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>quality</code></td>
+                    <td>
+                      Source and retained row counts, missingness, matching, and
+                      arithmetic check results
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              ACS fields are fixed to 2024 and must not be treated as context
+              for another CMS year. Published national CMS totals are not
+              required to equal the sum of the 51 mapped geographies.
+            </p>
+            <h4 id="data-manual-cms-adjusted-model-fields" tabindex="-1">
+              CMS adjusted model fields
+            </h4>
+            <p>
+              <code>associations.adjustedModel</code> fits an equal-weight
+              state-level OLS model with the 2024 annual CMS percentage as the
+              outcome and broadband percentage plus median income divided by
+              10,000 as predictors. HC3 covariance supplies approximate 95%
+              <strong>normal</strong>, not t, intervals. All 50 states and D.C.
+              (51 jurisdictions) have complete data.
+            </p>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="CMS adjusted model fields table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Field</th>
+                    <th scope="col">Meaning</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <code>n</code>, <code>excludedStates</code>,
+                      <code>parameters</code>, <code>residualDf</code>
+                    </td>
+                    <td>
+                      Model observation count, excluded state count, parameter
+                      count including intercept, residual degrees of freedom
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>coefficients[].term</code></td>
+                    <td>
+                      <code>intercept</code>, <code>broadbandPct</code>, or
+                      <code>medianIncomePer10000</code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>coefficients[].estimate</code></td>
+                    <td>
+                      OLS coefficient in telehealth percentage points; slopes
+                      per one broadband percentage point or $10,000 income
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>coefficients[].se</code></td>
+                    <td>HC3 robust SE in the coefficient&#39;s units</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <code>coefficients[].ciLow</code>, <code>ciHigh</code>
+                    </td>
+                    <td>
+                      Approximate 95% interval endpoints in the
+                      coefficient&#39;s units
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <code>coefficients[].label</code>, <code>units</code>
+                    </td>
+                    <td>Human-readable coefficient interpretation</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <code>rSquared</code>, <code>adjustedRSquared</code>
+                    </td>
+                    <td>
+                      Fit in the 51 observed geographies; not predictive
+                      performance
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>maximumLeverage</code></td>
+                    <td>Largest diagonal element of the OLS hat matrix</td>
+                  </tr>
+                  <tr>
+                    <td><code>normalEquationMaxAbsoluteError</code></td>
+                    <td>Numerical residual-orthogonality check</td>
+                  </tr>
+                  <tr>
+                    <td><code>notes[]</code></td>
+                    <td>
+                      Equal-state weighting, units, ecological interpretation,
+                      and unresolved model limitations
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              The intercept is outside the meaningful observed covariate range.
+              HC3 does not address spatial correlation, ACS sampling error in
+              covariates, or omitted confounding. No causal or individual-level
+              conclusion follows from these coefficients.
+            </p>
+            <h3
+              id="data-manual-nhis-source-variables-and-recodes"
+              tabindex="-1"
+            >
+              NHIS source variables and recodes
+            </h3>
+            <p>
+              Source:
+              <a
+                href="https://ftp.cdc.gov/pub/Health_Statistics/NCHS/Dataset_Documentation/NHIS/2024/Adult-codebook.pdf"
+                target="_blank"
+                rel="noreferrer"
+                >2024 Sample Adult codebook</a
+              >.
+            </p>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="NHIS source variables and recodes table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Source field</th>
+                    <th scope="col">Meaning</th>
+                    <th scope="col">Dashboard rule</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>VIRAPP12M_A</code></td>
+                    <td>
+                      Any video/phone appointment during the prior 12 months
+                    </td>
+                    <td>
+                      <code>1</code> yes, <code>2</code> no;
+                      <code>7/8/9</code> and blanks missing
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>WTFA_A</code></td>
+                    <td>Final adult survey weight</td>
+                    <td>Positive weight required; estimates use this weight</td>
+                  </tr>
+                  <tr>
+                    <td><code>PSTRAT</code>, <code>PPSU</code></td>
+                    <td>Public survey stratum and PSU identifiers</td>
+                    <td>
+                      PSU nested within stratum; full design retained for
+                      domains
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>NOTCOV_A</code></td>
+                    <td>Edited uninsured status at interview</td>
+                    <td>
+                      <code>1</code> uninsured, <code>2</code> insured; other
+                      codes missing
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>PRIVATE_A</code></td>
+                    <td>Edited private-coverage recode</td>
+                    <td>
+                      <code>1</code> and <code>2</code> indicate private
+                      coverage; <code>3</code> indicates no private coverage
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>AGEP_A</code></td>
+                    <td>Adult age in years, top-coded at 85</td>
+                    <td>
+                      Valid 18–85; groups 18–34, 35–49, 50–64, 65+; unknown
+                      exact ages excluded
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>EDUCP_A</code></td>
+                    <td>Highest educational attainment</td>
+                    <td>
+                      0–2 less than high school; 3–4 high school/GED; 5–7 some
+                      college/associate; 8–10 bachelor&#39;s or higher; 97/98/99
+                      and blanks missing
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>ACCSSINT_A</code></td>
+                    <td>Any Internet access</td>
+                    <td>
+                      <code>1</code> access, <code>2</code> no access; other
+                      codes missing
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>PHSTAT_A</code></td>
+                    <td>Self-rated health</td>
+                    <td>
+                      1 excellent, 2 very good, 3 good, 4 fair, 5 poor; other
+                      codes missing
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              The <code>insurance</code> hierarchy is mutually exclusive as a
+              project recode:
+            </p>
+            <ol>
+              <li><code>NOTCOV_A=1</code>: uninsured.</li>
+              <li>
+                <code>NOTCOV_A=2</code> and <code>PRIVATE_A</code> in
+                <code>{1,2}</code>: any private coverage.
+              </li>
+              <li>
+                <code>NOTCOV_A=2</code> and <code>PRIVATE_A=3</code>:
+                public/other coverage without private.
+              </li>
+            </ol>
+            <p>
+              All other combinations are missing for that comparison. This is
+              not a mutually exclusive listing of the underlying plans a person
+              holds. The supplemental <code>insurance_coverage</code> grouping
+              uses only edited insured/uninsured status. Neither recode
+              describes insurance over the full preceding year.
+            </p>
+            <p>
+              Each descriptive grouping is analyzed separately. A valid outcome
+              and the selected grouping are required; other covariate
+              missingness does not remove the adult from that view. The adjusted
+              model instead requires complete outcome and all five covariates
+              and uses age as a continuous variable rather than the descriptive
+              age bands.
+            </p>
+            <h3 id="data-manual-nhis-data-fields" tabindex="-1">
+              NHIS data fields
+            </h3>
+            <p>
+              File: <a href="./data/nhis.json"><code>data/nhis.json</code></a
+              >. <code>overall</code> is the all-adult estimate.
+              <code>groups</code> contains <code>insurance</code>,
+              <code>age</code>, <code>education</code>, <code>internet</code>,
+              <code>health</code>, and the supplemental
+              <code>insurance_coverage</code> arrays.
+              <code>group_labels</code> and <code>group_notes</code> describe
+              those recodes.
+            </p>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="NHIS data fields table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Estimate field</th>
+                    <th scope="col">Meaning and units</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>label</code></td>
+                    <td>Displayed domain</td>
+                  </tr>
+                  <tr>
+                    <td><code>n</code></td>
+                    <td>Unweighted adults with valid outcome in that domain</td>
+                  </tr>
+                  <tr>
+                    <td><code>raw_group_n</code></td>
+                    <td>
+                      Adults assigned to the domain before excluding missing
+                      outcome
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>missing_outcome_n</code></td>
+                    <td>Outcome nonresponse within the assigned domain</td>
+                  </tr>
+                  <tr>
+                    <td><code>yes_n</code></td>
+                    <td>
+                      Unweighted adults reporting telehealth in the analytical
+                      domain
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>weighted_denominator</code></td>
+                    <td>
+                      Sum of adult weights for valid responses in the domain
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>estimate</code></td>
+                    <td>Survey-weighted telehealth percentage</td>
+                  </tr>
+                  <tr>
+                    <td><code>ci_low</code>, <code>ci_high</code></td>
+                    <td>95% logit interval endpoints, percent</td>
+                  </tr>
+                  <tr>
+                    <td><code>standard_error</code></td>
+                    <td>Taylor-linearized SE, percentage points</td>
+                  </tr>
+                  <tr>
+                    <td><code>relative_standard_error</code></td>
+                    <td>
+                      SE divided by estimate, on a ratio scale;
+                      <code>0.30</code> means 30%
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>unstable</code></td>
+                    <td>
+                      <code>n&lt;30</code>, nonfinite relative SE, or relative
+                      SE above 30%
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>suppressed</code></td>
+                    <td>
+                      <code>n&lt;30</code>; front ends must honor this flag if
+                      triggered in a future release
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>design_df</code></td>
+                    <td>
+                      Domain design degrees of freedom used for the interval
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              <code>quality.missingness[]</code> reports raw missing
+              count/percentage and missingness among adults with a valid
+              outcome. Its groups overlap. <code>methods</code> records
+              weighting, uncertainty, available-case handling, interpretation,
+              and software versions. <code>provenance</code> records the archive
+              and CSV hashes, source URLs, and access date.
+            </p>
+            <h4 id="data-manual-nhis-adjusted-model-fields" tabindex="-1">
+              NHIS adjusted model fields
+            </h4>
+            <p>
+              <code>adjusted_model</code> describes a survey-weighted
+              quasibinomial logistic model for telehealth use with insurance,
+              age, education, Internet access, and self-rated health. It
+              includes 32,027 complete-case adults. Final adult weights and the
+              full public survey design remain in use; reported odds ratios are
+              associations, not probabilities, risk ratios, or forecasts.
+            </p>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="NHIS adjusted model fields table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Field</th>
+                    <th scope="col">Meaning</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <code>n</code>, <code>yes_n</code>,
+                      <code>excluded_n</code>
+                    </td>
+                    <td>
+                      Complete-case adult count, telehealth users, exclusions
+                      from the full source file
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>formula</code>, <code>reference_groups</code></td>
+                    <td>
+                      Covariates and category references; age is linear in
+                      years, top-coded at 85
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>terms[]</code></td>
+                    <td>
+                      Eleven non-intercept coefficients, with display
+                      <code>label</code>, covariate <code>group</code>, and
+                      <code>reference</code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>terms[].odds_ratio</code></td>
+                    <td>
+                      Exponentiated coefficient, holding the other listed
+                      covariates fixed
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>terms[].ci_low</code>, <code>ci_high</code></td>
+                    <td>
+                      95% Wald t interval for the adjusted odds ratio, using
+                      model residual survey degrees of freedom
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>terms[].log_odds_coefficient</code></td>
+                    <td>Coefficient on the log-odds scale</td>
+                  </tr>
+                  <tr>
+                    <td><code>terms[].standard_error</code></td>
+                    <td>
+                      Taylor-linearized SE on the log-odds scale, not an SE of
+                      the odds ratio
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>terms[].p_value</code></td>
+                    <td>
+                      Two-sided model-based Wald t p-value; no multiple-testing
+                      adjustment
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>exclusion_flow[]</code></td>
+                    <td>
+                      Ordered complete-case exclusions, with
+                      <code>excluded_at_step</code> and
+                      <code>remaining_n</code>; do not confuse with marginal
+                      missingness
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>quality</code></td>
+                    <td>
+                      Convergence, rank, design/residual degrees of freedom, and
+                      numerical coefficient/interval checks
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>notes[]</code></td>
+                    <td>
+                      Complete-case assumptions, age and insurance limitations,
+                      interpretation, and limits on predictive use
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              The forest plot selects one covariate group from
+              <code>terms[]</code> and plots <code>odds_ratio</code>,
+              <code>ci_low</code>, and <code>ci_high</code> on a logarithmic
+              axis. The line at 1 denotes equal odds relative to the stated
+              reference. The selection changes the visible terms only; it does
+              not fit a different model. All 11 terms remain in the model table
+              and model CSV.
+            </p>
+            <p>
+              The model intercept is fitted but omitted from the displayed
+              terms. The current references are private coverage, bachelor&#39;s
+              or higher education, Internet access, and excellent health.
+              Covariates measured at interview do not necessarily describe
+              circumstances throughout the preceding telehealth recall period.
+            </p>
+            <h3
+              id="data-manual-meps-source-variables-and-recodes"
+              tabindex="-1"
+            >
+              MEPS source variables and recodes
+            </h3>
+            <p>
+              Sources:
+              <a
+                href="https://meps.ahrq.gov/data_stats/download_data/pufs/h254g/h254gdoc.shtml"
+                target="_blank"
+                rel="noreferrer"
+                >HC-254G office-visit documentation</a
+              >,
+              <a
+                href="https://meps.ahrq.gov/data_stats/download_data/pufs/h256/h256doc.shtml"
+                target="_blank"
+                rel="noreferrer"
+                >HC-256 person-file documentation</a
+              >.
+            </p>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="MEPS source variables and recodes table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Source field</th>
+                    <th scope="col">File</th>
+                    <th scope="col">Meaning and dashboard rule</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>DUPERSID</code></td>
+                    <td>Both</td>
+                    <td>
+                      Person identifier for many-visits-to-one-person linkage;
+                      not published in aggregate JSON
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>EVNTIDX</code></td>
+                    <td>HC-254G</td>
+                    <td>
+                      Unique visit/event identifier; used for duplicate checks
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>TELEHEALTHFLAG</code></td>
+                    <td>HC-254G</td>
+                    <td>
+                      <code>1</code> remote, <code>2</code> nonremote;
+                      unexpected codes stop processing
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>VISITTYPE</code></td>
+                    <td>HC-254G</td>
+                    <td>
+                      For remote visits: <code>1</code> phone,
+                      <code>2</code> video, <code>3</code> other; unknown
+                      retained separately. Nonremote visits use
+                      <code>-1</code> inapplicable; current unknown remote code
+                      is <code>-8</code>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>OBXP24X</code></td>
+                    <td>HC-254G</td>
+                    <td>
+                      Total payments, 2024 dollars per visit; includes released
+                      imputation and zeros
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>OBSF24X</code></td>
+                    <td>HC-254G</td>
+                    <td>
+                      Self/family payments, displayed as out-of-pocket payments;
+                      2024 dollars per visit
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>IMPFLAG</code></td>
+                    <td>HC-254G</td>
+                    <td>
+                      Payment imputation category; used for source-quality
+                      counts
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>INSCOV24</code></td>
+                    <td>HC-256</td>
+                    <td>
+                      Annual coverage: <code>1</code> any private,
+                      <code>2</code> public only, <code>3</code> uninsured all
+                      year
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>PERWT24F</code></td>
+                    <td>Both</td>
+                    <td>
+                      Final person weight attached to each event; positive
+                      weights retained; repeated visits contribute repeatedly
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>VARSTR</code>, <code>VARPSU</code></td>
+                    <td>Both</td>
+                    <td>
+                      Public stratum and PSU identifiers; checked for agreement
+                      across linked files
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              Any-private annual coverage includes TRICARE/CHAMPVA. Public-only
+              means no private coverage during the year. These categories do not
+              identify the insurer or payer on an individual visit date.
+              <code>IMPFLAG</code> codes are 0 not eligible, 1 complete
+              household data, 2 complete provider data, 3 fully imputed, 4
+              partially imputed, and 5 capitation imputation.
+            </p>
+            <p>
+              The five modality categories are <code>In person</code>,
+              <code>Phone</code>, <code>Video</code>, <code>Other remote</code>,
+              and <code>Unknown remote</code>. The first is the dashboard label
+              for <code>TELEHEALTHFLAG=2</code>. Unknown remote modality is
+              included in remote use and total office-visit denominators.
+            </p>
+            <h3 id="data-manual-meps-data-fields" tabindex="-1">
+              MEPS data fields
+            </h3>
+            <p>
+              File: <a href="./data/meps.json"><code>data/meps.json</code></a
+              >. <code>overall</code> represents all analytical visits.
+              <code>groups[]</code> includes <code>All</code>,
+              <code>Any private</code>, <code>Public only</code>, and
+              <code>Uninsured all year</code>; <code>All</code> duplicates
+              <code>overall</code> for convenient selection, so do not aggregate
+              those objects together.
+            </p>
+            <p>
+              Each insurance object contains <code>n</code>,
+              <code>n_persons</code>, <code>telehealth_n</code>,
+              <code>telehealth_n_persons</code>, <code>telehealth_pct</code>,
+              <code>total_payment</code>, <code>family_payment</code>, and
+              <code>modalities[]</code>. <code>telehealth_n</code> counts
+              sampled remote visits, and
+              <code>telehealth_n_persons</code> counts distinct sampled people
+              contributing those visits; they describe the telehealth numerator,
+              not the denominator. Each modality object contains
+              <code>modality</code>, <code>n</code>, <code>n_persons</code>,
+              <code>share_pct</code>, <code>total_payment</code>, and
+              <code>family_payment</code>.
+            </p>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="MEPS data fields table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Estimate field</th>
+                    <th scope="col">Meaning and units</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>estimate</code></td>
+                    <td>
+                      Percent for
+                      <code>telehealth_pct</code>/<code>share_pct</code>;
+                      dollars per visit for payment measures
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>ci_low</code>, <code>ci_high</code></td>
+                    <td>
+                      Approximate 95% normal interval in the estimate&#39;s
+                      units
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>se</code></td>
+                    <td>Taylor-linearized SE in the estimate&#39;s units</td>
+                  </tr>
+                  <tr>
+                    <td><code>n</code></td>
+                    <td>Visits in the estimate&#39;s denominator domain</td>
+                  </tr>
+                  <tr>
+                    <td><code>n_persons</code></td>
+                    <td>Distinct sampled persons in that denominator domain</td>
+                  </tr>
+                  <tr>
+                    <td><code>weighted_denominator</code></td>
+                    <td>
+                      Sum of weights across denominator visits, estimating
+                      population visits
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>unstable</code> / <code>flags[]</code></td>
+                    <td>
+                      Project caution flag and explanatory reasons; inspect
+                      before interpretation
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              For <code>share_pct</code>, the denominator is
+              <strong
+                >all office visits within the selected insurance group</strong
+              >, not just remote visits. Thus its nested <code>n</code> is the
+              whole insurance-domain N; the parent modality object&#39;s
+              <code>n</code> counts that modality&#39;s visits. For payments,
+              the denominator is the specific modality/insurance domain,
+              including zero payments. A person may appear in several modality
+              groups.
+            </p>
+            <p>
+              The MEPS screen flags fewer than 30 sampled persons in a domain,
+              relative SE above 30%, and boundary percentages; shares also check
+              the number of persons contributing to their telehealth or modality
+              numerator. Payment estimates for an empty domain are
+              <code>null</code>; an observed zero share is a flagged boundary
+              result. These are limited dashboard screening rules, not official
+              AHRQ release criteria.
+            </p>
+            <p>
+              Aggregate JSON preserves computed estimates for reproducibility.
+              The interface and CSV exports withhold
+              <strong
+                >modality estimates with parent
+                <code>n_persons &lt; 30</code></strong
+              >, including zero. They also withhold
+              <strong
+                >overall telehealth shares with insurance-object
+                <code>telehealth_n_persons &lt; 30</code></strong
+              >. Category labels and sampled counts remain visible. Use the
+              parent modality&#39;s count for the modality rule and the
+              insurance object&#39;s telehealth numerator count for the
+              overall-share rule: nested <code>share_pct.n_persons</code> and
+              <code>telehealth_pct.n_persons</code> describe the larger
+              denominator. Telehealth numerator counts are 1,721 people overall,
+              1,202 with any private coverage, 493 with public-only coverage,
+              and 26 uninsured all year. The uninsured overall share is
+              therefore withheld. Other high-RSE estimates remain displayed and
+              marked Unstable. Do not treat every numerical JSON value as
+              cleared for display.
+            </p>
+            <p>
+              <code>quality</code> records source/analytical counts, zero-weight
+              exclusions, linkage, missing and inapplicable values, imputation
+              counts, and benchmark checks. <code>methods</code> records design
+              and interval choices. <code>provenance[]</code> fingerprints the
+              archives and input specifications. None of these fields turns the
+              descriptive output into an adjusted comparison or prediction.
+            </p>
+            <h4 id="data-manual-meps-insurance-comparison-csv" tabindex="-1">
+              MEPS insurance-comparison CSV
+            </h4>
+            <p>
+              The comparison displays separate insurance domains; it excludes
+              the <code>All</code> aggregate to avoid presenting it as another
+              disjoint group. Each estimate is the weighted share of office
+              visits that were remote, with the same survey-based 95% interval
+              used in the selected-group view. Withheld estimates and interval
+              endpoints are blank in the CSV; the sampled numerator and
+              denominator counts and display status remain available.
+            </p>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="MEPS insurance-comparison CSV table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">CSV field</th>
+                    <th scope="col">Meaning</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>source</code>, <code>year</code></td>
+                    <td>MEPS source attribution and calendar year 2024</td>
+                  </tr>
+                  <tr>
+                    <td><code>insurance</code></td>
+                    <td>
+                      Any private, public only, or uninsured all year; annual
+                      coverage rather than visit-time payer
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>telehealth_percent</code></td>
+                    <td>
+                      Weighted remote-visit share, percent; blank when withheld
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>ci95_low</code>, <code>ci95_high</code></td>
+                    <td>
+                      Approximate 95% interval endpoints, percent; blank when
+                      withheld
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>n_visits</code>, <code>n_people</code></td>
+                    <td>
+                      Sampled denominator office visits and distinct people
+                      contributing them
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <code>telehealth_n_visits</code>,
+                      <code>telehealth_n_people</code>
+                    </td>
+                    <td>
+                      Sampled remote visits and distinct people contributing
+                      remote visits
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>display_status</code></td>
+                    <td>
+                      Displayed, displayed with instability, or withheld because
+                      fewer than 30 people contribute telehealth visits
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><code>denominator</code></td>
+                    <td>
+                      All positive-weight office visits within the insurance
+                      group
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              Repeated visits by the same person remain visits in these
+              estimates. Neither the numerator person count nor the visit share
+              estimates a population percentage of people using telehealth.
+            </p>
+          </article>
+        </div>
+      </section>
+      <footer>
+        <span>WCM-TI · CHERY Lab</span
+        ><span>Sources retrieved November 11, 2026</span
+        ><a href="./index.html#states">Explore the dashboard ↗</a>
+      </footer>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "author": {
+    "name": "Jiajun (Carson) Chen",
+    "email": "jic4015@med.cornell.edu"
+  },
+  "name": "wcm-telehealth-insights",
+  "version": "1.1.0",
+  "private": true,
+  "description": "A source-aware research dashboard for U.S. telehealth use",
+  "type": "module",
+  "scripts": {
+    "start": "node scripts/serve.mjs",
+    "preview:export": "node scripts/export-preview.mjs",
+    "build": "node scripts/build.mjs",
+    "docs:render": "node scripts/render-docs.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "prettier": "3.6.2"
+  }
+}

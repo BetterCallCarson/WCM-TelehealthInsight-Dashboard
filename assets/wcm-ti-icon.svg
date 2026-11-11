@@ -1,0 +1,15 @@
+<!-- Author: Jiajun (Carson) Chen
+email: jic4015@med.cornell.edu -->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 64 64"
+  fill="none"
+  role="img"
+  aria-label="WCM-TI icon"
+>
+  <rect width="64" height="64" rx="8" fill="#B31B1B" />
+  <g fill="#FFFFFF" transform="translate(-144.4 9.8) scale(.6)">
+    <path d="M254 8H306L302 22H288V66H272V22H254Z" />
+    <path d="M316 8H332V62L328 66H316Z" />
+  </g>
+</svg>

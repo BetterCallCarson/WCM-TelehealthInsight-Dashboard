@@ -1,0 +1,31 @@
+<!-- Author: Jiajun (Carson) Chen
+email: jic4015@med.cornell.edu -->
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 336 76"
+  fill="none"
+  role="img"
+  aria-labelledby="wcm-ti-title wcm-ti-desc"
+>
+  <title id="wcm-ti-title">WCM-TI</title>
+  <desc id="wcm-ti-desc">
+    An original WCM-TI project wordmark. Solid, softly beveled letterforms pair
+    Cornell red WCM with orange TI.
+  </desc>
+  <g fill="#B31B1B">
+    <path
+      d="M4 8H17L27 46L38 10Q38.6 8 40.5 8H51.5Q53.4 8 54 10L65 46L75 8H88L73 64Q72.5 66 70.5 66H60Q58.5 66 58 64L46 27L34 64Q33.5 66 32 66H21.5Q19.5 66 19 64Z"
+    />
+    <path
+      d="M145 14L139 26C135 21 130 19 124 19C114 19 108 26 108 37C108 48 114 55 124 55C130 55 135 52 139 48L147 59C141 66 134 69 124 69C105 69 93 56 93 37C93 18 106 6 124 6C133 6 140 9 145 14Z"
+    />
+    <path
+      d="M155 66V8H169Q171 8 172 10L186 38L200 10Q201 8 203 8H217V66H203V33L192 54H180L169 33V66Z"
+    />
+  </g>
+  <path d="M228 33H246V41H226V35Z" fill="#B31B1B" />
+  <g fill="#E7751D">
+    <path d="M254 8H306L302 22H288V66H272V22H254Z" />
+    <path d="M316 8H332V62L328 66H316Z" />
+  </g>
+</svg>

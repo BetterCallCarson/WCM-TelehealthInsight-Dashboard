@@ -1,0 +1,7 @@
+# Author: Jiajun (Carson) Chen
+# email: jic4015@med.cornell.edu
+[tool.black]
+line-length = 80
+target-version = ["py310"]
+include = '\.py$'
+extend-exclude = '/(\.work|node_modules|dist)/'
