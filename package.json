@@ -14,8 +14,8 @@
     "build": "node scripts/build.mjs",
     "docs:render": "node scripts/render-docs.mjs",
     "test": "node --test tests/*.test.mjs",
-    "format": "prettier --config prettier.config.cjs --ignore-path .prettierignore --write .",
-    "format:check": "prettier --config prettier.config.cjs --ignore-path .prettierignore --check ."
+    "format": "prettier --config prettier.config.cjs --write . \"!**/preview*.html\" \"!**/documentation.html\" \"!**/dist/**\" \"!**/.work/**\" \"!**/package-lock.json\" \"!**/__MACOSX/**\"",
+    "format:check": "prettier --config prettier.config.cjs --check . \"!**/preview*.html\" \"!**/documentation.html\" \"!**/dist/**\" \"!**/.work/**\" \"!**/package-lock.json\" \"!**/__MACOSX/**\""
   },
   "engines": {
     "node": ">=22"

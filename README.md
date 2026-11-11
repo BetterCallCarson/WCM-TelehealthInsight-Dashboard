@@ -5,8 +5,8 @@ email: jic4015@med.cornell.edu -->
 
 ## Research and technical report
 
-**Team**: CHERY Lab - Team formed in Weill Cornell Medicine HINF 5001 Introduction to Health Informatics Course </br>
-**Team member**: Jiajun Carson Chen, Yao Yao, Yimeng Du, Hao Chen, Ruining Wang </br>
+**Team**: CHERY Lab - Team formed in Weill Cornell Medicine HINF 5001 Introduction to Health Informatic Course
+**Team member**: Jiajun Carson Chen, Yao Yao, Yimeng Du, Hao Chen, Ruining Wang
 **Course Director**:Yunyu Xiao, PhD, Assistant Professor, Department of Population Health Sciences and Department of Psychiatry.
 
 ### Abstract

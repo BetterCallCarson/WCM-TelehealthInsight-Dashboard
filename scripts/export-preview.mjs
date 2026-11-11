@@ -8,10 +8,15 @@
 import {readFile, writeFile} from 'node:fs/promises';
 import path from 'node:path';
 import vm from 'node:vm';
-import {format} from 'prettier';
+import {format, resolveConfig} from 'prettier';
 
 // Standalone snapshots embed verified data. Live CMS requests remain opt-in.
 const root = path.resolve(import.meta.dirname, '..');
+// Programmatic formatting does not load project settings automatically.
+// Use the same explicit config as the CLI to keep generated HTML consistent.
+const formattingOptions = await resolveConfig(path.join(root, 'index.html'), {
+  config: path.join(root, 'prettier.config.cjs'),
+});
 const names = ['cms', 'nhis', 'meps'];
 const [
   html,
@@ -153,6 +158,7 @@ function snapshot(pageHtml, pageCss, chartModule) {
   );
 }
 const output = await format(snapshot(html, css, chartsSource), {
+  ...formattingOptions,
   filepath: 'preview.html',
 });
 await writeFile(path.join(root, 'preview.html'), output);
@@ -173,6 +179,7 @@ const keynoteHtml = html.replace(
 await writeFile(
   path.join(root, 'preview-keynote.html'),
   await format(snapshot(keynoteHtml, keynoteCss, keynoteCharts), {
+    ...formattingOptions,
     filepath: 'preview-keynote.html',
   }),
 );

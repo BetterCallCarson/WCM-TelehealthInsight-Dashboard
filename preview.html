@@ -44,7 +44,7 @@ email: jic4015@med.cornell.edu */
         --warning-bg: #fff2cc;
         --warning: #555555;
         --error: #b31b1b;
-        --serif: Georgia, "Times New Roman", serif;
+        --serif: Georgia, 'Times New Roman', serif;
         --sans: Arial, Helvetica, sans-serif;
         --ease: cubic-bezier(0.22, 1, 0.36, 1);
         --radius: 4px;
@@ -430,7 +430,7 @@ email: jic4015@med.cornell.edu */
         border-radius: 2px;
         font-size: 13px;
       }
-      .segmented [aria-pressed="true"] {
+      .segmented [aria-pressed='true'] {
         background: var(--ink);
         color: var(--paper);
       }
@@ -1539,7 +1539,7 @@ email: jic4015@med.cornell.edu */
         color: var(--secondary);
         margin: 16px 0 12px;
       }
-      .update-status[data-state="error"] {
+      .update-status[data-state='error'] {
         color: var(--error);
       }
       .update-links {
@@ -22532,9 +22532,9 @@ email: jic4015@med.cornell.edu */
     </script>
     <script>
       (() => {
-        "use strict";
+        'use strict';
         const __previewData = JSON.parse(
-          document.getElementById("telehealth-preview-data").textContent,
+          document.getElementById('telehealth-preview-data').textContent,
         );
         // Author: Jiajun (Carson) Chen
         // email: jic4015@med.cornell.edu
@@ -22549,15 +22549,15 @@ email: jic4015@med.cornell.edu */
          * @return {string} Escaped text. This does not validate URLs or CSS values.
          */
         const escapeHtml = (value) =>
-          String(value ?? "").replace(
+          String(value ?? '').replace(
             /[&<>"']/g,
             (c) =>
               ({
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#39;",
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;',
               })[c],
           );
         /**
@@ -22568,25 +22568,25 @@ email: jic4015@med.cornell.edu */
          */
         const number = (value, digits = 0) =>
           Number.isFinite(value)
-            ? value.toLocaleString("en-US", {
+            ? value.toLocaleString('en-US', {
                 minimumFractionDigits: digits,
                 maximumFractionDigits: digits,
               })
-            : "—";
+            : '—';
         /**
          * Formats a percentage already expressed on a 0–100 scale.
          * @param {?number} value Percentage, not a fraction.
          * @return {string} One-decimal percentage or an em dash.
          */
         const percent = (value) =>
-          Number.isFinite(value) ? `${number(value, 1)}%` : "—";
+          Number.isFinite(value) ? `${number(value, 1)}%` : '—';
         /**
          * Formats nominal source-year US dollars without inflation adjustment.
          * @param {?number} value Payment or income in dollars.
          * @return {string} Rounded dollar amount or an em dash.
          */
         const dollars = (value) =>
-          Number.isFinite(value) ? `$${number(value, 0)}` : "—";
+          Number.isFinite(value) ? `$${number(value, 0)}` : '—';
         /**
          * Abbreviates headline counts while tables retain the full counts.
          * @param {?number} value Nonnegative count from an aggregate record.
@@ -22594,7 +22594,7 @@ email: jic4015@med.cornell.edu */
          */
         function compact(value) {
           if (!Number.isFinite(value)) {
-            return "—";
+            return '—';
           }
           return value >= 1e6
             ? `${number(value / 1e6, 1)}m`
@@ -22609,10 +22609,10 @@ email: jic4015@med.cornell.edu */
          * @param {string=} unit Suffix shared by both endpoints; defaults to percent.
          * @return {string} Interval text or an explicit unavailable label.
          */
-        const ci = (low, high, unit = "%") =>
+        const ci = (low, high, unit = '%') =>
           Number.isFinite(low) && Number.isFinite(high)
             ? `${number(low, 1)}–${number(high, 1)}${unit}`
-            : "Not estimated";
+            : 'Not estimated';
         /**
          * Serializes homogeneous row objects using the first row's column order.
          *
@@ -22625,20 +22625,20 @@ email: jic4015@med.cornell.edu */
          */
         function csv(rows) {
           if (!rows.length) {
-            return "";
+            return '';
           }
           const keys = Object.keys(rows[0]);
           const cell = (x) => {
-            let s = x == null ? "" : String(x);
+            let s = x == null ? '' : String(x);
             if (/^[=+@\t\r]/.test(s)) {
               s = "'" + s;
             }
             return /[",\n\r]/.test(s) ? '"' + s.replaceAll('"', '""') + '"' : s;
           };
           return [
-            keys.map(cell).join(","),
-            ...rows.map((row) => keys.map((k) => cell(row[k])).join(",")),
-          ].join("\r\n");
+            keys.map(cell).join(','),
+            ...rows.map((row) => keys.map((k) => cell(row[k])).join(',')),
+          ].join('\r\n');
         }
         // WCM primary colors form an ordered, decreasing-luminance scale.
         // Keep these stops synchronized with the CSS map legend.
@@ -22655,7 +22655,7 @@ email: jic4015@med.cornell.edu */
          */
         function colorFor(value, min, max) {
           if (!Number.isFinite(value)) {
-            return "#ededed";
+            return '#ededed';
           }
           const t = Math.max(0, Math.min(1, (value - min) / (max - min || 1)));
           const stops = [
@@ -22669,7 +22669,7 @@ email: jic4015@med.cornell.edu */
           const a = stops[index];
           const b = stops[index + 1];
           const fraction = position - index;
-          return `rgb(${a.map((c, i) => Math.round(c + (b[i] - c) * fraction)).join(",")})`;
+          return `rgb(${a.map((c, i) => Math.round(c + (b[i] - c) * fraction)).join(',')})`;
         }
         const tooltip = (label) =>
           `data-tip="${escapeHtml(label)}" aria-label="${escapeHtml(label)}" tabindex="0"`;
@@ -22688,10 +22688,10 @@ email: jic4015@med.cornell.edu */
          */
         function lineChart(
           series,
-          { title = "Quarterly telehealth use", height = 264 } = {},
+          {title = 'Quarterly telehealth use', height = 264} = {},
         ) {
           const width = 490;
-          const m = { l: 48, r: 20, t: 20, b: 40 };
+          const m = {l: 48, r: 20, t: 20, b: 40};
           const all = series
             .flatMap((s) => s.values)
             .filter((v) => Number.isFinite(v.value));
@@ -22708,35 +22708,35 @@ email: jic4015@med.cornell.edu */
           const x = (i) =>
             m.l + (i / (periods.length - 1 || 1)) * (width - m.l - m.r);
           const y = (v) => height - m.b - (v / ymax) * (height - m.t - m.b);
-          let grid = "";
+          let grid = '';
           for (let i = 0; i <= 4; i++) {
             const v = (ymax * i) / 4;
             grid += `<line class="chart-grid" x1="${m.l}" x2="${width - m.r}" y1="${y(v)}" y2="${y(v)}"/><text class="chart-tick" ${tickStyle} x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end">${number(v, Number.isInteger(v) ? 0 : 1)}%</text>`;
           }
           periods.forEach((p, i) => {
-            if (p.endsWith("Q1")) {
+            if (p.endsWith('Q1')) {
               grid += `<text class="chart-tick" ${tickStyle} x="${x(i)}" y="${height - 12}" text-anchor="middle">${p.slice(0, 4)}</text>`;
             }
           });
           const lines = series
             .map((s) => {
-              let d = "";
+              let d = '';
               let connected = false;
               const points = s.values
                 .map((v) => {
                   const i = periods.indexOf(v.period);
                   if (!Number.isFinite(v.value)) {
                     connected = false;
-                    return "";
+                    return '';
                   }
-                  d += `${connected ? "L" : "M"}${x(i)} ${y(v.value)} `;
+                  d += `${connected ? 'L' : 'M'}${x(i)} ${y(v.value)} `;
                   connected = true;
                   return `<circle class="line-point" cx="${x(i)}" cy="${y(v.value)}" r="3.5" fill="${s.color}" ${tooltip(`${s.label} · ${v.period}: ${percent(v.value)}`)}/>`;
                 })
-                .join("");
+                .join('');
               return `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="2.4"/>${points}`;
             })
-            .join("");
+            .join('');
           return `<svg class="line-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(title)}"><title>${escapeHtml(title)}</title>${grid}${lines}</svg>`;
         }
 
@@ -22753,14 +22753,14 @@ email: jic4015@med.cornell.edu */
         function scatterChart(
           points,
           {
-            xKey = "broadbandPct",
-            selected = "US",
-            xlabel = "Households with broadband (%)",
+            xKey = 'broadbandPct',
+            selected = 'US',
+            xlabel = 'Households with broadband (%)',
           } = {},
         ) {
           const width = 490;
           const height = 280;
-          const m = { l: 52, r: 28, t: 36, b: 64 };
+          const m = {l: 52, r: 28, t: 36, b: 64};
           const valid = points.filter(
             (p) => Number.isFinite(p.x) && Number.isFinite(p.y),
           );
@@ -22787,7 +22787,7 @@ email: jic4015@med.cornell.edu */
             const v = ymin + ((ymax - ymin) * i) / 4;
             grid += `<line class="chart-grid" x1="${m.l}" x2="${width - m.r}" y1="${y(v)}" y2="${y(v)}"/><text class="chart-tick" ${tickStyle} x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end">${number(v, Number.isInteger(v) ? 0 : 1)}%</text>`;
             const a = xmin + ((xmax - xmin) * i) / 4;
-            grid += `<text class="chart-tick" ${tickStyle} x="${x(a)}" y="${height - m.b + 24}" text-anchor="middle">${xKey === "income" ? "$" + number(a / 1000) + "k" : number(a, 0) + "%"}</text>`;
+            grid += `<text class="chart-tick" ${tickStyle} x="${x(a)}" y="${height - m.b + 24}" text-anchor="middle">${xKey === 'income' ? '$' + number(a / 1000) + 'k' : number(a, 0) + '%'}</text>`;
           }
           const circles = valid
             .sort(
@@ -22796,16 +22796,16 @@ email: jic4015@med.cornell.edu */
             )
             .map((p) => {
               const isSelected = p.abbr === selected;
-              return `<circle class="chart-point${isSelected ? " is-selected" : ""}" data-state="${p.abbr}" role="button" aria-pressed="${isSelected}" cx="${x(p.x)}" cy="${y(p.y)}" r="${isSelected ? 6 : 4.5}" fill="${isSelected ? "var(--accent, #b31b1b)" : "var(--series, #cf4520)"}" opacity="${isSelected ? 1 : 0.85}" ${tooltip(`${p.name}: ${percent(p.y)} telehealth; ${xKey === "income" ? dollars(p.x) : percent(p.x)} ${xKey === "income" ? "income" : "broadband"}`)}/>`;
+              return `<circle class="chart-point${isSelected ? ' is-selected' : ''}" data-state="${p.abbr}" role="button" aria-pressed="${isSelected}" cx="${x(p.x)}" cy="${y(p.y)}" r="${isSelected ? 6 : 4.5}" fill="${isSelected ? 'var(--accent, #b31b1b)' : 'var(--series, #cf4520)'}" opacity="${isSelected ? 1 : 0.85}" ${tooltip(`${p.name}: ${percent(p.y)} telehealth; ${xKey === 'income' ? dollars(p.x) : percent(p.x)} ${xKey === 'income' ? 'income' : 'broadband'}`)}/>`;
             })
-            .join("");
+            .join('');
           const chosen = valid.find((p) => p.abbr === selected);
-          let selectedLabel = "";
+          let selectedLabel = '';
           if (chosen) {
             const cx = x(chosen.x);
             const cy = y(chosen.y);
             const placeLeft = cx > width - m.r - 40;
-            selectedLabel = `<text class="chart-selection-label" style="font-size:14px;fill:var(--accent, #b31b1b)" x="${cx + (placeLeft ? -10 : 10)}" y="${Math.max(m.t + 12, cy - 12)}" text-anchor="${placeLeft ? "end" : "start"}">${escapeHtml(chosen.abbr)}</text>`;
+            selectedLabel = `<text class="chart-selection-label" style="font-size:14px;fill:var(--accent, #b31b1b)" x="${cx + (placeLeft ? -10 : 10)}" y="${Math.max(m.t + 12, cy - 12)}" text-anchor="${placeLeft ? 'end' : 'start'}">${escapeHtml(chosen.abbr)}</text>`;
           }
           return `<svg class="scatter-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="2024 state telehealth use versus ${escapeHtml(xlabel)}"><title>2024 telehealth use versus ${escapeHtml(xlabel)}</title>${grid}${circles}${selectedLabel}<text class="chart-axis-title" ${tickStyle} x="${(width + m.l - m.r) / 2}" y="${height - 12}" text-anchor="middle">${escapeHtml(xlabel)}</text></svg>`;
         }
@@ -22825,9 +22825,9 @@ email: jic4015@med.cornell.edu */
         function dotChart(
           rows,
           {
-            unit = "percent",
+            unit = 'percent',
             compact = false,
-            title = "Weighted estimates with 95% confidence intervals",
+            title = 'Weighted estimates with 95% confidence intervals',
             max = null,
           } = {},
         ) {
@@ -22841,30 +22841,30 @@ email: jic4015@med.cornell.edu */
             .filter(Number.isFinite);
           const rawMax = Math.max(max ?? 0, Math.max(...vals, 1) * 1.12);
           const xmax =
-            unit === "percent"
+            unit === 'percent'
               ? Math.min(100, Math.ceil(rawMax / 10) * 10)
               : Math.ceil(rawMax / 100) * 100;
           const x = (v) => left + (v / xmax) * (width - left - right);
-          let grid = "";
+          let grid = '';
           for (let i = 0; i <= 4; i++) {
             const v = (xmax * i) / 4;
-            grid += `<line class="chart-grid" x1="${x(v)}" x2="${x(v)}" y1="12" y2="${height - 36}"/><text class="chart-tick" style="font-size:${compact ? 12 : 14}px" x="${x(v)}" y="${height - 12}" text-anchor="middle">${unit === "percent" ? number(v, Number.isInteger(v) ? 0 : 1) + "%" : "$" + number(v)}</text>`;
+            grid += `<line class="chart-grid" x1="${x(v)}" x2="${x(v)}" y1="12" y2="${height - 36}"/><text class="chart-tick" style="font-size:${compact ? 12 : 14}px" x="${x(v)}" y="${height - 12}" text-anchor="middle">${unit === 'percent' ? number(v, Number.isInteger(v) ? 0 : 1) + '%' : '$' + number(v)}</text>`;
           }
           const marks = rows
             .map((r, i) => {
               const y = 28 + i * rowH;
               const has = Number.isFinite(r.estimate);
-              const f = unit === "percent" ? percent : dollars;
+              const f = unit === 'percent' ? percent : dollars;
               const label = escapeHtml(r.label);
               const labelStyle = `style="font-size:${compact ? 12 : 14}px;fill:var(--ink, #000000)"`;
               const interval =
                 Number.isFinite(r.ci_low) && Number.isFinite(r.ci_high)
                   ? `<line x1="${x(Math.max(0, r.ci_low))}" x2="${x(r.ci_high)}" y1="${y}" y2="${y}" stroke="var(--series, #cf4520)" stroke-width="2"/><path d="M${x(Math.max(0, r.ci_low))} ${y - 5}v10 M${x(r.ci_high)} ${y - 5}v10" stroke="var(--series, #cf4520)"/>`
-                  : "";
-              return `<text class="chart-tick chart-row-label" x="0" y="${y + 4}" ${labelStyle}>${label}</text>${has ? `${interval}<circle class="estimate-point" cx="${x(r.estimate)}" cy="${y}" r="5" fill="${r.unstable ? "var(--accent, #b31b1b)" : "var(--series, #cf4520)"}" ${tooltip(`${r.label}: ${f(r.estimate)}; 95% CI ${ci(r.ci_low, r.ci_high, unit === "percent" ? "%" : " dollars")}; n=${number(r.n)}`)}/><text class="chart-tick chart-value" x="${width - 4}" y="${y + 4}" text-anchor="end" ${labelStyle}>${f(r.estimate)}${r.unstable ? " *" : ""}</text>` : `<text class="chart-tick" style="font-size:${compact ? 12 : 14}px" x="${left}" y="${y + 4}">${r.withheld ? "Not shown" : "Not estimated"}</text>`}`;
+                  : '';
+              return `<text class="chart-tick chart-row-label" x="0" y="${y + 4}" ${labelStyle}>${label}</text>${has ? `${interval}<circle class="estimate-point" cx="${x(r.estimate)}" cy="${y}" r="5" fill="${r.unstable ? 'var(--accent, #b31b1b)' : 'var(--series, #cf4520)'}" ${tooltip(`${r.label}: ${f(r.estimate)}; 95% CI ${ci(r.ci_low, r.ci_high, unit === 'percent' ? '%' : ' dollars')}; n=${number(r.n)}`)}/><text class="chart-tick chart-value" x="${width - 4}" y="${y + 4}" text-anchor="end" ${labelStyle}>${f(r.estimate)}${r.unstable ? ' *' : ''}</text>` : `<text class="chart-tick" style="font-size:${compact ? 12 : 14}px" x="${left}" y="${y + 4}">${r.withheld ? 'Not shown' : 'Not estimated'}</text>`}`;
             })
-            .join("");
-          return `<svg class="dot-chart-svg${compact ? " compact" : ""}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(title)}"><title>${escapeHtml(title)}</title>${grid}${marks}</svg>`;
+            .join('');
+          return `<svg class="dot-chart-svg${compact ? ' compact' : ''}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(title)}"><title>${escapeHtml(title)}</title>${grid}${marks}</svg>`;
         }
 
         // Author: Jiajun (Carson) Chen
@@ -22877,30 +22877,30 @@ email: jic4015@med.cornell.edu */
         // Descriptive comparisons use published annual rates and verified model terms.
         // Helpers are prefixed so the same module can be bundled into a local preview.
         const cmpEscape = (value) =>
-          String(value ?? "").replace(
+          String(value ?? '').replace(
             /[&<>"']/g,
             (char) =>
               ({
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#39;",
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#39;',
               })[char],
           );
         const cmpNumber = (value, digits = 1) =>
           Number.isFinite(value)
-            ? value.toLocaleString("en-US", {
+            ? value.toLocaleString('en-US', {
                 minimumFractionDigits: digits,
                 maximumFractionDigits: digits,
               })
-            : "—";
+            : '—';
         const cmpSigned = (value) =>
           Number.isFinite(value)
-            ? `${value > 0 ? "+" : ""}${cmpNumber(Object.is(value, -0) ? 0 : value, 2)} pp`
-            : "Unavailable";
+            ? `${value > 0 ? '+' : ''}${cmpNumber(Object.is(value, -0) ? 0 : value, 2)} pp`
+            : 'Unavailable';
         const cmpRate = (value) =>
-          Number.isFinite(value) ? `${cmpNumber(value, 2)}%` : "Unavailable";
+          Number.isFinite(value) ? `${cmpNumber(value, 2)}%` : 'Unavailable';
         const cmpRatio = (value) =>
           value < 0.01 || value >= 1000
             ? value.toExponential(3)
@@ -22915,15 +22915,15 @@ email: jic4015@med.cornell.edu */
          * @throws {RangeError} If the value is not a full calendar year.
          */
         function cmpYear(value) {
-          if (typeof value === "string" && !/^\d{4}$/.test(value)) {
-            throw new RangeError("Select two full calendar years.");
+          if (typeof value === 'string' && !/^\d{4}$/.test(value)) {
+            throw new RangeError('Select two full calendar years.');
           }
-          if (!["number", "string"].includes(typeof value)) {
-            throw new RangeError("Select two full calendar years.");
+          if (!['number', 'string'].includes(typeof value)) {
+            throw new RangeError('Select two full calendar years.');
           }
           const year = Number(value);
           if (!Number.isInteger(year) || year < 1000 || year > 9999) {
-            throw new RangeError("Select two full calendar years.");
+            throw new RangeError('Select two full calendar years.');
           }
           return year;
         }
@@ -22967,11 +22967,11 @@ email: jic4015@med.cornell.edu */
           const end = cmpYear(toYear);
           if (start >= end) {
             throw new RangeError(
-              "The starting year must precede the ending year.",
+              'The starting year must precede the ending year.',
             );
           }
           if (!Array.isArray(data?.states)) {
-            throw new TypeError("State records are required.");
+            throw new TypeError('State records are required.');
           }
           return data.states.map((state) => {
             const fromRate = cmpAnnualRate(state, start);
@@ -23018,7 +23018,7 @@ email: jic4015@med.cornell.edu */
          */
         function changeChart(
           rows,
-          { title = "Change in annual telehealth use", selected = "US" } = {},
+          {title = 'Change in annual telehealth use', selected = 'US'} = {},
         ) {
           if (!Array.isArray(rows) || rows.length === 0) {
             return '<div class="empty-state">Annual comparisons are unavailable.</div>';
@@ -23045,14 +23045,14 @@ email: jic4015@med.cornell.edu */
           const first = rows[0];
           const headerFrom = Number.isInteger(first.fromYear)
             ? first.fromYear
-            : "Earlier";
+            : 'Earlier';
           const headerTo = Number.isInteger(first.toYear)
             ? first.toYear
-            : "Later";
-          let grid = "";
+            : 'Later';
+          let grid = '';
           for (const value of [-extent, -extent / 2, 0, extent / 2, extent]) {
             const position = x(value);
-            grid += `<line class="${value === 0 ? "change-zero" : "chart-grid"}" x1="${position}" x2="${position}" y1="32" y2="${plotBottom}"${value === 0 ? ' stroke="var(--ink, #000000)" stroke-width="1"' : ""}/><text class="chart-tick" x="${position}" y="${height - 27}" text-anchor="middle">${value > 0 ? "+" : ""}${cmpNumber(value, Number.isInteger(value) ? 0 : 1)}</text>`;
+            grid += `<line class="${value === 0 ? 'change-zero' : 'chart-grid'}" x1="${position}" x2="${position}" y1="32" y2="${plotBottom}"${value === 0 ? ' stroke="var(--ink, #000000)" stroke-width="1"' : ''}/><text class="chart-tick" x="${position}" y="${height - 27}" text-anchor="middle">${value > 0 ? '+' : ''}${cmpNumber(value, Number.isInteger(value) ? 0 : 1)}</text>`;
           }
           const marks = rows
             .map((row, index) => {
@@ -23060,21 +23060,21 @@ email: jic4015@med.cornell.edu */
               const valid =
                 Number.isFinite(row.change) && Math.abs(row.change) <= 100;
               const isSelected = row.abbr === selected;
-              const label = `${row.name}: ${row.fromYear} ${cmpRate(row.fromRate)}; ${row.toYear} ${cmpRate(row.toRate)}; change ${valid ? cmpSigned(row.change) : "unavailable"}`;
+              const label = `${row.name}: ${row.fromYear} ${cmpRate(row.fromRate)}; ${row.toYear} ${cmpRate(row.toRate)}; change ${valid ? cmpSigned(row.change) : 'unavailable'}`;
               const fill =
                 row.change > 0
-                  ? "var(--accent, #b31b1b)"
+                  ? 'var(--accent, #b31b1b)'
                   : row.change < 0
-                    ? "var(--comparison, #666666)"
-                    : "var(--ink, #000000)";
+                    ? 'var(--comparison, #666666)'
+                    : 'var(--ink, #000000)';
               const bar = valid
                 ? row.change === 0
                   ? `<circle class="change-zero-point" cx="${zero}" cy="${y}" r="3" fill="${fill}"/>`
                   : `<rect class="change-bar" data-value="${row.change}" x="${Math.min(x(row.change), zero)}" y="${y - 6}" width="${Math.abs(x(row.change) - zero)}" height="12" fill="${fill}"/>`
-                : "";
-              return `<g class="change-row${isSelected ? " is-selected" : ""}" data-state="${cmpEscape(row.abbr)}" role="button" aria-pressed="${isSelected}" tabindex="0" data-tip="${cmpEscape(label)}" aria-label="${cmpEscape(label)}">${isSelected ? `<rect class="change-selection" x="0" y="${y - 16}" width="${width}" height="32" fill="var(--selection, #fbeaea)"/>` : ""}<text class="chart-tick" style="fill:var(--ink, #000000);font-size:14px" x="8" y="${y + 5}">${cmpEscape(row.name)}</text>${bar}<text class="chart-tick" x="732" y="${y + 5}" text-anchor="end">${cmpRate(row.fromRate)}</text><text class="chart-tick" x="806" y="${y + 5}" text-anchor="end">${cmpRate(row.toRate)}</text><text class="chart-tick" x="894" y="${y + 5}" text-anchor="end" style="fill:var(--ink, #000000)">${valid ? cmpSigned(row.change) : "—"}</text></g>`;
+                : '';
+              return `<g class="change-row${isSelected ? ' is-selected' : ''}" data-state="${cmpEscape(row.abbr)}" role="button" aria-pressed="${isSelected}" tabindex="0" data-tip="${cmpEscape(label)}" aria-label="${cmpEscape(label)}">${isSelected ? `<rect class="change-selection" x="0" y="${y - 16}" width="${width}" height="32" fill="var(--selection, #fbeaea)"/>` : ''}<text class="chart-tick" style="fill:var(--ink, #000000);font-size:14px" x="8" y="${y + 5}">${cmpEscape(row.name)}</text>${bar}<text class="chart-tick" x="732" y="${y + 5}" text-anchor="end">${cmpRate(row.fromRate)}</text><text class="chart-tick" x="806" y="${y + 5}" text-anchor="end">${cmpRate(row.toRate)}</text><text class="chart-tick" x="894" y="${y + 5}" text-anchor="end" style="fill:var(--ink, #000000)">${valid ? cmpSigned(row.change) : '—'}</text></g>`;
             })
-            .join("");
+            .join('');
           return `<svg class="change-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${cmpEscape(title)}"><title>${cmpEscape(title)}</title><text class="chart-axis-title" x="8" y="17">State / D.C.</text><text class="chart-axis-title" x="732" y="17" text-anchor="end">${headerFrom}</text><text class="chart-axis-title" x="806" y="17" text-anchor="end">${headerTo}</text><text class="chart-axis-title" x="894" y="17" text-anchor="end">Change</text>${grid}${marks}<text class="chart-axis-title" x="${zero}" y="${height - 5}" text-anchor="middle">Change in percentage points</text></svg>`;
         }
 
@@ -23111,7 +23111,7 @@ email: jic4015@med.cornell.edu */
           }
           return value >= 1
             ? cmpNumber(value, 0)
-            : value.toLocaleString("en-US", { maximumFractionDigits: 5 });
+            : value.toLocaleString('en-US', {maximumFractionDigits: 5});
         }
         /**
          * Renders adjusted model terms on a logarithmic axis centered at odds ratio 1.
@@ -23127,8 +23127,8 @@ email: jic4015@med.cornell.edu */
         function oddsRatioChart(
           rows,
           {
-            title = "Adjusted odds ratios with 95% confidence intervals",
-            referenceLabel = "Reference group",
+            title = 'Adjusted odds ratios with 95% confidence intervals',
+            referenceLabel = 'Reference group',
           } = {},
         ) {
           if (!Array.isArray(rows) || !rows.some(cmpOddsValid)) {
@@ -23166,7 +23166,7 @@ email: jic4015@med.cornell.edu */
                     0,
                     exponent,
                     ...Array.from(
-                      { length: Math.floor(exponent / step) },
+                      {length: Math.floor(exponent / step)},
                       (_, i) => (i + 1) * step,
                     ).flatMap((value) => [-value, value]),
                   ]),
@@ -23176,9 +23176,9 @@ email: jic4015@med.cornell.edu */
               const position =
                 left +
                 ((power + exponent) / (2 * exponent)) * (width - left - right);
-              return `<line class="${power === 0 ? "odds-reference" : "chart-grid"}" x1="${position}" x2="${position}" y1="26" y2="${yBottom}"${power === 0 ? ' stroke="var(--ink, #000000)" stroke-width="1.2" stroke-dasharray="4 4"' : ""}/><text class="chart-tick" x="${position}" y="${height - 42}" text-anchor="middle">${cmpOddsTick(power, exponent)}</text>`;
+              return `<line class="${power === 0 ? 'odds-reference' : 'chart-grid'}" x1="${position}" x2="${position}" y1="26" y2="${yBottom}"${power === 0 ? ' stroke="var(--ink, #000000)" stroke-width="1.2" stroke-dasharray="4 4"' : ''}/><text class="chart-tick" x="${position}" y="${height - 42}" text-anchor="middle">${cmpOddsTick(power, exponent)}</text>`;
             })
-            .join("");
+            .join('');
           const marks = rows
             .map((row, index) => {
               const y = top + index * rowHeight;
@@ -23192,12 +23192,12 @@ email: jic4015@med.cornell.edu */
               const tooltip = `${row.label}: adjusted odds ratio ${cmpRatio(row.odds_ratio)}; 95% confidence interval ${cmpRatio(row.ci_low)} to ${cmpRatio(row.ci_high)}; reference ${row.reference || referenceLabel}`;
               return `<g class="odds-row"><text class="chart-tick" x="0" y="${y + 5}" style="fill:var(--ink, #000000);font-size:14px">${label}</text><line class="odds-interval" x1="${low}" x2="${high}" y1="${y}" y2="${y}" stroke="var(--series, #cf4520)" stroke-width="2"/><path d="M${low} ${y - 5}v10 M${high} ${y - 5}v10" stroke="var(--series, #cf4520)"/><circle class="odds-point" cx="${point}" cy="${y}" r="5" fill="var(--accent, #b31b1b)" tabindex="0" data-tip="${cmpEscape(tooltip)}" aria-label="${cmpEscape(tooltip)}"/><text class="chart-tick" x="894" y="${y + 5}" text-anchor="end" style="fill:var(--ink, #000000)">${cmpRatio(row.odds_ratio)} (${cmpRatio(row.ci_low)}–${cmpRatio(row.ci_high)})</text></g>`;
             })
-            .join("");
+            .join('');
           return `<svg class="odds-ratio-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${cmpEscape(title)}"><title>${cmpEscape(title)}</title><text class="chart-axis-title" x="${left}" y="14">Adjusted odds ratio · log scale</text><text class="chart-axis-title" x="894" y="14" text-anchor="end">Estimate (95% CI)</text>${ticks}${marks}<text class="chart-axis-title" x="0" y="${height - 12}">Reference: ${cmpEscape(referenceLabel)} · 1 = equal odds</text></svg>`;
         }
 
         const esc = escapeHtml;
-        const { fetchCmsUpdates } = (() => {
+        const {fetchCmsUpdates} = (() => {
           // Author: Jiajun (Carson) Chen
           // email: jic4015@med.cornell.edu
           /**
@@ -23205,32 +23205,32 @@ email: jic4015@med.cornell.edu */
            * A candidate must pass every check before it can replace the session view.
            * No function writes the repository, persists browser data, or recomputes models.
            */
-          const CMS_ORIGIN = "https://data.cms.gov";
+          const CMS_ORIGIN = 'https://data.cms.gov';
           const CATALOG_URL = `${CMS_ORIGIN}/data.json`;
           const SOURCE_URL = `${CMS_ORIGIN}/summary-statistics-on-use-and-payments/medicare-medicaid-service-type-reports/medicare-telehealth-trends`;
           const PAGE_SIZE = 5000;
           const MAX_PAGES = 20;
           const SUBGROUP_FIELDS = [
-            "Bene_Mdcd_Mdcr_Enrl_Stus",
-            "Bene_Race_Desc",
-            "Bene_Sex_Desc",
-            "Bene_Mdcr_Entlmt_Stus",
-            "Bene_Age_Desc",
-            "Bene_RUCA_Desc",
+            'Bene_Mdcd_Mdcr_Enrl_Stus',
+            'Bene_Race_Desc',
+            'Bene_Sex_Desc',
+            'Bene_Mdcr_Entlmt_Stus',
+            'Bene_Age_Desc',
+            'Bene_RUCA_Desc',
           ];
           const RECORD_FIELDS = [
-            "telehealthPct",
-            "telehealthUsers",
-            "eligibleUsers",
-            "partBEnrollment",
+            'telehealthPct',
+            'telehealthUsers',
+            'eligibleUsers',
+            'partBEnrollment',
           ];
           const fail = (message) => {
             throw new Error(message);
           };
           const normalize = (value) =>
-            String(value ?? "")
+            String(value ?? '')
               .trim()
-              .replace(/\s+/g, " ")
+              .replace(/\s+/g, ' ')
               .toLowerCase();
           const clone = (value) => structuredClone(value);
           /**
@@ -23242,7 +23242,7 @@ email: jic4015@med.cornell.edu */
             if (signal?.aborted) {
               throw (
                 signal.reason ||
-                new DOMException("The CMS update was cancelled.", "AbortError")
+                new DOMException('The CMS update was cancelled.', 'AbortError')
               );
             }
           }
@@ -23259,40 +23259,40 @@ email: jic4015@med.cornell.edu */
            * @return {!Promise<*>} Parsed JSON whose schema is checked by the caller.
            * @throws {Error} On transport, HTTP, media-type, size, or parsing failure.
            */
-          async function fetchJson(url, { signal, fetchImpl, maxBytes }) {
+          async function fetchJson(url, {signal, fetchImpl, maxBytes}) {
             checkAborted(signal);
             let response;
             try {
               response = await fetchImpl(url, {
                 signal,
-                cache: "no-store",
-                credentials: "omit",
-                redirect: "error",
-                headers: { Accept: "application/json" },
+                cache: 'no-store',
+                credentials: 'omit',
+                redirect: 'error',
+                headers: {Accept: 'application/json'},
               });
             } catch (error) {
               checkAborted(signal);
               throw new Error(
-                "CMS could not be reached. Please try again later.",
+                'CMS could not be reached. Please try again later.',
               );
             }
             if (!response.ok) {
               fail(
                 response.status === 429
-                  ? "CMS is limiting requests. Please try again later."
-                  : "CMS could not provide this update. Please try again later.",
+                  ? 'CMS is limiting requests. Please try again later.'
+                  : 'CMS could not provide this update. Please try again later.',
               );
             }
-            const type = response.headers.get("content-type") || "";
+            const type = response.headers.get('content-type') || '';
             if (type && !/json/i.test(type)) {
               fail(
-                "CMS returned an unexpected response. The existing data have been kept.",
+                'CMS returned an unexpected response. The existing data have been kept.',
               );
             }
-            const declared = Number(response.headers.get("content-length"));
+            const declared = Number(response.headers.get('content-length'));
             if (Number.isFinite(declared) && declared > maxBytes) {
               fail(
-                "The CMS response is larger than expected. The existing data have been kept.",
+                'The CMS response is larger than expected. The existing data have been kept.',
               );
             }
             let text;
@@ -23300,19 +23300,19 @@ email: jic4015@med.cornell.edu */
               text = await response.text();
             } catch (error) {
               checkAborted(signal);
-              fail("The CMS download was interrupted. Please try again.");
+              fail('The CMS download was interrupted. Please try again.');
             }
             checkAborted(signal);
             if (text.length > maxBytes) {
               fail(
-                "The CMS response is larger than expected. The existing data have been kept.",
+                'The CMS response is larger than expected. The existing data have been kept.',
               );
             }
             try {
               return JSON.parse(text);
             } catch {
               fail(
-                "CMS returned an unexpected response. The existing data have been kept.",
+                'CMS returned an unexpected response. The existing data have been kept.',
               );
             }
           }
@@ -23327,7 +23327,7 @@ email: jic4015@med.cornell.edu */
             try {
               url = new URL(value);
             } catch {
-              fail("The current CMS data address could not be verified.");
+              fail('The current CMS data address could not be verified.');
             }
             if (
               url.origin !== CMS_ORIGIN ||
@@ -23339,7 +23339,7 @@ email: jic4015@med.cornell.edu */
                 url.pathname,
               )
             ) {
-              fail("The current CMS data address could not be verified.");
+              fail('The current CMS data address could not be verified.');
             }
             return url.href;
           }
@@ -23355,43 +23355,43 @@ email: jic4015@med.cornell.edu */
               !Array.isArray(catalog.datasetSeries) ||
               !Array.isArray(catalog.dataset)
             ) {
-              fail("CMS release information has an unexpected format.");
+              fail('CMS release information has an unexpected format.');
             }
             const matches = catalog.datasetSeries.filter(
-              (item) => normalize(item.title) === "medicare telehealth trends",
+              (item) => normalize(item.title) === 'medicare telehealth trends',
             );
             if (matches.length !== 1) {
               fail(
-                "The current Medicare telehealth release could not be identified.",
+                'The current Medicare telehealth release could not be identified.',
               );
             }
             const series = matches[0];
-            const lastId = series.last?.["@id"];
-            if (typeof lastId !== "string") {
+            const lastId = series.last?.['@id'];
+            if (typeof lastId !== 'string') {
               fail(
-                "The current Medicare telehealth release could not be identified.",
+                'The current Medicare telehealth release could not be identified.',
               );
             }
             const releases = catalog.dataset.filter(
-              (item) => item["@id"] === lastId,
+              (item) => item['@id'] === lastId,
             );
             if (releases.length !== 1) {
               fail(
-                "The current Medicare telehealth release could not be identified.",
+                'The current Medicare telehealth release could not be identified.',
               );
             }
             const release = releases[0];
             if (!Array.isArray(release.distribution)) {
-              fail("CMS release information has an unexpected format.");
+              fail('CMS release information has an unexpected format.');
             }
             const apis = release.distribution.filter(
-              (item) => normalize(item.format) === "api",
+              (item) => normalize(item.format) === 'api',
             );
             const preferred = apis.filter(
-              (item) => normalize(item.description) === "latest",
+              (item) => normalize(item.description) === 'latest',
             );
             const matching = apis.filter(
-              (item) => item.accessURL === series["@id"],
+              (item) => item.accessURL === series['@id'],
             );
             const candidates = preferred.length
               ? preferred
@@ -23399,13 +23399,13 @@ email: jic4015@med.cornell.edu */
                 ? matching
                 : apis;
             if (candidates.length !== 1) {
-              fail("The current CMS data address could not be identified.");
+              fail('The current CMS data address could not be identified.');
             }
             const apiUrl = cmsApiUrl(candidates[0].accessURL);
             const csv = release.distribution.find(
               (item) =>
-                normalize(item.format) === "csv" &&
-                typeof item.downloadURL === "string",
+                normalize(item.format) === 'csv' &&
+                typeof item.downloadURL === 'string',
             );
             let downloadUrl = null;
             if (csv) {
@@ -23413,7 +23413,7 @@ email: jic4015@med.cornell.edu */
                 const url = new URL(csv.downloadURL);
                 if (
                   url.origin === CMS_ORIGIN &&
-                  url.pathname.startsWith("/sites/default/files/") &&
+                  url.pathname.startsWith('/sites/default/files/') &&
                   !url.username &&
                   !url.password
                 ) {
@@ -23422,7 +23422,7 @@ email: jic4015@med.cornell.edu */
               } catch {}
             }
             const modified =
-              typeof release.modified === "string" &&
+              typeof release.modified === 'string' &&
               /^\d{4}-\d{2}-\d{2}(?:T.*)?$/.test(release.modified)
                 ? release.modified
                 : null;
@@ -23430,7 +23430,7 @@ email: jic4015@med.cornell.edu */
               apiUrl,
               downloadUrl,
               modified,
-              title: String(release.title || "Medicare Telehealth Trends"),
+              title: String(release.title || 'Medicare Telehealth Trends'),
               catalogId: lastId,
             };
           }
@@ -23445,17 +23445,17 @@ email: jic4015@med.cornell.edu */
           function numeric(
             value,
             label,
-            { integer = false, optional = false } = {},
+            {integer = false, optional = false} = {},
           ) {
             if (
               optional &&
-              (value === undefined || value === null || value === "")
+              (value === undefined || value === null || value === '')
             ) {
               return null;
             }
             if (
-              (typeof value !== "number" && typeof value !== "string") ||
-              (typeof value === "string" &&
+              (typeof value !== 'number' && typeof value !== 'string') ||
+              (typeof value === 'string' &&
                 !/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i.test(
                   value.trim(),
                 ))
@@ -23484,39 +23484,39 @@ email: jic4015@med.cornell.edu */
            * @throws {Error} If the period, counts, scale, or rate check fails.
            */
           function readRecord(row) {
-            const year = numeric(row.Year, "reporting year", { integer: true });
+            const year = numeric(row.Year, 'reporting year', {integer: true});
             if (year < 2000 || year > 2100) {
-              fail("CMS reporting periods have an unexpected format.");
+              fail('CMS reporting periods have an unexpected format.');
             }
             if (
               row.Quarter !== undefined &&
               row.quarter !== undefined &&
               normalize(row.Quarter) !== normalize(row.quarter)
             ) {
-              fail("CMS reporting periods have an unexpected format.");
+              fail('CMS reporting periods have an unexpected format.');
             }
             const value = row.Quarter ?? row.quarter;
             let quarter = null;
-            if (normalize(value) !== "overall") {
-              quarter = numeric(value, "reporting quarter", { integer: true });
+            if (normalize(value) !== 'overall') {
+              quarter = numeric(value, 'reporting quarter', {integer: true});
               if (quarter < 1 || quarter > 4) {
-                fail("CMS reporting periods have an unexpected format.");
+                fail('CMS reporting periods have an unexpected format.');
               }
             }
             const eligibleUsers = numeric(
               row.Total_Bene_TH_Elig,
-              "eligible-user counts",
-              { integer: true },
+              'eligible-user counts',
+              {integer: true},
             );
             const telehealthUsers = numeric(
               row.Total_Bene_Telehealth,
-              "telehealth-user counts",
-              { integer: true },
+              'telehealth-user counts',
+              {integer: true},
             );
-            const fraction = numeric(row.Pct_Telehealth, "telehealth rates");
+            const fraction = numeric(row.Pct_Telehealth, 'telehealth rates');
             const partBEnrollment = numeric(
               row.Total_PartB_Enrl,
-              "enrollment",
+              'enrollment',
               {
                 optional: true,
               },
@@ -23527,14 +23527,14 @@ email: jic4015@med.cornell.edu */
               fraction > 1
             ) {
               fail(
-                "CMS rates and counts did not pass the basic consistency checks.",
+                'CMS rates and counts did not pass the basic consistency checks.',
               );
             }
             const telehealthPct = Number((fraction * 100).toFixed(8));
             const recalculatedPct = (100 * telehealthUsers) / eligibleUsers;
             if (Math.abs(telehealthPct - recalculatedPct) > 0.005001) {
               fail(
-                "CMS rates and counts did not pass the basic consistency checks.",
+                'CMS rates and counts did not pass the basic consistency checks.',
               );
             }
             return {
@@ -23546,7 +23546,7 @@ email: jic4015@med.cornell.edu */
               eligibleUsers,
               partBEnrollment,
               recalculatedPct: Number(recalculatedPct.toFixed(8)),
-              status: "available",
+              status: 'available',
             };
           }
           /**
@@ -23557,7 +23557,7 @@ email: jic4015@med.cornell.edu */
           function seriesRecords(source) {
             const values = new Map();
             for (const [geo, series] of [
-              ["US", source.national],
+              ['US', source.national],
               ...(source.states || []).map((state) => [state.abbr, state]),
             ]) {
               for (const record of [
@@ -23588,7 +23588,7 @@ email: jic4015@med.cornell.edu */
               verifiedCms.states.length !== 51 ||
               !verifiedCms.national
             ) {
-              fail("The verified state reference is unavailable.");
+              fail('The verified state reference is unavailable.');
             }
             const stateNames = new Map(
               verifiedCms.states.map((state) => [normalize(state.name), state]),
@@ -23599,38 +23599,38 @@ email: jic4015@med.cornell.edu */
             if (
               stateNames.size !== 51 ||
               abbreviations.size !== 51 ||
-              abbreviations.has("US")
+              abbreviations.has('US')
             ) {
-              fail("The verified state reference is unavailable.");
+              fail('The verified state reference is unavailable.');
             }
             const byGeo = new Map([
-              ["US", []],
+              ['US', []],
               ...verifiedCms.states.map((state) => [state.abbr, []]),
             ]);
             const byPeriod = new Map();
             const records = new Map();
             for (const row of rows) {
-              if (!row || typeof row !== "object" || Array.isArray(row)) {
-                fail("CMS returned an unexpected record format.");
+              if (!row || typeof row !== 'object' || Array.isArray(row)) {
+                fail('CMS returned an unexpected record format.');
               }
               if (
-                SUBGROUP_FIELDS.some((field) => typeof row[field] !== "string")
+                SUBGROUP_FIELDS.some((field) => typeof row[field] !== 'string')
               ) {
                 fail(
-                  "CMS subgroup definitions have changed. The existing data have been kept.",
+                  'CMS subgroup definitions have changed. The existing data have been kept.',
                 );
               }
               if (
-                SUBGROUP_FIELDS.some((field) => row[field].trim() !== "All")
+                SUBGROUP_FIELDS.some((field) => row[field].trim() !== 'All')
               ) {
                 continue;
               }
-              if (typeof row.Bene_Geo_Desc !== "string") {
-                fail("CMS geographic definitions have changed.");
+              if (typeof row.Bene_Geo_Desc !== 'string') {
+                fail('CMS geographic definitions have changed.');
               }
               const name = normalize(row.Bene_Geo_Desc);
               const geo =
-                name === "national" ? "US" : stateNames.get(name)?.abbr;
+                name === 'national' ? 'US' : stateNames.get(name)?.abbr;
               if (!geo) {
                 continue;
               } // Territories and other geographies are deliberately excluded.
@@ -23638,7 +23638,7 @@ email: jic4015@med.cornell.edu */
               const key = `${geo}|${record.period}`;
               if (records.has(key)) {
                 fail(
-                  "CMS returned duplicate state-period records. The existing data have been kept.",
+                  'CMS returned duplicate state-period records. The existing data have been kept.',
                 );
               }
               records.set(key, record);
@@ -23654,7 +23654,7 @@ email: jic4015@med.cornell.edu */
               [...byGeo.values()].some((values) => !values.length)
             ) {
               fail(
-                "CMS has not supplied a complete set of national and state records. The existing data have been kept.",
+                'CMS has not supplied a complete set of national and state records. The existing data have been kept.',
               );
             }
             const previous = seriesRecords(currentCms);
@@ -23665,7 +23665,7 @@ email: jic4015@med.cornell.edu */
               )
             ) {
               fail(
-                "The CMS update is missing previously displayed periods. The existing data have been kept.",
+                'The CMS update is missing previously displayed periods. The existing data have been kept.',
               );
             }
             let addedRecords = 0;
@@ -23699,7 +23699,7 @@ email: jic4015@med.cornell.edu */
                 .filter((record) => record.quarter !== null)
                 .sort((a, b) => a.year - b.year || a.quarter - b.quarter),
             });
-            const national = split(byGeo.get("US"));
+            const national = split(byGeo.get('US'));
             const states = verifiedCms.states.map((state) => ({
               ...clone(state),
               ...split(byGeo.get(state.abbr)),
@@ -23758,10 +23758,10 @@ email: jic4015@med.cornell.edu */
               fetchImpl = globalThis.fetch,
             } = {},
           ) {
-            if (typeof fetchImpl !== "function") {
-              fail("Live CMS updates are unavailable in this browser.");
+            if (typeof fetchImpl !== 'function') {
+              fail('Live CMS updates are unavailable in this browser.');
             }
-            onProgress?.("Checking the current CMS release…");
+            onProgress?.('Checking the current CMS release…');
             const catalog = await fetchJson(CATALOG_URL, {
               signal,
               fetchImpl,
@@ -23773,14 +23773,14 @@ email: jic4015@med.cornell.edu */
               checkAborted(signal);
               onProgress?.(
                 page === 0
-                  ? "Downloading current CMS records…"
-                  : `Downloading CMS records (${rows.length.toLocaleString("en-US")} received)…`,
+                  ? 'Downloading current CMS records…'
+                  : `Downloading CMS records (${rows.length.toLocaleString('en-US')} received)…`,
               );
               const url = new URL(release.apiUrl);
-              url.searchParams.set("size", String(PAGE_SIZE));
-              url.searchParams.set("offset", String(page * PAGE_SIZE));
+              url.searchParams.set('size', String(PAGE_SIZE));
+              url.searchParams.set('offset', String(page * PAGE_SIZE));
               for (const field of SUBGROUP_FIELDS) {
-                url.searchParams.set(`filter[${field}]`, "All");
+                url.searchParams.set(`filter[${field}]`, 'All');
               }
               const batch = await fetchJson(url.href, {
                 signal,
@@ -23788,7 +23788,7 @@ email: jic4015@med.cornell.edu */
                 maxBytes: 12 * 1024 * 1024,
               });
               if (!Array.isArray(batch) || batch.length > PAGE_SIZE) {
-                fail("CMS returned an unexpected record format.");
+                fail('CMS returned an unexpected record format.');
               }
               rows.push(...batch);
               if (batch.length < PAGE_SIZE) {
@@ -23796,40 +23796,40 @@ email: jic4015@med.cornell.edu */
               }
               if (page === MAX_PAGES - 1) {
                 fail(
-                  "The CMS update exceeds the supported download size. The existing data have been kept.",
+                  'The CMS update exceeds the supported download size. The existing data have been kept.',
                 );
               }
             }
-            onProgress?.("Checking state coverage and rate calculations…");
+            onProgress?.('Checking state coverage and rate calculations…');
             const result = collect(rows, verifiedCms, currentCms);
             checkAborted(signal);
             const checkedAt = new Date().toISOString();
             const data = clone(verifiedCms);
-            data.status = "unvalidated_live";
+            data.status = 'unvalidated_live';
             data.accessDate = checkedAt.slice(0, 10);
             data.years = result.years;
             data.national = result.national;
             data.states = result.states;
             data.sources = [
               {
-                id: "cms",
-                title: "CMS Medicare Telehealth Trends",
+                id: 'cms',
+                title: 'CMS Medicare Telehealth Trends',
                 url: release.downloadUrl || SOURCE_URL,
                 apiUrl: release.apiUrl,
                 landingUrl: SOURCE_URL,
                 releaseDate: release.modified,
                 accessDate: data.accessDate,
               },
-              ...(data.sources || []).filter((source) => source.id !== "cms"),
+              ...(data.sources || []).filter((source) => source.id !== 'cms'),
             ];
             data.quality = {
               cmsRetainedRows: result.recordCount,
-              validationStatus: "basic_checks_only",
+              validationStatus: 'basic_checks_only',
               checks: [
-                "Complete state and national coverage for each period",
-                "Unique state-period keys",
-                "Valid numeric rates and counts",
-                "Rates agree with numerator and denominator within source rounding tolerance",
+                'Complete state and national coverage for each period',
+                'Unique state-period keys',
+                'Valid numeric rates and counts',
+                'Rates agree with numerator and denominator within source rounding tolerance',
               ],
               verifiedSnapshotAccessDate: verifiedCms.accessDate,
             };
@@ -23843,7 +23843,7 @@ email: jic4015@med.cornell.edu */
               changes: result.changes,
               acsContextYear: 2024,
               associationsFromVerifiedSnapshot: true,
-              validationStatus: "unvalidated",
+              validationStatus: 'unvalidated',
             };
             return {
               data,
@@ -23857,7 +23857,7 @@ email: jic4015@med.cornell.edu */
             };
           }
 
-          return { fetchCmsUpdates };
+          return {fetchCmsUpdates};
         })();
         // Author: Jiajun (Carson) Chen
         // email: jic4015@med.cornell.edu
@@ -23870,17 +23870,17 @@ email: jic4015@med.cornell.edu */
         const $ = (id) => document.getElementById(id);
         // UI selections are separate from source data; changing a filter never rewrites a dataset.
         const state = {
-          view: "states",
-          period: "2024",
-          selected: "US",
-          display: "map",
-          nhisGroup: "insurance",
-          insurance: "All",
-          payment: "total",
+          view: 'states',
+          period: '2024',
+          selected: 'US',
+          display: 'map',
+          nhisGroup: 'insurance',
+          insurance: 'All',
+          payment: 'total',
           changeFrom: 2020,
           changeTo: 2025,
-          changeScope: "largest",
-          modelGroup: "Insurance",
+          changeScope: 'largest',
+          modelGroup: 'Insurance',
         };
         let cms;
         let nhis;
@@ -23944,24 +23944,24 @@ email: jic4015@med.cornell.edu */
         };
         const heroes = {
           states: [
-            "01 / Geography & connectivity",
-            "Telehealth, across states",
-            "Explore how telehealth use varies across U.S. states—and the context of broadband access and household income.",
+            '01 / Geography & connectivity',
+            'Telehealth, across states',
+            'Explore how telehealth use varies across U.S. states—and the context of broadband access and household income.',
           ],
           people: [
-            "02 / Population & access",
-            "Who uses telehealth?",
-            "Explore telehealth use across insurance coverage, age, education, Internet access, and self-rated health.",
+            '02 / Population & access',
+            'Who uses telehealth?',
+            'Explore telehealth use across insurance coverage, age, education, Internet access, and self-rated health.',
           ],
           visits: [
-            "03 / Modality & payments",
-            "Visits, coverage & payments",
-            "Explore how office-based care is delivered and what is paid, across phone, video, and in-person visits.",
+            '03 / Modality & payments',
+            'Visits, coverage & payments',
+            'Explore how office-based care is delivered and what is paid, across phone, video, and in-person visits.',
           ],
           quality: [
-            "04 / Data & methods",
-            "Data & methods",
-            "Understand the populations, measures, exclusions, and uncertainty behind every view in this dashboard.",
+            '04 / Data & methods',
+            'Data & methods',
+            'Understand the populations, measures, exclusions, and uncertainty behind every view in this dashboard.',
           ],
         };
         /**
@@ -23982,10 +23982,10 @@ email: jic4015@med.cornell.edu */
          *     Zero-based numeric columns and selected row; -1 selects no row.
          * @return {string} Table markup with header semantics and numeric alignment.
          */
-        function table(headers, rows, { numeric = [], selectedRow = -1 } = {}) {
+        function table(headers, rows, {numeric = [], selectedRow = -1} = {}) {
           const cellClass = (i) =>
-            numeric.includes(i) ? ' class="numeric"' : "";
-          return `<table><thead><tr>${headers.map((h, i) => `<th scope="col"${cellClass(i)}>${h}</th>`).join("")}</tr></thead><tbody>${rows.map((r, rowIndex) => `<tr${rowIndex === selectedRow ? ' class="selected-row"' : ""}>${r.map((c, i) => `<td${cellClass(i)}>${c}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+            numeric.includes(i) ? ' class="numeric"' : '';
+          return `<table><thead><tr>${headers.map((h, i) => `<th scope="col"${cellClass(i)}>${h}</th>`).join('')}</tr></thead><tbody>${rows.map((r, rowIndex) => `<tr${rowIndex === selectedRow ? ' class="selected-row"' : ''}>${r.map((c, i) => `<td${cellClass(i)}>${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
         }
         /**
          * Chooses the higher-contrast text color from actual tile luminance.
@@ -23993,7 +23993,7 @@ email: jic4015@med.cornell.edu */
          * @return {string} White or deep-ink CSS color; hue alone does not decide contrast.
          */
         function tileTextColor(background) {
-          const rgb = background.startsWith("#")
+          const rgb = background.startsWith('#')
             ? [1, 3, 5].map((i) => parseInt(background.slice(i, i + 2), 16))
             : background.match(/\d+/g).map(Number);
           const luminance = (channels) =>
@@ -24006,8 +24006,8 @@ email: jic4015@med.cornell.edu */
           const light = luminance(rgb);
           const deepInk = luminance([3, 6, 7]);
           return 1.05 / (light + 0.05) >= (light + 0.05) / (deepInk + 0.05)
-            ? "#ffffff"
-            : "#030607";
+            ? '#ffffff'
+            : '#030607';
         }
         /**
          * Reads the active annual or quarterly record without combining periods.
@@ -24025,8 +24025,8 @@ email: jic4015@med.cornell.edu */
          */
         function currentState() {
           const data = activeCms();
-          return state.selected === "US"
-            ? { ...data.national, name: "United States", abbr: "US" }
+          return state.selected === 'US'
+            ? {...data.national, name: 'United States', abbr: 'US'}
             : data.states.find((s) => s.abbr === state.selected);
         }
         /**
@@ -24034,11 +24034,11 @@ email: jic4015@med.cornell.edu */
          * @param {string} abbr US or a state/DC abbreviation in the verified allowlist.
          */
         function selectState(abbr) {
-          if (abbr !== "US" && !cms.states.some((s) => s.abbr === abbr)) {
+          if (abbr !== 'US' && !cms.states.some((s) => s.abbr === abbr)) {
             return;
           }
           state.selected = abbr;
-          $("cms-state").value = abbr;
+          $('cms-state').value = abbr;
           renderCms();
         }
         // Render the map, table, counts, and time series from one consistent active CMS version.
@@ -24052,44 +24052,44 @@ email: jic4015@med.cornell.edu */
           const s = currentState();
           const r = currentSeries(s);
           const national = currentSeries(data.national);
-          const rows = data.states.map((s) => ({ ...s, ...currentSeries(s) }));
-          $("cms-metrics").innerHTML =
+          const rows = data.states.map((s) => ({...s, ...currentSeries(s)}));
+          $('cms-metrics').innerHTML =
             metric(
               `${esc(s.name)} · telehealth use`,
               percent(r?.telehealthPct),
               `${esc(state.period)} · Medicare Part B fee-for-service`,
             ) +
             metric(
-              "Telehealth users",
+              'Telehealth users',
               compact(r?.telehealthUsers),
               `${number(r?.telehealthUsers)} beneficiaries`,
             ) +
             metric(
-              "Eligible service users",
+              'Eligible service users',
               compact(r?.eligibleUsers),
-              "Denominator for the displayed rate",
+              'Denominator for the displayed rate',
             );
           const vals = rows.map((s) => s.telehealthPct).filter(Number.isFinite);
           const min = Math.min(...vals);
           const max = Math.max(...vals);
-          $("map-min").textContent = percent(min);
-          $("map-max").textContent = percent(max);
-          $("state-map").innerHTML = rows
+          $('map-min').textContent = percent(min);
+          $('map-max').textContent = percent(max);
+          $('state-map').innerHTML = rows
             .map((s) => {
               const pos = positions[s.abbr];
               const tileColor = colorFor(s.telehealthPct, min, max);
-              return `<button class="state-tile ${s.abbr === state.selected ? "selected" : ""}" style="--col:${pos[0]};--row:${pos[1]};--tile-color:${tileColor};--tile-text:${tileTextColor(tileColor)}" data-state="${s.abbr}" aria-label="${esc(s.name)}, ${percent(s.telehealthPct)} telehealth use" aria-pressed="${s.abbr === state.selected}"><span>${s.abbr}</span><small>${Number.isFinite(s.telehealthPct) ? number(s.telehealthPct, 1) : "—"}</small></button>`;
+              return `<button class="state-tile ${s.abbr === state.selected ? 'selected' : ''}" style="--col:${pos[0]};--row:${pos[1]};--tile-color:${tileColor};--tile-text:${tileTextColor(tileColor)}" data-state="${s.abbr}" aria-label="${esc(s.name)}, ${percent(s.telehealthPct)} telehealth use" aria-pressed="${s.abbr === state.selected}"><span>${s.abbr}</span><small>${Number.isFinite(s.telehealthPct) ? number(s.telehealthPct, 1) : '—'}</small></button>`;
             })
-            .join("");
+            .join('');
           const a = s.acs2024;
           const diff = r?.telehealthPct - national?.telehealthPct;
-          $("state-detail").innerHTML =
-            `<div class="state-code">${state.selected === "US" ? "National benchmark" : s.abbr + " / Selected state"}</div><h3 class="state-name">${esc(s.name)}</h3><div class="big-rate">${percent(r?.telehealthPct)}</div><div class="rate-label">telehealth use · ${esc(state.period)}</div><div class="difference">${state.selected === "US" ? "Published CMS national aggregate" : `${number(Math.abs(diff), 1)} pp ${diff >= 0 ? "above" : "below"} national`}</div><dl><dt>Telehealth users</dt><dd>${number(r?.telehealthUsers)}</dd><dt>Eligible service users</dt><dd>${number(r?.eligibleUsers)}</dd>${a ? `<dt>Broadband · 2024</dt><dd>${percent(a.broadbandPct)}</dd><dt>90% margin of error</dt><dd>±${number(a.broadbandMoe90, 2)} pp</dd><dt>Median income · 2024</dt><dd>${dollars(a.medianIncome)}</dd><dt>90% margin of error</dt><dd>±${dollars(a.incomeMoe90)}</dd>` : "<dt>State coverage</dt><dd>50 states + D.C.</dd>"}</dl>`;
+          $('state-detail').innerHTML =
+            `<div class="state-code">${state.selected === 'US' ? 'National benchmark' : s.abbr + ' / Selected state'}</div><h3 class="state-name">${esc(s.name)}</h3><div class="big-rate">${percent(r?.telehealthPct)}</div><div class="rate-label">telehealth use · ${esc(state.period)}</div><div class="difference">${state.selected === 'US' ? 'Published CMS national aggregate' : `${number(Math.abs(diff), 1)} pp ${diff >= 0 ? 'above' : 'below'} national`}</div><dl><dt>Telehealth users</dt><dd>${number(r?.telehealthUsers)}</dd><dt>Eligible service users</dt><dd>${number(r?.eligibleUsers)}</dd>${a ? `<dt>Broadband · 2024</dt><dd>${percent(a.broadbandPct)}</dd><dt>90% margin of error</dt><dd>±${number(a.broadbandMoe90, 2)} pp</dd><dt>Median income · 2024</dt><dd>${dollars(a.medianIncome)}</dd><dt>90% margin of error</dt><dd>±${dollars(a.incomeMoe90)}</dd>` : '<dt>State coverage</dt><dd>50 states + D.C.</dd>'}</dl>`;
           const rankedRows = rows.toSorted(
             (a, b) => (b.telehealthPct ?? -1) - (a.telehealthPct ?? -1),
           );
-          $("cms-table-wrap").innerHTML = table(
-            ["State", "Telehealth use", "Users", "Eligible service users"],
+          $('cms-table-wrap').innerHTML = table(
+            ['State', 'Telehealth use', 'Users', 'Eligible service users'],
             rankedRows.map((s) => [
               `<button data-state="${s.abbr}" aria-pressed="${s.abbr === state.selected}">${esc(s.name)} <span aria-hidden="true">↗</span></button>`,
               percent(s.telehealthPct),
@@ -24103,37 +24103,37 @@ email: jic4015@med.cornell.edu */
               ),
             },
           );
-          $("cms-source").innerHTML =
+          $('cms-source').innerHTML =
             `Source: <a href="https://data.cms.gov/summary-statistics-on-use-and-payments/medicare-medicaid-service-type-reports/medicare-telehealth-trends" target="_blank" rel="noreferrer">CMS Medicare Telehealth Trends</a> · ${esc(state.period)} · ${rows.filter((s) => Number.isFinite(s.telehealthPct)).length}/51 state/DC rates available. Published national aggregate may include other geographies. Preliminary claims data; no sampling confidence intervals supplied. Map colors rescale within the selected period. ${liveCms ? `Live API data fetched ${esc(formatCheckedAt(liveCms.checkedAt))}; not revalidated.` : `Verified snapshot retrieved ${esc(cms.accessDate)}.`}`;
           const series = [
             {
-              label: "United States",
-              color: "var(--comparison)",
+              label: 'United States',
+              color: 'var(--comparison)',
               values: data.national.quarterly.map((r) => ({
                 period: r.period,
                 value: r.telehealthPct,
               })),
             },
           ];
-          if (state.selected !== "US") {
+          if (state.selected !== 'US') {
             series.push({
               label: s.name,
-              color: "var(--series)",
+              color: 'var(--series)',
               values: s.quarterly.map((r) => ({
                 period: r.period,
                 value: r.telehealthPct,
               })),
             });
           } else {
-            series[0].color = "var(--series)";
+            series[0].color = 'var(--series)';
           }
-          $("trend-legend").innerHTML = series
+          $('trend-legend').innerHTML = series
             .map(
               (s) =>
                 `<span><i style="background:${s.color}"></i>${esc(s.label)}</span>`,
             )
-            .join("");
-          $("trend-chart").innerHTML = lineChart(series, {
+            .join('');
+          $('trend-chart').innerHTML = lineChart(series, {
             title: `Quarterly telehealth use in ${s.name}, ${data.national.quarterly[0].period}–${data.national.quarterly.at(-1).period}`,
           });
           renderScatter();
@@ -24147,35 +24147,35 @@ email: jic4015@med.cornell.edu */
          * ACS/model validation would imply an analytical update that has not occurred.
          */
         function renderScatter() {
-          const income = $("acs-measure").value === "income";
+          const income = $('acs-measure').value === 'income';
           const points = cms.states.map((s) => ({
             name: s.name,
             abbr: s.abbr,
             x: income ? s.acs2024?.medianIncome : s.acs2024?.broadbandPct,
             y: s.annual.find((r) => r.year === 2024)?.telehealthPct,
           }));
-          $("scatter-chart").innerHTML = scatterChart(points, {
+          $('scatter-chart').innerHTML = scatterChart(points, {
             selected: state.selected,
-            xKey: income ? "income" : "broadbandPct",
+            xKey: income ? 'income' : 'broadbandPct',
             xlabel: income
-              ? "Median household income (2024 dollars)"
-              : "Households with broadband (%)",
+              ? 'Median household income (2024 dollars)'
+              : 'Households with broadband (%)',
           });
           const r = income
             ? cms.associations.incomePearsonR
             : cms.associations.broadbandPearsonR;
-          $("scatter-caption").innerHTML =
+          $('scatter-caption').innerHTML =
             `<strong>Verified 2024 snapshot · 50 states + D.C. · Pearson r = ${number(r, 2)}.</strong> Y-axis: annual CMS telehealth use. ACS broadband includes cellular subscriptions. State-level association does not establish individual access or causation. ACS sampling error is not shown in the plot.`;
         }
         const nhisDisplayNotes = {
           insurance:
-            "Insurance is grouped as any private coverage, public or other coverage without private, or uninsured. Adults with both private and other coverage are included in the private group.",
-          age: "Age is measured at interview. The source groups ages 85 and older together.",
+            'Insurance is grouped as any private coverage, public or other coverage without private, or uninsured. Adults with both private and other coverage are included in the private group.',
+          age: 'Age is measured at interview. The source groups ages 85 and older together.',
           education:
-            "Groups reflect the highest reported level of educational attainment.",
+            'Groups reflect the highest reported level of educational attainment.',
           internet:
-            "This measure describes Internet access, not the household broadband subscription measure used in the state comparison.",
-          health: "Groups reflect self-rated health at interview.",
+            'This measure describes Internet access, not the household broadband subscription measure used in the state comparison.',
+          health: 'Groups reflect self-rated health at interview.',
         };
         // NHIS groups use their own valid-response denominators and survey-weighted intervals.
         /**
@@ -24186,48 +24186,48 @@ email: jic4015@med.cornell.edu */
         function renderNhis() {
           const n = nhis.overall;
           const rows = nhis.groups[state.nhisGroup];
-          $("nhis-metrics").innerHTML =
+          $('nhis-metrics').innerHTML =
             metric(
-              "Adults reporting telehealth use",
+              'Adults reporting telehealth use',
               percent(n.estimate),
               `95% confidence interval ${ci(n.ci_low, n.ci_high)}`,
             ) +
             metric(
-              "Valid telehealth responses",
+              'Valid telehealth responses',
               number(n.n),
               `${number(nhis.quality.raw_n)} adults in the source file`,
             ) +
             metric(
-              "Telehealth nonresponse",
+              'Telehealth nonresponse',
               `${number(nhis.quality.missing_outcome_percent, 2)}%`,
               `${number(nhis.quality.missing_outcome_n)} refused, unknown, or not ascertained`,
             );
-          $("nhis-chart").innerHTML = dotChart(rows, {
+          $('nhis-chart').innerHTML = dotChart(rows, {
             compact: false,
             title: `Survey-weighted telehealth use by ${nhis.group_labels[state.nhisGroup]}`,
             max: 50,
           });
-          $("nhis-table").innerHTML = table(
+          $('nhis-table').innerHTML = table(
             [
               esc(nhis.group_labels[state.nhisGroup]),
-              "Weighted use",
-              "95% confidence interval",
-              "Sample size",
+              'Weighted use',
+              '95% confidence interval',
+              'Sample size',
             ],
             rows.map((r) => [
               esc(r.label),
               percent(r.estimate) +
-                (r.unstable ? ' <span class="badge">Unstable</span>' : ""),
+                (r.unstable ? ' <span class="badge">Unstable</span>' : ''),
               ci(r.ci_low, r.ci_high),
               number(r.n),
             ]),
-            { numeric: [1, 2, 3] },
+            {numeric: [1, 2, 3]},
           );
           const missing = nhis.quality.missingness.find(
             (m) => m.group === state.nhisGroup,
           );
-          $("nhis-source").innerHTML =
-            `Source: <a href="https://www.cdc.gov/nchs/nhis/documentation/2024-nhis.html" target="_blank" rel="noreferrer">2024 NHIS Sample Adult</a> · U.S. civilian noninstitutionalized adults ≥18 · Survey-weighted estimates with logit-based 95% confidence intervals. ${esc(nhisDisplayNotes[state.nhisGroup])} ${missing ? `${number(missing.among_valid_outcome_n)} valid-outcome records excluded for missing group information.` : ""} Sample counts are unweighted. Insurance is measured at interview; telehealth covers the prior 12 months.`;
+          $('nhis-source').innerHTML =
+            `Source: <a href="https://www.cdc.gov/nchs/nhis/documentation/2024-nhis.html" target="_blank" rel="noreferrer">2024 NHIS Sample Adult</a> · U.S. civilian noninstitutionalized adults ≥18 · Survey-weighted estimates with logit-based 95% confidence intervals. ${esc(nhisDisplayNotes[state.nhisGroup])} ${missing ? `${number(missing.among_valid_outcome_n)} valid-outcome records excluded for missing group information.` : ''} Sample counts are unweighted. Insurance is measured at interview; telehealth covers the prior 12 months.`;
           renderNhisModel();
         }
         /**
@@ -24237,8 +24237,8 @@ email: jic4015@med.cornell.edu */
          */
         function flag(metric) {
           return metric?.unstable
-            ? ` <span class="badge" title="${esc((metric.flags || []).join("; "))}">Unstable</span>`
-            : "";
+            ? ` <span class="badge" title="${esc((metric.flags || []).join('; '))}">Unstable</span>`
+            : '';
         }
         // Apply the small-sample rule to numerator people, not the larger visit denominator.
         /**
@@ -24288,56 +24288,56 @@ email: jic4015@med.cornell.edu */
           const g =
             meps.groups.find((g) => g.insurance === state.insurance) ||
             meps.overall;
-          const total = state.payment === "total";
-          const key = total ? "total_payment" : "family_payment";
+          const total = state.payment === 'total';
+          const key = total ? 'total_payment' : 'family_payment';
           const p = g[key];
           const tele = displayTelehealth(g);
-          $("meps-metrics").innerHTML =
+          $('meps-metrics').innerHTML =
             metric(
-              "Telehealth share of visits",
-              tele.withheld ? "Not shown" : percent(tele.estimate) + flag(tele),
+              'Telehealth share of visits',
+              tele.withheld ? 'Not shown' : percent(tele.estimate) + flag(tele),
               tele.withheld
                 ? `${number(g.telehealth_n_persons)} sampled people with telehealth visits; minimum 30`
                 : `95% confidence interval ${ci(tele.ci_low, tele.ci_high)}`,
             ) +
             metric(
               total
-                ? "Mean total payments / visit"
-                : "Mean out-of-pocket / visit",
+                ? 'Mean total payments / visit'
+                : 'Mean out-of-pocket / visit',
               dollars(p.estimate),
-              `${ci(p.ci_low, p.ci_high, " dollars")} · 95% confidence interval`,
+              `${ci(p.ci_low, p.ci_high, ' dollars')} · 95% confidence interval`,
             ) +
             metric(
-              "Office-based visits in sample",
+              'Office-based visits in sample',
               number(g.n),
               `${number(g.n_persons)} people · ${esc(g.insurance)}`,
             );
-          $("modality-chart").innerHTML = g.modalities
+          $('modality-chart').innerHTML = g.modalities
             .map((m) => {
-              const d = displayMeps(m, "share_pct");
-              return `<div class="bar-row"><span>${esc(m.modality)}${m.share_pct.unstable ? " *" : ""}</span><div class="bar-track" role="img" aria-label="${esc(m.modality)}: ${d.withheld ? "Not shown, fewer than 30 people" : percent(d.estimate)}"><div class="bar-fill" style="width:${d.withheld ? 0 : d.estimate}%"></div></div><span class="bar-number">${d.withheld ? "—" : d.estimate < 0.1 ? number(d.estimate, 2) + "%" : percent(d.estimate)}</span></div>`;
+              const d = displayMeps(m, 'share_pct');
+              return `<div class="bar-row"><span>${esc(m.modality)}${m.share_pct.unstable ? ' *' : ''}</span><div class="bar-track" role="img" aria-label="${esc(m.modality)}: ${d.withheld ? 'Not shown, fewer than 30 people' : percent(d.estimate)}"><div class="bar-fill" style="width:${d.withheld ? 0 : d.estimate}%"></div></div><span class="bar-number">${d.withheld ? '—' : d.estimate < 0.1 ? number(d.estimate, 2) + '%' : percent(d.estimate)}</span></div>`;
             })
-            .join("");
-          $("payment-title").textContent = total
-            ? "Mean total payments per visit"
-            : "Mean out-of-pocket payments per visit";
-          $("payment-chart").innerHTML = dotChart(
+            .join('');
+          $('payment-title').textContent = total
+            ? 'Mean total payments per visit'
+            : 'Mean out-of-pocket payments per visit';
+          $('payment-chart').innerHTML = dotChart(
             g.modalities.map((m) => ({
               ...displayMeps(m, key),
               label: m.modality,
             })),
             {
-              unit: "dollars",
+              unit: 'dollars',
               compact: true,
-              title: `${total ? "Total" : "Out-of-pocket"} payments by modality, ${g.insurance}`,
+              title: `${total ? 'Total' : 'Out-of-pocket'} payments by modality, ${g.insurance}`,
             },
           );
-          $("meps-table").innerHTML = table(
+          $('meps-table').innerHTML = table(
             [
-              "Visit type",
-              "Sample visits / people",
-              "Visit share (95% CI)",
-              `${total ? "Total" : "Out-of-pocket"} payment (95% CI)`,
+              'Visit type',
+              'Sample visits / people',
+              'Visit share (95% CI)',
+              `${total ? 'Total' : 'Out-of-pocket'} payment (95% CI)`,
             ],
             g.modalities.map((m) => [
               esc(m.modality),
@@ -24347,11 +24347,11 @@ email: jic4015@med.cornell.edu */
                 : `${percent(m.share_pct.estimate)} (${ci(m.share_pct.ci_low, m.share_pct.ci_high)})${flag(m.share_pct)}`,
               m.n_persons < 30
                 ? '<span class="badge">Not shown · &lt;30 people</span>'
-                : `${dollars(m[key].estimate)} (${ci(m[key].ci_low, m[key].ci_high, " dollars")})${flag(m[key])}`,
+                : `${dollars(m[key].estimate)} (${ci(m[key].ci_low, m[key].ci_high, ' dollars')})${flag(m[key])}`,
             ]),
-            { numeric: [1, 2, 3] },
+            {numeric: [1, 2, 3]},
           );
-          $("meps-source").innerHTML =
+          $('meps-source').innerHTML =
             `Source: <a href="https://meps.ahrq.gov/data_stats/download_data/pufs/h254g/h254gdoc.shtml" target="_blank" rel="noreferrer">MEPS HC-254G</a> + HC-256 · 2024 office-based visits, all ages · Survey-weighted estimates using weights, strata, and primary sampling units. Visit shares use all office visits in the selected insurance group as denominator. Insurance describes coverage during 2024: any private (including TRICARE), public only, or uninsured all year; it is not coverage on the visit date. Modality estimates and overall telehealth shares with fewer than 30 sampled people in the numerator are not shown in charts, tables, or CSV exports. * Unstable: relative standard error &gt;30% or a boundary estimate (sparse rows are also marked). Approximate normal CIs are bounded at zero (and 100% for shares). Read rare-modality estimates cautiously.`;
           renderMepsComparison();
         }
@@ -24362,103 +24362,103 @@ email: jic4015@med.cornell.edu */
         function renderQuality() {
           const cards = [
             [
-              "CMS + ACS",
-              "Geography & context",
-              "Medicare Part B fee-for-service service users",
-              "State / period",
-              "2020–2025; ACS 2024",
-              "50 states + D.C.",
+              'CMS + ACS',
+              'Geography & context',
+              'Medicare Part B fee-for-service service users',
+              'State / period',
+              '2020–2025; ACS 2024',
+              '50 states + D.C.',
             ],
             [
-              "NHIS",
-              "Population differences",
-              "Civilian noninstitutionalized adults ≥18",
-              "Person",
-              "2024",
+              'NHIS',
+              'Population differences',
+              'Civilian noninstitutionalized adults ≥18',
+              'Person',
+              '2024',
               `${number(nhis.quality.valid_outcome_n)} valid outcomes`,
             ],
             [
-              "MEPS",
-              "Visits & payments",
-              "Office-based visits, all ages",
-              "Visit",
-              "2024",
+              'MEPS',
+              'Visits & payments',
+              'Office-based visits, all ages',
+              'Visit',
+              '2024',
               `${number(meps.quality.analytic_visit_n)} positive-weight visits`,
             ],
           ];
-          $("quality-cards").innerHTML = cards
+          $('quality-cards').innerHTML = cards
             .map(
               (c) =>
                 `<article class="quality-card"><span class="eyebrow">${c[0]}</span><h3>${c[1]}</h3><dl><dt>Population</dt><dd>${c[2]}</dd><dt>Unit</dt><dd>${c[3]}</dd><dt>Period</dt><dd>${c[4]}</dd><dt>Coverage</dt><dd>${c[5]}</dd></dl></article>`,
             )
-            .join("");
+            .join('');
           const q = meps.quality;
           const rows = [
             [
-              "CMS + ACS",
-              "2024 state coverage matching",
+              'CMS + ACS',
+              '2024 state coverage matching',
               51,
-              "0 unmatched records",
-              "Annual CMS + same-year ACS",
+              '0 unmatched records',
+              'Annual CMS + same-year ACS',
             ],
             [
-              "CMS",
-              "Selected annual/quarterly rates",
+              'CMS',
+              'Selected annual/quarterly rates',
               cms.quality.cmsRetainedRows,
-              "0 suppressed or missing rates",
-              "Published all-beneficiary totals",
+              '0 suppressed or missing rates',
+              'Published all-beneficiary totals',
             ],
             ...nhis.quality.missingness.map((m) => [
-              "NHIS",
+              'NHIS',
               esc(
                 nhis.group_labels[m.group] ||
-                  (m.variable === "VIRAPP12M_A"
-                    ? "Telehealth response"
+                  (m.variable === 'VIRAPP12M_A'
+                    ? 'Telehealth response'
                     : m.variable),
               ),
               nhis.quality.raw_n,
               `${number(m.n)} (${number(m.percent, 2)}%) missing`,
-              "Unweighted source-file count",
+              'Unweighted source-file count',
             ]),
             [
-              "MEPS",
-              "Source → positive-weight visits",
+              'MEPS',
+              'Source → positive-weight visits',
               q.source_event_n,
               `${number(q.zero_weight_visit_n)} zero weights excluded`,
               `${number(q.analytic_visit_n)} retained`,
             ],
             [
-              "MEPS",
-              "Person-file linkage",
+              'MEPS',
+              'Person-file linkage',
               q.analytic_visit_n,
               `${number(q.unmatched_person_n)} unmatched`,
-              "Many visits to one person",
+              'Many visits to one person',
             ],
             [
-              "MEPS",
-              "Remote modality",
+              'MEPS',
+              'Remote modality',
               q.telehealth_source_n,
               `${number(q.unknown_remote_modality_source_n)} unknown`,
-              "132,199 nonremote = inapplicable",
+              '132,199 nonremote = inapplicable',
             ],
             [
-              "MEPS",
-              "Released payment fields",
+              'MEPS',
+              'Released payment fields',
               q.source_event_n,
-              "0 missing",
-              "Includes imputation",
+              '0 missing',
+              'Includes imputation',
             ],
           ];
-          $("quality-table").innerHTML = table(
+          $('quality-table').innerHTML = table(
             [
-              "Source",
-              "Quality check",
-              "Records checked",
-              "Finding",
-              "Interpretation",
+              'Source',
+              'Quality check',
+              'Records checked',
+              'Finding',
+              'Interpretation',
             ],
             rows.map((r) => [r[0], r[1], number(r[2]), r[3], r[4]]),
-            { numeric: [2] },
+            {numeric: [2]},
           );
         }
         /**
@@ -24467,22 +24467,22 @@ email: jic4015@med.cornell.edu */
          */
         function navigate() {
           const view = location.hash.slice(1);
-          state.view = heroes[view] ? view : "states";
+          state.view = heroes[view] ? view : 'states';
           document
-            .querySelectorAll(".view")
+            .querySelectorAll('.view')
             .forEach((el) => (el.hidden = el.id !== `view-${state.view}`));
-          document.querySelectorAll("[data-view]").forEach((el) => {
-            el.classList.toggle("active", el.dataset.view === state.view);
+          document.querySelectorAll('[data-view]').forEach((el) => {
+            el.classList.toggle('active', el.dataset.view === state.view);
             el.setAttribute(
-              "aria-current",
-              el.dataset.view === state.view ? "page" : "false",
+              'aria-current',
+              el.dataset.view === state.view ? 'page' : 'false',
             );
           });
           const h = heroes[state.view];
-          $("hero-kicker").textContent = h[0];
-          $("hero-title").innerHTML = h[1];
-          $("hero-description").textContent = h[2];
-          document.title = `${{ states: "States & access", people: "Population differences", visits: "Visits & payments", quality: "Data & methods" }[state.view]} — Weill Cornell Medicine Telehealth Insights`;
+          $('hero-kicker').textContent = h[0];
+          $('hero-title').innerHTML = h[1];
+          $('hero-description').textContent = h[2];
+          document.title = `${{states: 'States & access', people: 'Population differences', visits: 'Visits & payments', quality: 'Data & methods'}[state.view]} — Weill Cornell Medicine Telehealth Insights`;
           hideTip();
           renderEdition();
         }
@@ -24492,16 +24492,16 @@ email: jic4015@med.cornell.edu */
          * @param {string} name Application-generated filename, including .csv extension.
          */
         function download(rows, name) {
-          const blob = new Blob(["\uFEFF" + csv(rows)], {
-            type: "text/csv;charset=utf-8",
+          const blob = new Blob(['\uFEFF' + csv(rows)], {
+            type: 'text/csv;charset=utf-8',
           });
           const url = URL.createObjectURL(blob);
-          const a = document.createElement("a");
+          const a = document.createElement('a');
           a.href = url;
           a.download = name;
           a.click();
           setTimeout(() => URL.revokeObjectURL(url), 5000);
-          $("announcement").textContent = `Downloaded ${name}`;
+          $('announcement').textContent = `Downloaded ${name}`;
         }
         // Export provenance with values so a downloaded live view can be identified later.
         /**
@@ -24525,18 +24525,18 @@ email: jic4015@med.cornell.edu */
                 median_household_income_2024: s.acs2024.medianIncome,
                 income_moe90_2024: s.acs2024.incomeMoe90,
                 context_note:
-                  "ACS context is 2024 only; associations must use CMS 2024 annual values",
-                source: "CMS Medicare Telehealth Trends; ACS 2024 1-year",
+                  'ACS context is 2024 only; associations must use CMS 2024 annual values',
+                source: 'CMS Medicare Telehealth Trends; ACS 2024 1-year',
                 validation_status: liveCms
-                  ? "Live CMS data; not revalidated"
-                  : "Verified snapshot",
+                  ? 'Live CMS data; not revalidated'
+                  : 'Verified snapshot',
                 cms_retrieved_at: liveCms?.checkedAt || cms.accessDate,
-                cms_api_url: liveCms?.apiUrl || "",
-                cms_source_version: liveCms?.version || "",
-                acs_validation_status: "Verified 2024 snapshot",
+                cms_api_url: liveCms?.apiUrl || '',
+                cms_source_version: liveCms?.version || '',
+                acs_validation_status: 'Verified 2024 snapshot',
               };
             }),
-            `cms-states-${state.period.replace(" ", "-")}.csv`,
+            `cms-states-${state.period.replace(' ', '-')}.csv`,
           );
         }
         /**
@@ -24546,7 +24546,7 @@ email: jic4015@med.cornell.edu */
         function downloadNhis() {
           download(
             nhis.groups[state.nhisGroup].map((r) => ({
-              source: "NHIS 2024",
+              source: 'NHIS 2024',
               population: nhis.population,
               measure: nhis.measure,
               group_variable: state.nhisGroup,
@@ -24556,7 +24556,7 @@ email: jic4015@med.cornell.edu */
               ci95_low: r.ci_low,
               ci95_high: r.ci_high,
               unstable: r.unstable,
-              method: "Survey weighted unadjusted; logit CI",
+              method: 'Survey weighted unadjusted; logit CI',
               group_definition: nhis.group_notes[state.nhisGroup],
             })),
             `nhis-2024-${state.nhisGroup}.csv`,
@@ -24573,39 +24573,39 @@ email: jic4015@med.cornell.edu */
               source: meps.source,
               year: 2024,
               insurance: g.insurance,
-              insurance_period: "Annual INSCOV24; not visit-time payer",
+              insurance_period: 'Annual INSCOV24; not visit-time payer',
               modality: m.modality,
               n_visits: m.n,
               n_persons: m.n_persons,
-              share_percent: displayMeps(m, "share_pct").estimate,
-              share_ci95_low: displayMeps(m, "share_pct").ci_low,
-              share_ci95_high: displayMeps(m, "share_pct").ci_high,
+              share_percent: displayMeps(m, 'share_pct').estimate,
+              share_ci95_low: displayMeps(m, 'share_pct').ci_low,
+              share_ci95_high: displayMeps(m, 'share_pct').ci_high,
               share_unstable: m.share_pct.unstable,
-              total_payment_dollars: displayMeps(m, "total_payment").estimate,
-              total_ci95_low: displayMeps(m, "total_payment").ci_low,
-              total_ci95_high: displayMeps(m, "total_payment").ci_high,
+              total_payment_dollars: displayMeps(m, 'total_payment').estimate,
+              total_ci95_low: displayMeps(m, 'total_payment').ci_low,
+              total_ci95_high: displayMeps(m, 'total_payment').ci_high,
               total_unstable: m.total_payment.unstable,
-              family_payment_dollars: displayMeps(m, "family_payment").estimate,
-              family_ci95_low: displayMeps(m, "family_payment").ci_low,
-              family_ci95_high: displayMeps(m, "family_payment").ci_high,
+              family_payment_dollars: displayMeps(m, 'family_payment').estimate,
+              family_ci95_low: displayMeps(m, 'family_payment').ci_low,
+              family_ci95_high: displayMeps(m, 'family_payment').ci_high,
               family_unstable: m.family_payment.unstable,
               display_status:
                 m.n_persons < 30
-                  ? "Withheld: fewer than 30 sampled people"
-                  : "Displayed; check instability flags",
+                  ? 'Withheld: fewer than 30 sampled people'
+                  : 'Displayed; check instability flags',
               flags: [
                 ...new Set([
                   ...m.share_pct.flags,
                   ...m.total_payment.flags,
                   ...m.family_payment.flags,
                 ]),
-              ].join("; "),
+              ].join('; '),
               share_denominator:
-                "All positive-weight office visits in insurance group",
+                'All positive-weight office visits in insurance group',
               payment_denominator:
-                "Positive-weight visits within modality and insurance group",
+                'Positive-weight visits within modality and insurance group',
             })),
-            `meps-2024-${state.insurance.replaceAll(" ", "-").toLowerCase()}.csv`,
+            `meps-2024-${state.insurance.replaceAll(' ', '-').toLowerCase()}.csv`,
           );
         }
         /**
@@ -24614,7 +24614,7 @@ email: jic4015@med.cornell.edu */
          * @param {!Object} event Pointer coordinates, or an empty object for focus events.
          */
         function showTip(el, event) {
-          const tip = $("tooltip");
+          const tip = $('tooltip');
           tip.textContent = el.dataset.tip;
           tip.hidden = false;
           const box = el.getBoundingClientRect();
@@ -24624,18 +24624,18 @@ email: jic4015@med.cornell.edu */
             Math.max(
               8,
               Math.min(window.innerWidth - tip.offsetWidth - 10, x + 12),
-            ) + "px";
+            ) + 'px';
           tip.style.top =
             Math.max(
               8,
               Math.min(window.innerHeight - tip.offsetHeight - 10, y + 16),
-            ) + "px";
+            ) + 'px';
         }
         /**
          * Dismisses the shared tooltip on focus exit, scrolling, or Escape.
          */
         function hideTip() {
-          $("tooltip").hidden = true;
+          $('tooltip').hidden = true;
         }
         /**
          * Loads all three aggregates before enabling data-dependent interactions.
@@ -24649,8 +24649,8 @@ email: jic4015@med.cornell.edu */
          */
         async function start() {
           const results = await Promise.all(
-            ["cms", "nhis", "meps"].map(async (name) => {
-              const res = { ok: true, json: async () => __previewData[name] };
+            ['cms', 'nhis', 'meps'].map(async (name) => {
+              const res = {ok: true, json: async () => __previewData[name]};
               if (!res.ok) {
                 throw Error(
                   `${name.toUpperCase()} data could not be loaded (${res.status}).`,
@@ -24661,74 +24661,74 @@ email: jic4015@med.cornell.edu */
           );
           [cms, nhis, meps] = results;
           populateCmsPeriods();
-          $("cms-state").innerHTML =
+          $('cms-state').innerHTML =
             '<option value="US">United States</option>' +
             cms.states
               .toSorted((a, b) => a.name.localeCompare(b.name))
               .map((s) => `<option value="${s.abbr}">${esc(s.name)}</option>`)
-              .join("");
-          $("meps-insurance").innerHTML = meps.groups
+              .join('');
+          $('meps-insurance').innerHTML = meps.groups
             .map(
               (g) =>
-                `<option value="${esc(g.insurance)}">${g.insurance === "All" ? "All insurance groups" : esc(g.insurance)}</option>`,
+                `<option value="${esc(g.insurance)}">${g.insurance === 'All' ? 'All insurance groups' : esc(g.insurance)}</option>`,
             )
-            .join("");
-          $("cms-period").addEventListener("change", (e) => {
+            .join('');
+          $('cms-period').addEventListener('change', (e) => {
             state.period = e.target.value;
             renderCms();
           });
-          $("cms-state").addEventListener("change", (e) =>
+          $('cms-state').addEventListener('change', (e) =>
             selectState(e.target.value),
           );
-          $("acs-measure").addEventListener("change", renderScatter);
-          for (const mode of ["map", "table"]) {
-            $(mode + "-view").addEventListener("click", () => {
+          $('acs-measure').addEventListener('change', renderScatter);
+          for (const mode of ['map', 'table']) {
+            $(mode + '-view').addEventListener('click', () => {
               state.display = mode;
-              $("map-content").hidden = mode !== "map";
-              $("cms-table-wrap").hidden = mode !== "table";
-              $("map-view").setAttribute("aria-pressed", mode === "map");
-              $("table-view").setAttribute("aria-pressed", mode === "table");
+              $('map-content').hidden = mode !== 'map';
+              $('cms-table-wrap').hidden = mode !== 'table';
+              $('map-view').setAttribute('aria-pressed', mode === 'map');
+              $('table-view').setAttribute('aria-pressed', mode === 'table');
             });
           }
-          $("nhis-group").addEventListener("change", (e) => {
+          $('nhis-group').addEventListener('change', (e) => {
             state.nhisGroup = e.target.value;
             renderNhis();
           });
-          $("meps-insurance").addEventListener("change", (e) => {
+          $('meps-insurance').addEventListener('change', (e) => {
             state.insurance = e.target.value;
             renderMeps();
           });
-          $("payment-measure").addEventListener("change", (e) => {
+          $('payment-measure').addEventListener('change', (e) => {
             state.payment = e.target.value;
             renderMeps();
           });
-          $("cms-refresh").disabled = false;
-          $("cms-refresh").addEventListener("click", refreshCms);
-          $("cms-reset").addEventListener("click", restoreCms);
-          $("cms-change-from").addEventListener("change", (e) => {
+          $('cms-refresh').disabled = false;
+          $('cms-refresh').addEventListener('click', refreshCms);
+          $('cms-reset').addEventListener('click', restoreCms);
+          $('cms-change-from').addEventListener('change', (e) => {
             state.changeFrom = Number(e.target.value);
             renderAnnualChanges();
           });
-          $("cms-change-to").addEventListener("change", (e) => {
+          $('cms-change-to').addEventListener('change', (e) => {
             state.changeTo = Number(e.target.value);
             renderAnnualChanges();
           });
-          $("cms-change-scope").addEventListener("change", (e) => {
+          $('cms-change-scope').addEventListener('change', (e) => {
             state.changeScope = e.target.value;
             renderAnnualChanges();
           });
-          $("cms-change-download").addEventListener(
-            "click",
+          $('cms-change-download').addEventListener(
+            'click',
             downloadAnnualChanges,
           );
-          $("meps-comparison-download").addEventListener("click", () =>
+          $('meps-comparison-download').addEventListener('click', () =>
             download(
               meps.groups
-                .filter((g) => g.insurance !== "All")
+                .filter((g) => g.insurance !== 'All')
                 .map((g) => {
                   const v = displayTelehealth(g);
                   return {
-                    source: "MEPS HC-254G + HC-256",
+                    source: 'MEPS HC-254G + HC-256',
                     year: 2024,
                     insurance: g.insurance,
                     telehealth_percent: v.estimate,
@@ -24739,73 +24739,73 @@ email: jic4015@med.cornell.edu */
                     telehealth_n_visits: g.telehealth_n,
                     telehealth_n_people: g.telehealth_n_persons,
                     display_status: v.withheld
-                      ? "Not shown: fewer than 30 telehealth sampled people"
+                      ? 'Not shown: fewer than 30 telehealth sampled people'
                       : v.unstable
-                        ? "Displayed: unstable"
-                        : "Displayed",
+                        ? 'Displayed: unstable'
+                        : 'Displayed',
                     denominator:
-                      "All positive-weight office visits within insurance group",
+                      'All positive-weight office visits within insurance group',
                   };
                 }),
-              "meps-2024-telehealth-by-insurance.csv",
+              'meps-2024-telehealth-by-insurance.csv',
             ),
           );
-          $("cms-download").addEventListener("click", downloadCms);
-          $("nhis-download").addEventListener("click", downloadNhis);
-          $("meps-download").addEventListener("click", downloadMeps);
-          document.addEventListener("click", (e) => {
-            const el = e.target.closest("[data-state]");
+          $('cms-download').addEventListener('click', downloadCms);
+          $('nhis-download').addEventListener('click', downloadNhis);
+          $('meps-download').addEventListener('click', downloadMeps);
+          document.addEventListener('click', (e) => {
+            const el = e.target.closest('[data-state]');
             if (el) {
               selectState(el.dataset.state);
             }
           });
-          document.addEventListener("keydown", (e) => {
-            const el = e.target.closest("[data-state]");
+          document.addEventListener('keydown', (e) => {
+            const el = e.target.closest('[data-state]');
             if (
-              el?.namespaceURI === "http://www.w3.org/2000/svg" &&
-              ["Enter", " "].includes(e.key)
+              el?.namespaceURI === 'http://www.w3.org/2000/svg' &&
+              ['Enter', ' '].includes(e.key)
             ) {
               e.preventDefault();
               selectState(el.dataset.state);
             }
-            if (e.key === "Escape") {
+            if (e.key === 'Escape') {
               hideTip();
             }
           });
-          document.addEventListener("pointerover", (e) => {
-            const el = e.target.closest("[data-tip]");
+          document.addEventListener('pointerover', (e) => {
+            const el = e.target.closest('[data-tip]');
             if (el) {
               showTip(el, e);
             }
           });
-          document.addEventListener("pointerout", (e) => {
-            if (e.target.closest("[data-tip]")) {
+          document.addEventListener('pointerout', (e) => {
+            if (e.target.closest('[data-tip]')) {
               hideTip();
             }
           });
-          document.addEventListener("focusin", (e) => {
-            const el = e.target.closest("[data-tip]");
+          document.addEventListener('focusin', (e) => {
+            const el = e.target.closest('[data-tip]');
             if (el) {
               showTip(el, {});
             }
           });
-          document.addEventListener("focusout", hideTip);
-          window.addEventListener("scroll", hideTip, { passive: true });
-          window.addEventListener("hashchange", () => {
+          document.addEventListener('focusout', hideTip);
+          window.addEventListener('scroll', hideTip, {passive: true});
+          window.addEventListener('hashchange', () => {
             navigate();
-            window.scrollTo({ top: 0, behavior: "instant" });
+            window.scrollTo({top: 0, behavior: 'instant'});
           });
           renderCms();
           renderNhis();
           renderMeps();
           renderQuality();
-          $("loading").hidden = true;
+          $('loading').hidden = true;
           navigate();
         }
         start().catch((err) => {
-          $("loading").hidden = true;
-          $("error").hidden = false;
-          $("error").textContent =
+          $('loading').hidden = true;
+          $('error').hidden = false;
+          $('error').textContent =
             `The data could not be loaded. Refresh the page and try again. If the problem continues, return later.`;
           console.error(err);
         });
@@ -24817,17 +24817,17 @@ email: jic4015@med.cornell.edu */
         function renderNhisModel() {
           const m = nhis.adjusted_model;
           if (!m) {
-            $("nhis-model").hidden = true;
+            $('nhis-model').hidden = true;
             return;
           }
-          $("nhis-model").innerHTML =
-            `<div class="section-heading"><div><span class="eyebrow">Adjusted adult associations · 2024</span><h2>Adjusted associations with telehealth use</h2></div><button id="nhis-model-download" class="text-button">Download model ↓</button></div><p class="model-intro">Survey-weighted logistic regression including insurance coverage, age, education, Internet access, and self-rated health. Reference groups are specified for each comparison below. Odds ratios describe relative odds, not probability differences or causal effects.</p><div class="toolbar"><label>Adjusted comparison <select id="nhis-model-group">${[...new Set(m.terms.map((t) => t.group))].map((g) => `<option value="${esc(g)}"${g === state.modelGroup ? " selected" : ""}>${esc(g)}</option>`).join("")}</select></label><span class="pill">● Adjusted odds ratio &nbsp; ━ 95% confidence interval</span></div><div id="nhis-forest" class="comparison-chart"></div><p id="nhis-forest-caption" class="caption"></p><p class="model-methods">Complete-case sample: <strong>${number(m.n)}</strong> adults (${number(m.excluded_n)} excluded). All covariates enter the same model. Insurance is measured at interview; the outcome covers the prior 12 months.</p><details><summary>View all adjusted associations and model specification</summary><div class="table-wrap">${table(
+          $('nhis-model').innerHTML =
+            `<div class="section-heading"><div><span class="eyebrow">Adjusted adult associations · 2024</span><h2>Adjusted associations with telehealth use</h2></div><button id="nhis-model-download" class="text-button">Download model ↓</button></div><p class="model-intro">Survey-weighted logistic regression including insurance coverage, age, education, Internet access, and self-rated health. Reference groups are specified for each comparison below. Odds ratios describe relative odds, not probability differences or causal effects.</p><div class="toolbar"><label>Adjusted comparison <select id="nhis-model-group">${[...new Set(m.terms.map((t) => t.group))].map((g) => `<option value="${esc(g)}"${g === state.modelGroup ? ' selected' : ''}>${esc(g)}</option>`).join('')}</select></label><span class="pill">● Adjusted odds ratio &nbsp; ━ 95% confidence interval</span></div><div id="nhis-forest" class="comparison-chart"></div><p id="nhis-forest-caption" class="caption"></p><p class="model-methods">Complete-case sample: <strong>${number(m.n)}</strong> adults (${number(m.excluded_n)} excluded). All covariates enter the same model. Insurance is measured at interview; the outcome covers the prior 12 months.</p><details><summary>View all adjusted associations and model specification</summary><div class="table-wrap">${table(
               [
-                "Covariate",
-                "Comparison",
-                "Reference",
-                "Adjusted odds ratio",
-                "95% confidence interval",
+                'Covariate',
+                'Comparison',
+                'Reference',
+                'Adjusted odds ratio',
+                '95% confidence interval',
               ],
               m.terms.map((t) => [
                 esc(t.group),
@@ -24836,17 +24836,17 @@ email: jic4015@med.cornell.edu */
                 number(t.odds_ratio, 3),
                 `${number(t.ci_low, 3)}–${number(t.ci_high, 3)}`,
               ]),
-              { numeric: [3, 4] },
-            )}</div><div class="model-methods"><p><code>${esc(m.formula)}</code></p>${m.notes.map((n) => `<p>${esc(n)}</p>`).join("")}</div></details>`;
-          $("nhis-model-group").addEventListener("change", (e) => {
+              {numeric: [3, 4]},
+            )}</div><div class="model-methods"><p><code>${esc(m.formula)}</code></p>${m.notes.map((n) => `<p>${esc(n)}</p>`).join('')}</div></details>`;
+          $('nhis-model-group').addEventListener('change', (e) => {
             state.modelGroup = e.target.value;
             renderNhisForest();
           });
           renderNhisForest();
-          $("nhis-model-download").addEventListener("click", () =>
+          $('nhis-model-download').addEventListener('click', () =>
             download(
               m.terms.map((t) => ({
-                source: "NHIS 2024",
+                source: 'NHIS 2024',
                 model: m.model,
                 n: m.n,
                 outcome: m.outcome,
@@ -24858,7 +24858,7 @@ email: jic4015@med.cornell.edu */
                 ci95_high: t.ci_high,
                 adjustment: m.formula,
               })),
-              "nhis-2024-adjusted-associations.csv",
+              'nhis-2024-adjusted-associations.csv',
             ),
           );
         }
@@ -24869,32 +24869,32 @@ email: jic4015@med.cornell.edu */
         function renderCmsModel() {
           const m = cms.associations.adjustedModel;
           if (!m) {
-            $("cms-model").hidden = true;
+            $('cms-model').hidden = true;
             return;
           }
-          $("cms-model").hidden = false;
+          $('cms-model').hidden = false;
           const terms = m.coefficients;
-          $("cms-model").innerHTML =
+          $('cms-model').innerHTML =
             `<div class="section-heading"><div><span class="eyebrow">Adjusted state associations · Verified 2024 snapshot</span><h2>Broadband and income associations</h2></div><button id="cms-model-download" class="text-button">Download model ↓</button></div><p class="model-intro">Annual state telehealth use is modeled with broadband subscription and median household income together. These ecological associations compare states and do not establish individual or causal effects.</p><div class="table-wrap">${table(
               [
-                "Term",
-                "Coefficient (percentage points)",
-                "95% confidence interval",
+                'Term',
+                'Coefficient (percentage points)',
+                '95% confidence interval',
               ],
               terms
-                .filter((t) => t.term !== "intercept")
+                .filter((t) => t.term !== 'intercept')
                 .map((t) => [
                   esc(t.label),
                   number(t.estimate, 3),
                   `${number(t.ciLow, 3)}–${number(t.ciHigh, 3)}`,
                 ]),
-              { numeric: [1, 2] },
+              {numeric: [1, 2]},
             )}</div><p class="model-methods">Ordinary least squares · HC3 robust standard errors · Approximate normal 95% confidence intervals · n = ${m.n}. Outcome: CMS telehealth use in percentage points. Broadband: per 1 percentage point; income: per $10,000. Each state and D.C. has equal weight. ACS measurement uncertainty is not included in this model. No adjustment for other state characteristics is made.</p><details><summary>View model specification and limitations</summary><div class="model-methods"><p><code>CMS telehealth percentage = intercept + broadband percentage + median household income / 10,000</code></p><p>Intercept: ${number(terms[0].estimate, 3)} pp (95% CI ${number(terms[0].ciLow, 3)}–${number(terms[0].ciHigh, 3)}). The intercept describes zero-valued predictors outside the observed data range and has no substantive interpretation here.</p><p>The 51 jurisdictions constitute the included state/DC set. Model-based intervals describe uncertainty under the regression assumptions, not sampling error in CMS claims. Correlated predictors, omitted variables, and geographic dependence can affect these associations. No causal or predictive claim is made.</p></div></details>`;
-          $("cms-model-download").addEventListener("click", () =>
+          $('cms-model-download').addEventListener('click', () =>
             download(
               terms.map((t) => ({
-                source: "CMS + ACS 2024",
-                model: "State OLS with HC3 covariance",
+                source: 'CMS + ACS 2024',
+                model: 'State OLS with HC3 covariance',
                 n: m.n,
                 term: t.term,
                 description: t.label,
@@ -24903,9 +24903,9 @@ email: jic4015@med.cornell.edu */
                 ci95_low: t.ciLow,
                 ci95_high: t.ciHigh,
                 units: t.units,
-                interval: "Normal approximation 1.96 x HC3 SE",
+                interval: 'Normal approximation 1.96 x HC3 SE',
               })),
-              "cms-acs-2024-adjusted-associations.csv",
+              'cms-acs-2024-adjusted-associations.csv',
             ),
           );
         }
@@ -24917,20 +24917,20 @@ email: jic4015@med.cornell.edu */
          */
         function formatCheckedAt(value) {
           return (
-            new Date(value).toISOString().slice(0, 16).replace("T", " ") +
-            " UTC"
+            new Date(value).toISOString().slice(0, 16).replace('T', ' ') +
+            ' UTC'
           );
         }
         /**
          * Shows live status only for the CMS module; other modules remain verified.
          */
         function renderEdition() {
-          const edition = document.querySelector(".edition");
-          if (state.view === "states" && liveCms) {
+          const edition = document.querySelector('.edition');
+          if (state.view === 'states' && liveCms) {
             edition.innerHTML = `<span>Live CMS view · not revalidated</span><span>Latest available: ${esc(liveCms.latestPeriod)}</span><span>Fetched ${esc(formatCheckedAt(liveCms.checkedAt))}</span>`;
           } else {
             edition.innerHTML =
-              "<span>Verified data snapshot</span><span>2024 focus · CMS trends 2020–2025</span><span>Data retrieved Nov 11, 2026</span>";
+              '<span>Verified data snapshot</span><span>2024 focus · CMS trends 2020–2025</span><span>Data retrieved Nov 11, 2026</span>';
           }
         }
         /**
@@ -24946,17 +24946,17 @@ email: jic4015@med.cornell.edu */
           const quarterly = data.national.quarterly.toSorted(
             (a, b) => b.year - a.year || b.quarter - a.quarter,
           );
-          $("cms-period").innerHTML =
-            `<optgroup label="Annual">${annual.map((r) => `<option value="${esc(r.period)}">${esc(r.period)} · Annual</option>`).join("")}</optgroup><optgroup label="Quarterly">${quarterly.map((r) => `<option value="${esc(r.period)}">${esc(r.period)}</option>`).join("")}</optgroup>`;
+          $('cms-period').innerHTML =
+            `<optgroup label="Annual">${annual.map((r) => `<option value="${esc(r.period)}">${esc(r.period)} · Annual</option>`).join('')}</optgroup><optgroup label="Quarterly">${quarterly.map((r) => `<option value="${esc(r.period)}">${esc(r.period)}</option>`).join('')}</optgroup>`;
           if (
             ![...annual, ...quarterly].some((r) => r.period === state.period)
           ) {
             state.period =
-              annual.find((r) => r.period === "2024")?.period ||
+              annual.find((r) => r.period === '2024')?.period ||
               annual[0]?.period ||
               quarterly[0].period;
           }
-          $("cms-period").value = state.period;
+          $('cms-period').value = state.period;
         }
         // Fetch transactionally: keep the current view on failure and never partially apply a response.
         /**
@@ -24973,16 +24973,16 @@ email: jic4015@med.cornell.edu */
             return;
           }
           cmsRefreshPending = true;
-          const button = $("cms-refresh");
-          const status = $("cms-refresh-status");
+          const button = $('cms-refresh');
+          const status = $('cms-refresh-status');
           const controller = new AbortController();
           const timeout = setTimeout(() => controller.abort(), 60000);
           button.disabled = true;
-          $("cms-reset").disabled = true;
-          button.textContent = "Fetching from CMS…";
-          button.setAttribute("aria-busy", "true");
-          status.dataset.state = "loading";
-          status.textContent = "Contacting the official CMS source…";
+          $('cms-reset').disabled = true;
+          button.textContent = 'Fetching from CMS…';
+          button.setAttribute('aria-busy', 'true');
+          status.dataset.state = 'loading';
+          status.textContent = 'Contacting the official CMS source…';
           try {
             const result = await fetchCmsUpdates(cms, {
               currentCms: activeCms(),
@@ -24996,27 +24996,27 @@ email: jic4015@med.cornell.edu */
               state.period = result.latestPeriod;
               populateCmsPeriods();
               renderCms();
-              $("cms-live-note").hidden = false;
-              $("cms-reset").hidden = false;
-              status.dataset.state = "updated";
+              $('cms-live-note').hidden = false;
+              $('cms-reset').hidden = false;
+              status.dataset.state = 'updated';
               status.textContent = `CMS data loaded through ${result.latestPeriod}. The map, table, counts, trend, and annual comparisons have been updated; these live values have not been revalidated. Checked ${formatCheckedAt(result.checkedAt)}.`;
             } else {
-              status.dataset.state = "unchanged";
+              status.dataset.state = 'unchanged';
               status.textContent = `No additional or revised CMS data were found compared with the current view. Checked ${formatCheckedAt(result.checkedAt)}. You can review the official source below.`;
             }
           } catch (error) {
-            status.dataset.state = "error";
+            status.dataset.state = 'error';
             status.textContent = controller.signal.aborted
-              ? "The CMS request timed out. Your current data have been kept. Try again or visit the official source."
-              : "Compatible CMS data could not be retrieved. Your current data have been kept. Try again or visit the official source.";
-            console.warn("CMS update was not applied:", error.message);
+              ? 'The CMS request timed out. Your current data have been kept. Try again or visit the official source.'
+              : 'Compatible CMS data could not be retrieved. Your current data have been kept. Try again or visit the official source.';
+            console.warn('CMS update was not applied:', error.message);
           } finally {
             clearTimeout(timeout);
             cmsRefreshPending = false;
             button.disabled = false;
-            $("cms-reset").disabled = false;
-            button.textContent = "Check latest CMS data";
-            button.removeAttribute("aria-busy");
+            $('cms-reset').disabled = false;
+            button.textContent = 'Check latest CMS data';
+            button.removeAttribute('aria-busy');
           }
         }
         /**
@@ -25026,11 +25026,11 @@ email: jic4015@med.cornell.edu */
           liveCms = null;
           populateCmsPeriods();
           renderCms();
-          $("cms-live-note").hidden = true;
-          $("cms-reset").hidden = true;
-          $("cms-refresh-status").dataset.state = "idle";
-          $("cms-refresh-status").textContent =
-            "Restored the verified snapshot retrieved November 11, 2026";
+          $('cms-live-note').hidden = true;
+          $('cms-reset').hidden = true;
+          $('cms-refresh-status').dataset.state = 'idle';
+          $('cms-refresh-status').textContent =
+            'Restored the verified snapshot retrieved November 11, 2026';
         }
 
         // Compare published annual rates only; quarterly unique users cannot be added into annual totals.
@@ -25053,24 +25053,24 @@ email: jic4015@med.cornell.edu */
           ) {
             state.changeFrom = years.filter((y) => y < state.changeTo).at(-1);
           }
-          $("cms-change-from").innerHTML = years
+          $('cms-change-from').innerHTML = years
             .filter((y) => y < state.changeTo)
             .map(
               (y) =>
-                `<option value="${y}"${y === state.changeFrom ? " selected" : ""}>${y}</option>`,
+                `<option value="${y}"${y === state.changeFrom ? ' selected' : ''}>${y}</option>`,
             )
-            .join("");
-          $("cms-change-to").innerHTML = years
+            .join('');
+          $('cms-change-to').innerHTML = years
             .slice(1)
             .map(
               (y) =>
-                `<option value="${y}"${y === state.changeTo ? " selected" : ""}>${y}</option>`,
+                `<option value="${y}"${y === state.changeTo ? ' selected' : ''}>${y}</option>`,
             )
-            .join("");
+            .join('');
           const rows = annualChanges(data, state.changeFrom, state.changeTo);
           const valid = rows.filter((r) => Number.isFinite(r.change));
           const shown =
-            state.changeScope === "all"
+            state.changeScope === 'all'
               ? rows
               : valid
                   .toSorted(
@@ -25084,40 +25084,38 @@ email: jic4015@med.cornell.edu */
               (b.change ?? -Infinity) - (a.change ?? -Infinity) ||
               a.name.localeCompare(b.name),
           );
-          $("cms-change-chart").innerHTML = changeChart(shown, {
+          $('cms-change-chart').innerHTML = changeChart(shown, {
             title: `Annual telehealth use change, ${state.changeFrom} to ${state.changeTo}`,
             selected: state.selected,
           });
           const national = annualChanges(
-            {
-              states: [{ ...data.national, name: "United States", abbr: "US" }],
-            },
+            {states: [{...data.national, name: 'United States', abbr: 'US'}]},
             state.changeFrom,
             state.changeTo,
           )[0];
           const delta = Number.isFinite(national.change)
-            ? `${national.change > 0 ? "+" : ""}${number(national.change, 2)} percentage points`
-            : "unavailable";
-          $("cms-change-caption").textContent =
-            `${state.changeFrom} → ${state.changeTo} · ${state.changeScope === "all" ? "All 50 states and D.C." : "The 10 states/DC with the largest absolute changes"} · U.S. published national change: ${delta}. Change is the later annual rate minus the earlier annual rate, not a relative percent change. Annual unique-user rates are not averages of quarterly rates. ${liveCms ? "Live CMS data; not revalidated." : "Verified snapshot."}`;
-          $("cms-change-table").innerHTML = table(
+            ? `${national.change > 0 ? '+' : ''}${number(national.change, 2)} percentage points`
+            : 'unavailable';
+          $('cms-change-caption').textContent =
+            `${state.changeFrom} → ${state.changeTo} · ${state.changeScope === 'all' ? 'All 50 states and D.C.' : 'The 10 states/DC with the largest absolute changes'} · U.S. published national change: ${delta}. Change is the later annual rate minus the earlier annual rate, not a relative percent change. Annual unique-user rates are not averages of quarterly rates. ${liveCms ? 'Live CMS data; not revalidated.' : 'Verified snapshot.'}`;
+          $('cms-change-table').innerHTML = table(
             [
-              "State",
+              'State',
               `${state.changeFrom} annual use`,
               `${state.changeTo} annual use`,
-              "Change (pp)",
+              'Change (pp)',
             ],
             rows
               .toSorted((a, b) => a.name.localeCompare(b.name))
               .map((r) => [
                 esc(r.name),
-                Number.isFinite(r.fromRate) ? `${number(r.fromRate, 2)}%` : "—",
-                Number.isFinite(r.toRate) ? `${number(r.toRate, 2)}%` : "—",
+                Number.isFinite(r.fromRate) ? `${number(r.fromRate, 2)}%` : '—',
+                Number.isFinite(r.toRate) ? `${number(r.toRate, 2)}%` : '—',
                 Number.isFinite(r.change)
-                  ? `${r.change > 0 ? "+" : ""}${number(r.change, 2)}`
-                  : "—",
+                  ? `${r.change > 0 ? '+' : ''}${number(r.change, 2)}`
+                  : '—',
               ]),
-            { numeric: [1, 2, 3] },
+            {numeric: [1, 2, 3]},
           );
         }
         /**
@@ -25128,7 +25126,7 @@ email: jic4015@med.cornell.edu */
           download(
             annualChanges(activeCms(), state.changeFrom, state.changeTo).map(
               (r) => ({
-                source: "CMS Medicare Telehealth Trends",
+                source: 'CMS Medicare Telehealth Trends',
                 state: r.name,
                 abbreviation: r.abbr,
                 baseline_year: r.fromYear,
@@ -25137,11 +25135,11 @@ email: jic4015@med.cornell.edu */
                 comparison_annual_percent: r.toRate,
                 change_percentage_points: r.change,
                 validation_status: liveCms
-                  ? "Live CMS data; not revalidated"
-                  : "Verified snapshot",
+                  ? 'Live CMS data; not revalidated'
+                  : 'Verified snapshot',
                 cms_retrieved_at: liveCms?.checkedAt || cms.accessDate,
-                cms_source_version: liveCms?.version || "",
-                cms_api_url: liveCms?.apiUrl || "",
+                cms_source_version: liveCms?.version || '',
+                cms_api_url: liveCms?.apiUrl || '',
               }),
             ),
             `cms-annual-change-${state.changeFrom}-${state.changeTo}.csv`,
@@ -25155,50 +25153,47 @@ email: jic4015@med.cornell.edu */
           const rows = nhis.adjusted_model.terms.filter(
             (t) => t.group === state.modelGroup,
           );
-          const reference = rows[0]?.reference || "";
-          $("nhis-forest").innerHTML = oddsRatioChart(rows, {
+          const reference = rows[0]?.reference || '';
+          $('nhis-forest').innerHTML = oddsRatioChart(rows, {
             title: `Adjusted telehealth associations: ${state.modelGroup}`,
             referenceLabel: reference,
           });
-          $("nhis-forest-caption").textContent =
-            `${state.modelGroup === "Age" ? "Age is continuous; each estimate represents one additional year." : `Reference: ${reference}.`} Logarithmic odds-ratio axis; 1 indicates equal odds. Intervals are 95% confidence intervals from the same survey-weighted model. Axis range adjusts to the selected comparison. These are associations, not causal effects.`;
+          $('nhis-forest-caption').textContent =
+            `${state.modelGroup === 'Age' ? 'Age is continuous; each estimate represents one additional year.' : `Reference: ${reference}.`} Logarithmic odds-ratio axis; 1 indicates equal odds. Intervals are 95% confidence intervals from the same survey-weighted model. Axis range adjusts to the selected comparison. These are associations, not causal effects.`;
         }
         /**
          * Compares disjoint insurance domains, excluding the overlapping All total.
          * The shared display helper ensures sparse telehealth numerators remain withheld.
          */
         function renderMepsComparison() {
-          const groups = meps.groups.filter((g) => g.insurance !== "All");
-          $("meps-insurance-chart").innerHTML = dotChart(
-            groups.map((g) => ({
-              ...displayTelehealth(g),
-              label: g.insurance,
-            })),
+          const groups = meps.groups.filter((g) => g.insurance !== 'All');
+          $('meps-insurance-chart').innerHTML = dotChart(
+            groups.map((g) => ({...displayTelehealth(g), label: g.insurance})),
             {
               max: 20,
               title:
-                "Telehealth share of office-based visits by annual insurance coverage",
+                'Telehealth share of office-based visits by annual insurance coverage',
             },
           );
-          $("meps-insurance-table").innerHTML = table(
+          $('meps-insurance-table').innerHTML = table(
             [
-              "Insurance coverage",
-              "Telehealth share",
-              "95% confidence interval",
-              "People with telehealth / all sampled people",
+              'Insurance coverage',
+              'Telehealth share',
+              '95% confidence interval',
+              'People with telehealth / all sampled people',
             ],
             groups.map((g) => {
               const v = displayTelehealth(g);
               return [
                 esc(g.insurance),
                 v.withheld
-                  ? "Not shown · fewer than 30 people"
+                  ? 'Not shown · fewer than 30 people'
                   : percent(v.estimate) + flag(v),
-                v.withheld ? "—" : ci(v.ci_low, v.ci_high),
+                v.withheld ? '—' : ci(v.ci_low, v.ci_high),
                 `${number(g.telehealth_n_persons)} / ${number(g.n_persons)}`,
               ];
             }),
-            { numeric: [1, 2, 3] },
+            {numeric: [1, 2, 3]},
           );
         }
       })();

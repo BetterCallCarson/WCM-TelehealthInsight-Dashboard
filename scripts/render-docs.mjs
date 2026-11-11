@@ -8,9 +8,14 @@
 import {readFile, writeFile} from 'node:fs/promises';
 import path from 'node:path';
 import {extractReportSection} from './report-sections.mjs';
-import {format} from 'prettier';
+import {format, resolveConfig} from 'prettier';
 
 const root = path.resolve(import.meta.dirname, '..');
+// Programmatic formatting does not load project settings automatically.
+// Use the same explicit config as the CLI to keep generated HTML consistent.
+const formattingOptions = await resolveConfig(path.join(root, 'index.html'), {
+  config: path.join(root, 'prettier.config.cjs'),
+});
 const escapeHtml = (value) =>
   String(value).replace(
     /[&<>"']/g,
@@ -311,7 +316,7 @@ if (/href="[^"]*README\.md/i.test(html)) {
 }
 await writeFile(
   path.join(root, 'documentation.html'),
-  await format(html, {filepath: 'documentation.html'}),
+  await format(html, {...formattingOptions, filepath: 'documentation.html'}),
 );
 console.log(
   `Rendered research documentation: ${documents.reduce((n, doc) => n + doc.headings.length, 0)} sections in one standalone page.`,
