@@ -24,7 +24,6 @@ for (const file of [
   'documentation.js',
   'assets',
   'data',
-  'docs',
   'README.md',
 ]) {
   await cp(path.join(root, file), path.join(dist, file), {recursive: true});

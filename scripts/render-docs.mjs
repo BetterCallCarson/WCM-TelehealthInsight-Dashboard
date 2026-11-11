@@ -1,12 +1,13 @@
 // Author: Jiajun (Carson) Chen
 // email: jic4015@med.cornell.edu
 /**
- * @fileoverview Renders maintained Markdown into one independent documentation page.
+ * @fileoverview Renders two README report sections into one independent documentation page.
  * Only the supported Markdown subset is interpreted; raw HTML is escaped.
  * The dashboard sidebar is reused to keep product identity and links consistent.
  */
 import {readFile, writeFile} from 'node:fs/promises';
 import path from 'node:path';
+import {extractReportSection} from './report-sections.mjs';
 import {format} from 'prettier';
 
 const root = path.resolve(import.meta.dirname, '..');
@@ -238,28 +239,25 @@ function renderMarkdown(markdown, prefix) {
 const definitions = [
   {
     id: 'data-quality',
-    file: 'DATA_QUALITY.md',
+    anchor: 'methods-and-quality',
     title: 'Data quality note',
     description:
       'Sources, analytical populations, processing decisions, and interpretation limits',
   },
   {
     id: 'data-manual',
-    file: 'DATA_DICTIONARY.md',
+    anchor: 'data-manual',
     title: 'Data manual',
     description:
       'Field definitions, units, recodes, and downloadable data structures',
   },
 ];
-const documents = await Promise.all(
-  definitions.map(async (doc) => ({
-    ...doc,
-    ...renderMarkdown(
-      await readFile(path.join(root, 'docs', doc.file), 'utf8'),
-      doc.id,
-    ),
-  })),
-);
+// README is the only maintained documentation source; no docs/ directory is needed.
+const report = await readFile(path.join(root, 'README.md'), 'utf8');
+const documents = definitions.map((doc) => ({
+  ...doc,
+  ...renderMarkdown(extractReportSection(report, doc.anchor), doc.id),
+}));
 const documentHtml = documents
   .map(
     (

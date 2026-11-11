@@ -99,6 +99,10 @@ async function annotate(directory) {
     } else {
       header = `// Author: ${author}\n// email: ${email}\n`;
     }
+    // Markdown needs a blank line after metadata to stay Prettier-clean.
+    if (ext === '.md') {
+      header += '\n';
+    }
     // Preserve the interpreter directive and HTML standards-mode declaration.
     const leading = text.match(/^(?:#![^\n]*\n|<!doctype html>\s*\n)/i);
     text = leading

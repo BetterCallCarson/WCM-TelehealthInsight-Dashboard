@@ -1,3 +1,6 @@
+<!-- Author: Jiajun (Carson) Chen
+email: jic4015@med.cornell.edu -->
+
 # Weill Cornell Medicine Telehealth Insights
 
 ## Research and technical report
@@ -27,7 +30,7 @@ The populations and units differ across sources. The dashboard does not estimate
 9. [Interpretation and future maintenance](#interpretation)
 10. [Primary sources](#references)
 
-The report includes the complete substantive content of all six maintained documents in `docs/`. The website continues to present its data quality note and data manual together on one separate documentation page. The README is the repository report, not an additional research module or sidebar destination.
+This report is the single maintained source for research methods, data quality, field definitions, validation, design, and deployment guidance. The website continues to present its data quality note and data manual together on one separate documentation page. The README is the repository report, not an additional research module or sidebar destination.
 
 <a id="scope"></a>
 
@@ -652,13 +655,13 @@ The application is a static HTML/CSS/JavaScript site with precomputed aggregate 
 
 `app.js` coordinates views and downloads; `charts.js` implements shared formatting and SVG rendering; `comparisons.js` implements annual differences and odds-ratio graphics; `cms-live.js` handles catalog discovery, bounded pagination, validation, and candidate construction. The live client returns a complete candidate without mutating the baseline. Only after success does the application select it for descriptive CMS views.
 
-The build renders the two research documents from their Markdown sources and copies an explicit allowlist into `dist/`. Raw downloads and analysis dependencies remain in `.work/`. The optional preview exporter bundles the same modules and aggregates into standalone HTML, verifies expected transformation points, and checks JavaScript syntax before writing output.
+The build renders the two research documents directly from Sections 2 and 4 of this README and copies an explicit allowlist into `dist/`. Raw downloads and analysis dependencies remain in `.work/`. The optional preview exporter bundles the same modules and aggregates into standalone HTML, verifies expected transformation points, and checks JavaScript syntax before writing output.
 
 ### Code documentation and formatting conventions
 
 JavaScript follows Google-style two-space indentation, semicolons, single quotes, explicit control-flow braces, and one variable declaration per statement. File overviews explain module responsibilities. JSDoc describes nontrivial inputs, return values, failure conditions, side effects, units, and invariants. Python uses four-space indentation and Google-style `Args`, `Returns`, and `Raises` sections where relevant. R comments describe survey-domain contracts and independent validation. Comments emphasize why a choice matters rather than narrating obvious assignments.
 
-Prettier 3.6.2 is locked in `package-lock.json`; `.prettierrc.cjs` defines the JavaScript, CSS, HTML, SVG, Markdown, and JSON layout. Black 25.9.0 formats Python with the 80-column setting in `pyproject.toml`. The R analysis uses a consistent two-space layout, formatted with styler 1.11.0. Long source URLs and generated HTML/SVG strings may exceed the preferred width. These are project conventions informed by the [Google JavaScript guide](https://google.github.io/styleguide/jsguide.html) and [Google Python guide](https://google.github.io/styleguide/pyguide.html), not a claim of Google certification or a full lint/type audit.
+Prettier 3.6.2 is locked in `package-lock.json`; `prettier.config.cjs` defines the JavaScript, CSS, HTML, SVG, Markdown, and JSON layout. Black 25.9.0 formats Python with the 80-column setting in `pyproject.toml`. The R analysis uses a consistent two-space layout, formatted with styler 1.11.0. Long source URLs and generated HTML/SVG strings may exceed the preferred width. These are project conventions informed by the [Google JavaScript guide](https://google.github.io/styleguide/jsguide.html) and [Google Python guide](https://google.github.io/styleguide/pyguide.html), not a claim of Google certification or a full lint/type audit.
 
 Source files retain the author and email header. JSON aggregates use `_maintainer` metadata because JSON does not allow comments; agency authorship and provenance remain separate. Dependency lockfiles are tool-generated contracts and retain their native schema. Generated HTML and distribution files receive attribution through the build pipeline.
 
@@ -689,7 +692,7 @@ python3 -m venv .work/format-venv
 
 ### Documentation maintenance
 
-`docs/DATA_QUALITY.md` and `docs/DATA_DICTIONARY.md` are the source documents for the standalone research page. After editing them, rebuild with `npm run docs:render` or `npm run build`, and revise the corresponding report sections. Source/version changes require updates to provenance, validation records, and affected field definitions. Formatting checks alone do not establish scientific validity.
+Sections 2 and 4 of this README are the sources for the standalone data quality note and data manual. After editing the report, rebuild with `npm run docs:render` or `npm run build`. Keep the `methods-and-quality` and `data-manual` anchor IDs: the renderer uses them to locate the sections. There is no separate documentation-source folder to maintain. Source/version changes require updates to provenance, validation records, and affected field definitions. Formatting checks alone do not establish scientific validity.
 
 ### Local preview
 
@@ -774,10 +777,10 @@ telehealth-dashboard/
   app.js                     Filters, views, and data loading
   charts.js                  Chart rendering
   data/                      Aggregate data used by the website
-  docs/                      Documentation sources and maintainer guides
+  README.md                  Report and source for public documentation
   scripts/                   Local preview, build, and reproducible analyses
   tests/                     Data and application checks
-  .github/workflows/pages.yml  GitHub Pages deployment
+  .github/workflows/main.yml  GitHub Pages deployment
   .gitignore                 Local files excluded from the repository
   .work/                     Ignored source downloads and analysis dependencies
   dist/                      Ignored generated website
@@ -801,7 +804,7 @@ flowchart LR
 
 ### 1 Preview and check the project
 
-For an immediate look, double-click `preview.html` in the project folder. It includes the verified chart data and works without a server. The optional CMS source check requires an internet connection. Keep it alongside the `docs/` and `data/` folders so its documentation and download links remain available.
+For an immediate look, double-click `preview.html` in the project folder. It includes the verified chart data and works without a server. The optional CMS source check requires an internet connection. Keep it alongside `documentation.html` and the `data/` folder so its documentation and download links remain available.
 
 To preview source changes and run the checks before publishing, use the commands below. You can regenerate the double-click preview after edits with `npm run preview:export`.
 
@@ -843,10 +846,10 @@ For a personal GitHub Free account, deselect **Keep this code private** to use t
 
 Choose **View on GitHub** and confirm that these paths exist in the repository:
 
-- `.github/workflows/pages.yml`
+- `.github/workflows/main.yml`
 - `.gitignore`
 - `index.html`, `app.js`, `charts.js`, `styles.css`, and `package.json`
-- `data/`, `docs/`, `scripts/`, and `tests/`
+- `data/`, `scripts/`, and `tests/`
 
 The `.work/` folder should not appear. It holds raw downloads and local dependencies. You do not need to upload `dist/` or `preview.html`; both are generated files excluded by `.gitignore`. GitHub builds the hosted website from the source project.
 
@@ -856,7 +859,7 @@ On the repository's GitHub page:
 
 1. Open **Settings → Pages**.
 2. Under **Build and deployment**, set **Source** to **GitHub Actions**.
-3. Keep the supplied `.github/workflows/pages.yml`. You do not need to generate another workflow from a template.
+3. Keep the supplied `.github/workflows/main.yml`. You do not need to generate another workflow from a template.
 4. Open **Actions → Deploy dashboard to GitHub Pages**.
 5. Select **Run workflow**, choose `main`, and run it.
 
@@ -884,7 +887,7 @@ Page refreshes load the shipped verified snapshot. The optional **Check latest C
 | The double-click preview does not reflect my edits | Run `npm run preview:export`, then reopen `preview.html`. It is a generated snapshot.                                                                                               |
 | `npm` is not found                                 | Install Node.js, close Terminal, and reopen it before trying again.                                                                                                                 |
 | Port 4173 is already in use                        | Stop an existing preview with Control + C. On macOS, `PORT=4174 npm start` starts another preview on port 4174.                                                                     |
-| No deployment workflow appears                     | Check that `.github/workflows/pages.yml` was uploaded and the default branch contains it.                                                                                           |
+| No deployment workflow appears                     | Check that `.github/workflows/main.yml` was uploaded and the default branch contains it.                                                                                            |
 | The Actions run is red                             | Open the failed run and read the failed step. A test failure must be resolved before deployment. A Pages configuration error usually means Source is not yet set to GitHub Actions. |
 | Pages gives a 404                                  | Confirm the workflow succeeded and use the exact address under Settings → Pages, including the repository name.                                                                     |
 | The website looks unchanged                        | Confirm the latest commit reached GitHub and the associated deployment succeeded, then reload the page.                                                                             |
@@ -960,6 +963,7 @@ Light interface tints are supporting surfaces: navigation `#F1F1F1`, selected st
 
 The map's warm colors encode increasing telehealth use, not adverse outcomes. Labels choose white or deep ink using actual tile luminance, and the legend has the same four stops as the renderer. Uncertainty is also conveyed with intervals, text, and asterisks. Changes are signed numerical differences; odds ratios use a labelled logarithmic axis and a reference at 1.
 
+<a id="design-review"></a>
 
 ## 8. Design review and attribution
 
