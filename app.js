@@ -907,6 +907,9 @@ async function start() {
   });
   document.addEventListener('focusout', hideTip);
   window.addEventListener('scroll', hideTip, {passive: true});
+  document.querySelector('.project-brand')?.addEventListener('click', () => {
+  window.scrollTo({top: 0, behavior: 'instant'});
+  });
   window.addEventListener('hashchange', () => {
     navigate();
     window.scrollTo({top: 0, behavior: 'instant'});
