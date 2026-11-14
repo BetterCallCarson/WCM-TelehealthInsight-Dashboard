@@ -7,10 +7,11 @@ email: jic4015@med.cornell.edu */
   height: 100%;
 }
 .documentation-page main {
-  max-width: 1740px;
+  max-width: 1700px;
+  margin-inline: auto;
 }
 .documentation-page .hero {
-  padding-bottom: 32px;
+  padding: 32px 0 24px;
 }
 .document-switcher {
   display: flex;

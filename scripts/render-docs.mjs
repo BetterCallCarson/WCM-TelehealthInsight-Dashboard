@@ -273,15 +273,15 @@ const documentHtml = documents
 </section>`,
   )
   .join('\n');
-// Share the dashboard sidebar so product identity and navigation stay consistent.
+// Share the dashboard header so product identity and navigation stay consistent.
 const dashboard = await readFile(path.join(root, 'index.html'), 'utf8');
-const sidebarMatch = dashboard.match(
-  /<aside class="sidebar">[\s\S]*?<\/aside>/,
+const headerMatch = dashboard.match(
+  /<header class="site-header">[\s\S]*?<\/header>/,
 );
-if (!sidebarMatch) {
-  throw Error('Dashboard sidebar not found.');
+if (!headerMatch) {
+  throw Error('Dashboard navigation header not found.');
 }
-const sidebar = sidebarMatch[0]
+const navigation = headerMatch[0]
   .replace(/href="#(states|people|visits|quality)"/g, 'href="./index.html#$1"')
   .replace(/ data-view="[^"]+"/g, '')
   .replace(/ class="active"/g, '')
@@ -302,10 +302,9 @@ ${favicon}<link rel="stylesheet" href="./styles.css"><link rel="stylesheet" href
 </head>
 <body class="documentation-page">
 <a class="skip" href="#main">Skip to documentation</a>
-${sidebar}
+${navigation}
 <main id="main">
-<header class="topbar"><span>The U.S. telehealth landscape</span><a href="./index.html#states">Return to dashboard ↗</a></header>
-<section class="hero"><div class="eyebrow">Data &amp; methods</div><h1>Data documentation</h1><p>Understand the sources, analytical decisions, and fields behind Weill Cornell Medicine Telehealth Insights.</p></section>
+<section class="hero"><h1>Data documentation</h1><p>Sources, definitions, and limitations for the dashboard.</p></section>
 <nav class="document-switcher" aria-label="Documentation sections"><a href="#data-quality" data-document="data-quality" aria-current="true">Data quality note</a><a href="#data-manual" data-document="data-manual">Data manual</a></nav>
 ${documentHtml}
 <footer><span>WCM-TI · CHERY Lab</span><span>Sources retrieved November 11, 2026</span><a href="./index.html#states">Explore the dashboard ↗</a></footer>

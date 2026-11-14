@@ -111,35 +111,72 @@ email: jic4015@med.cornell.edu */
         font-weight: 600;
       }
 
-      /* The research index remains visible alongside the evidence. */
-      .sidebar {
-        width: 264px;
-        position: fixed;
-        inset: 0 auto 0 0;
-        padding: 32px 24px 24px;
-        border-right: 1px solid var(--line);
-        background: var(--surface);
+      /* A shared masthead gives full-width data panels room to breathe. */
+      .site-header {
         display: flex;
-        flex-direction: column;
-        z-index: 4;
-        overflow-y: auto;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px 32px;
+        padding: 18px clamp(20px, 3vw, 60px);
+        border-bottom: 1px solid var(--line);
+        background: var(--white);
+      }
+      .masthead {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 8px 18px;
       }
       .project-brand {
         display: block;
-        width: 208px;
-        max-width: 100%;
-        color: var(--accent);
+        width: 148px;
       }
       .project-brand svg {
         display: block;
         width: 100%;
         height: auto;
       }
+      .site-name {
+        margin: 0;
+        padding-left: 18px;
+        border-left: 1px solid var(--line);
+        line-height: 1.25;
+        color: var(--secondary);
+      }
+      .site-name strong {
+        display: block;
+        color: var(--ink);
+      }
+      .site-nav {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 4px 8px;
+      }
+      .site-nav a {
+        padding: 8px 12px;
+        min-height: 44px;
+        border-radius: var(--radius);
+        line-height: 1.3;
+      }
+      .site-nav a:hover {
+        background: var(--pale);
+      }
+      .site-nav a.active {
+        color: var(--accent);
+        background: var(--selection);
+        font-weight: 600;
+      }
+      .site-nav .documentation-link {
+        border-left: 1px solid var(--line);
+        border-radius: 0;
+      }
       .brand-mark {
         display: block;
-        width: 28px;
-        height: 28px;
-        flex: 0 0 28px;
+        width: 32px;
+        height: 32px;
+        flex: 0 0 32px;
       }
       .brand-mark svg {
         display: block;
@@ -147,131 +184,23 @@ email: jic4015@med.cornell.edu */
         height: 100%;
       }
       .brand-name {
-        display: block;
-        white-space: nowrap;
-        font-size: 24px;
         font-weight: 600;
-        letter-spacing: 0.5px;
-      }
-      .brand-lab {
-        font-weight: 400;
-      }
-      .sidebar-title {
-        margin-top: 24px;
-      }
-      .institution-name {
-        display: block;
-        font: 24px/1.4 var(--sans);
-        color: var(--secondary);
-        max-width: 180px;
-      }
-      .product-name {
-        display: block;
-        font: 36px/1.08 var(--serif);
-        letter-spacing: -1px;
-        margin-top: 8px;
-      }
-      .sidebar-description {
-        font-size: 24px;
-        color: var(--secondary);
-        margin: 20px 0 28px;
-        line-height: 1.6;
-      }
-      .sidebar nav {
-        display: grid;
-        gap: 4px;
-        margin: 0 -8px;
-      }
-      .sidebar nav a {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        min-height: 40px;
-        padding: 8px;
-        border-radius: var(--radius);
-        font-size: 24px;
-        line-height: 1.35;
-      }
-      .sidebar nav a span {
-        display: none;
-      }
-      .sidebar nav a b {
-        margin-left: auto;
-        font-size: 24px;
-        font-weight: 400;
-        opacity: 0;
-      }
-      .sidebar nav a.active {
-        background: var(--selection);
-        color: var(--ink);
-      }
-      .sidebar nav a.active b {
-        opacity: 1;
-      }
-      .sidebar nav a.active span {
-        color: var(--accent);
-      }
-      .sidebar nav a:hover {
-        background: var(--pale);
       }
       .lab-credit {
         display: flex;
         align-items: center;
         gap: 10px;
-        margin-top: 24px;
-        padding-top: 20px;
-        border-top: 1px solid var(--line);
-      }
-      .lab-credit .eyebrow {
-        display: block;
-        font-size: 24px;
-        margin-bottom: 3px;
-      }
-      .sidebar-bottom {
-        margin-top: auto;
-        padding-top: 32px;
       }
       .eyebrow {
-        font: 24px/1.5 var(--sans);
+        font: 24px/1.4 var(--sans);
         color: var(--muted);
-        letter-spacing: 0;
-      }
-      .documentation-link {
-        font-size: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        min-height: 44px;
-        padding: 12px 0;
-        border-top: 1px solid var(--line);
-      }
-      .documentation-link.active {
-        color: var(--accent);
-        font-weight: 600;
       }
       main {
-        margin-left: 264px;
-        max-width: 1640px;
-        padding: 0 40px;
-      }
-      .topbar {
-        flex-wrap: wrap;
-        padding-block: 12px;
-        min-height: 64px;
-        border-bottom: 1px solid var(--line);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 24px;
-        font-size: 24px;
-        color: var(--secondary);
-      }
-      .topbar a {
-        font-size: 24px;
+        width: 100%;
+        padding: 0 clamp(20px, 3vw, 60px);
       }
       .hero {
-        padding: 40px 0 28px;
+        padding: 0;
       }
       .hero .eyebrow {
         color: var(--accent);
@@ -280,7 +209,7 @@ email: jic4015@med.cornell.edu */
         font: clamp(40px, 4.5vw, 68px) / 1.08 var(--serif);
         font-weight: 400;
         letter-spacing: -0.035em;
-        margin: 16px 0 20px;
+        margin: 10px 0 12px;
         text-wrap: balance;
         max-width: 1000px;
       }
@@ -292,42 +221,34 @@ email: jic4015@med.cornell.edu */
         margin: 0;
       }
       .edition {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 8px 24px;
-        padding: 12px 0 16px;
-        border-bottom: 1px solid var(--line);
-        font-size: 24px;
+        margin: 16px 0 0;
         color: var(--muted);
       }
-      .edition > span:first-child {
-        color: var(--ink);
+      .overview {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: clamp(20px, 3vw, 48px);
+        align-items: center;
+        padding: clamp(24px, 4vw, 56px) 0 32px;
       }
-
-      /* Compact summary figures lead into one dominant map or comparison. */
       .metric-grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        margin: 28px 0 32px;
-        padding-bottom: 28px;
-        border-bottom: 1px solid var(--line);
+        border: 1px solid var(--line);
+        border-top: 3px solid var(--accent);
+        border-radius: var(--radius);
+        background: var(--surface);
       }
       .metric {
-        padding: 0 24px;
-        border-right: 1px solid var(--line);
+        padding: 18px 20px;
+        min-width: 0;
       }
-      .metric:first-child {
-        padding-left: 0;
-      }
-      .metric:last-child {
-        border: 0;
-        padding-right: 0;
+      .metric + .metric {
+        border-left: 1px solid var(--line);
       }
       .metric-label {
-        font-size: 24px;
         color: var(--secondary);
-        line-height: 1.5;
+        line-height: 1.35;
       }
       .metric-value {
         display: flex;
@@ -361,11 +282,11 @@ email: jic4015@med.cornell.edu */
         flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
-        gap: 24px;
-        margin-bottom: 20px;
+        gap: 12px 24px;
+        margin-bottom: 16px;
       }
       h2 {
-        font: 28px/1.2 var(--serif);
+        font: clamp(30px, 2.5vw, 40px) / 1.18 var(--serif);
         font-weight: 400;
         letter-spacing: -0.5px;
         margin: 8px 0 0;
@@ -450,7 +371,7 @@ email: jic4015@med.cornell.edu */
       }
       .map-layout {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) 220px;
+        grid-template-columns: minmax(0, 1fr);
         gap: 24px;
         align-items: center;
       }
@@ -460,9 +381,9 @@ email: jic4015@med.cornell.edu */
         grid-template-rows: repeat(8, minmax(66px, auto));
         gap: 4px;
         min-width: 816px;
-        max-width: 920px;
+        width: 100%;
         margin: 8px auto 24px;
-        min-height: 552px;
+        min-height: 500px;
       }
       .state-tile {
         grid-column: var(--col);
@@ -538,9 +459,10 @@ email: jic4015@med.cornell.edu */
         color: var(--secondary);
       }
       .state-detail {
-        border-left: 1px solid var(--line);
-        padding: 8px 0 8px 24px;
-        min-height: 280px;
+        border-left: 3px solid var(--accent);
+        background: var(--surface);
+        padding: 18px;
+        min-width: 0;
       }
       .state-code {
         font-size: 24px;
@@ -569,8 +491,8 @@ email: jic4015@med.cornell.edu */
       }
       .state-detail dl {
         display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 12px 8px;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px 12px;
         font-size: 24px;
         margin: 0;
       }
@@ -596,7 +518,7 @@ email: jic4015@med.cornell.edu */
       }
       .two-column {
         display: grid;
-        grid-template-columns: 1.1fr 1fr;
+        grid-template-columns: minmax(0, 1fr);
         gap: 24px;
       }
       .two-column > .panel {
@@ -735,7 +657,7 @@ email: jic4015@med.cornell.edu */
       .inner {
         padding: 0 0 16px;
         gap: 32px;
-        grid-template-columns: 1fr 1.25fr;
+        grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
       }
       .inner > div {
         min-width: 0;
@@ -1013,281 +935,55 @@ email: jic4015@med.cornell.edu */
         color: var(--muted);
       }
 
-      @media (min-width: 1600px) {
-        main {
-          padding: 0 64px;
-        }
-        .hero {
-          padding-top: 48px;
-        }
-        .map-layout {
-          grid-template-columns: minmax(0, 1fr) 240px;
-          gap: 32px;
+      @media (min-width: 1200px) {
+        .overview:has(.metric-grid:not([hidden])) {
+          grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
         }
       }
-      @media (max-width: 1360px) {
-        main {
-          padding: 0 32px;
+      @media (min-width: 1320px) {
+        .map-layout {
+          grid-template-columns: minmax(0, 1fr) 320px;
+          align-items: start;
         }
+      }
+      @media (min-width: 1680px) {
         .two-column:not(.inner) {
-          grid-template-columns: 1fr;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 24px;
         }
-        .chart {
-          max-width: 900px;
-        }
+      }
+      @media (max-width: 1460px) {
         .inner {
-          grid-template-columns: 1fr;
+          grid-template-columns: minmax(0, 1fr);
         }
         .inner > div + div {
           border-left: 0;
           border-top: 1px solid var(--line);
           padding: 24px 0 0;
         }
-        #payment-chart {
-          max-width: 760px;
-        }
         .quality-grid {
-          gap: 16px;
-        }
-        .quality-card {
-          padding: 20px;
-        }
-      }
-      @media (max-width: 1200px) {
-        .map-layout {
-          grid-template-columns: 1fr;
-        }
-        .state-detail {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 0 24px;
-          border-left: 0;
-          border-top: 1px solid var(--line);
-          padding: 24px 0 0;
-          min-height: 0;
-        }
-        .state-detail .state-code,
-        .state-detail .state-name {
-          grid-column: 1;
-        }
-        .state-detail .state-name {
-          margin: 8px 0;
-        }
-        .state-detail .big-rate {
-          grid-column: 2;
-          grid-row: 1 / 3;
-          text-align: right;
-          align-self: center;
-          margin: 0;
-        }
-        .state-detail .rate-label {
-          grid-column: 2;
-          grid-row: 3;
-          text-align: right;
-        }
-        .state-detail .difference {
-          grid-column: 1;
-          grid-row: 3;
-          border: 0;
-          padding: 0;
-          margin: 0;
-        }
-        .state-detail dl {
-          grid-column: 1 / 3;
-          margin-top: 20px;
-          border-top: 1px solid var(--line);
-          padding-top: 16px;
-        }
-        .quality-grid {
-          grid-template-columns: 1fr;
-        }
-        .quality-card dl {
-          display: grid;
-          grid-template-columns: 120px 1fr;
-          gap: 12px;
-        }
-        .quality-card dt,
-        .quality-card dd {
-          margin: 0;
-        }
-      }
-      @media (max-width: 1000px) {
-        .sidebar {
-          position: relative;
-          width: auto;
-          flex-direction: row;
-          flex-wrap: wrap;
-          align-items: center;
-          gap: 20px;
-          padding: 20px 24px;
-          border-right: 0;
-          border-bottom: 1px solid var(--line);
-          overflow: visible;
-        }
-        .project-brand {
-          width: 176px;
-          flex: 0 0 176px;
-        }
-        .sidebar-title {
-          display: flex;
-          align-items: center;
-          gap: 16px;
-          margin: 0;
-        }
-        .institution-name {
-          font-size: 24px;
-          max-width: 108px;
-        }
-        .product-name {
-          font-size: 27px;
-          line-height: 1.05;
-          margin: 0;
-          letter-spacing: -0.5px;
-        }
-        .sidebar-description {
-          width: 100%;
-          margin: 0;
-          font-size: 24px;
-        }
-        .sidebar nav {
-          display: flex;
-          gap: 4px;
-          width: 100%;
-          margin: 0;
-        }
-        .sidebar nav a {
-          flex: 1;
-        }
-        .lab-credit {
-          margin: 0;
-          padding: 0;
-          border: 0;
-        }
-        .sidebar-bottom {
-          display: block;
-          margin: 0 0 0 auto;
-          padding: 0;
-        }
-        .documentation-link {
-          border: 0;
-          padding: 8px 0;
-          min-height: 36px;
-        }
-        .sidebar nav a {
-          font-size: 24px;
-          gap: 8px;
-        }
-        .sidebar nav a b {
-          display: none;
-        }
-        .brand-mark {
-          width: 28px;
-          height: 28px;
-          flex-basis: 28px;
-        }
-        main {
-          margin-left: 0;
-          padding: 0 28px;
-        }
-        .hero h1 {
-          font-size: 56px;
-        }
-        .metric-value {
-          font-size: 40px;
-        }
-        .map-layout {
-          grid-template-columns: minmax(0, 1fr) 208px;
-        }
-        .state-detail {
-          display: block;
-          border-top: 0;
-          border-left: 1px solid var(--line);
-          padding: 8px 0 8px 20px;
-        }
-        .state-detail .big-rate {
-          text-align: left;
-          font-size: 44px;
-          margin: 20px 0 8px;
-        }
-        .state-detail .rate-label {
-          text-align: left;
-        }
-        .state-detail .difference {
-          margin: 16px 0;
-          padding-bottom: 16px;
-          border-bottom: 1px solid var(--line);
-        }
-        .state-detail dl {
-          margin: 0;
-          padding: 0;
-          border: 0;
+          grid-template-columns: minmax(0, 1fr);
         }
       }
       @media (max-width: 760px) {
-        .sidebar {
-          gap: 16px;
-          padding: 20px;
+        .site-header {
+          align-items: start;
         }
-        .project-brand {
-          width: 152px;
-          flex-basis: 152px;
+        .masthead {
+          gap: 12px;
         }
-        .sidebar-title {
-          flex: 1;
-          min-width: 160px;
-          display: block;
+        .site-name {
+          border: 0;
+          padding: 0;
         }
-        .institution-name {
-          max-width: none;
-          font-size: 24px;
+        .site-nav {
+          margin-inline: -8px;
         }
-        .product-name {
-          font-size: 26px;
-          margin-top: 4px;
+        .site-nav a {
+          padding: 8px;
         }
-        .product-name br {
-          display: block;
-        }
-        .lab-credit .eyebrow {
-          font-size: 24px;
-        }
-        .lab-credit .brand-name {
-          font-size: 24px;
-        }
-        .sidebar .lab-credit .brand-mark {
-          width: 24px;
-          height: 24px;
-          flex-basis: 24px;
-        }
-        .documentation-link {
-          font-size: 24px;
-          gap: 8px;
-        }
-        .sidebar nav {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 4px;
-          width: 100%;
-          margin: 0;
-        }
-        .sidebar nav a {
-          min-height: 44px;
-          padding: 8px 12px;
-          font-size: 24px;
-        }
-        main {
-          padding: 0 20px;
-        }
-        .topbar {
-          min-height: 56px;
-          gap: 16px;
-          font-size: 24px;
-        }
-        .topbar a {
-          font-size: 24px;
-        }
-        .hero {
-          padding: 28px 0 24px;
+        .site-nav .documentation-link {
+          border-left: 0;
         }
         .hero h1 {
           font-size: 40px;
@@ -1297,45 +993,6 @@ email: jic4015@med.cornell.edu */
         .hero p {
           font-size: 24px;
           line-height: 1.7;
-        }
-        .edition {
-          gap: 8px 16px;
-          font-size: 24px;
-        }
-        .edition > span:last-child {
-          width: 100%;
-        }
-        .metric-grid {
-          grid-template-columns: 1fr 1fr;
-          gap: 20px 0;
-          margin: 24px 0;
-          padding-bottom: 24px;
-        }
-        .metric {
-          padding: 0 12px;
-        }
-        .metric:first-child {
-          grid-column: 1 / 3;
-          border: 0;
-          padding: 0 0 20px;
-          border-bottom: 1px solid var(--line);
-        }
-        .metric:nth-child(2) {
-          padding-left: 0;
-        }
-        .metric:last-child {
-          padding-left: 16px;
-        }
-        .metric-value {
-          font-size: 36px;
-          margin: 8px 0;
-        }
-        .metric:first-child .metric-value {
-          font-size: 48px;
-        }
-        .metric-label,
-        .metric-sub {
-          font-size: 24px;
         }
         .panel {
           padding: 20px 16px;
@@ -1378,7 +1035,7 @@ email: jic4015@med.cornell.edu */
           padding: 4px 16px;
         }
         .map-layout {
-          grid-template-columns: 1fr;
+          grid-template-columns: minmax(0, 1fr);
           gap: 20px;
         }
         .tile-map {
@@ -1394,44 +1051,6 @@ email: jic4015@med.cornell.edu */
         }
         .map-legend > div {
           width: 80px;
-        }
-        .state-detail {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 0 16px;
-          border-left: 0;
-          border-top: 1px solid var(--line);
-          padding: 20px 0 0;
-        }
-        .state-detail .state-name {
-          font-size: 28px;
-        }
-        .state-detail .big-rate {
-          text-align: right;
-          font-size: 44px;
-          grid-column: 2;
-          grid-row: 1 / 3;
-          margin: 0;
-        }
-        .state-detail .rate-label {
-          text-align: right;
-          grid-column: 2;
-          grid-row: 3;
-          font-size: 24px;
-        }
-        .state-detail .difference {
-          grid-column: 1;
-          grid-row: 3;
-          padding: 0;
-          border: 0;
-          margin: 0;
-          font-size: 24px;
-        }
-        .state-detail dl {
-          grid-column: 1 / 3;
-          margin-top: 20px;
-          border-top: 1px solid var(--line);
-          padding-top: 16px;
         }
         .chart {
           min-height: 200px;
@@ -1631,24 +1250,15 @@ email: jic4015@med.cornell.edu */
       }
 
       @media (max-width: 600px) {
-        .sidebar nav,
         .metric-grid {
           grid-template-columns: minmax(0, 1fr);
         }
-        .metric,
-        .metric:first-child,
-        .metric:nth-child(2),
-        .metric:last-child {
-          grid-column: 1;
-          padding: 0 0 16px;
-          border-right: 0;
+        .metric + .metric {
+          border-left: 0;
+          border-top: 1px solid var(--line);
         }
-        .state-detail {
-          display: block;
-        }
-        .state-detail .big-rate,
-        .state-detail .rate-label {
-          text-align: left;
+        .metric {
+          padding: 12px 16px;
         }
         .state-detail dl {
           grid-template-columns: minmax(0, 1fr);
@@ -1665,158 +1275,88 @@ email: jic4015@med.cornell.edu */
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
-    <aside class="sidebar">
-      <a
-        class="project-brand"
-        href="#states"
-        aria-label="Weill Cornell Medicine Telehealth Insights home"
-        ><svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 336 76"
-          fill="none"
-          aria-hidden="true"
-        >
-          <g fill="#B31B1B">
-            <path
-              d="M4 8H17L27 46L38 10Q38.6 8 40.5 8H51.5Q53.4 8 54 10L65 46L75 8H88L73 64Q72.5 66 70.5 66H60Q58.5 66 58 64L46 27L34 64Q33.5 66 32 66H21.5Q19.5 66 19 64Z"
-            />
-            <path
-              d="M145 14L139 26C135 21 130 19 124 19C114 19 108 26 108 37C108 48 114 55 124 55C130 55 135 52 139 48L147 59C141 66 134 69 124 69C105 69 93 56 93 37C93 18 106 6 124 6C133 6 140 9 145 14Z"
-            />
-            <path
-              d="M155 66V8H169Q171 8 172 10L186 38L200 10Q201 8 203 8H217V66H203V33L192 54H180L169 33V66Z"
-            />
-          </g>
-          <path d="M228 33H246V41H226V35Z" fill="#B31B1B" />
-          <g fill="#E7751D">
-            <path d="M254 8H306L302 22H288V66H272V22H254Z" />
-            <path d="M316 8H332V62L328 66H316Z" />
-          </g></svg
-      ></a>
-      <div class="sidebar-title">
-        <span class="institution-name">Weill Cornell Medicine</span
-        ><span class="product-name">Telehealth<br />Insights</span>
-      </div>
-      <p class="sidebar-description">
-        Understanding telehealth use across the United States.
-      </p>
-      <nav aria-label="Research modules">
-        <a href="#states" data-view="states" class="active"
-          ><span>01</span> States &amp; access <b>↗</b></a
-        >
-        <a href="#people" data-view="people"
-          ><span>02</span> Population differences <b>↗</b></a
-        >
-        <a href="#visits" data-view="visits"
-          ><span>03</span> Visits &amp; payments <b>↗</b></a
-        >
-        <a href="#quality" data-view="quality"
-          ><span>04</span> Data &amp; methods <b>↗</b></a
-        >
-      </nav>
-      <div class="lab-credit">
-        <span class="brand-mark"
+    <header class="site-header">
+      <div class="masthead">
+        <a
+          class="project-brand"
+          href="#states"
+          aria-label="Weill Cornell Medicine Telehealth Insights home"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 64 64"
+            viewBox="0 0 336 76"
             fill="none"
             aria-hidden="true"
           >
-            <rect width="64" height="64" rx="18" fill="#B31B1B" />
-            <g transform="translate(7 6) scale(.78)">
+            <g fill="#B31B1B">
               <path
-                d="M19 34.5C20.4 25.9 26 21.2 34 15.5C34.2 24.1 39.2 27.8 44 34.5"
-                stroke="white"
-                stroke-width="4.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                d="M4 8H17L27 46L38 10Q38.6 8 40.5 8H51.5Q53.4 8 54 10L65 46L75 8H88L73 64Q72.5 66 70.5 66H60Q58.5 66 58 64L46 27L34 64Q33.5 66 32 66H21.5Q19.5 66 19 64Z"
               />
               <path
-                d="M34 15.5C35.2 8.5 40.7 5.3 48 6C47.4 12.6 42.6 16.9 34 15.5Z"
-                fill="white"
+                d="M145 14L139 26C135 21 130 19 124 19C114 19 108 26 108 37C108 48 114 55 124 55C130 55 135 52 139 48L147 59C141 66 134 69 124 69C105 69 93 56 93 37C93 18 106 6 124 6C133 6 140 9 145 14Z"
               />
               <path
-                d="M19.5 31C12.6 31 7.5 36.1 7.5 43C7.5 50.2 12.9 56 19.5 56C26.1 56 31.5 50.2 31.5 43C31.5 36.1 26.4 31 19.5 31Z"
-                fill="white"
-              />
-              <path
-                d="M44.5 31C37.6 31 32.5 36.1 32.5 43C32.5 50.2 37.9 56 44.5 56C51.1 56 56.5 50.2 56.5 43C56.5 36.1 51.4 31 44.5 31Z"
-                fill="white"
+                d="M155 66V8H169Q171 8 172 10L186 38L200 10Q201 8 203 8H217V66H203V33L192 54H180L169 33V66Z"
               />
             </g>
-          </svg>
-        </span>
-        <div>
-          <span class="eyebrow">A research resource by</span
-          ><span class="brand-name"
-            >CHERY <span class="brand-lab">LAB</span></span
-          >
-        </div>
+            <path d="M228 33H246V41H226V35Z" fill="#B31B1B" />
+            <g fill="#E7751D">
+              <path d="M254 8H306L302 22H288V66H272V22H254Z" />
+              <path d="M316 8H332V62L328 66H316Z" />
+            </g></svg
+        ></a>
+        <p class="site-name">
+          Weill Cornell Medicine <strong>Telehealth Insights</strong>
+        </p>
       </div>
-      <div class="sidebar-bottom">
+      <nav class="site-nav" aria-label="Research modules">
+        <a href="#states" data-view="states" class="active">States</a>
+        <a href="#people" data-view="people">Population</a>
+        <a href="#visits" data-view="visits">Visits</a>
+        <a href="#quality" data-view="quality">Methods</a>
         <a class="documentation-link" href="./documentation.html"
-          >Data documentation <span aria-hidden="true">↗</span></a
+          >Data documentation</a
         >
-      </div>
-    </aside>
+      </nav>
+    </header>
     <main id="main">
-      <header class="topbar">
-        <span>The U.S. telehealth landscape</span
-        ><a href="./documentation.html#data-quality">Sources & methodology</a>
-      </header>
-      <section class="hero">
-        <div>
-          <div class="eyebrow" id="hero-kicker">
-            01 / Geography & connectivity
-          </div>
-          <h1 id="hero-title">Telehealth, across states</h1>
-          <p id="hero-description">
-            Compare state telehealth rates, trends, broadband access, and
-            income.
-          </p>
+      <div class="overview">
+        <div class="overview-intro">
+          <section class="hero">
+            <div>
+              <div class="eyebrow" id="hero-kicker">States &amp; access</div>
+              <h1 id="hero-title">Telehealth, across states</h1>
+              <p id="hero-description">
+                Compare state telehealth rates, trends, broadband access, and
+                income.
+              </p>
+            </div>
+          </section>
+          <p class="edition">Verified snapshot · Nov 11, 2026</p>
         </div>
-      </section>
-      <div class="edition">
-        <span>Data snapshot</span
-        ><span>2024 focus · Verified CMS trends 2020–2025</span
-        ><span>Data retrieved Nov 11, 2026</span>
+        <div
+          id="cms-metrics"
+          class="metric-grid"
+          data-metric-view="states"
+          hidden
+        ></div>
+        <div
+          id="nhis-metrics"
+          class="metric-grid"
+          data-metric-view="people"
+          hidden
+        ></div>
+        <div
+          id="meps-metrics"
+          class="metric-grid"
+          data-metric-view="visits"
+          hidden
+        ></div>
       </div>
       <div id="loading" role="status" class="loading">
         Loading the research data…
       </div>
       <div id="error" role="alert" hidden class="notice"></div>
       <section id="view-states" class="view" hidden>
-        <div class="metric-grid" id="cms-metrics"></div>
-        <section class="source-update" aria-labelledby="cms-update-heading">
-          <div class="update-heading">
-            <div>
-              <h2 id="cms-update-heading">CMS data updates</h2>
-            </div>
-            <button id="cms-refresh" class="primary-button" disabled>
-              Check latest CMS data
-            </button>
-          </div>
-          <p
-            id="cms-refresh-status"
-            class="update-status"
-            role="status"
-            aria-live="polite"
-          >
-            Showing the verified snapshot retrieved November 11, 2026
-          </p>
-          <div class="update-links">
-            <a
-              href="https://data.cms.gov/summary-statistics-on-use-and-payments/medicare-medicaid-service-type-reports/medicare-telehealth-trends"
-              target="_blank"
-              rel="noreferrer"
-              >Visit the CMS source ↗</a
-            ><a href="./documentation.html#data-quality"
-              >How live updates are handled ↗</a
-            ><button id="cms-reset" class="text-button" hidden>
-              Restore verified snapshot
-            </button>
-          </div>
-        </section>
         <p id="cms-live-note" class="live-note" hidden>
           <strong>Live CMS data · not revalidated</strong> The map, table,
           summary counts, trend chart, and annual comparisons use data fetched
@@ -1826,8 +1366,7 @@ email: jic4015@med.cornell.edu */
         <section class="panel map-panel">
           <div class="section-heading">
             <div>
-              <span class="eyebrow">The geography of use</span>
-              <h2>One country, different patterns</h2>
+              <h2>Telehealth use by state</h2>
             </div>
             <button class="text-button" id="cms-download">
               Download data ↓
@@ -1884,12 +1423,41 @@ email: jic4015@med.cornell.edu */
           <div id="cms-table-wrap" class="table-wrap" hidden></div>
           <p class="source-line" id="cms-source"></p>
         </section>
+        <section class="source-update" aria-labelledby="cms-update-heading">
+          <div class="update-heading">
+            <div>
+              <h2 id="cms-update-heading">CMS data updates</h2>
+            </div>
+            <button id="cms-refresh" class="primary-button" disabled>
+              Check latest CMS data
+            </button>
+          </div>
+          <p
+            id="cms-refresh-status"
+            class="update-status"
+            role="status"
+            aria-live="polite"
+          >
+            Showing the verified snapshot retrieved November 11, 2026
+          </p>
+          <div class="update-links">
+            <a
+              href="https://data.cms.gov/summary-statistics-on-use-and-payments/medicare-medicaid-service-type-reports/medicare-telehealth-trends"
+              target="_blank"
+              rel="noreferrer"
+              >Visit the CMS source ↗</a
+            ><a href="./documentation.html#data-quality"
+              >How live updates are handled ↗</a
+            ><button id="cms-reset" class="text-button" hidden>
+              Restore verified snapshot
+            </button>
+          </div>
+        </section>
         <div class="two-column">
           <section class="panel">
             <div class="section-heading">
               <div>
-                <span class="eyebrow">Over time</span>
-                <h2 id="trend-title">A changing pattern of use</h2>
+                <h2 id="trend-title">Quarterly telehealth use</h2>
               </div>
             </div>
             <div id="trend-legend" class="chart-legend"></div>
@@ -1964,7 +1532,6 @@ email: jic4015@med.cornell.edu */
         </div>
       </section>
       <section id="view-people" class="view" hidden>
-        <div id="nhis-metrics" class="metric-grid"></div>
         <section class="panel">
           <div class="section-heading">
             <div>
@@ -2012,7 +1579,6 @@ email: jic4015@med.cornell.edu */
         </div>
       </section>
       <section id="view-visits" class="view" hidden>
-        <div id="meps-metrics" class="metric-grid"></div>
         <section class="panel">
           <div class="section-heading">
             <div>
@@ -2160,6 +1726,45 @@ email: jic4015@med.cornell.edu */
         </div>
       </section>
       <footer>
+        <div class="lab-credit">
+          <span class="brand-mark"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 64 64"
+              fill="none"
+              aria-hidden="true"
+            >
+              <rect width="64" height="64" rx="18" fill="#B31B1B" />
+              <g transform="translate(7 6) scale(.78)">
+                <path
+                  d="M19 34.5C20.4 25.9 26 21.2 34 15.5C34.2 24.1 39.2 27.8 44 34.5"
+                  stroke="white"
+                  stroke-width="4.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M34 15.5C35.2 8.5 40.7 5.3 48 6C47.4 12.6 42.6 16.9 34 15.5Z"
+                  fill="white"
+                />
+                <path
+                  d="M19.5 31C12.6 31 7.5 36.1 7.5 43C7.5 50.2 12.9 56 19.5 56C26.1 56 31.5 50.2 31.5 43C31.5 36.1 26.4 31 19.5 31Z"
+                  fill="white"
+                />
+                <path
+                  d="M44.5 31C37.6 31 32.5 36.1 32.5 43C32.5 50.2 37.9 56 44.5 56C51.1 56 56.5 50.2 56.5 43C56.5 36.1 51.4 31 44.5 31Z"
+                  fill="white"
+                />
+              </g>
+            </svg>
+          </span>
+          <div>
+            <span class="eyebrow">A research resource by</span
+            ><span class="brand-name"
+              >CHERY <span class="brand-lab">LAB</span></span
+            >
+          </div>
+        </div>
         <span>WCM-TI · CHERY Lab</span
         ><span>For research · Not clinical decision support</span
         ><a href="#quality">About the data ↗</a>
@@ -23985,22 +23590,22 @@ email: jic4015@med.cornell.edu */
         };
         const heroes = {
           states: [
-            '01 / Geography & connectivity',
+            'States & access',
             'Telehealth, across states',
             'Compare state telehealth rates, trends, broadband access, and income.',
           ],
           people: [
-            '02 / Population & access',
+            'Population differences',
             'Who uses telehealth?',
             'Compare telehealth use across adult population groups.',
           ],
           visits: [
-            '03 / Modality & payments',
+            'Visits & payments',
             'Visits, coverage & payments',
             'Compare visit types and payments across insurance groups.',
           ],
           quality: [
-            '04 / Data & methods',
+            'Research reference',
             'Data & methods',
             'Understand the populations, measures, exclusions, and uncertainty behind every view in this dashboard.',
           ],
@@ -24096,9 +23701,9 @@ email: jic4015@med.cornell.edu */
           const rows = data.states.map((s) => ({...s, ...currentSeries(s)}));
           $('cms-metrics').innerHTML =
             metric(
-              `${esc(s.name)} · telehealth use`,
+              `Telehealth use`,
               percent(r?.telehealthPct),
-              `${esc(state.period)} · Medicare Part B fee-for-service`,
+              `${esc(s.name)} · ${esc(state.period)}`,
             ) +
             metric(
               'Telehealth users',
@@ -24106,9 +23711,9 @@ email: jic4015@med.cornell.edu */
               `${number(r?.telehealthUsers)} beneficiaries`,
             ) +
             metric(
-              'Eligible service users',
+              'Eligible users',
               compact(r?.eligibleUsers),
-              'Denominator for the displayed rate',
+              `${number(r?.eligibleUsers)} beneficiaries`,
             );
           const vals = rows.map((s) => s.telehealthPct).filter(Number.isFinite);
           const min = Math.min(...vals);
@@ -24512,6 +24117,9 @@ email: jic4015@med.cornell.edu */
           document
             .querySelectorAll('.view')
             .forEach((el) => (el.hidden = el.id !== `view-${state.view}`));
+          document.querySelectorAll('[data-metric-view]').forEach((el) => {
+            el.hidden = el.dataset.metricView !== state.view;
+          });
           document.querySelectorAll('[data-view]').forEach((el) => {
             el.classList.toggle('active', el.dataset.view === state.view);
             el.setAttribute(
@@ -24973,10 +24581,9 @@ email: jic4015@med.cornell.edu */
         function renderEdition() {
           const edition = document.querySelector('.edition');
           if (state.view === 'states' && liveCms) {
-            edition.innerHTML = `<span>Live CMS view · not revalidated</span><span>Latest available: ${esc(liveCms.latestPeriod)}</span><span>Fetched ${esc(formatCheckedAt(liveCms.checkedAt))}</span>`;
+            edition.textContent = `Live CMS · ${liveCms.latestPeriod} · not revalidated. Fetched ${formatCheckedAt(liveCms.checkedAt)}.`;
           } else {
-            edition.innerHTML =
-              '<span>Verified data snapshot</span><span>2024 focus · CMS trends 2020–2025</span><span>Data retrieved Nov 11, 2026</span>';
+            edition.textContent = 'Verified snapshot · Nov 11, 2026';
           }
         }
         /**

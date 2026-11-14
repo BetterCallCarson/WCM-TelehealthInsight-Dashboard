@@ -97,22 +97,22 @@ const positions = {
 };
 const heroes = {
   states: [
-    '01 / Geography & connectivity',
+    'States & access',
     'Telehealth, across states',
     'Compare state telehealth rates, trends, broadband access, and income.',
   ],
   people: [
-    '02 / Population & access',
+    'Population differences',
     'Who uses telehealth?',
     'Compare telehealth use across adult population groups.',
   ],
   visits: [
-    '03 / Modality & payments',
+    'Visits & payments',
     'Visits, coverage & payments',
     'Compare visit types and payments across insurance groups.',
   ],
   quality: [
-    '04 / Data & methods',
+    'Research reference',
     'Data & methods',
     'Understand the populations, measures, exclusions, and uncertainty behind every view in this dashboard.',
   ],
@@ -203,9 +203,9 @@ function renderCms() {
   const rows = data.states.map((s) => ({...s, ...currentSeries(s)}));
   $('cms-metrics').innerHTML =
     metric(
-      `${esc(s.name)} · telehealth use`,
+      `Telehealth use`,
       percent(r?.telehealthPct),
-      `${esc(state.period)} · Medicare Part B fee-for-service`,
+      `${esc(s.name)} · ${esc(state.period)}`,
     ) +
     metric(
       'Telehealth users',
@@ -213,9 +213,9 @@ function renderCms() {
       `${number(r?.telehealthUsers)} beneficiaries`,
     ) +
     metric(
-      'Eligible service users',
+      'Eligible users',
       compact(r?.eligibleUsers),
-      'Denominator for the displayed rate',
+      `${number(r?.eligibleUsers)} beneficiaries`,
     );
   const vals = rows.map((s) => s.telehealthPct).filter(Number.isFinite);
   const min = Math.min(...vals);
@@ -597,6 +597,9 @@ function navigate() {
   document
     .querySelectorAll('.view')
     .forEach((el) => (el.hidden = el.id !== `view-${state.view}`));
+  document.querySelectorAll('[data-metric-view]').forEach((el) => {
+    el.hidden = el.dataset.metricView !== state.view;
+  });
   document.querySelectorAll('[data-view]').forEach((el) => {
     el.classList.toggle('active', el.dataset.view === state.view);
     el.setAttribute(
@@ -1039,10 +1042,9 @@ function formatCheckedAt(value) {
 function renderEdition() {
   const edition = document.querySelector('.edition');
   if (state.view === 'states' && liveCms) {
-    edition.innerHTML = `<span>Live CMS view · not revalidated</span><span>Latest available: ${esc(liveCms.latestPeriod)}</span><span>Fetched ${esc(formatCheckedAt(liveCms.checkedAt))}</span>`;
+    edition.textContent = `Live CMS · ${liveCms.latestPeriod} · not revalidated. Fetched ${formatCheckedAt(liveCms.checkedAt)}.`;
   } else {
-    edition.innerHTML =
-      '<span>Verified data snapshot</span><span>2024 focus · CMS trends 2020–2025</span><span>Data retrieved Nov 11, 2026</span>';
+    edition.textContent = 'Verified snapshot · Nov 11, 2026';
   }
 }
 /**
