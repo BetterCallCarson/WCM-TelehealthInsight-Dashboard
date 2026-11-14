@@ -99,17 +99,17 @@ const heroes = {
   states: [
     '01 / Geography & connectivity',
     'Telehealth, across states',
-    'Explore how telehealth use varies across U.S. states—and the context of broadband access and household income.',
+    'Compare state telehealth rates, trends, broadband access, and income.',
   ],
   people: [
     '02 / Population & access',
     'Who uses telehealth?',
-    'Explore telehealth use across insurance coverage, age, education, Internet access, and self-rated health.',
+    'Compare telehealth use across adult population groups.',
   ],
   visits: [
     '03 / Modality & payments',
     'Visits, coverage & payments',
-    'Explore how office-based care is delivered and what is paid, across phone, video, and in-person visits.',
+    'Compare visit types and payments across insurance groups.',
   ],
   quality: [
     '04 / Data & methods',
@@ -908,7 +908,7 @@ async function start() {
   document.addEventListener('focusout', hideTip);
   window.addEventListener('scroll', hideTip, {passive: true});
   document.querySelector('.project-brand')?.addEventListener('click', () => {
-  window.scrollTo({top: 0, behavior: 'instant'});
+    window.scrollTo({top: 0, behavior: 'instant'});
   });
   window.addEventListener('hashchange', () => {
     navigate();
@@ -1260,7 +1260,7 @@ function renderNhisForest() {
     referenceLabel: reference,
   });
   $('nhis-forest-caption').textContent =
-    `${state.modelGroup === 'Age' ? 'Age is continuous; each estimate represents one additional year.' : `Reference: ${reference}.`} Logarithmic odds-ratio axis; 1 indicates equal odds. Intervals are 95% confidence intervals from the same survey-weighted model. Axis range adjusts to the selected comparison. These are associations, not causal effects.`;
+    `${state.modelGroup === 'Age' ? 'Age is continuous; each estimate represents one additional year.' : `Reference: ${reference}.`} Odds ratios use a log scale, with equal odds at 1. Bars show 95% confidence intervals.`;
 }
 /**
  * Compares disjoint insurance domains, excluding the overlapping All total.

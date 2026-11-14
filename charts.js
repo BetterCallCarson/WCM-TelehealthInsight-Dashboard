@@ -131,7 +131,7 @@ export function colorFor(value, min, max) {
 }
 const tooltip = (label) =>
   `data-tip="${escapeHtml(label)}" aria-label="${escapeHtml(label)}" tabindex="0"`;
-const tickStyle = 'style="font-size:14px"';
+const tickStyle = 'style="font-size:15px"';
 
 /**
  * Renders ordered quarterly series on a shared zero-based percent axis.
@@ -258,7 +258,7 @@ export function scatterChart(
     const cx = x(chosen.x);
     const cy = y(chosen.y);
     const placeLeft = cx > width - m.r - 40;
-    selectedLabel = `<text class="chart-selection-label" style="font-size:14px;fill:var(--accent, #b31b1b)" x="${cx + (placeLeft ? -10 : 10)}" y="${Math.max(m.t + 12, cy - 12)}" text-anchor="${placeLeft ? 'end' : 'start'}">${escapeHtml(chosen.abbr)}</text>`;
+    selectedLabel = `<text class="chart-selection-label" style="font-size:15px;fill:var(--accent, #b31b1b)" x="${cx + (placeLeft ? -10 : 10)}" y="${Math.max(m.t + 12, cy - 12)}" text-anchor="${placeLeft ? 'end' : 'start'}">${escapeHtml(chosen.abbr)}</text>`;
   }
   return `<svg class="scatter-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="2024 state telehealth use versus ${escapeHtml(xlabel)}"><title>2024 telehealth use versus ${escapeHtml(xlabel)}</title>${grid}${circles}${selectedLabel}<text class="chart-axis-title" ${tickStyle} x="${(width + m.l - m.r) / 2}" y="${height - 12}" text-anchor="middle">${escapeHtml(xlabel)}</text></svg>`;
 }
@@ -301,7 +301,7 @@ export function dotChart(
   let grid = '';
   for (let i = 0; i <= 4; i++) {
     const v = (xmax * i) / 4;
-    grid += `<line class="chart-grid" x1="${x(v)}" x2="${x(v)}" y1="12" y2="${height - 36}"/><text class="chart-tick" style="font-size:${compact ? 12 : 14}px" x="${x(v)}" y="${height - 12}" text-anchor="middle">${unit === 'percent' ? number(v, Number.isInteger(v) ? 0 : 1) + '%' : '$' + number(v)}</text>`;
+    grid += `<line class="chart-grid" x1="${x(v)}" x2="${x(v)}" y1="12" y2="${height - 36}"/><text class="chart-tick" style="font-size:${compact ? 14 : 15}px" x="${x(v)}" y="${height - 12}" text-anchor="middle">${unit === 'percent' ? number(v, Number.isInteger(v) ? 0 : 1) + '%' : '$' + number(v)}</text>`;
   }
   const marks = rows
     .map((r, i) => {
@@ -309,12 +309,12 @@ export function dotChart(
       const has = Number.isFinite(r.estimate);
       const f = unit === 'percent' ? percent : dollars;
       const label = escapeHtml(r.label);
-      const labelStyle = `style="font-size:${compact ? 12 : 14}px;fill:var(--ink, #000000)"`;
+      const labelStyle = `style="font-size:${compact ? 14 : 15}px;fill:var(--ink, #000000)"`;
       const interval =
         Number.isFinite(r.ci_low) && Number.isFinite(r.ci_high)
           ? `<line x1="${x(Math.max(0, r.ci_low))}" x2="${x(r.ci_high)}" y1="${y}" y2="${y}" stroke="var(--series, #cf4520)" stroke-width="2"/><path d="M${x(Math.max(0, r.ci_low))} ${y - 5}v10 M${x(r.ci_high)} ${y - 5}v10" stroke="var(--series, #cf4520)"/>`
           : '';
-      return `<text class="chart-tick chart-row-label" x="0" y="${y + 4}" ${labelStyle}>${label}</text>${has ? `${interval}<circle class="estimate-point" cx="${x(r.estimate)}" cy="${y}" r="5" fill="${r.unstable ? 'var(--accent, #b31b1b)' : 'var(--series, #cf4520)'}" ${tooltip(`${r.label}: ${f(r.estimate)}; 95% CI ${ci(r.ci_low, r.ci_high, unit === 'percent' ? '%' : ' dollars')}; n=${number(r.n)}`)}/><text class="chart-tick chart-value" x="${width - 4}" y="${y + 4}" text-anchor="end" ${labelStyle}>${f(r.estimate)}${r.unstable ? ' *' : ''}</text>` : `<text class="chart-tick" style="font-size:${compact ? 12 : 14}px" x="${left}" y="${y + 4}">${r.withheld ? 'Not shown' : 'Not estimated'}</text>`}`;
+      return `<text class="chart-tick chart-row-label" x="0" y="${y + 4}" ${labelStyle}>${label}</text>${has ? `${interval}<circle class="estimate-point" cx="${x(r.estimate)}" cy="${y}" r="5" fill="${r.unstable ? 'var(--accent, #b31b1b)' : 'var(--series, #cf4520)'}" ${tooltip(`${r.label}: ${f(r.estimate)}; 95% CI ${ci(r.ci_low, r.ci_high, unit === 'percent' ? '%' : ' dollars')}; n=${number(r.n)}`)}/><text class="chart-tick chart-value" x="${width - 4}" y="${y + 4}" text-anchor="end" ${labelStyle}>${f(r.estimate)}${r.unstable ? ' *' : ''}</text>` : `<text class="chart-tick" style="font-size:${compact ? 14 : 15}px" x="${left}" y="${y + 4}">${r.withheld ? 'Not shown' : 'Not estimated'}</text>`}`;
     })
     .join('');
   return `<svg class="dot-chart-svg${compact ? ' compact' : ''}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(title)}"><title>${escapeHtml(title)}</title>${grid}${marks}</svg>`;

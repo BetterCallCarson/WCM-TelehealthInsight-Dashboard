@@ -22,7 +22,7 @@ email: jic4015@med.cornell.edu */
 .document-switcher a {
   display: block;
   padding: 16px 0;
-  font-size: 14px;
+  font-size: 16px;
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
 }
@@ -39,7 +39,7 @@ email: jic4015@med.cornell.edu */
   margin: 0 0 12px;
 }
 .document-heading p {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--secondary);
   margin: 0;
   line-height: 1.7;
@@ -62,7 +62,7 @@ email: jic4015@med.cornell.edu */
   margin: 0;
 }
 .document-contents summary {
-  font-size: 12px;
+  font-size: 14px;
   color: var(--secondary);
   padding-bottom: 12px;
   cursor: pointer;
@@ -73,7 +73,7 @@ email: jic4015@med.cornell.edu */
 }
 .document-contents a {
   display: block;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.6;
   padding: 6px 0;
   color: var(--secondary);
@@ -83,14 +83,14 @@ email: jic4015@med.cornell.edu */
 }
 .document-contents a.subsection {
   padding-left: 12px;
-  font-size: 11px;
+  font-size: 13px;
   color: var(--muted);
 }
 .document-body {
   min-width: 0;
   max-width: 1100px;
   padding-bottom: 40px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.8;
   color: var(--secondary);
 }
@@ -120,7 +120,7 @@ email: jic4015@med.cornell.edu */
 }
 .document-body h5,
 .document-body h6 {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 500;
   color: var(--ink);
   scroll-margin-top: 24px;
@@ -173,7 +173,7 @@ email: jic4015@med.cornell.edu */
 .doc-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.65;
   min-width: 580px;
   color: var(--secondary);
@@ -204,7 +204,7 @@ email: jic4015@med.cornell.edu */
   font-variant-numeric: tabular-nums;
 }
 .doc-table code {
-  font-size: 11px;
+  font-size: 13px;
 }
 .research-document {
   scroll-margin-top: 24px;
@@ -242,7 +242,7 @@ email: jic4015@med.cornell.edu */
     margin-bottom: 24px;
   }
   .document-switcher a {
-    font-size: 13px;
+    font-size: 15px;
     padding: 12px 0;
   }
   .document-heading {
@@ -259,11 +259,11 @@ email: jic4015@med.cornell.edu */
     gap: 4px;
   }
   .document-contents a {
-    font-size: 12px;
+    font-size: 14px;
     padding: 6px 0;
   }
   .document-body {
-    font-size: 13px;
+    font-size: 15px;
     line-height: 1.8;
   }
   .document-body h3 {
@@ -279,7 +279,7 @@ email: jic4015@med.cornell.edu */
     padding: 12px;
   }
   .doc-table {
-    font-size: 12px;
+    font-size: 14px;
   }
 }
 @media print {
