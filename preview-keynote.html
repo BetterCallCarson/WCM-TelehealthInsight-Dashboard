@@ -59,7 +59,7 @@ email: jic4015@med.cornell.edu */
         margin: 0;
         background: var(--paper);
         color: var(--ink);
-        font: 17px/1.6 var(--sans);
+        font: 24px/1.6 var(--sans);
       }
       a {
         color: inherit;
@@ -149,7 +149,7 @@ email: jic4015@med.cornell.edu */
       .brand-name {
         display: block;
         white-space: nowrap;
-        font-size: 15px;
+        font-size: 24px;
         font-weight: 600;
         letter-spacing: 0.5px;
       }
@@ -161,7 +161,7 @@ email: jic4015@med.cornell.edu */
       }
       .institution-name {
         display: block;
-        font: 16px/1.4 var(--sans);
+        font: 24px/1.4 var(--sans);
         color: var(--secondary);
         max-width: 180px;
       }
@@ -172,7 +172,7 @@ email: jic4015@med.cornell.edu */
         margin-top: 8px;
       }
       .sidebar-description {
-        font-size: 15px;
+        font-size: 24px;
         color: var(--secondary);
         margin: 20px 0 28px;
         line-height: 1.6;
@@ -189,19 +189,15 @@ email: jic4015@med.cornell.edu */
         min-height: 40px;
         padding: 8px;
         border-radius: var(--radius);
-        font-size: 15px;
-        line-height: 20px;
+        font-size: 24px;
+        line-height: 1.35;
       }
       .sidebar nav a span {
-        font-size: 13px;
-        color: var(--muted);
-        width: 20px;
-        flex: 0 0 20px;
-        font-variant-numeric: tabular-nums;
+        display: none;
       }
       .sidebar nav a b {
         margin-left: auto;
-        font-size: 18px;
+        font-size: 24px;
         font-weight: 400;
         opacity: 0;
       }
@@ -228,7 +224,7 @@ email: jic4015@med.cornell.edu */
       }
       .lab-credit .eyebrow {
         display: block;
-        font-size: 12px;
+        font-size: 24px;
         margin-bottom: 3px;
       }
       .sidebar-bottom {
@@ -236,12 +232,12 @@ email: jic4015@med.cornell.edu */
         padding-top: 32px;
       }
       .eyebrow {
-        font: 12px/1.5 var(--sans);
+        font: 24px/1.5 var(--sans);
         color: var(--muted);
         letter-spacing: 0;
       }
       .documentation-link {
-        font-size: 14px;
+        font-size: 24px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -260,17 +256,19 @@ email: jic4015@med.cornell.edu */
         padding: 0 40px;
       }
       .topbar {
+        flex-wrap: wrap;
+        padding-block: 12px;
         min-height: 64px;
         border-bottom: 1px solid var(--line);
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 24px;
-        font-size: 14px;
+        font-size: 24px;
         color: var(--secondary);
       }
       .topbar a {
-        font-size: 14px;
+        font-size: 24px;
       }
       .hero {
         padding: 40px 0 28px;
@@ -287,7 +285,7 @@ email: jic4015@med.cornell.edu */
         max-width: 1000px;
       }
       .hero p {
-        font-size: 18px;
+        font-size: 24px;
         line-height: 1.65;
         color: var(--secondary);
         max-width: 740px;
@@ -300,7 +298,7 @@ email: jic4015@med.cornell.edu */
         gap: 8px 24px;
         padding: 12px 0 16px;
         border-bottom: 1px solid var(--line);
-        font-size: 13px;
+        font-size: 24px;
         color: var(--muted);
       }
       .edition > span:first-child {
@@ -327,7 +325,7 @@ email: jic4015@med.cornell.edu */
         padding-right: 0;
       }
       .metric-label {
-        font-size: 15px;
+        font-size: 24px;
         color: var(--secondary);
         line-height: 1.5;
       }
@@ -342,11 +340,11 @@ email: jic4015@med.cornell.edu */
         font-variant-numeric: tabular-nums;
       }
       .metric-value small {
-        font: 15px var(--sans);
+        font: 24px var(--sans);
         letter-spacing: 0;
       }
       .metric-sub {
-        font-size: 14px;
+        font-size: 24px;
         color: var(--muted);
         line-height: 1.6;
       }
@@ -360,6 +358,7 @@ email: jic4015@med.cornell.edu */
       }
       .section-heading {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
         gap: 24px;
@@ -373,13 +372,13 @@ email: jic4015@med.cornell.edu */
         text-wrap: balance;
       }
       h3 {
-        font: 22px/1.3 var(--serif);
+        font: 24px/1.3 var(--serif);
         font-weight: 400;
         margin: 8px 0 12px;
       }
       .text-button {
-        font-size: 14px;
-        white-space: nowrap;
+        font-size: 24px;
+        white-space: normal;
         border-bottom: 1px solid var(--line);
         padding: 8px 0;
         min-height: 36px;
@@ -401,8 +400,11 @@ email: jic4015@med.cornell.edu */
       .inline-label {
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
+        min-width: 0;
+        max-width: 100%;
         gap: 12px;
-        font-size: 14px;
+        font-size: 24px;
         color: var(--secondary);
       }
       select {
@@ -412,7 +414,7 @@ email: jic4015@med.cornell.edu */
         border-radius: var(--radius);
         background: var(--white);
         padding: 8px 28px 8px 12px;
-        font-size: 15px;
+        font-size: 24px;
       }
       .state-search {
         margin-left: auto;
@@ -428,11 +430,23 @@ email: jic4015@med.cornell.edu */
         padding: 4px 16px;
         min-height: 32px;
         border-radius: 2px;
-        font-size: 15px;
+        font-size: 24px;
       }
       .segmented [aria-pressed='true'] {
         background: var(--ink);
         color: var(--paper);
+      }
+      /* Keep wide visualizations inside their panels at readable sizes. */
+      .map-layout > div,
+      .chart,
+      .dot-chart,
+      .comparison-chart,
+      .table-wrap {
+        min-width: 0;
+      }
+      .map-scroll {
+        overflow-x: auto;
+        padding: 4px;
       }
       .map-layout {
         display: grid;
@@ -443,11 +457,12 @@ email: jic4015@med.cornell.edu */
       .tile-map {
         display: grid;
         grid-template-columns: repeat(12, minmax(0, 1fr));
-        grid-template-rows: repeat(8, 1fr);
+        grid-template-rows: repeat(8, minmax(66px, auto));
         gap: 4px;
-        max-width: 760px;
+        min-width: 816px;
+        max-width: 920px;
         margin: 8px auto 24px;
-        aspect-ratio: 1.65;
+        min-height: 552px;
       }
       .state-tile {
         grid-column: var(--col);
@@ -463,12 +478,12 @@ email: jic4015@med.cornell.edu */
         border: 1px solid transparent;
         border-radius: 2px;
         padding: 0;
-        font-size: 14px;
+        font-size: 24px;
         font-variant-numeric: tabular-nums;
         position: relative;
       }
       .state-tile small {
-        font-size: 13px;
+        font-size: 24px;
         line-height: 1.2;
       }
       .state-tile:hover {
@@ -489,7 +504,7 @@ email: jic4015@med.cornell.edu */
         justify-content: center;
         flex-wrap: wrap;
         gap: 8px;
-        font-size: 13px;
+        font-size: 24px;
         color: var(--muted);
       }
       .map-legend > div {
@@ -513,7 +528,7 @@ email: jic4015@med.cornell.edu */
         margin-left: 8px;
       }
       .caption {
-        font-size: 14px;
+        font-size: 24px;
         line-height: 1.65;
         color: var(--muted);
         margin: 16px 0 0;
@@ -528,7 +543,7 @@ email: jic4015@med.cornell.edu */
         min-height: 280px;
       }
       .state-code {
-        font-size: 14px;
+        font-size: 24px;
         color: var(--accent);
       }
       .state-detail .state-name {
@@ -542,11 +557,11 @@ email: jic4015@med.cornell.edu */
         font-variant-numeric: tabular-nums;
       }
       .state-detail .rate-label {
-        font-size: 14px;
+        font-size: 24px;
         color: var(--secondary);
       }
       .state-detail .difference {
-        font-size: 14px;
+        font-size: 24px;
         margin: 16px 0;
         padding-bottom: 16px;
         border-bottom: 1px solid var(--line);
@@ -556,7 +571,7 @@ email: jic4015@med.cornell.edu */
         display: grid;
         grid-template-columns: 1fr auto;
         gap: 12px 8px;
-        font-size: 14px;
+        font-size: 24px;
         margin: 0;
       }
       .state-detail dt {
@@ -571,7 +586,7 @@ email: jic4015@med.cornell.edu */
         border-top: 1px solid var(--line);
         padding-top: 16px;
         margin: 24px 0 0;
-        font-size: 14px;
+        font-size: 24px;
         line-height: 1.7;
         color: var(--muted);
       }
@@ -598,7 +613,7 @@ email: jic4015@med.cornell.edu */
       .chart svg {
         display: block;
         width: 100%;
-        min-width: 490px;
+        min-width: 720px;
         height: auto;
       }
       .chart-legend {
@@ -607,7 +622,7 @@ email: jic4015@med.cornell.edu */
         flex-wrap: wrap;
         gap: 16px;
         min-height: 24px;
-        font-size: 14px;
+        font-size: 24px;
         color: var(--secondary);
       }
       .chart-legend i {
@@ -624,7 +639,7 @@ email: jic4015@med.cornell.edu */
       .chart-tick,
       .chart-axis-title {
         fill: var(--secondary);
-        font: 15px var(--sans);
+        font: 24px var(--sans);
         font-variant-numeric: tabular-nums;
       }
       .chart-grid {
@@ -652,10 +667,10 @@ email: jic4015@med.cornell.edu */
         height: auto;
       }
       #nhis-chart svg {
-        min-width: 700px;
+        min-width: 1080px;
       }
       #payment-chart svg {
-        min-width: 470px;
+        min-width: 760px;
       }
       .interpretation {
         display: grid;
@@ -670,21 +685,21 @@ email: jic4015@med.cornell.edu */
         color: var(--secondary);
       }
       .interpretation p {
-        font-size: 15px;
+        font-size: 24px;
         line-height: 1.75;
         color: var(--secondary);
         margin: 0;
       }
       .section-intro,
       .model-intro {
-        font-size: 16px;
+        font-size: 24px;
         line-height: 1.7;
         color: var(--secondary);
         max-width: 840px;
         margin: 0 0 24px;
       }
       .pill {
-        font-size: 14px;
+        font-size: 24px;
         color: var(--secondary);
         margin-left: auto;
       }
@@ -693,11 +708,14 @@ email: jic4015@med.cornell.edu */
       }
       .bar-row {
         display: grid;
-        grid-template-columns: 104px 1fr 56px;
+        grid-template-columns: minmax(135px, auto) minmax(0, 1fr) minmax(
+            80px,
+            auto
+          );
         align-items: center;
         gap: 12px;
         margin-bottom: 24px;
-        font-size: 15px;
+        font-size: 24px;
       }
       .bar-track {
         height: 20px;
@@ -734,13 +752,13 @@ email: jic4015@med.cornell.edu */
       .table-wrap table {
         width: 100%;
         border-collapse: collapse;
-        font-size: 15px;
+        font-size: 24px;
         white-space: nowrap;
       }
       .table-wrap th {
         text-align: left;
         font-weight: 500;
-        font-size: 14px;
+        font-size: 24px;
         color: var(--secondary);
         padding: 12px 16px;
         border-bottom: 1px solid var(--control-border);
@@ -788,13 +806,13 @@ email: jic4015@med.cornell.edu */
         margin: 0;
       }
       .quality-intro > p:not(.serif-lead) {
-        font-size: 17px;
+        font-size: 24px;
         line-height: 1.8;
         color: var(--secondary);
         margin: 0;
       }
       .primary-link {
-        font-size: 15px;
+        font-size: 24px;
         text-decoration: underline;
         text-underline-offset: 4px;
       }
@@ -818,7 +836,7 @@ email: jic4015@med.cornell.edu */
         font-size: 28px;
       }
       .quality-card dl {
-        font-size: 15px;
+        font-size: 24px;
       }
       .quality-card dt {
         color: var(--muted);
@@ -840,7 +858,7 @@ email: jic4015@med.cornell.edu */
         font-size: 26px;
       }
       .methods-grid p {
-        font-size: 15px;
+        font-size: 24px;
         color: var(--secondary);
         line-height: 1.8;
         margin-bottom: 8px;
@@ -849,7 +867,7 @@ email: jic4015@med.cornell.edu */
         display: flex;
         flex-wrap: wrap;
         gap: 16px 24px;
-        font-size: 15px;
+        font-size: 24px;
         margin: 32px 0 40px;
       }
       .resource-row a {
@@ -867,7 +885,7 @@ email: jic4015@med.cornell.edu */
         padding: 4px 20px;
       }
       .model-stat > span {
-        font-size: 15px;
+        font-size: 24px;
         color: var(--secondary);
       }
       .model-stat strong {
@@ -878,7 +896,7 @@ email: jic4015@med.cornell.edu */
         font-variant-numeric: tabular-nums;
       }
       .model-stat p {
-        font-size: 14px;
+        font-size: 24px;
         color: var(--muted);
         margin: 0;
       }
@@ -888,7 +906,7 @@ email: jic4015@med.cornell.edu */
         margin-top: 24px;
       }
       .model-panel summary {
-        font-size: 15px;
+        font-size: 24px;
         cursor: pointer;
         padding: 8px 0;
       }
@@ -899,13 +917,13 @@ email: jic4015@med.cornell.edu */
         margin-top: 16px;
       }
       .model-methods {
-        font-size: 14px;
+        font-size: 24px;
         color: var(--secondary);
         line-height: 1.8;
         margin-top: 20px;
       }
       .model-methods code {
-        font-size: 14px;
+        font-size: 24px;
         white-space: normal;
         overflow-wrap: anywhere;
       }
@@ -916,7 +934,7 @@ email: jic4015@med.cornell.edu */
         gap: 16px;
         border-top: 1px solid var(--line);
         padding: 24px 0 32px;
-        font-size: 13px;
+        font-size: 24px;
         line-height: 1.5;
         color: var(--muted);
       }
@@ -926,7 +944,7 @@ email: jic4015@med.cornell.edu */
         font: 24px var(--serif);
       }
       .notice {
-        font-size: 20px;
+        font-size: 24px;
         color: var(--error);
       }
       .empty-state {
@@ -937,17 +955,17 @@ email: jic4015@med.cornell.edu */
         padding: 32px;
         text-align: center;
         color: var(--muted);
-        font-size: 16px;
+        font-size: 24px;
       }
       .badge {
-        font-size: 13px;
+        font-size: 24px;
         padding: 4px 8px;
         background: var(--warning-bg);
         color: var(--warning);
         border-radius: var(--radius);
       }
       .metric-value .badge {
-        font: 11px var(--sans);
+        font: 24px var(--sans);
         letter-spacing: 0;
         align-self: center;
       }
@@ -965,7 +983,8 @@ email: jic4015@med.cornell.edu */
       .skip {
         position: fixed;
         left: 16px;
-        top: -60px;
+        top: 0;
+        transform: translateY(-110%);
         z-index: 99;
         background: var(--ink);
         color: var(--paper);
@@ -974,21 +993,23 @@ email: jic4015@med.cornell.edu */
       }
       .skip:focus {
         top: 16px;
+        transform: none;
       }
       #tooltip {
         position: fixed;
         z-index: 20;
         pointer-events: none;
-        max-width: 260px;
+        max-width: min(440px, calc(100vw - 24px));
+        overflow-wrap: anywhere;
         padding: 12px 16px;
         background: var(--ink);
         color: #fff;
         border-radius: var(--radius);
-        font-size: 14px;
+        font-size: 24px;
         box-shadow: 0 4px 16px #0002;
       }
       .data-status {
-        font-size: 14px;
+        font-size: 24px;
         color: var(--muted);
       }
 
@@ -1114,7 +1135,7 @@ email: jic4015@med.cornell.edu */
           margin: 0;
         }
         .institution-name {
-          font-size: 15px;
+          font-size: 24px;
           max-width: 108px;
         }
         .product-name {
@@ -1126,7 +1147,7 @@ email: jic4015@med.cornell.edu */
         .sidebar-description {
           width: 100%;
           margin: 0;
-          font-size: 14px;
+          font-size: 24px;
         }
         .sidebar nav {
           display: flex;
@@ -1153,15 +1174,11 @@ email: jic4015@med.cornell.edu */
           min-height: 36px;
         }
         .sidebar nav a {
-          font-size: 14px;
+          font-size: 24px;
           gap: 8px;
         }
         .sidebar nav a b {
           display: none;
-        }
-        .sidebar nav a span {
-          width: 20px;
-          flex: 0 0 20px;
         }
         .brand-mark {
           width: 28px;
@@ -1222,7 +1239,7 @@ email: jic4015@med.cornell.edu */
         }
         .institution-name {
           max-width: none;
-          font-size: 13px;
+          font-size: 24px;
         }
         .product-name {
           font-size: 26px;
@@ -1232,10 +1249,10 @@ email: jic4015@med.cornell.edu */
           display: block;
         }
         .lab-credit .eyebrow {
-          font-size: 10px;
+          font-size: 24px;
         }
         .lab-credit .brand-name {
-          font-size: 14px;
+          font-size: 24px;
         }
         .sidebar .lab-credit .brand-mark {
           width: 24px;
@@ -1243,7 +1260,7 @@ email: jic4015@med.cornell.edu */
           flex-basis: 24px;
         }
         .documentation-link {
-          font-size: 13px;
+          font-size: 24px;
           gap: 8px;
         }
         .sidebar nav {
@@ -1256,11 +1273,7 @@ email: jic4015@med.cornell.edu */
         .sidebar nav a {
           min-height: 44px;
           padding: 8px 12px;
-          font-size: 14px;
-        }
-        .sidebar nav a span {
-          width: 20px;
-          flex: 0 0 20px;
+          font-size: 24px;
         }
         main {
           padding: 0 20px;
@@ -1268,10 +1281,10 @@ email: jic4015@med.cornell.edu */
         .topbar {
           min-height: 56px;
           gap: 16px;
-          font-size: 13px;
+          font-size: 24px;
         }
         .topbar a {
-          font-size: 13px;
+          font-size: 24px;
         }
         .hero {
           padding: 28px 0 24px;
@@ -1282,12 +1295,12 @@ email: jic4015@med.cornell.edu */
           margin: 12px 0 16px;
         }
         .hero p {
-          font-size: 16px;
+          font-size: 24px;
           line-height: 1.7;
         }
         .edition {
           gap: 8px 16px;
-          font-size: 13px;
+          font-size: 24px;
         }
         .edition > span:last-child {
           width: 100%;
@@ -1322,7 +1335,7 @@ email: jic4015@med.cornell.edu */
         }
         .metric-label,
         .metric-sub {
-          font-size: 14px;
+          font-size: 24px;
         }
         .panel {
           padding: 20px 16px;
@@ -1338,7 +1351,7 @@ email: jic4015@med.cornell.edu */
           font-size: 28px;
         }
         .text-button {
-          font-size: 14px;
+          font-size: 24px;
           min-height: 40px;
         }
         .toolbar {
@@ -1346,13 +1359,13 @@ email: jic4015@med.cornell.edu */
           margin-bottom: 20px;
         }
         .toolbar label {
-          font-size: 14px;
+          font-size: 24px;
           gap: 8px;
           flex-wrap: wrap;
         }
         select {
           min-height: 44px;
-          font-size: 16px;
+          font-size: 24px;
         }
         .state-search {
           margin-left: 0;
@@ -1371,17 +1384,13 @@ email: jic4015@med.cornell.edu */
         .tile-map {
           gap: 3px;
           margin: 0 auto 20px;
-          aspect-ratio: 1.5;
         }
         .state-tile {
-          font-size: 13px;
-        }
-        .state-tile small {
-          display: none;
+          font-size: 24px;
         }
         .map-legend {
           gap: 8px;
-          font-size: 13px;
+          font-size: 24px;
         }
         .map-legend > div {
           width: 80px;
@@ -1408,7 +1417,7 @@ email: jic4015@med.cornell.edu */
           text-align: right;
           grid-column: 2;
           grid-row: 3;
-          font-size: 13px;
+          font-size: 24px;
         }
         .state-detail .difference {
           grid-column: 1;
@@ -1416,7 +1425,7 @@ email: jic4015@med.cornell.edu */
           padding: 0;
           border: 0;
           margin: 0;
-          font-size: 13px;
+          font-size: 24px;
         }
         .state-detail dl {
           grid-column: 1 / 3;
@@ -1435,14 +1444,14 @@ email: jic4015@med.cornell.edu */
         }
         .pill {
           margin-left: 0;
-          font-size: 14px;
+          font-size: 24px;
         }
         .inner {
           gap: 24px;
         }
         .bar-row {
-          font-size: 14px;
-          grid-template-columns: 92px 1fr 52px;
+          font-size: 24px;
+          grid-template-columns: minmax(0, 1fr) auto;
           gap: 8px;
         }
         .quality-intro {
@@ -1454,7 +1463,7 @@ email: jic4015@med.cornell.edu */
           font-size: 36px;
         }
         .quality-intro > p:not(.serif-lead) {
-          font-size: 16px;
+          font-size: 24px;
         }
         .quality-card dl {
           grid-template-columns: 96px 1fr;
@@ -1471,7 +1480,7 @@ email: jic4015@med.cornell.edu */
           padding-left: 16px;
         }
         .source-line {
-          font-size: 13px;
+          font-size: 24px;
         }
         footer {
           gap: 12px;
@@ -1502,17 +1511,18 @@ email: jic4015@med.cornell.edu */
       }
       .update-heading {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
         gap: 20px;
       }
       .update-heading h2 {
-        font: 500 14px/1.4 var(--sans);
+        font: 500 24px/1.4 var(--sans);
         letter-spacing: 0;
         margin: 0 0 8px;
       }
       .update-heading p {
-        font-size: 14px;
+        font-size: 24px;
         line-height: 1.6;
         color: var(--secondary);
         margin: 0;
@@ -1523,8 +1533,8 @@ email: jic4015@med.cornell.edu */
         border-radius: var(--radius);
         background: var(--accent);
         color: #fff;
-        font-size: 15px;
-        white-space: nowrap;
+        font-size: 24px;
+        white-space: normal;
       }
       .primary-button:hover {
         background: #8e1515;
@@ -1534,7 +1544,7 @@ email: jic4015@med.cornell.edu */
         opacity: 0.7;
       }
       .update-status {
-        font-size: 14px;
+        font-size: 24px;
         line-height: 1.7;
         color: var(--secondary);
         margin: 16px 0 12px;
@@ -1547,7 +1557,7 @@ email: jic4015@med.cornell.edu */
         align-items: center;
         flex-wrap: wrap;
         gap: 12px 24px;
-        font-size: 14px;
+        font-size: 24px;
       }
       .update-links a {
         text-decoration: underline;
@@ -1561,7 +1571,7 @@ email: jic4015@med.cornell.edu */
         background: var(--warning-bg);
         border-left: 3px solid var(--series);
         padding: 16px 20px;
-        font-size: 15px;
+        font-size: 24px;
         line-height: 1.7;
         color: var(--secondary);
         margin: 24px 0;
@@ -1595,7 +1605,7 @@ email: jic4015@med.cornell.edu */
       .comparison-chart svg {
         display: block;
         width: 100%;
-        min-width: 700px;
+        min-width: 1080px;
         height: auto;
       }
       .comparison-details {
@@ -1604,7 +1614,7 @@ email: jic4015@med.cornell.edu */
         margin-top: 24px;
       }
       .comparison-details summary {
-        font-size: 15px;
+        font-size: 24px;
         cursor: pointer;
         padding: 8px 0;
       }
@@ -1614,10 +1624,42 @@ email: jic4015@med.cornell.edu */
 
       .comparison-chart .change-chart-svg,
       .comparison-chart .odds-ratio-chart-svg {
-        min-width: 900px;
+        min-width: 1320px;
       }
       #meps-insurance-chart svg {
-        min-width: 760px;
+        min-width: 1080px;
+      }
+
+      @media (max-width: 600px) {
+        .sidebar nav,
+        .metric-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        .metric,
+        .metric:first-child,
+        .metric:nth-child(2),
+        .metric:last-child {
+          grid-column: 1;
+          padding: 0 0 16px;
+          border-right: 0;
+        }
+        .state-detail {
+          display: block;
+        }
+        .state-detail .big-rate,
+        .state-detail .rate-label {
+          text-align: left;
+        }
+        .state-detail dl {
+          grid-template-columns: minmax(0, 1fr);
+        }
+        .state-detail dd {
+          text-align: left;
+        }
+        .bar-track {
+          grid-column: 1 / -1;
+          grid-row: 2;
+        }
       }
 
       :root {
@@ -1774,14 +1816,11 @@ email: jic4015@med.cornell.edu */
       </div>
       <div id="error" role="alert" hidden class="notice"></div>
       <section id="view-states" class="view" hidden>
+        <div class="metric-grid" id="cms-metrics"></div>
         <section class="source-update" aria-labelledby="cms-update-heading">
           <div class="update-heading">
             <div>
               <h2 id="cms-update-heading">CMS data updates</h2>
-              <p>
-                Check the official source for additional periods or revised
-                estimates
-              </p>
             </div>
             <button id="cms-refresh" class="primary-button" disabled>
               Check latest CMS data
@@ -1814,7 +1853,6 @@ email: jic4015@med.cornell.edu */
           in this session. The 2024 state comparisons and adjusted model below
           retain the verified snapshot.
         </p>
-        <div class="metric-grid" id="cms-metrics"></div>
         <section class="panel map-panel">
           <div class="section-heading">
             <div>
@@ -1844,10 +1882,17 @@ email: jic4015@med.cornell.edu */
             <div class="map-layout">
               <div>
                 <div
-                  id="state-map"
-                  class="tile-map"
-                  aria-label="Telehealth use by state"
-                ></div>
+                  class="map-scroll"
+                  role="region"
+                  aria-label="State map"
+                  tabindex="0"
+                >
+                  <div
+                    id="state-map"
+                    class="tile-map"
+                    aria-label="Telehealth use by state"
+                  ></div>
+                </div>
                 <div class="map-legend">
                   <span>Lower <strong id="map-min"></strong></span>
                   <div></div>
@@ -22699,7 +22744,7 @@ email: jic4015@med.cornell.edu */
         }
         const tooltip = (label) =>
           `data-tip="${escapeHtml(label)}" aria-label="${escapeHtml(label)}" tabindex="0"`;
-        const tickStyle = 'style="font-size:15px"';
+        const tickStyle = 'style="font-size:24px"';
 
         /**
          * Renders ordered quarterly series on a shared zero-based percent axis.
@@ -22714,10 +22759,10 @@ email: jic4015@med.cornell.edu */
          */
         function lineChart(
           series,
-          {title = 'Quarterly telehealth use', height = 264} = {},
+          {title = 'Quarterly telehealth use', height = 340} = {},
         ) {
-          const width = 490;
-          const m = {l: 48, r: 20, t: 20, b: 40};
+          const width = 720;
+          const m = {l: 90, r: 38, t: 28, b: 54};
           const all = series
             .flatMap((s) => s.values)
             .filter((v) => Number.isFinite(v.value));
@@ -22784,9 +22829,9 @@ email: jic4015@med.cornell.edu */
             xlabel = 'Households with broadband (%)',
           } = {},
         ) {
-          const width = 490;
-          const height = 280;
-          const m = {l: 52, r: 28, t: 36, b: 64};
+          const width = 720;
+          const height = 370;
+          const m = {l: 90, r: 60, t: 52, b: 90};
           const valid = points.filter(
             (p) => Number.isFinite(p.x) && Number.isFinite(p.y),
           );
@@ -22808,12 +22853,12 @@ email: jic4015@med.cornell.edu */
             height -
             m.b -
             ((v - ymin) / (ymax - ymin || 1)) * (height - m.t - m.b);
-          let grid = `<text class="chart-axis-title" ${tickStyle} x="${m.l}" y="16">Telehealth use (%)</text>`;
+          let grid = `<text class="chart-axis-title" ${tickStyle} x="${m.l}" y="26">Telehealth use (%)</text>`;
           for (let i = 0; i <= 4; i++) {
             const v = ymin + ((ymax - ymin) * i) / 4;
             grid += `<line class="chart-grid" x1="${m.l}" x2="${width - m.r}" y1="${y(v)}" y2="${y(v)}"/><text class="chart-tick" ${tickStyle} x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end">${number(v, Number.isInteger(v) ? 0 : 1)}%</text>`;
             const a = xmin + ((xmax - xmin) * i) / 4;
-            grid += `<text class="chart-tick" ${tickStyle} x="${x(a)}" y="${height - m.b + 24}" text-anchor="middle">${xKey === 'income' ? '$' + number(a / 1000) + 'k' : number(a, 0) + '%'}</text>`;
+            grid += `<text class="chart-tick" ${tickStyle} x="${x(a)}" y="${height - m.b + 32}" text-anchor="middle">${xKey === 'income' ? '$' + number(a / 1000) + 'k' : number(a, 0) + '%'}</text>`;
           }
           const circles = valid
             .sort(
@@ -22831,7 +22876,7 @@ email: jic4015@med.cornell.edu */
             const cx = x(chosen.x);
             const cy = y(chosen.y);
             const placeLeft = cx > width - m.r - 40;
-            selectedLabel = `<text class="chart-selection-label" style="font-size:15px;fill:var(--accent, #b31b1b)" x="${cx + (placeLeft ? -10 : 10)}" y="${Math.max(m.t + 12, cy - 12)}" text-anchor="${placeLeft ? 'end' : 'start'}">${escapeHtml(chosen.abbr)}</text>`;
+            selectedLabel = `<text class="chart-selection-label" style="font-size:24px;fill:var(--accent, #b31b1b)" x="${cx + (placeLeft ? -10 : 10)}" y="${Math.max(m.t + 12, cy - 12)}" text-anchor="${placeLeft ? 'end' : 'start'}">${escapeHtml(chosen.abbr)}</text>`;
           }
           return `<svg class="scatter-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="2024 state telehealth use versus ${escapeHtml(xlabel)}"><title>2024 telehealth use versus ${escapeHtml(xlabel)}</title>${grid}${circles}${selectedLabel}<text class="chart-axis-title" ${tickStyle} x="${(width + m.l - m.r) / 2}" y="${height - 12}" text-anchor="middle">${escapeHtml(xlabel)}</text></svg>`;
         }
@@ -22857,10 +22902,10 @@ email: jic4015@med.cornell.edu */
             max = null,
           } = {},
         ) {
-          const width = compact ? 470 : 760;
-          const left = compact ? 112 : 248;
-          const right = compact ? 68 : 96;
-          const rowH = compact ? 44 : 52;
+          const width = compact ? 760 : 1080;
+          const left = compact ? 240 : 450;
+          const right = compact ? 125 : 145;
+          const rowH = compact ? 54 : 58;
           const height = rows.length * rowH + 56;
           const vals = rows
             .flatMap((r) => [r.estimate, r.ci_high])
@@ -22874,7 +22919,7 @@ email: jic4015@med.cornell.edu */
           let grid = '';
           for (let i = 0; i <= 4; i++) {
             const v = (xmax * i) / 4;
-            grid += `<line class="chart-grid" x1="${x(v)}" x2="${x(v)}" y1="12" y2="${height - 36}"/><text class="chart-tick" style="font-size:${compact ? 14 : 15}px" x="${x(v)}" y="${height - 12}" text-anchor="middle">${unit === 'percent' ? number(v, Number.isInteger(v) ? 0 : 1) + '%' : '$' + number(v)}</text>`;
+            grid += `<line class="chart-grid" x1="${x(v)}" x2="${x(v)}" y1="12" y2="${height - 36}"/><text class="chart-tick" style="font-size:24px" x="${x(v)}" y="${height - 12}" text-anchor="middle">${unit === 'percent' ? number(v, Number.isInteger(v) ? 0 : 1) + '%' : '$' + number(v)}</text>`;
           }
           const marks = rows
             .map((r, i) => {
@@ -22882,12 +22927,12 @@ email: jic4015@med.cornell.edu */
               const has = Number.isFinite(r.estimate);
               const f = unit === 'percent' ? percent : dollars;
               const label = escapeHtml(r.label);
-              const labelStyle = `style="font-size:${compact ? 14 : 15}px;fill:var(--ink, #000000)"`;
+              const labelStyle = `style="font-size:24px;fill:var(--ink, #000000)"`;
               const interval =
                 Number.isFinite(r.ci_low) && Number.isFinite(r.ci_high)
                   ? `<line x1="${x(Math.max(0, r.ci_low))}" x2="${x(r.ci_high)}" y1="${y}" y2="${y}" stroke="var(--series, #cf4520)" stroke-width="2"/><path d="M${x(Math.max(0, r.ci_low))} ${y - 5}v10 M${x(r.ci_high)} ${y - 5}v10" stroke="var(--series, #cf4520)"/>`
                   : '';
-              return `<text class="chart-tick chart-row-label" x="0" y="${y + 4}" ${labelStyle}>${label}</text>${has ? `${interval}<circle class="estimate-point" cx="${x(r.estimate)}" cy="${y}" r="5" fill="${r.unstable ? 'var(--accent, #b31b1b)' : 'var(--series, #cf4520)'}" ${tooltip(`${r.label}: ${f(r.estimate)}; 95% CI ${ci(r.ci_low, r.ci_high, unit === 'percent' ? '%' : ' dollars')}; n=${number(r.n)}`)}/><text class="chart-tick chart-value" x="${width - 4}" y="${y + 4}" text-anchor="end" ${labelStyle}>${f(r.estimate)}${r.unstable ? ' *' : ''}</text>` : `<text class="chart-tick" style="font-size:${compact ? 14 : 15}px" x="${left}" y="${y + 4}">${r.withheld ? 'Not shown' : 'Not estimated'}</text>`}`;
+              return `<text class="chart-tick chart-row-label" x="0" y="${y + 4}" ${labelStyle}>${label}</text>${has ? `${interval}<circle class="estimate-point" cx="${x(r.estimate)}" cy="${y}" r="5" fill="${r.unstable ? 'var(--accent, #b31b1b)' : 'var(--series, #cf4520)'}" ${tooltip(`${r.label}: ${f(r.estimate)}; 95% CI ${ci(r.ci_low, r.ci_high, unit === 'percent' ? '%' : ' dollars')}; n=${number(r.n)}`)}/><text class="chart-tick chart-value" x="${width - 4}" y="${y + 4}" text-anchor="end" ${labelStyle}>${f(r.estimate)}${r.unstable ? ' *' : ''}</text>` : `<text class="chart-tick" style="font-size:24px" x="${left}" y="${y + 4}">${r.withheld ? 'Not shown' : 'Not estimated'}</text>`}`;
             })
             .join('');
           return `<svg class="dot-chart-svg${compact ? ' compact' : ''}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(title)}"><title>${escapeHtml(title)}</title>${grid}${marks}</svg>`;
@@ -23049,11 +23094,11 @@ email: jic4015@med.cornell.edu */
           if (!Array.isArray(rows) || rows.length === 0) {
             return '<div class="empty-state">Annual comparisons are unavailable.</div>';
           }
-          const width = 900;
-          const left = 242;
-          const right = 238;
+          const width = 1320;
+          const left = 310;
+          const right = 380;
           const top = 52;
-          const rowHeight = 36;
+          const rowHeight = 44;
           const bottom = 48;
           const height = top + rows.length * rowHeight + bottom;
           const finite = rows
@@ -23098,10 +23143,10 @@ email: jic4015@med.cornell.edu */
                   ? `<circle class="change-zero-point" cx="${zero}" cy="${y}" r="3" fill="${fill}"/>`
                   : `<rect class="change-bar" data-value="${row.change}" x="${Math.min(x(row.change), zero)}" y="${y - 6}" width="${Math.abs(x(row.change) - zero)}" height="12" fill="${fill}"/>`
                 : '';
-              return `<g class="change-row${isSelected ? ' is-selected' : ''}" data-state="${cmpEscape(row.abbr)}" role="button" aria-pressed="${isSelected}" tabindex="0" data-tip="${cmpEscape(label)}" aria-label="${cmpEscape(label)}">${isSelected ? `<rect class="change-selection" x="0" y="${y - 16}" width="${width}" height="32" fill="var(--selection, #fbeaea)"/>` : ''}<text class="chart-tick" style="fill:var(--ink, #000000);font-size:15px" x="8" y="${y + 5}">${cmpEscape(row.name)}</text>${bar}<text class="chart-tick" x="732" y="${y + 5}" text-anchor="end">${cmpRate(row.fromRate)}</text><text class="chart-tick" x="806" y="${y + 5}" text-anchor="end">${cmpRate(row.toRate)}</text><text class="chart-tick" x="894" y="${y + 5}" text-anchor="end" style="fill:var(--ink, #000000)">${valid ? cmpSigned(row.change) : '—'}</text></g>`;
+              return `<g class="change-row${isSelected ? ' is-selected' : ''}" data-state="${cmpEscape(row.abbr)}" role="button" aria-pressed="${isSelected}" tabindex="0" data-tip="${cmpEscape(label)}" aria-label="${cmpEscape(label)}">${isSelected ? `<rect class="change-selection" x="0" y="${y - 16}" width="${width}" height="32" fill="var(--selection, #fbeaea)"/>` : ''}<text class="chart-tick" style="fill:var(--ink, #000000);font-size:24px" x="8" y="${y + 5}">${cmpEscape(row.name)}</text>${bar}<text class="chart-tick" x="1050" y="${y + 5}" text-anchor="end">${cmpRate(row.fromRate)}</text><text class="chart-tick" x="1170" y="${y + 5}" text-anchor="end">${cmpRate(row.toRate)}</text><text class="chart-tick" x="1312" y="${y + 5}" text-anchor="end" style="fill:var(--ink, #000000)">${valid ? cmpSigned(row.change) : '—'}</text></g>`;
             })
             .join('');
-          return `<svg class="change-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${cmpEscape(title)}"><title>${cmpEscape(title)}</title><text class="chart-axis-title" x="8" y="17">State / D.C.</text><text class="chart-axis-title" x="732" y="17" text-anchor="end">${headerFrom}</text><text class="chart-axis-title" x="806" y="17" text-anchor="end">${headerTo}</text><text class="chart-axis-title" x="894" y="17" text-anchor="end">Change</text>${grid}${marks}<text class="chart-axis-title" x="${zero}" y="${height - 5}" text-anchor="middle">Change in percentage points</text></svg>`;
+          return `<svg class="change-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${cmpEscape(title)}"><title>${cmpEscape(title)}</title><text class="chart-axis-title" x="8" y="26">State / D.C.</text><text class="chart-axis-title" x="1050" y="26" text-anchor="end">${headerFrom}</text><text class="chart-axis-title" x="1170" y="26" text-anchor="end">${headerTo}</text><text class="chart-axis-title" x="1312" y="26" text-anchor="end">Change</text>${grid}${marks}<text class="chart-axis-title" x="${zero}" y="${height - 5}" text-anchor="middle">Change in percentage points</text></svg>`;
         }
 
         /**
@@ -23160,9 +23205,9 @@ email: jic4015@med.cornell.edu */
           if (!Array.isArray(rows) || !rows.some(cmpOddsValid)) {
             return '<div class="empty-state">Adjusted estimates are unavailable.</div>';
           }
-          const width = 900;
-          const left = 254;
-          const right = 214;
+          const width = 1320;
+          const left = 425;
+          const right = 420;
           const rowHeight = 52;
           const top = 46;
           const height = rows.length * rowHeight + 92;
@@ -23210,16 +23255,16 @@ email: jic4015@med.cornell.edu */
               const y = top + index * rowHeight;
               const label = cmpEscape(row.label);
               if (!cmpOddsValid(row)) {
-                return `<text class="chart-tick" x="0" y="${y + 5}" style="fill:var(--ink, #000000);font-size:15px">${label}</text><text class="chart-tick" x="${left}" y="${y + 5}">Not estimated</text>`;
+                return `<text class="chart-tick" x="0" y="${y + 5}" style="fill:var(--ink, #000000);font-size:24px">${label}</text><text class="chart-tick" x="${left}" y="${y + 5}">Not estimated</text>`;
               }
               const low = x(row.ci_low);
               const high = x(row.ci_high);
               const point = x(row.odds_ratio);
               const tooltip = `${row.label}: adjusted odds ratio ${cmpRatio(row.odds_ratio)}; 95% confidence interval ${cmpRatio(row.ci_low)} to ${cmpRatio(row.ci_high)}; reference ${row.reference || referenceLabel}`;
-              return `<g class="odds-row"><text class="chart-tick" x="0" y="${y + 5}" style="fill:var(--ink, #000000);font-size:15px">${label}</text><line class="odds-interval" x1="${low}" x2="${high}" y1="${y}" y2="${y}" stroke="var(--series, #cf4520)" stroke-width="2"/><path d="M${low} ${y - 5}v10 M${high} ${y - 5}v10" stroke="var(--series, #cf4520)"/><circle class="odds-point" cx="${point}" cy="${y}" r="5" fill="var(--accent, #b31b1b)" tabindex="0" data-tip="${cmpEscape(tooltip)}" aria-label="${cmpEscape(tooltip)}"/><text class="chart-tick" x="894" y="${y + 5}" text-anchor="end" style="fill:var(--ink, #000000)">${cmpRatio(row.odds_ratio)} (${cmpRatio(row.ci_low)}–${cmpRatio(row.ci_high)})</text></g>`;
+              return `<g class="odds-row"><text class="chart-tick" x="0" y="${y + 5}" style="fill:var(--ink, #000000);font-size:24px">${label}</text><line class="odds-interval" x1="${low}" x2="${high}" y1="${y}" y2="${y}" stroke="var(--series, #cf4520)" stroke-width="2"/><path d="M${low} ${y - 5}v10 M${high} ${y - 5}v10" stroke="var(--series, #cf4520)"/><circle class="odds-point" cx="${point}" cy="${y}" r="5" fill="var(--accent, #b31b1b)" tabindex="0" data-tip="${cmpEscape(tooltip)}" aria-label="${cmpEscape(tooltip)}"/><text class="chart-tick" x="1312" y="${y + 5}" text-anchor="end" style="fill:var(--ink, #000000)">${cmpRatio(row.odds_ratio)} (${cmpRatio(row.ci_low)}–${cmpRatio(row.ci_high)})</text></g>`;
             })
             .join('');
-          return `<svg class="odds-ratio-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${cmpEscape(title)}"><title>${cmpEscape(title)}</title><text class="chart-axis-title" x="${left}" y="14">Adjusted odds ratio · log scale</text><text class="chart-axis-title" x="894" y="14" text-anchor="end">Estimate (95% CI)</text>${ticks}${marks}<text class="chart-axis-title" x="0" y="${height - 12}">Reference: ${cmpEscape(referenceLabel)} · 1 = equal odds</text></svg>`;
+          return `<svg class="odds-ratio-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${cmpEscape(title)}"><title>${cmpEscape(title)}</title><text class="chart-axis-title" x="${left}" y="25">Adjusted odds ratio · log scale</text><text class="chart-axis-title" x="1312" y="25" text-anchor="end">Estimate (95% CI)</text>${ticks}${marks}<text class="chart-axis-title" x="0" y="${height - 12}">Reference: ${cmpEscape(referenceLabel)} · 1 = equal odds</text></svg>`;
         }
 
         const esc = escapeHtml;

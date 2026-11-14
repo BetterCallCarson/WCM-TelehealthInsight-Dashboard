@@ -141,14 +141,11 @@ email: jic4015@med.cornell.edu -->
       </div>
       <div id="error" role="alert" hidden class="notice"></div>
       <section id="view-states" class="view" hidden>
+        <div class="metric-grid" id="cms-metrics"></div>
         <section class="source-update" aria-labelledby="cms-update-heading">
           <div class="update-heading">
             <div>
               <h2 id="cms-update-heading">CMS data updates</h2>
-              <p>
-                Check the official source for additional periods or revised
-                estimates
-              </p>
             </div>
             <button id="cms-refresh" class="primary-button" disabled>
               Check latest CMS data
@@ -181,7 +178,6 @@ email: jic4015@med.cornell.edu -->
           in this session. The 2024 state comparisons and adjusted model below
           retain the verified snapshot.
         </p>
-        <div class="metric-grid" id="cms-metrics"></div>
         <section class="panel map-panel">
           <div class="section-heading">
             <div>
@@ -211,10 +207,17 @@ email: jic4015@med.cornell.edu -->
             <div class="map-layout">
               <div>
                 <div
-                  id="state-map"
-                  class="tile-map"
-                  aria-label="Telehealth use by state"
-                ></div>
+                  class="map-scroll"
+                  role="region"
+                  aria-label="State map"
+                  tabindex="0"
+                >
+                  <div
+                    id="state-map"
+                    class="tile-map"
+                    aria-label="Telehealth use by state"
+                  ></div>
+                </div>
                 <div class="map-legend">
                   <span>Lower <strong id="map-min"></strong></span>
                   <div></div>

@@ -160,7 +160,7 @@ test('odds ratios use log geometry, include intervals fully, and center the equa
       Number(intervals[i].x1) <= Number(points[i].cx) &&
         Number(points[i].cx) <= Number(intervals[i].x2),
     );
-    assert.ok(Number(intervals[i].x1) >= 254 && Number(intervals[i].x2) <= 686);
+    assert.ok(Number(intervals[i].x1) >= 425 && Number(intervals[i].x2) <= 900);
   }
   assert.match(html, /log scale/);
   assert.match(html, /Reference: Any private coverage/);
@@ -193,7 +193,7 @@ test('wide positive intervals still produce finite, contained logarithmic geomet
     },
   ]);
   const interval = tags(html, 'odds-interval')[0];
-  assert.ok(Number(interval.x1) >= 254 && Number(interval.x2) <= 686);
+  assert.ok(Number(interval.x1) >= 425 && Number(interval.x2) <= 900);
   assert.ok(!/NaN|Infinity/.test(html));
 });
 

@@ -41,7 +41,7 @@ body {
   margin: 0;
   background: var(--paper);
   color: var(--ink);
-  font: 17px/1.6 var(--sans);
+  font: 24px/1.6 var(--sans);
 }
 a {
   color: inherit;
@@ -131,7 +131,7 @@ b {
 .brand-name {
   display: block;
   white-space: nowrap;
-  font-size: 15px;
+  font-size: 24px;
   font-weight: 600;
   letter-spacing: 0.5px;
 }
@@ -143,7 +143,7 @@ b {
 }
 .institution-name {
   display: block;
-  font: 16px/1.4 var(--sans);
+  font: 24px/1.4 var(--sans);
   color: var(--secondary);
   max-width: 180px;
 }
@@ -154,7 +154,7 @@ b {
   margin-top: 8px;
 }
 .sidebar-description {
-  font-size: 15px;
+  font-size: 24px;
   color: var(--secondary);
   margin: 20px 0 28px;
   line-height: 1.6;
@@ -171,19 +171,15 @@ b {
   min-height: 40px;
   padding: 8px;
   border-radius: var(--radius);
-  font-size: 15px;
-  line-height: 20px;
+  font-size: 24px;
+  line-height: 1.35;
 }
 .sidebar nav a span {
-  font-size: 13px;
-  color: var(--muted);
-  width: 20px;
-  flex: 0 0 20px;
-  font-variant-numeric: tabular-nums;
+  display: none;
 }
 .sidebar nav a b {
   margin-left: auto;
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 400;
   opacity: 0;
 }
@@ -210,7 +206,7 @@ b {
 }
 .lab-credit .eyebrow {
   display: block;
-  font-size: 12px;
+  font-size: 24px;
   margin-bottom: 3px;
 }
 .sidebar-bottom {
@@ -218,12 +214,12 @@ b {
   padding-top: 32px;
 }
 .eyebrow {
-  font: 12px/1.5 var(--sans);
+  font: 24px/1.5 var(--sans);
   color: var(--muted);
   letter-spacing: 0;
 }
 .documentation-link {
-  font-size: 14px;
+  font-size: 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -242,17 +238,19 @@ main {
   padding: 0 40px;
 }
 .topbar {
+  flex-wrap: wrap;
+  padding-block: 12px;
   min-height: 64px;
   border-bottom: 1px solid var(--line);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  font-size: 14px;
+  font-size: 24px;
   color: var(--secondary);
 }
 .topbar a {
-  font-size: 14px;
+  font-size: 24px;
 }
 .hero {
   padding: 40px 0 28px;
@@ -269,7 +267,7 @@ main {
   max-width: 1000px;
 }
 .hero p {
-  font-size: 18px;
+  font-size: 24px;
   line-height: 1.65;
   color: var(--secondary);
   max-width: 740px;
@@ -282,7 +280,7 @@ main {
   gap: 8px 24px;
   padding: 12px 0 16px;
   border-bottom: 1px solid var(--line);
-  font-size: 13px;
+  font-size: 24px;
   color: var(--muted);
 }
 .edition > span:first-child {
@@ -309,7 +307,7 @@ main {
   padding-right: 0;
 }
 .metric-label {
-  font-size: 15px;
+  font-size: 24px;
   color: var(--secondary);
   line-height: 1.5;
 }
@@ -324,11 +322,11 @@ main {
   font-variant-numeric: tabular-nums;
 }
 .metric-value small {
-  font: 15px var(--sans);
+  font: 24px var(--sans);
   letter-spacing: 0;
 }
 .metric-sub {
-  font-size: 14px;
+  font-size: 24px;
   color: var(--muted);
   line-height: 1.6;
 }
@@ -342,6 +340,7 @@ main {
 }
 .section-heading {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
@@ -355,13 +354,13 @@ h2 {
   text-wrap: balance;
 }
 h3 {
-  font: 22px/1.3 var(--serif);
+  font: 24px/1.3 var(--serif);
   font-weight: 400;
   margin: 8px 0 12px;
 }
 .text-button {
-  font-size: 14px;
-  white-space: nowrap;
+  font-size: 24px;
+  white-space: normal;
   border-bottom: 1px solid var(--line);
   padding: 8px 0;
   min-height: 36px;
@@ -383,8 +382,11 @@ h3 {
 .inline-label {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
+  min-width: 0;
+  max-width: 100%;
   gap: 12px;
-  font-size: 14px;
+  font-size: 24px;
   color: var(--secondary);
 }
 select {
@@ -394,7 +396,7 @@ select {
   border-radius: var(--radius);
   background: var(--white);
   padding: 8px 28px 8px 12px;
-  font-size: 15px;
+  font-size: 24px;
 }
 .state-search {
   margin-left: auto;
@@ -410,11 +412,23 @@ select {
   padding: 4px 16px;
   min-height: 32px;
   border-radius: 2px;
-  font-size: 15px;
+  font-size: 24px;
 }
 .segmented [aria-pressed='true'] {
   background: var(--ink);
   color: var(--paper);
+}
+/* Keep wide visualizations inside their panels at readable sizes. */
+.map-layout > div,
+.chart,
+.dot-chart,
+.comparison-chart,
+.table-wrap {
+  min-width: 0;
+}
+.map-scroll {
+  overflow-x: auto;
+  padding: 4px;
 }
 .map-layout {
   display: grid;
@@ -425,11 +439,12 @@ select {
 .tile-map {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
-  grid-template-rows: repeat(8, 1fr);
+  grid-template-rows: repeat(8, minmax(66px, auto));
   gap: 4px;
-  max-width: 760px;
+  min-width: 816px;
+  max-width: 920px;
   margin: 8px auto 24px;
-  aspect-ratio: 1.65;
+  min-height: 552px;
 }
 .state-tile {
   grid-column: var(--col);
@@ -445,12 +460,12 @@ select {
   border: 1px solid transparent;
   border-radius: 2px;
   padding: 0;
-  font-size: 14px;
+  font-size: 24px;
   font-variant-numeric: tabular-nums;
   position: relative;
 }
 .state-tile small {
-  font-size: 13px;
+  font-size: 24px;
   line-height: 1.2;
 }
 .state-tile:hover {
@@ -471,7 +486,7 @@ select {
   justify-content: center;
   flex-wrap: wrap;
   gap: 8px;
-  font-size: 13px;
+  font-size: 24px;
   color: var(--muted);
 }
 .map-legend > div {
@@ -495,7 +510,7 @@ select {
   margin-left: 8px;
 }
 .caption {
-  font-size: 14px;
+  font-size: 24px;
   line-height: 1.65;
   color: var(--muted);
   margin: 16px 0 0;
@@ -510,7 +525,7 @@ select {
   min-height: 280px;
 }
 .state-code {
-  font-size: 14px;
+  font-size: 24px;
   color: var(--accent);
 }
 .state-detail .state-name {
@@ -524,11 +539,11 @@ select {
   font-variant-numeric: tabular-nums;
 }
 .state-detail .rate-label {
-  font-size: 14px;
+  font-size: 24px;
   color: var(--secondary);
 }
 .state-detail .difference {
-  font-size: 14px;
+  font-size: 24px;
   margin: 16px 0;
   padding-bottom: 16px;
   border-bottom: 1px solid var(--line);
@@ -538,7 +553,7 @@ select {
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 12px 8px;
-  font-size: 14px;
+  font-size: 24px;
   margin: 0;
 }
 .state-detail dt {
@@ -553,7 +568,7 @@ select {
   border-top: 1px solid var(--line);
   padding-top: 16px;
   margin: 24px 0 0;
-  font-size: 14px;
+  font-size: 24px;
   line-height: 1.7;
   color: var(--muted);
 }
@@ -580,7 +595,7 @@ select {
 .chart svg {
   display: block;
   width: 100%;
-  min-width: 490px;
+  min-width: 720px;
   height: auto;
 }
 .chart-legend {
@@ -589,7 +604,7 @@ select {
   flex-wrap: wrap;
   gap: 16px;
   min-height: 24px;
-  font-size: 14px;
+  font-size: 24px;
   color: var(--secondary);
 }
 .chart-legend i {
@@ -606,7 +621,7 @@ select {
 .chart-tick,
 .chart-axis-title {
   fill: var(--secondary);
-  font: 15px var(--sans);
+  font: 24px var(--sans);
   font-variant-numeric: tabular-nums;
 }
 .chart-grid {
@@ -634,10 +649,10 @@ select {
   height: auto;
 }
 #nhis-chart svg {
-  min-width: 700px;
+  min-width: 1080px;
 }
 #payment-chart svg {
-  min-width: 470px;
+  min-width: 760px;
 }
 .interpretation {
   display: grid;
@@ -652,21 +667,21 @@ select {
   color: var(--secondary);
 }
 .interpretation p {
-  font-size: 15px;
+  font-size: 24px;
   line-height: 1.75;
   color: var(--secondary);
   margin: 0;
 }
 .section-intro,
 .model-intro {
-  font-size: 16px;
+  font-size: 24px;
   line-height: 1.7;
   color: var(--secondary);
   max-width: 840px;
   margin: 0 0 24px;
 }
 .pill {
-  font-size: 14px;
+  font-size: 24px;
   color: var(--secondary);
   margin-left: auto;
 }
@@ -675,11 +690,11 @@ select {
 }
 .bar-row {
   display: grid;
-  grid-template-columns: 104px 1fr 56px;
+  grid-template-columns: minmax(135px, auto) minmax(0, 1fr) minmax(80px, auto);
   align-items: center;
   gap: 12px;
   margin-bottom: 24px;
-  font-size: 15px;
+  font-size: 24px;
 }
 .bar-track {
   height: 20px;
@@ -716,13 +731,13 @@ select {
 .table-wrap table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 15px;
+  font-size: 24px;
   white-space: nowrap;
 }
 .table-wrap th {
   text-align: left;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 24px;
   color: var(--secondary);
   padding: 12px 16px;
   border-bottom: 1px solid var(--control-border);
@@ -770,13 +785,13 @@ select {
   margin: 0;
 }
 .quality-intro > p:not(.serif-lead) {
-  font-size: 17px;
+  font-size: 24px;
   line-height: 1.8;
   color: var(--secondary);
   margin: 0;
 }
 .primary-link {
-  font-size: 15px;
+  font-size: 24px;
   text-decoration: underline;
   text-underline-offset: 4px;
 }
@@ -800,7 +815,7 @@ select {
   font-size: 28px;
 }
 .quality-card dl {
-  font-size: 15px;
+  font-size: 24px;
 }
 .quality-card dt {
   color: var(--muted);
@@ -822,7 +837,7 @@ select {
   font-size: 26px;
 }
 .methods-grid p {
-  font-size: 15px;
+  font-size: 24px;
   color: var(--secondary);
   line-height: 1.8;
   margin-bottom: 8px;
@@ -831,7 +846,7 @@ select {
   display: flex;
   flex-wrap: wrap;
   gap: 16px 24px;
-  font-size: 15px;
+  font-size: 24px;
   margin: 32px 0 40px;
 }
 .resource-row a {
@@ -849,7 +864,7 @@ select {
   padding: 4px 20px;
 }
 .model-stat > span {
-  font-size: 15px;
+  font-size: 24px;
   color: var(--secondary);
 }
 .model-stat strong {
@@ -860,7 +875,7 @@ select {
   font-variant-numeric: tabular-nums;
 }
 .model-stat p {
-  font-size: 14px;
+  font-size: 24px;
   color: var(--muted);
   margin: 0;
 }
@@ -870,7 +885,7 @@ select {
   margin-top: 24px;
 }
 .model-panel summary {
-  font-size: 15px;
+  font-size: 24px;
   cursor: pointer;
   padding: 8px 0;
 }
@@ -881,13 +896,13 @@ select {
   margin-top: 16px;
 }
 .model-methods {
-  font-size: 14px;
+  font-size: 24px;
   color: var(--secondary);
   line-height: 1.8;
   margin-top: 20px;
 }
 .model-methods code {
-  font-size: 14px;
+  font-size: 24px;
   white-space: normal;
   overflow-wrap: anywhere;
 }
@@ -898,7 +913,7 @@ footer {
   gap: 16px;
   border-top: 1px solid var(--line);
   padding: 24px 0 32px;
-  font-size: 13px;
+  font-size: 24px;
   line-height: 1.5;
   color: var(--muted);
 }
@@ -908,7 +923,7 @@ footer {
   font: 24px var(--serif);
 }
 .notice {
-  font-size: 20px;
+  font-size: 24px;
   color: var(--error);
 }
 .empty-state {
@@ -919,17 +934,17 @@ footer {
   padding: 32px;
   text-align: center;
   color: var(--muted);
-  font-size: 16px;
+  font-size: 24px;
 }
 .badge {
-  font-size: 13px;
+  font-size: 24px;
   padding: 4px 8px;
   background: var(--warning-bg);
   color: var(--warning);
   border-radius: var(--radius);
 }
 .metric-value .badge {
-  font: 11px var(--sans);
+  font: 24px var(--sans);
   letter-spacing: 0;
   align-self: center;
 }
@@ -947,7 +962,8 @@ footer {
 .skip {
   position: fixed;
   left: 16px;
-  top: -60px;
+  top: 0;
+  transform: translateY(-110%);
   z-index: 99;
   background: var(--ink);
   color: var(--paper);
@@ -956,21 +972,23 @@ footer {
 }
 .skip:focus {
   top: 16px;
+  transform: none;
 }
 #tooltip {
   position: fixed;
   z-index: 20;
   pointer-events: none;
-  max-width: 260px;
+  max-width: min(440px, calc(100vw - 24px));
+  overflow-wrap: anywhere;
   padding: 12px 16px;
   background: var(--ink);
   color: #fff;
   border-radius: var(--radius);
-  font-size: 14px;
+  font-size: 24px;
   box-shadow: 0 4px 16px #0002;
 }
 .data-status {
-  font-size: 14px;
+  font-size: 24px;
   color: var(--muted);
 }
 
@@ -1096,7 +1114,7 @@ footer {
     margin: 0;
   }
   .institution-name {
-    font-size: 15px;
+    font-size: 24px;
     max-width: 108px;
   }
   .product-name {
@@ -1108,7 +1126,7 @@ footer {
   .sidebar-description {
     width: 100%;
     margin: 0;
-    font-size: 14px;
+    font-size: 24px;
   }
   .sidebar nav {
     display: flex;
@@ -1135,15 +1153,11 @@ footer {
     min-height: 36px;
   }
   .sidebar nav a {
-    font-size: 14px;
+    font-size: 24px;
     gap: 8px;
   }
   .sidebar nav a b {
     display: none;
-  }
-  .sidebar nav a span {
-    width: 20px;
-    flex: 0 0 20px;
   }
   .brand-mark {
     width: 28px;
@@ -1204,7 +1218,7 @@ footer {
   }
   .institution-name {
     max-width: none;
-    font-size: 13px;
+    font-size: 24px;
   }
   .product-name {
     font-size: 26px;
@@ -1214,10 +1228,10 @@ footer {
     display: block;
   }
   .lab-credit .eyebrow {
-    font-size: 10px;
+    font-size: 24px;
   }
   .lab-credit .brand-name {
-    font-size: 14px;
+    font-size: 24px;
   }
   .sidebar .lab-credit .brand-mark {
     width: 24px;
@@ -1225,7 +1239,7 @@ footer {
     flex-basis: 24px;
   }
   .documentation-link {
-    font-size: 13px;
+    font-size: 24px;
     gap: 8px;
   }
   .sidebar nav {
@@ -1238,11 +1252,7 @@ footer {
   .sidebar nav a {
     min-height: 44px;
     padding: 8px 12px;
-    font-size: 14px;
-  }
-  .sidebar nav a span {
-    width: 20px;
-    flex: 0 0 20px;
+    font-size: 24px;
   }
   main {
     padding: 0 20px;
@@ -1250,10 +1260,10 @@ footer {
   .topbar {
     min-height: 56px;
     gap: 16px;
-    font-size: 13px;
+    font-size: 24px;
   }
   .topbar a {
-    font-size: 13px;
+    font-size: 24px;
   }
   .hero {
     padding: 28px 0 24px;
@@ -1264,12 +1274,12 @@ footer {
     margin: 12px 0 16px;
   }
   .hero p {
-    font-size: 16px;
+    font-size: 24px;
     line-height: 1.7;
   }
   .edition {
     gap: 8px 16px;
-    font-size: 13px;
+    font-size: 24px;
   }
   .edition > span:last-child {
     width: 100%;
@@ -1304,7 +1314,7 @@ footer {
   }
   .metric-label,
   .metric-sub {
-    font-size: 14px;
+    font-size: 24px;
   }
   .panel {
     padding: 20px 16px;
@@ -1320,7 +1330,7 @@ footer {
     font-size: 28px;
   }
   .text-button {
-    font-size: 14px;
+    font-size: 24px;
     min-height: 40px;
   }
   .toolbar {
@@ -1328,13 +1338,13 @@ footer {
     margin-bottom: 20px;
   }
   .toolbar label {
-    font-size: 14px;
+    font-size: 24px;
     gap: 8px;
     flex-wrap: wrap;
   }
   select {
     min-height: 44px;
-    font-size: 16px;
+    font-size: 24px;
   }
   .state-search {
     margin-left: 0;
@@ -1353,17 +1363,13 @@ footer {
   .tile-map {
     gap: 3px;
     margin: 0 auto 20px;
-    aspect-ratio: 1.5;
   }
   .state-tile {
-    font-size: 13px;
-  }
-  .state-tile small {
-    display: none;
+    font-size: 24px;
   }
   .map-legend {
     gap: 8px;
-    font-size: 13px;
+    font-size: 24px;
   }
   .map-legend > div {
     width: 80px;
@@ -1390,7 +1396,7 @@ footer {
     text-align: right;
     grid-column: 2;
     grid-row: 3;
-    font-size: 13px;
+    font-size: 24px;
   }
   .state-detail .difference {
     grid-column: 1;
@@ -1398,7 +1404,7 @@ footer {
     padding: 0;
     border: 0;
     margin: 0;
-    font-size: 13px;
+    font-size: 24px;
   }
   .state-detail dl {
     grid-column: 1 / 3;
@@ -1417,14 +1423,14 @@ footer {
   }
   .pill {
     margin-left: 0;
-    font-size: 14px;
+    font-size: 24px;
   }
   .inner {
     gap: 24px;
   }
   .bar-row {
-    font-size: 14px;
-    grid-template-columns: 92px 1fr 52px;
+    font-size: 24px;
+    grid-template-columns: minmax(0, 1fr) auto;
     gap: 8px;
   }
   .quality-intro {
@@ -1436,7 +1442,7 @@ footer {
     font-size: 36px;
   }
   .quality-intro > p:not(.serif-lead) {
-    font-size: 16px;
+    font-size: 24px;
   }
   .quality-card dl {
     grid-template-columns: 96px 1fr;
@@ -1453,7 +1459,7 @@ footer {
     padding-left: 16px;
   }
   .source-line {
-    font-size: 13px;
+    font-size: 24px;
   }
   footer {
     gap: 12px;
@@ -1484,17 +1490,18 @@ footer {
 }
 .update-heading {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 20px;
 }
 .update-heading h2 {
-  font: 500 14px/1.4 var(--sans);
+  font: 500 24px/1.4 var(--sans);
   letter-spacing: 0;
   margin: 0 0 8px;
 }
 .update-heading p {
-  font-size: 14px;
+  font-size: 24px;
   line-height: 1.6;
   color: var(--secondary);
   margin: 0;
@@ -1505,8 +1512,8 @@ footer {
   border-radius: var(--radius);
   background: var(--accent);
   color: #fff;
-  font-size: 15px;
-  white-space: nowrap;
+  font-size: 24px;
+  white-space: normal;
 }
 .primary-button:hover {
   background: #8e1515;
@@ -1516,7 +1523,7 @@ footer {
   opacity: 0.7;
 }
 .update-status {
-  font-size: 14px;
+  font-size: 24px;
   line-height: 1.7;
   color: var(--secondary);
   margin: 16px 0 12px;
@@ -1529,7 +1536,7 @@ footer {
   align-items: center;
   flex-wrap: wrap;
   gap: 12px 24px;
-  font-size: 14px;
+  font-size: 24px;
 }
 .update-links a {
   text-decoration: underline;
@@ -1543,7 +1550,7 @@ footer {
   background: var(--warning-bg);
   border-left: 3px solid var(--series);
   padding: 16px 20px;
-  font-size: 15px;
+  font-size: 24px;
   line-height: 1.7;
   color: var(--secondary);
   margin: 24px 0;
@@ -1577,7 +1584,7 @@ footer {
 .comparison-chart svg {
   display: block;
   width: 100%;
-  min-width: 700px;
+  min-width: 1080px;
   height: auto;
 }
 .comparison-details {
@@ -1586,7 +1593,7 @@ footer {
   margin-top: 24px;
 }
 .comparison-details summary {
-  font-size: 15px;
+  font-size: 24px;
   cursor: pointer;
   padding: 8px 0;
 }
@@ -1596,8 +1603,40 @@ footer {
 
 .comparison-chart .change-chart-svg,
 .comparison-chart .odds-ratio-chart-svg {
-  min-width: 900px;
+  min-width: 1320px;
 }
 #meps-insurance-chart svg {
-  min-width: 760px;
+  min-width: 1080px;
+}
+
+@media (max-width: 600px) {
+  .sidebar nav,
+  .metric-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .metric,
+  .metric:first-child,
+  .metric:nth-child(2),
+  .metric:last-child {
+    grid-column: 1;
+    padding: 0 0 16px;
+    border-right: 0;
+  }
+  .state-detail {
+    display: block;
+  }
+  .state-detail .big-rate,
+  .state-detail .rate-label {
+    text-align: left;
+  }
+  .state-detail dl {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .state-detail dd {
+    text-align: left;
+  }
+  .bar-track {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
 }
