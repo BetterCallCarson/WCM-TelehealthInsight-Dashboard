@@ -11,7 +11,7 @@ email: jic4015@med.cornell.edu -->
 
 ### Abstract
 
-Weill Cornell Medicine Telehealth Insights (WCM-TI) is a public-data dashboard for researchers examining how telehealth use varies across U.S. states, adult population groups, and office-based visits. It brings together Medicare Telehealth Trends from CMS, household context from the American Community Survey, adult estimates from the National Health Interview Survey, and visit/payment estimates from the Medical Expenditure Panel Survey. The verified release presents CMS annual and quarterly trends for 2020–2025 and a shared 2024 focus for the other analyses.
+Weill Cornell Medicine Telehealth Insights (WCM-TI) is a public-data dashboard for researchers examining how telehealth use varies across U.S. states, adult population groups, and office-based visits. It brings together Medicare Telehealth Trends from CMS, household context from the American Community Survey, adult estimates from the National Health Interview Survey, and visit/payment estimates from the Medical Expenditure Panel Survey. The verified release presents CMS annual and quarterly trends for 2020–2025 and annual population and visit analyses for 2021–2024.
 
 The product combines descriptive graphics, explicit denominators, confidence intervals where estimated, downloadable aggregates, and two stored association models. An optional browser action checks the official CMS release and can update descriptive CMS views for the current session. Those values are marked not revalidated; matched-year context and models retain their verified inputs. This report documents the methods, quality controls, field definitions, validation evidence, design decisions, and procedures needed to reproduce and publish the project.
 
@@ -38,12 +38,12 @@ This report is the single maintained source for research methods, data quality, 
 
 The intended audience is external researchers who need to compare telehealth patterns while understanding the population, period, analytical unit, and uncertainty behind each result. The interface avoids internal assignment identifiers and presents the questions through the data themselves.
 
-| Module                  | Data and population                                               | Available analysis                                                                                                                                                                                                                         |
-| ----------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| States and connectivity | CMS Medicare Part B fee-for-service beneficiaries; ACS households | Verified state comparisons, quarterly trends, and annual percentage-point changes for 2020–2025, with optional live CMS series; matched 2024 broadband and income comparisons and the adjusted model remain fixed to the verified snapshot |
-| Population differences  | NHIS 2024 U.S. civilian noninstitutionalized adults               | Survey-weighted telehealth use by insurance, age, education, Internet access, and health; a separate adjusted logistic association model with selectable covariate forest plots                                                            |
-| Visits and payments     | MEPS 2024 office-based visits, all ages                           | Survey-weighted visit modality and mean total/family payments by insurance; a side-by-side comparison of telehealth visit shares with 95% confidence intervals                                                                             |
-| Data and methods        | All sources                                                       | Source versions, denominators, missingness, uncertainty, and interpretation limits                                                                                                                                                         |
+| Module                  | Data and population                                               | Available analysis                                                                                                                                                                                                                              |
+| ----------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| States and connectivity | CMS Medicare Part B fee-for-service beneficiaries; ACS households | Verified state comparisons, quarterly trends, and annual percentage-point changes for 2020–2025, with optional live CMS series; matched 2021–2024 broadband and income comparisons and the adjusted model remain fixed to the verified snapshot |
+| Population differences  | NHIS 2021–2024 U.S. civilian noninstitutionalized adults          | Survey-weighted telehealth use by insurance, age, education, Internet access, and health; a separate adjusted logistic association model with selectable covariate forest plots                                                                 |
+| Visits and payments     | MEPS 2021–2024 office-based visits, all ages                      | Survey-weighted visit modality and mean total/family payments by insurance; a side-by-side comparison of telehealth visit shares with 95% confidence intervals                                                                                  |
+| Data and methods        | All sources                                                       | Source versions, denominators, missingness, uncertainty, and interpretation limits                                                                                                                                                              |
 
 The three modules have different populations and units of analysis. Their rates should not be pooled or interpreted as directly interchangeable measures. The adjusted models report associations and do not establish causal effects; state-level associations do not identify relationships between individual people.
 
@@ -66,13 +66,26 @@ CMS is the Centers for Medicare & Medicaid Services; ACS is the American Communi
 
 **Check latest CMS data** checks the official CMS catalog and data API. Accepted records update only the CMS map, table, summary counts, quarterly trend, annual-change comparisons, and CMS CSV download. Basic structural and numeric checks do not reproduce the full analytical validation; the resulting view is marked **not revalidated** and includes retrieval and source-version information. A repeated check compares the response with the CMS data currently displayed. A failed or timed-out check leaves the current data in place and reports that the source could not be checked.
 
-Live CMS data remain in browser memory for the session. **Restore verified snapshot**, or a page refresh, returns to the shipped CMS data. The 2024 ACS scatterplot, Pearson correlations, and adjusted state model always use the verified CMS–ACS snapshot, including when live CMS values contain a revision to 2024. NHIS, MEPS, all model outputs, and downloadable aggregate JSON files remain unchanged.
+Live CMS data remain in browser memory for the session. **Restore verified snapshot**, or a page refresh, returns to the shipped CMS data. The selected-year ACS scatterplot, Pearson correlations, and adjusted state model always use the verified CMS–ACS snapshot, including when live CMS values contain a revision to 2024. NHIS, MEPS, all model outputs, and downloadable aggregate JSON files remain unchanged.
 
-This control does not check whether every source is current. [NHIS 2025 data and documentation](https://www.cdc.gov/nchs/nhis/documentation/2025-nhis.html) are available; the dashboard’s verified NHIS analysis remains 2024. ACS, NHIS, and MEPS updates require separate source review and analytical processing. See the [data quality note](./documentation.html#data-quality) and [data manual](./documentation.html#data-manual) for scope and export metadata.
+This control does not check whether every source is current. [NHIS 2025 data and documentation](https://www.cdc.gov/nchs/nhis/documentation/2025-nhis.html) are available; the dashboard’s verified NHIS analysis extends through 2024. ACS, NHIS, and MEPS updates require separate source review and analytical processing. See the [data quality note](./documentation.html#data-quality) and [data manual](./documentation.html#data-manual) for scope and export metadata.
 
 <a id="methods-and-quality"></a>
 
 ## 2. Methods, source provenance, and data quality
+
+### Annual survey coverage and checks
+
+| Survey year | NHIS valid adults | Adults reporting use in past 12 months | MEPS positive-weight visits | Visits delivered remotely | Mean total paid per visit |
+| ----------- | ----------------: | -------------------------------------: | --------------------------: | ------------------------: | ------------------------: |
+| 2021        |            29,217 |                                 37.02% |                     199,617 |                     8.82% |                   $292.52 |
+| 2022        |            27,390 |                                 30.11% |                     149,579 |                     9.15% |                   $293.53 |
+| 2023        |            29,257 |                                 26.70% |                     133,735 |                     9.20% |                   $285.08 |
+| 2024        |            32,324 |                                 25.03% |                     144,206 |                    10.79% |                   $308.05 |
+
+NHIS estimates use the annual Sample Adult weight, strata and nested PSUs. We checked response counts against the annual codebook, reproduced domain proportions and Taylor standard errors independently, and checked the adjusted model coefficients against a second weighted fit. Internet access was absent in 2021 and introduced in July 2022. The full-year breakdown and model include it only in 2023 and 2024. Model coefficients across that boundary have different adjustment sets.
+
+MEPS joins each year's office visits to that year's full-year person file. The 2021–2024 file pairs are HC-229G/233, HC-239G/243, HC-248G/251 and HC-254G/256. Each annual analysis checks person linkage, weights, design identifiers, modality totals, and agreement with AHRQ's rounded national visit count, mean total and family payments, and both payment standard errors. The validation table and raw aggregates use survey-year dollars and include zero-payment visits. The dashboard and display CSV convert payment estimates and interval endpoints to 2024 dollars using the ratio of 2024 to survey-year annual U.S. all-items CPI-U (270.970, 292.655, 304.702, 313.689 respectively). [BLS annual indexes](https://www.bls.gov/regions/mid-atlantic/data/ConsumerPriceIndexAnnualandSemiAnnual_Table.htm) Subsequent detailed audit counts refer to the 2024 release unless labeled otherwise.
 
 **Verified snapshot sources retrieved November 11, 2026 · CHERY Lab**
 
@@ -87,9 +100,9 @@ CMS refers to the Centers for Medicare & Medicaid Services; ACS to the American 
 | Module                         | Period                          | Population and unit                                                                                             | Main denominator                                                                                             |
 | ------------------------------ | ------------------------------- | --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | CMS Medicare Telehealth Trends | Annual and quarterly, 2020–2025 | Medicare Part B fee-for-service service users; published geographic aggregates                                  | Unique users of telehealth-eligible services during the reporting period                                     |
-| ACS state context              | 2024 1-year estimates           | All households in 50 states and DC                                                                              | All households for broadband subscription; household income distribution for median income                   |
-| NHIS Sample Adult              | 2024 interviews                 | Civilian noninstitutionalized adults aged 18 or older; sampled adult                                            | Adults with a valid telehealth response and a valid value for the selected grouping variable                 |
-| MEPS office-based visits       | Calendar year 2024              | Office-based medical provider visits at all ages in the civilian noninstitutionalized population; sampled visit | Positive-weight office visits for shares; visits in the selected insurance/modality domain for mean payments |
+| ACS state context              | 2021–2024 1-year estimates      | All households in 50 states and DC                                                                              | All households for broadband subscription; household income distribution for median income                   |
+| NHIS Sample Adult              | 2021–2024 interviews            | Civilian noninstitutionalized adults aged 18 or older; sampled adult                                            | Adults with a valid telehealth response and a valid value for the selected grouping variable                 |
+| MEPS office-based visits       | Calendar years 2021–2024        | Office-based medical provider visits at all ages in the civilian noninstitutionalized population; sampled visit | Positive-weight office visits for shares; visits in the selected insurance/modality domain for mean payments |
 
 Only CMS–ACS supplies state comparisons. NHIS and MEPS provide national subgroup estimates. No person-level records are linked across these sources; MEPS events are linked only to their own MEPS person file. The published site provides aggregate data; it does not distribute individual-level source records.
 
@@ -102,10 +115,10 @@ The default view uses the verified snapshot described in this note. Selecting **
 | Data or analysis                                                                        | Effect of the CMS source check                                                                                           |
 | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
 | CMS map, table, summary counts, quarterly trend, annual-change comparisons, and CMS CSV | May use the accepted API response; the retrieval time, source version, and validation status identify the displayed data |
-| ACS household broadband and income                                                      | Remain at the verified 2024 values                                                                                       |
-| CMS–ACS scatterplot, Pearson correlations, and adjusted state model                     | Remain based on the verified 2024 CMS–ACS data, even if the live CMS response revises 2024                               |
-| NHIS descriptive comparisons and adjusted model                                         | Remain at the verified 2024 analysis                                                                                     |
-| MEPS visit shares and payments                                                          | Remain at the verified 2024 analysis                                                                                     |
+| ACS household broadband and income                                                      | Use the selected calendar year, 2021–2024                                                                                |
+| CMS–ACS scatterplot, Pearson correlations, and adjusted state model                     | Use archived annual CMS and ACS values for the selected year                                                             |
+| NHIS descriptive comparisons and adjusted model                                         | Use the selected annual survey analysis                                                                                  |
+| MEPS visit shares and payments                                                          | Use the selected annual survey analysis                                                                                  |
 | Aggregate JSON downloads                                                                | Continue to provide the verified snapshot files                                                                          |
 
 Live data are held in browser memory and are not saved into the published dataset. **Restore verified snapshot**, or refreshing the page, returns the descriptive CMS view to the shipped data. A repeated check compares the new response with the CMS data currently displayed. If the request fails or times out, the current data and their status remain in place; inability to check the source is not evidence that no updates exist.
@@ -157,13 +170,13 @@ The map excludes national totals, Puerto Rico, the Virgin Islands, other territo
 
 The ACS broadband file contains 8,105 geography rows and the income file 8,155. State identifiers select **50 states and D.C. (51 jurisdictions)**, excluding Puerto Rico and all other geographic levels. All 51 match 2024 CMS annual records; broadband, income, and the associated margins of error are present for every match. No household microdata are linked to Medicare beneficiaries.
 
-Broadband is the household share with any broadband subscription, including cellular-only service. It does not measure connection speed, reliability, or digital literacy. Income is median household income in **2024 inflation-adjusted dollars**. ACS context is paired only with 2024 CMS annual use, even when other CMS years are available.
+Broadband is the household share with any broadband subscription, including cellular-only service. It does not measure connection speed, reliability, or digital literacy. Income is in each ACS survey year’s dollars. State comparisons pair each annual ACS estimate with that same year’s annual CMS rate. Selecting a quarter keeps the scatterplot and regression annual. Each of 2021–2024 has 51 complete jurisdictions (204 state-year pairs).
 
 The annual-change chart compares two selected annual periods only. Each difference is the comparison-year rate minus the baseline-year rate, in **percentage points**, not relative percent change. The chart can show the ten largest absolute changes or all 51 jurisdictions; its CSV always includes all 51. Published annual rates are used directly, and no confidence intervals or significance claims are attached to these administrative differences. Optional live CMS data also feed this descriptive comparison and retain the not-revalidated label.
 
 The state correlations are unweighted Pearson correlations across 51 observations. They have no confounder or measurement-error adjustment and no inferential interval in this release. State associations cannot identify whether individuals with broadband or higher income were more likely to use telehealth.
 
-The separate adjusted state model uses ordinary least squares for `2024 annual telehealth percentage ~ broadband percentage + median income / 10,000`. All **50 states and D.C. (51 jurisdictions)** have complete data, receive equal weight, and enter the model. There are three parameters including the intercept and 48 residual degrees of freedom. Coefficients describe differences in telehealth **percentage points** per one broadband percentage point or **$10,000** of income, holding the other covariate fixed.
+The separate adjusted state model uses ordinary least squares separately for each year using `annual telehealth percentage ~ broadband percentage + median income / 10,000`. All **50 states and D.C. (51 jurisdictions)** have complete data, receive equal weight, and enter the model. There are three parameters including the intercept and 48 residual degrees of freedom. Coefficients describe differences in telehealth **percentage points** per one broadband percentage point or **$10,000** of income, holding the other covariate fixed.
 
 The model uses HC3 heteroskedasticity-robust standard errors and approximate **95% normal intervals**, not t intervals. Broadband has a coefficient of **0.749** (95% CI **−1.018 to 2.515**); income has a coefficient of **3.491** (95% CI **1.315 to 5.666**) per $10,000. The observed-sample R-squared is 0.518; it is not a predictive performance score. HC3 does not address spatial dependence, ACS measurement error, or omitted confounders. Alternative functional forms, influential-state sensitivity, and spatial residuals have not been evaluated. The intercept corresponds to zero broadband and zero income, outside the observed range, and has no substantive interpretation here.
 
@@ -394,11 +407,15 @@ The dashboard starts with its verified snapshot. **Check latest CMS data** disco
 
 A repeated check compares the response with the CMS records currently displayed. A timeout or failed request preserves those records and reports that the source could not be checked. It must not be interpreted as confirmation that no updates are available.
 
-ACS context, the entire 2024 CMS–ACS scatterplot/correlation/model analysis, NHIS, and MEPS stay fixed to the verified snapshot. This includes the CMS 2024 values used in the ACS analysis: they are not replaced by a live revision. Aggregate JSON downloads remain the verified files described in the data fields below. Source checks do not write back to those files.
+ACS context, the annual CMS–ACS scatterplot/correlation/model analysis, NHIS, and MEPS stay fixed to the verified snapshot. This includes the CMS 2024 values used in the ACS analysis: they are not replaced by a live revision. Aggregate JSON downloads remain the verified files described in the data fields below. Source checks do not write back to those files.
+
+#### Annual survey files
+
+Population Differences and Visits & Payments have independent year selectors. Changing the year updates the estimates, intervals, model or insurance comparison, and CSV exports. The unsuffixed NHIS and MEPS JSON files contain 2024. Earlier files use a year suffix, such as `data/nhis-2021.json` and `data/meps-2021.json`. Each file records its source and calculation checks. To reproduce one release, run `python3 scripts/nhis.py --year 2021` or `python3 scripts/meps.py --download --year 2021` with the desired year.
 
 #### CMS CSV provenance
 
-The CMS CSV contains the displayed descriptive CMS estimates and the fixed 2024 ACS context. The following fields distinguish the provenance of those two sources:
+The CMS CSV contains the displayed descriptive CMS estimates and same-year annual ACS context when available. The following fields distinguish the provenance of those two sources:
 
 | CSV field               | Meaning                                                                                                                      |
 | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
@@ -408,9 +425,9 @@ The CMS CSV contains the displayed descriptive CMS estimates and the fixed 2024 
 | `cms_source_version`    | CMS source version associated with the exported values                                                                       |
 | `acs_validation_status` | Status of the unchanged, verified ACS context in the same export                                                             |
 
-Keep these fields with the exported data. The presence of 2024 ACS columns does not make newer CMS periods contemporaneous with ACS, and live CMS values must not be substituted into the verified 2024 model without rebuilding and checking that analysis. Model CSV exports and aggregate JSON downloads continue to describe the verified analysis.
+Keep these fields with the exported data. The acs_context_year column identifies the annual ACS estimates. Outside 2021–2024 the ACS fields are empty. Model CSV exports and aggregate JSON downloads continue to describe the verified analysis.
 
-The verified CMS series retain 2020–2025. The pinned source CSV also contains 2026 Q1, so a period newly displayed after an API check need not come from a newly released file. An unchanged response means only that the checked CMS view has not changed; it says nothing about the currency of the other sources. [NHIS 2025 documentation](https://www.cdc.gov/nchs/nhis/documentation/2025-nhis.html) is available while the dashboard’s NHIS analysis remains 2024. ACS, NHIS, and MEPS refreshes require separate source selection and analytical processing.
+The verified CMS series retain 2020–2025. The pinned source CSV also contains 2026 Q1, so a period newly displayed after an API check need not come from a newly released file. An unchanged response means only that the checked CMS view has not changed; it says nothing about the currency of the other sources. [NHIS 2025 documentation](https://www.cdc.gov/nchs/nhis/documentation/2025-nhis.html) is available while the dashboard’s NHIS analysis extends through 2024. ACS, NHIS, and MEPS refreshes require separate source selection and analytical processing.
 
 #### CMS annual-change CSV
 
@@ -492,7 +509,7 @@ Verified snapshot file: [`data/cms.json`](./data/cms.json). The live source chec
 | `sources[]`                                          | Source identifiers, official URLs, release/access dates, byte counts, and SHA-256 hashes                                      |
 | `quality`                                            | Source and retained row counts, missingness, matching, and arithmetic check results                                           |
 
-ACS fields are fixed to 2024 and must not be treated as context for another CMS year. Published national CMS totals are not required to equal the sum of the 51 mapped geographies.
+For 2021–2023, historicalContext[year] holds ACS state records by abbreviation, both Pearson correlations, the adjusted model, and the source URLs and SHA-256 hashes. The 2024 records remain in states[].acs2024 and associations. Published national CMS totals are not required to equal the sum of the 51 mapped geographies.
 
 #### CMS adjusted model fields
 
@@ -634,7 +651,7 @@ The comparison displays separate insurance domains; it excludes the `All` aggreg
 
 | CSV field                                    | Meaning                                                                                                      |
 | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `source`, `year`                             | MEPS source attribution and calendar year 2024                                                               |
+| `source`, `year`                             | MEPS source attribution and selected calendar year                                                           |
 | `insurance`                                  | Any private, public only, or uninsured all year; annual coverage rather than visit-time payer                |
 | `telehealth_percent`                         | Weighted remote-visit share, percent; blank when withheld                                                    |
 | `ci95_low`, `ci95_high`                      | Approximate 95% interval endpoints, percent; blank when withheld                                             |

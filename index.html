@@ -215,7 +215,9 @@ email: jic4015@med.cornell.edu -->
           <section class="panel">
             <div class="section-heading">
               <div>
-                <span class="eyebrow">State context · 2024</span>
+                <span class="eyebrow" id="context-year"
+                  >State context · 2024</span
+                >
                 <h2>State context and telehealth use</h2>
               </div>
             </div>
@@ -281,7 +283,8 @@ email: jic4015@med.cornell.edu -->
           <div class="section-heading">
             <div>
               <span class="eyebrow"
-                >National Health Interview Survey · 2024</span
+                >National Health Interview Survey ·
+                <span data-nhis-year>2024</span></span
               >
               <h2>Who reports using telehealth?</h2>
             </div>
@@ -291,9 +294,18 @@ email: jic4015@med.cornell.edu -->
           </div>
           <p class="section-intro">
             Adults who reported a phone or video appointment in the past 12
-            months.
+            months. <span id="internet-coverage"></span>
           </p>
           <div class="toolbar">
+            <label
+              >Survey year
+              <select id="nhis-year">
+                <option selected>2024</option>
+                <option>2023</option>
+                <option>2022</option>
+                <option>2021</option>
+              </select></label
+            >
             <label
               >Compare by
               <select id="nhis-group">
@@ -310,6 +322,26 @@ email: jic4015@med.cornell.edu -->
           <div id="nhis-chart" class="dot-chart"></div>
           <div id="nhis-table" class="table-wrap"></div>
           <p class="source-line" id="nhis-source"></p>
+        </section>
+        <section class="panel">
+          <span class="eyebrow">Annual trends · 2021–2024</span>
+          <h2>Adult telehealth use by population group</h2>
+          <label class="inline-label"
+            >Compare by<select id="nhis-trend-select">
+              <option value="insurance">Insurance coverage</option>
+              <option value="age">Age group</option>
+              <option value="education">Education</option>
+              <option value="health">Self-rated health</option>
+              <option value="internet">Internet access</option>
+            </select></label
+          >
+          <div id="nhis-trend-legend" class="chart-legend"></div>
+          <div id="nhis-trend-chart" class="chart"></div>
+          <p class="caption" id="nhis-trend-note"></p>
+          <details>
+            <summary>Annual estimates and 95% confidence intervals</summary>
+            <div id="nhis-trend-table" class="table-wrap"></div>
+          </details>
         </section>
         <section id="nhis-model" class="panel model-panel"></section>
         <div class="interpretation">
@@ -328,7 +360,8 @@ email: jic4015@med.cornell.edu -->
           <div class="section-heading">
             <div>
               <span class="eyebrow"
-                >Medical Expenditure Panel Survey · 2024</span
+                >Medical Expenditure Panel Survey ·
+                <span data-meps-year>2024</span></span
               >
               <h2>How care is delivered and paid for</h2>
             </div>
@@ -340,6 +373,15 @@ email: jic4015@med.cornell.edu -->
             Visit types and average payments by insurance, across all ages.
           </p>
           <div class="toolbar">
+            <label
+              >Survey year
+              <select id="meps-year">
+                <option selected>2024</option>
+                <option>2023</option>
+                <option>2022</option>
+                <option>2021</option>
+              </select></label
+            >
             <label
               >Insurance
               <select id="meps-insurance"></select></label
@@ -362,7 +404,8 @@ email: jic4015@med.cornell.edu -->
             <div>
               <h3 id="payment-title">Mean total payments per visit</h3>
               <p class="caption">
-                2024 U.S. dollars · 95% confidence intervals
+                2024 U.S. dollars (inflation-adjusted) · 95% confidence
+                intervals
               </p>
               <div id="payment-chart" class="dot-chart"></div>
             </div>
@@ -371,9 +414,33 @@ email: jic4015@med.cornell.edu -->
           <p class="source-line" id="meps-source"></p>
         </section>
         <section class="panel">
+          <span class="eyebrow">Annual trends · 2021–2024</span>
+          <h2>Office visits by insurance coverage</h2>
+          <label class="inline-label"
+            >Measure<select id="meps-trend-select">
+              <option value="share">Telehealth share of visits</option>
+              <option value="total_payment">
+                Mean total payment per visit
+              </option>
+              <option value="family_payment">
+                Mean out-of-pocket payment per visit
+              </option>
+            </select></label
+          >
+          <div id="meps-trend-legend" class="chart-legend"></div>
+          <div id="meps-trend-chart" class="chart"></div>
+          <p class="caption" id="meps-trend-note"></p>
+          <details>
+            <summary>Annual estimates and 95% confidence intervals</summary>
+            <div id="meps-trend-table" class="table-wrap"></div>
+          </details>
+        </section>
+        <section class="panel">
           <div class="section-heading">
             <div>
-              <span class="eyebrow">Insurance comparison · 2024</span>
+              <span class="eyebrow"
+                >Insurance comparison · <span data-meps-year>2024</span></span
+              >
               <h2>Telehealth use across insurance groups</h2>
             </div>
             <button id="meps-comparison-download" class="text-button">
@@ -387,9 +454,9 @@ email: jic4015@med.cornell.edu -->
           <div id="meps-insurance-chart" class="comparison-chart"></div>
           <div id="meps-insurance-table" class="table-wrap"></div>
           <p class="caption">
-            MEPS 2024 · Survey-weighted estimates with 95% confidence intervals.
-            The uninsured estimate is withheld because 26 sampled people used
-            telehealth (minimum 30).
+            MEPS <span data-meps-year>2024</span> · Survey-weighted estimates
+            with 95% confidence intervals. Estimates with fewer than 30 sampled
+            telehealth users are withheld.
           </p>
         </section>
         <div class="interpretation">

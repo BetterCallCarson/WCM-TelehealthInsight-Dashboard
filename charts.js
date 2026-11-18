@@ -146,7 +146,7 @@ const tickStyle = 'style="font-size:24px"';
  */
 export function lineChart(
   series,
-  {title = 'Quarterly telehealth use', height = 340} = {},
+  {title = 'Quarterly telehealth use', height = 340, currency = false} = {},
 ) {
   const width = 720;
   const m = {l: 90, r: 38, t: 28, b: 54};
@@ -168,10 +168,10 @@ export function lineChart(
   let grid = '';
   for (let i = 0; i <= 4; i++) {
     const v = (ymax * i) / 4;
-    grid += `<line class="chart-grid" x1="${m.l}" x2="${width - m.r}" y1="${y(v)}" y2="${y(v)}"/><text class="chart-tick" ${tickStyle} x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end">${number(v, Number.isInteger(v) ? 0 : 1)}%</text>`;
+    grid += `<line class="chart-grid" x1="${m.l}" x2="${width - m.r}" y1="${y(v)}" y2="${y(v)}"/><text class="chart-tick" ${tickStyle} x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end">${currency ? dollars(v) : number(v, Number.isInteger(v) ? 0 : 1) + '%'}</text>`;
   }
   periods.forEach((p, i) => {
-    if (p.endsWith('Q1')) {
+    if (p.length === 4 || p.endsWith('Q1')) {
       grid += `<text class="chart-tick" ${tickStyle} x="${x(i)}" y="${height - 12}" text-anchor="middle">${p.slice(0, 4)}</text>`;
     }
   });
@@ -188,7 +188,7 @@ export function lineChart(
           }
           d += `${connected ? 'L' : 'M'}${x(i)} ${y(v.value)} `;
           connected = true;
-          return `<circle class="line-point" cx="${x(i)}" cy="${y(v.value)}" r="3.5" fill="${s.color}" ${tooltip(`${s.label} · ${v.period}: ${percent(v.value)}`)}/>`;
+          return `<circle class="line-point" cx="${x(i)}" cy="${y(v.value)}" r="3.5" fill="${s.color}" ${tooltip(`${s.label} · ${v.period}: ${currency ? dollars(v.value) : percent(v.value)}`)}/>`;
         })
         .join('');
       return `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="2.4"/>${points}`;
@@ -210,6 +210,7 @@ export function lineChart(
 export function scatterChart(
   points,
   {
+    year = 2024,
     xKey = 'broadbandPct',
     selected = 'US',
     xlabel = 'Households with broadband (%)',
@@ -260,7 +261,7 @@ export function scatterChart(
     const placeLeft = cx > width - m.r - 40;
     selectedLabel = `<text class="chart-selection-label" style="font-size:24px;fill:var(--accent, #b31b1b)" x="${cx + (placeLeft ? -10 : 10)}" y="${Math.max(m.t + 12, cy - 12)}" text-anchor="${placeLeft ? 'end' : 'start'}">${escapeHtml(chosen.abbr)}</text>`;
   }
-  return `<svg class="scatter-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="2024 state telehealth use versus ${escapeHtml(xlabel)}"><title>2024 telehealth use versus ${escapeHtml(xlabel)}</title>${grid}${circles}${selectedLabel}<text class="chart-axis-title" ${tickStyle} x="${(width + m.l - m.r) / 2}" y="${height - 12}" text-anchor="middle">${escapeHtml(xlabel)}</text></svg>`;
+  return `<svg class="scatter-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${year} state telehealth use versus ${escapeHtml(xlabel)}"><title>${year} telehealth use versus ${escapeHtml(xlabel)}</title>${grid}${circles}${selectedLabel}<text class="chart-axis-title" ${tickStyle} x="${(width + m.l - m.r) / 2}" y="${height - 12}" text-anchor="middle">${escapeHtml(xlabel)}</text></svg>`;
 }
 
 /**

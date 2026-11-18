@@ -5,6 +5,8 @@
 # Run through scripts/nhis.py, which downloads and fingerprints the source.
 args <- commandArgs(trailingOnly = TRUE)
 root <- if (length(args)) normalizePath(args[[1]]) else normalizePath(".")
+year <- if (length(args) > 1) as.integer(args[[2]]) else 2024L
+yy <- substr(year, 3, 4)
 local_lib <- file.path(root, ".work", "nhis-R-library")
 if (dir.exists(local_lib)) .libPaths(c(local_lib, .libPaths()))
 if (!requireNamespace("survey", quietly = TRUE) || !requireNamespace("jsonlite", quietly = TRUE)) {
@@ -12,12 +14,21 @@ if (!requireNamespace("survey", quietly = TRUE) || !requireNamespace("jsonlite",
 }
 suppressPackageStartupMessages(library(survey))
 options(survey.lonely.psu = "fail")
-data <- read.csv(file.path(root, ".work", "nhis", "adult24.csv"), stringsAsFactors = FALSE)
+data <- read.csv(file.path(root, ".work", "nhis", sprintf("adult%s.csv", yy)), stringsAsFactors = FALSE)
 required <- c("WTFA_A", "PSTRAT", "PPSU", "VIRAPP12M_A", "NOTCOV_A", "PRIVATE_A", "AGEP_A", "EDUCP_A", "ACCSSINT_A", "PHSTAT_A")
-stopifnot(all(required %in% names(data)), nrow(data) == 32629L)
+# The Internet question first appeared midway through 2022. Use full-year
+# covariates for annual models and show Internet strata only from 2023.
+full_internet <- year >= 2023
+if (!full_internet) {
+  required <- setdiff(required, "ACCSSINT_A")
+  data$ACCSSINT_A <- NA_integer_
+}
+counts <- list("2021"=c(29482,265,11384), "2022"=c(27651,261,8572),
+               "2023"=c(29522,265,8064), "2024"=c(32629,305,8293))[[as.character(year)]]
+stopifnot(all(required %in% names(data)), nrow(data) == counts[1])
 stopifnot(all(is.finite(data$WTFA_A)), all(data$WTFA_A > 0), !anyNA(data$PSTRAT), !anyNA(data$PPSU))
 data$telehealth <- ifelse(data$VIRAPP12M_A %in% c(1, 2), as.numeric(data$VIRAPP12M_A == 1), NA_real_)
-stopifnot(sum(is.na(data$telehealth)) == 305L, sum(data$telehealth == 1, na.rm = TRUE) == 8293L)
+stopifnot(sum(is.na(data$telehealth)) == counts[2], sum(data$telehealth == 1, na.rm = TRUE) == counts[3])
 
 # Edited coverage recodes are used; HICOV_A and HIKIND* are unedited responses.
 # PRIVATE_A codes 1 AND 2 are yes; 3 is no (not a 1/2 yes/no variable).
@@ -41,6 +52,7 @@ data$education_model <- factor(data$education, levels = c("Bachelor’s or highe
 data$internet_model <- factor(data$internet, levels = c("Internet access", "No Internet access"))
 data$health_model <- factor(data$health, levels = health_labels)
 model_variables <- c("telehealth", "insurance_model", "age_numeric", "education_model", "internet_model", "health_model")
+if (!full_internet) model_variables <- setdiff(model_variables, "internet_model")
 data$model_complete <- complete.cases(data[, model_variables])
 
 # Build the design before domain subsetting, as directed by NCHS.
@@ -99,22 +111,24 @@ levels <- list(
   insurance_coverage = c("Insured", "Uninsured")
 )
 overall <- estimate_domain(rep(TRUE, nrow(data)), "All adults")
+if (!full_internet) levels$internet <- NULL
 groups <- lapply(names(levels), function(group) lapply(levels[[group]], function(label) estimate_domain(data[[group]] == label, label)))
 names(groups) <- names(levels)
-missingness <- lapply(c("telehealth", "insurance", "age", "education", "internet", "health"), function(v) {
+missingness <- lapply(c("telehealth", setdiff(names(levels), "insurance_coverage")), function(v) {
   variables <- c(telehealth = "VIRAPP12M_A", insurance = "NOTCOV_A + PRIVATE_A", age = "AGEP_A", education = "EDUCP_A", internet = "ACCSSINT_A", health = "PHSTAT_A")
   list(
     variable = unname(variables[v]), group = v, n = sum(is.na(data[[v]])), percent = mean(is.na(data[[v]])) * 100,
     among_valid_outcome_n = sum(is.na(data[[v]]) & !is.na(data$telehealth))
   )
 })
-provenance <- jsonlite::fromJSON(file.path(root, ".work", "nhis-provenance.json"))
+provenance <- jsonlite::fromJSON(file.path(root, ".work", sprintf("nhis-provenance-%s.json",year)))
 
 # Adjusted associations use the same full-sample survey design.
 # Complete-case restriction is applied to the design rather than deleting
 # records before the design is constructed.
 model_design <- subset(design, model_complete)
 model_formula <- telehealth ~ insurance_model + age_numeric + education_model + internet_model + health_model
+if (!full_internet) model_formula <- update(model_formula, . ~ . - internet_model)
 adjusted_fit <- svyglm(model_formula, design = model_design, family = quasibinomial())
 stopifnot(isTRUE(adjusted_fit$converged), adjusted_fit$rank == length(coef(adjusted_fit)))
 beta <- coef(adjusted_fit)
@@ -188,7 +202,7 @@ adjusted_model <- list(
   )
 )
 result <- list(
-  source = "National Health Interview Survey", source_short = "NHIS", year = 2024,
+  source = "National Health Interview Survey", source_short = "NHIS", year = year,
   status = "verified_descriptive", population = "U.S. civilian noninstitutionalized adults aged 18 or older",
   measure = "Any appointment by video or phone in the past 12 months", unit = "percent",
   denominator = "Adults with a valid yes/no telehealth response and a valid value for the displayed grouping variable",
@@ -223,6 +237,12 @@ result <- list(
   ), provenance = provenance
 )
 dir.create(file.path(root, "data"), showWarnings = FALSE)
-jsonlite::write_json(result, file.path(root, "data", "nhis.json"), pretty = TRUE, auto_unbox = TRUE, digits = 10, na = "null")
+if (!full_internet) {
+  result$adjusted_model$formula <- "telehealth ~ insurance + age in years + education + self-rated health"
+  result$adjusted_model$reference_groups$internet <- NULL
+  result$methods$adjustment <- "Annual model adjusts for insurance, age, education and self-rated health."
+  result$group_notes$internet <- if (year == 2021) "Not collected." else "Collected only in quarters 3 and 4."
+}
+jsonlite::write_json(result, file.path(root, "data", if (year == 2024) "nhis.json" else sprintf("nhis-%s.json",year)), pretty = TRUE, auto_unbox = TRUE, digits = 10, na = "null")
 cat(sprintf("NHIS: n=%d, outcome valid=%d, estimate=%.4f%%, 95%% CI %.4f–%.4f%%; %d independent checks passed.\n", nrow(data), overall$n, overall$estimate, overall$ci_low, overall$ci_high, length(audit_errors)))
 cat(sprintf("NHIS adjusted model: complete-case n=%d, excluded=%d, terms=%d, converged=%s, weighted coefficient check max difference=%.3g.\n", adjusted_model$n, adjusted_model$excluded_n, length(model_terms), adjusted_model$quality$converged, coefficient_difference))

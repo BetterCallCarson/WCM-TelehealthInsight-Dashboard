@@ -17,7 +17,17 @@ const root = path.resolve(import.meta.dirname, '..');
 const formattingOptions = await resolveConfig(path.join(root, 'index.html'), {
   config: path.join(root, 'prettier.config.cjs'),
 });
-const names = ['cms', 'nhis', 'meps'];
+const names = [
+  'cms',
+  'nhis',
+  'meps',
+  'nhis-2021',
+  'nhis-2022',
+  'nhis-2023',
+  'meps-2021',
+  'meps-2022',
+  'meps-2023',
+];
 const [
   html,
   css,

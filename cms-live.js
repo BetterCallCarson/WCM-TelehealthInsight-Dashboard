@@ -593,7 +593,7 @@ export async function fetchCmsUpdates(
     sourceModified: release.modified,
     sourceTitle: release.title,
     changes: result.changes,
-    acsContextYear: 2024,
+    acsContextYears: [2021, 2022, 2023, 2024],
     associationsFromVerifiedSnapshot: true,
     validationStatus: 'unvalidated',
   };

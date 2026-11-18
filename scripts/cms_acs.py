@@ -253,7 +253,7 @@ def acs_table(path):
     return rows, state_rows
 
 
-def acs_record(broadband, income):
+def acs_record(broadband, income, year=2024):
     """Derives household context and its approximate 90% uncertainty.
 
     Args:
@@ -292,7 +292,7 @@ def acs_record(broadband, income):
             method = "ratio_fallback"
         moe = math.sqrt(radical) / total * 100
     return {
-        "year": 2024,
+        "year": year,
         "broadbandPct": (
             round(proportion * 100, 6) if proportion is not None else None
         ),
@@ -346,7 +346,7 @@ def matrix_inverse(matrix):
     return [row[size:] for row in augmented]
 
 
-def adjusted_state_model(complete):
+def adjusted_state_model(complete, year=2024, context_key="acs2024"):
     """Fits equal-state OLS with HC3 covariance and normal confidence intervals.
 
     Args:
@@ -365,8 +365,8 @@ def adjusted_state_model(complete):
     x = [
         [
             1.0,
-            s["acs2024"]["broadbandPct"],
-            s["acs2024"]["medianIncome"] / 10000.0,
+            s[context_key]["broadbandPct"],
+            s[context_key]["medianIncome"] / 10000.0,
         ]
         for s, _ in complete
     ]
@@ -463,8 +463,8 @@ def adjusted_state_model(complete):
     return {
         "status": "computed",
         "model": "Unweighted state-level ordinary least squares",
-        "formula": "2024 annual telehealthPct ~ broadbandPct + medianIncome / 10000",
-        "year": 2024,
+        "formula": f"{year} annual telehealthPct ~ broadbandPct + medianIncome / 10000",
+        "year": year,
         "n": n,
         "excludedStates": 51 - n,
         "parameters": parameters,
@@ -480,7 +480,7 @@ def adjusted_state_model(complete):
         "maximumLeverage": round(max(leverages), 8),
         "normalEquationMaxAbsoluteError": normal_equation_error,
         "notes": [
-            "States and DC receive equal weight; ACS is matched only to 2024 CMS annual records.",
+            f"States and DC receive equal weight; ACS is matched to {year} CMS annual records.",
             "Both covariates enter simultaneously. Broadband is measured in percentage points and income in $10,000 units.",
             "HC3 addresses heteroskedasticity, not spatial dependence, confounding, or ACS measurement error.",
             "This is an ecological observational association; state household context is not individual beneficiary exposure.",
@@ -490,12 +490,44 @@ def adjusted_state_model(complete):
     }
 
 
+
+def add_historical_context(output, force=False):
+    """Join each year's two ACS tables and annual CMS outcomes by state FIPS."""
+    hashes = {'acs2021-b28002.dat': '5b0ff62e30af72488ea0fbc380b0369dbd6d5cb297bde21e50bf017614e063c7', 'acs2021-b19013.dat': 'fe172b34d6fa8272013a8f597ebcdbaa7c3ff0773ac01c5d22024a718bc10cd7', 'acs2022-b28002.dat': '9cbb5fa174106826def44662ebb579ce5709bc4ec0608ad26025997c24dc8020', 'acs2022-b19013.dat': 'ff4318d2222fac54eddce6e7e0d8766335e292e08539c4bc3dbfaa453d5190c3', 'acs2023-b28002.dat': 'efd63afbfe99f55c9d2b4430c8117ef5ce7c6b852b37b425fd12feec40458dca', 'acs2023-b19013.dat': '20530c33c93443062505a438df45917d61195bb07462a69701b4cce793cd556d'}
+    history = {}
+    for year in range(2021, 2024):
+        tables = []
+        sources = []
+        for table in ("b28002", "b19013"):
+            filename = f"acs{year}-{table}.dat"
+            url = ACS_BASE.replace("2024", str(year)) + f"acsdt1y{year}-{table}.dat"
+            source = dict(id=filename, filename=filename, url=url, sha256=hashes[filename])
+            path, _ = source_file(source, force)
+            tables.append(acs_table(path)[1])
+            sources.append(source)
+        states = {}
+        pairs = []
+        for state in output["states"]:
+            fips = state["fips"]
+            context = acs_record(tables[0][fips], tables[1][fips], year)
+            annual, = [row for row in state["annual"] if row["year"] == year]
+            assert 0 < context["broadbandPct"] <= 100 and context["medianIncome"] > 0
+            states[state["abbr"]] = context
+            pairs.append(({"context": context}, annual))
+        assert len(states) == 51
+        rates = [annual["telehealthPct"] for _, annual in pairs]
+        history[str(year)] = dict(states=states, sources=sources,
+            broadbandPearsonR=statistics.correlation([s["broadbandPct"] for s in states.values()], rates),
+            incomePearsonR=statistics.correlation([s["medianIncome"] for s in states.values()], rates),
+            adjustedModel=adjusted_state_model(pairs, year, "context"))
+    output["historicalContext"] = history
+
 def main():
     """Builds the pinned CMS/ACS aggregate and provenance record.
 
     Command-line options control cache refresh and retrieval-date metadata.
     Source matching and count checks run before the aggregate JSON is written.
-    The matched-year model always uses 2024, even when trend years differ.
+    Each matched-year model uses the corresponding annual CMS outcome.
     """
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -700,7 +732,7 @@ def main():
             + MOE_METHOD,
             "national": "CMS published National aggregate is retained as supplied; it is not reconstructed by summing the 50 states and DC and can include other geographic categories.",
             "missing": "Blank/suppressed/non-numeric CMS values and negative ACS sentinel values map to null, never zero. All selected source values in this snapshot are available.",
-            "yearMatching": "ACS is matched only to 2024 CMS annual records. No ACS values are extrapolated to other years.",
+            "yearMatching": "Annual ACS and archived CMS observations are paired by state and year for 2021–2024.",
         },
         "limitations": [
             "State geography follows beneficiary mailing address. The mapped population is Medicare Part B FFS, not the entire US population.",
@@ -711,6 +743,7 @@ def main():
             "The adjusted state regression includes broadband and income only; unmeasured confounding and ecological bias remain. No prediction or causal model is reported.",
         ],
     }
+    add_historical_context(output, args.download)
     OUT.write_text(
         json.dumps(output, indent=2, ensure_ascii=False, allow_nan=False)
         + "\n",

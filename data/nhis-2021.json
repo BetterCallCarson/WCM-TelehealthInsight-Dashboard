@@ -1,0 +1,600 @@
+{
+  "_maintainer": {
+    "name": "Jiajun (Carson) Chen",
+    "email": "jic4015@med.cornell.edu"
+  },
+  "source": "National Health Interview Survey",
+  "source_short": "NHIS",
+  "year": 2021,
+  "status": "verified_descriptive",
+  "population": "U.S. civilian noninstitutionalized adults aged 18 or older",
+  "measure": "Any appointment by video or phone in the past 12 months",
+  "unit": "percent",
+  "denominator": "Adults with a valid yes/no telehealth response and a valid value for the displayed grouping variable",
+  "overall": {
+    "label": "All adults",
+    "n": 29217,
+    "raw_group_n": 29482,
+    "missing_outcome_n": 265,
+    "yes_n": 11384,
+    "weighted_denominator": 250829709.51500052,
+    "estimate": 37.0172033271,
+    "ci_low": 36.2298409833,
+    "ci_high": 37.8115310874,
+    "standard_error": 0.40270425773,
+    "relative_standard_error": 0.010878840688,
+    "unstable": false,
+    "suppressed": false,
+    "design_df": 591
+  },
+  "groups": {
+    "insurance": [
+      {
+        "label": "Any private coverage",
+        "n": 18616,
+        "raw_group_n": 18758,
+        "missing_outcome_n": 142,
+        "yes_n": 7429,
+        "weighted_denominator": 161381421.88100007,
+        "estimate": 38.3384018847,
+        "ci_low": 37.3961468841,
+        "ci_high": 39.2894985162,
+        "standard_error": 0.4820714957,
+        "relative_standard_error": 0.01257411556,
+        "unstable": false,
+        "suppressed": false,
+        "design_df": 591
+      },
+      {
+        "label": "Public / other, no private",
+        "n": 8222,
+        "raw_group_n": 8306,
+        "missing_outcome_n": 84,
+        "yes_n": 3597,
+        "weighted_denominator": 63579322.10499991,
+        "estimate": 43.0121976982,
+        "ci_low": 41.601815563,
+        "ci_high": 44.4340132791,
+        "standard_error": 0.72122193067,
+        "relative_standard_error": 0.016767846547,
+        "unstable": false,
+        "suppressed": false,
+        "design_df": 591
+      },
+      {
+        "label": "Uninsured",
+        "n": 2285,
+        "raw_group_n": 2313,
+        "missing_outcome_n": 28,
+        "yes_n": 336,
+        "weighted_denominator": 24823369.704999983,
+        "estimate": 13.9046598388,
+        "ci_low": 12.2506344938,
+        "ci_high": 15.7419421705,
+        "standard_error": 0.88771722831,
+        "relative_standard_error": 0.06384314601,
+        "unstable": false,
+        "suppressed": false,
+        "design_df": 524
+      }
+    ],
+    "age": [
+      {
+        "label": "18–34",
+        "n": 6125,
+        "raw_group_n": 6186,
+        "missing_outcome_n": 61,
+        "yes_n": 2020,
+        "weighted_denominator": 72935904.88400005,
+        "estimate": 30.853805491,
+        "ci_low": 29.4554197304,
+        "ci_high": 32.2881934539,
+        "standard_error": 0.72132058869,
+        "relative_standard_error": 0.023378658717,
+        "unstable": false,
+        "suppressed": false,
+        "design_df": 588
+      },
+      {
+        "label": "35–49",
+        "n": 6721,
+        "raw_group_n": 6772,
+        "missing_outcome_n": 51,
+        "yes_n": 2587,
+        "weighted_denominator": 60338037.02099983,
+        "estimate": 36.2716830486,
+        "ci_low": 34.8962595886,
+        "ci_high": 37.6699505975,
+        "standard_error": 0.70629475304,
+        "relative_standard_error": 0.019472345744,
+        "unstable": false,
+        "suppressed": false,
+        "design_df": 588
+      },
+      {
+        "label": "50–64",
+        "n": 7498,
+        "raw_group_n": 7561,
+        "missing_outcome_n": 63,
+        "yes_n": 3010,
+        "weighted_denominator": 61540590.73199999,
+        "estimate": 39.4670009811,
+        "ci_low": 38.0942374695,
+        "ci_high": 40.8565848891,
+        "standard_error": 0.70341768353,
+        "relative_standard_error": 0.017822932223,
+        "unstable": false,
+        "suppressed": false,
+        "design_df": 590
+      },
+      {
+        "label": "65+",
+        "n": 8790,
+        "raw_group_n": 8877,
+        "missing_outcome_n": 87,
+        "yes_n": 3740,
+        "weighted_denominator": 55344742.28000015,
+        "estimate": 43.3130378108,
+        "ci_low": 42.0285788903,
+        "ci_high": 44.6065466914,
+        "standard_error": 0.65645052451,
+        "relative_standard_error": 0.015155956675,
+        "unstable": false,
+        "suppressed": false,
+        "design_df": 590
+      }
+    ],
+    "education": [
+      {
+        "label": "Less than high school",
+        "n": 2495,
+        "raw_group_n": 2533,
+        "missing_outcome_n": 38,
+        "yes_n": 763,
+        "weighted_denominator": 23418273.03400001,
+        "estimate": 28.7128478656,
+        "ci_low": 26.5774995632,
+        "ci_high": 30.9474456176,
+        "standard_error": 1.1127394867,
+        "relative_standard_error": 0.038754062012,
+        "unstable": false,
+        "suppressed": false,
+        "design_df": 530
+      },
+      {
+        "label": "High school / GED",
+        "n": 7168,
+        "raw_group_n": 7251,
+        "missing_outcome_n": 83,
+        "yes_n": 2264,
+        "weighted_denominator": 70560249.3559999,
+        "estimate": 30.3386157722,
+        "ci_low": 29.0485186522,
+        "ci_high": 31.6604416359,
+        "standard_error": 0.66506108874,
+        "relative_standard_error": 0.021921273328,
+        "unstable": false,
+        "suppressed": false,
+        "design_df": 588
+      },
+      {
+        "label": "Some college / associate",
+        "n": 8075,
+        "raw_group_n": 8145,
+        "missing_outcome_n": 70,
+        "yes_n": 3258,
+        "weighted_denominator": 66288794.432000004,
+        "estimate": 38.9632478857,
+        "ci_low": 37.641169843,
+        "ci_high": 40.3017507674,
+        "standard_error": 0.67749061248,
+        "relative_standard_error": 0.017387939898,
+        "unstable": false,
+        "suppressed": false,
+        "design_df": 590
+      },
+      {
+        "label": "Bachelor’s or higher",
+        "n": 11332,
+        "raw_group_n": 11401,
+        "missing_outcome_n": 69,
+        "yes_n": 5055,
+        "weighted_denominator": 89005098.92099985,
+        "estimate": 43.1992408178,
+        "ci_low": 42.0098346505,
+        "ci_high": 44.3965410475,
+        "standard_error": 0.60772687506,
+        "relative_standard_error": 0.014067998964,
+        "unstable": false,
+        "suppressed": false,
+        "design_df": 589
+      }
+    ],
+    "health": [
+      {
+        "label": "Excellent",
+        "n": 6600,
+        "raw_group_n": 6657,
+        "missing_outcome_n": 57,
+        "yes_n": 1951,
+        "weighted_denominator": 61674899.77899997,
+        "estimate": 27.6029092937,
+        "ci_low": 26.3242294864,
+        "ci_high": 28.9193201515,
+        "standard_error": 0.66075019441,
+        "relative_standard_error": 0.023937701181,
+        "unstable": false,
+        "suppressed": false,
+        "design_df": 586
+      },
+      {
+        "label": "Very good",
+        "n": 10046,
+        "raw_group_n": 10105,
+        "missing_outcome_n": 59,
+        "yes_n": 3728,
+        "weighted_denominator": 85575400.07299943,
+        "estimate": 35.3592655602,
+        "ci_low": 34.1903343674,
+        "ci_high": 36.545967843,
+        "standard_error": 0.5998037959,
+        "relative_standard_error": 0.016963129364,
+        "unstable": false,
+        "suppressed": false,
+        "design_df": 590
+      },
+      {
+        "label": "Good",
+        "n": 8264,
+        "raw_group_n": 8350,
+        "missing_outcome_n": 86,
+        "yes_n": 3450,
+        "weighted_denominator": 69676657.49600016,
+        "estimate": 40.2817310483,
+        "ci_low": 38.9436043293,
+        "ci_high": 41.6344835516,
+        "standard_error": 0.68521160661,
+        "relative_standard_error": 0.017010480652,
+        "unstable": false,
+        "suppressed": false,
+        "design_df": 590
+      },
+      {
+        "label": "Fair",
+        "n": 3307,
+        "raw_group_n": 3353,
+        "missing_outcome_n": 46,
+        "yes_n": 1683,
+        "weighted_denominator": 26157587.814000003,
+        "estimate": 49.8425467849,
+        "ci_low": 47.8197954222,
+        "ci_high": 51.8658136629,
+        "standard_error": 1.0305526672,
+        "relative_standard_error": 0.020676163914,
+        "unstable": false,
+        "suppressed": false,
+        "design_df": 574
+      },
+      {
+        "label": "Poor",
+        "n": 987,
+        "raw_group_n": 1004,
+        "missing_outcome_n": 17,
+        "yes_n": 565,
+        "weighted_denominator": 7658981.085000006,
+        "estimate": 57.4929801253,
+        "ci_low": 53.7425341521,
+        "ci_high": 61.1591120203,
+        "standard_error": 1.8900181351,
+        "relative_standard_error": 0.032873894013,
+        "unstable": false,
+        "suppressed": false,
+        "design_df": 425
+      }
+    ],
+    "insurance_coverage": [
+      {
+        "label": "Insured",
+        "n": 26845,
+        "raw_group_n": 27072,
+        "missing_outcome_n": 227,
+        "yes_n": 11031,
+        "weighted_denominator": 225004499.94300047,
+        "estimate": 39.6673380224,
+        "ci_low": 38.8432539996,
+        "ci_high": 40.4973281493,
+        "standard_error": 0.42113783688,
+        "relative_standard_error": 0.01061674057,
+        "unstable": false,
+        "suppressed": false,
+        "design_df": 591
+      },
+      {
+        "label": "Uninsured",
+        "n": 2285,
+        "raw_group_n": 2313,
+        "missing_outcome_n": 28,
+        "yes_n": 336,
+        "weighted_denominator": 24823369.704999983,
+        "estimate": 13.9046598388,
+        "ci_low": 12.2506344938,
+        "ci_high": 15.7419421705,
+        "standard_error": 0.88771722831,
+        "relative_standard_error": 0.06384314601,
+        "unstable": false,
+        "suppressed": false,
+        "design_df": 524
+      }
+    ]
+  },
+  "adjusted_model": {
+    "status": "verified",
+    "model": "Survey-weighted logistic regression",
+    "link": "logit",
+    "outcome": "Any video or phone appointment in the past 12 months (VIRAPP12M_A=1)",
+    "population": "U.S. civilian noninstitutionalized adults aged 18 or older with complete outcome and covariates",
+    "n": 28895,
+    "yes_n": 11286,
+    "excluded_n": 587,
+    "formula": "telehealth ~ insurance + age in years + education + self-rated health",
+    "reference_groups": {
+      "insurance": "Any private coverage",
+      "education": "Bachelor’s or higher",
+      "health": "Excellent"
+    },
+    "terms": [
+      {
+        "term": "insurance_modelPublic / other, no private",
+        "label": "Public / other, no private",
+        "group": "Insurance",
+        "reference": "Any private coverage",
+        "odds_ratio": 1.1737488275,
+        "ci_low": 1.0915300676,
+        "ci_high": 1.2621606595,
+        "log_odds_coefficient": 0.16020275257,
+        "standard_error": 0.036975691916,
+        "p_value": 0.000017358693607
+      },
+      {
+        "term": "insurance_modelUninsured",
+        "label": "Uninsured",
+        "group": "Insurance",
+        "reference": "Any private coverage",
+        "odds_ratio": 0.32003055763,
+        "ci_low": 0.27388121899,
+        "ci_high": 0.37395611934,
+        "log_odds_coefficient": -1.1393387952,
+        "standard_error": 0.079285938378,
+        "p_value": 2.7614951562e-40
+      },
+      {
+        "term": "age_numeric",
+        "label": "Age, per additional year",
+        "group": "Age",
+        "reference": "One year younger",
+        "odds_ratio": 1.0027320271,
+        "ci_low": 1.0009209404,
+        "ci_high": 1.0045463907,
+        "log_odds_coefficient": 0.0027283018554,
+        "standard_error": 0.00092043491921,
+        "p_value": 0.0031596840352
+      },
+      {
+        "term": "education_modelLess than high school",
+        "label": "Less than high school",
+        "group": "Education",
+        "reference": "Bachelor’s or higher",
+        "odds_ratio": 0.42925030706,
+        "ci_low": 0.37689326482,
+        "ci_high": 0.48888065484,
+        "log_odds_coefficient": -0.84571506387,
+        "standard_error": 0.066229385461,
+        "p_value": 4.3429362447e-33
+      },
+      {
+        "term": "education_modelHigh school / GED",
+        "label": "High school / GED",
+        "group": "Education",
+        "reference": "Bachelor’s or higher",
+        "odds_ratio": 0.49974752341,
+        "ci_low": 0.46012219926,
+        "ci_high": 0.54278534606,
+        "log_odds_coefficient": -0.69365226128,
+        "standard_error": 0.042061395608,
+        "p_value": 2.1069085392e-50
+      },
+      {
+        "term": "education_modelSome college / associate",
+        "label": "Some college / associate",
+        "group": "Education",
+        "reference": "Bachelor’s or higher",
+        "odds_ratio": 0.7693418055,
+        "ci_low": 0.71625510187,
+        "ci_high": 0.82636313813,
+        "log_odds_coefficient": -0.26221992774,
+        "standard_error": 0.036403738245,
+        "p_value": 1.8331596173e-12
+      },
+      {
+        "term": "health_modelVery good",
+        "label": "Very good",
+        "group": "Self-rated health",
+        "reference": "Excellent",
+        "odds_ratio": 1.4145624536,
+        "ci_low": 1.3084200912,
+        "ci_high": 1.5293153541,
+        "log_odds_coefficient": 0.34682026323,
+        "standard_error": 0.039713691073,
+        "p_value": 2.6382351691e-17
+      },
+      {
+        "term": "health_modelGood",
+        "label": "Good",
+        "group": "Self-rated health",
+        "reference": "Excellent",
+        "odds_ratio": 1.9258191948,
+        "ci_low": 1.767676276,
+        "ci_high": 2.0981101695,
+        "log_odds_coefficient": 0.65535143296,
+        "standard_error": 0.043626867898,
+        "p_value": 2.4837636347e-43
+      },
+      {
+        "term": "health_modelFair",
+        "label": "Fair",
+        "group": "Self-rated health",
+        "reference": "Excellent",
+        "odds_ratio": 3.0430579252,
+        "ci_low": 2.7368709314,
+        "ci_high": 3.3834995395,
+        "log_odds_coefficient": 1.1128629063,
+        "standard_error": 0.053994216265,
+        "p_value": 2.9431967294e-71
+      },
+      {
+        "term": "health_modelPoor",
+        "label": "Poor",
+        "group": "Self-rated health",
+        "reference": "Excellent",
+        "odds_ratio": 4.1999258841,
+        "ci_low": 3.5301355953,
+        "ci_high": 4.9967988356,
+        "log_odds_coefficient": 1.4350668785,
+        "standard_error": 0.088455036604,
+        "p_value": 4.2727034327e-49
+      }
+    ],
+    "exclusion_flow": [
+      {
+        "variable": "telehealth",
+        "excluded_at_step": 265,
+        "remaining_n": 29217
+      },
+      {
+        "variable": "insurance_model",
+        "excluded_at_step": 94,
+        "remaining_n": 29123
+      },
+      {
+        "variable": "age_numeric",
+        "excluded_at_step": 76,
+        "remaining_n": 29047
+      },
+      {
+        "variable": "education_model",
+        "excluded_at_step": 141,
+        "remaining_n": 28906
+      },
+      {
+        "variable": "health_model",
+        "excluded_at_step": 11,
+        "remaining_n": 28895
+      }
+    ],
+    "quality": {
+      "converged": true,
+      "rank": 11,
+      "design_df": 591,
+      "residual_df": 581,
+      "coefficient_audit_max_difference": 4.4408920985e-16,
+      "confidence_interval_audit_max_difference": 1.1102230246e-16
+    },
+    "notes": [
+      "Adjusted odds ratios, not risk ratios or probability differences; all listed covariates are included simultaneously.",
+      "Survey-weighted quasibinomial logit model with Taylor-linearized covariance; 95% Wald intervals use the model residual survey degrees of freedom.",
+      "All missing outcome or covariate values are excluded without imputation. The sequential exclusion counts depend on the listed order and avoid double-counting.",
+      "Age is entered linearly in years and top-coded at 85; age nonlinearity, interactions, and alternative insurance definitions have not been assessed.",
+      "Past-year telehealth and current insurance have different time windows. These adjusted associations do not establish a causal effect of insurance.",
+      "This is an explanatory cross-sectional model. No forecasting, individual prediction, train/test split, or predictive performance claim is included."
+    ]
+  },
+  "group_labels": {
+    "insurance": "Insurance",
+    "age": "Age",
+    "education": "Education",
+    "internet": "Internet access",
+    "health": "Self-rated health",
+    "insurance_coverage": "Insured status"
+  },
+  "group_notes": {
+    "insurance": "Mutually exclusive project hierarchy: NOTCOV_A=1 is uninsured; NOTCOV_A=2 with PRIVATE_A in {1,2} is any private coverage; NOTCOV_A=2 with PRIVATE_A=3 is public or other coverage without private. Unknown recodes are excluded. Private coverage can coexist with Medicare or another plan; these are not exclusive payer types.",
+    "age": "Age is top-coded at 85. Unknown or blank exact ages are excluded only from age-group estimates; AGE65 is not used to recover unknown exact age.",
+    "education": "EDUCP_A 0–2: less than high school; 3–4: high school/GED; 5–7: some college/associate; 8–10: bachelor’s or higher. Codes 97/98/99 and blanks are missing.",
+    "internet": "Not collected.",
+    "health": "PHSTAT_A uses the five self-rated health categories; codes 7/8/9 are excluded.",
+    "insurance_coverage": "NOTCOV_A=1 is uninsured and NOTCOV_A=2 is insured, after NCHS editing."
+  },
+  "quality": {
+    "raw_n": 29482,
+    "valid_outcome_n": 29217,
+    "missing_outcome_n": 265,
+    "missing_outcome_percent": 0.89885353775,
+    "missingness": [
+      {
+        "variable": "VIRAPP12M_A",
+        "group": "telehealth",
+        "n": 265,
+        "percent": 0.89885353775,
+        "among_valid_outcome_n": 0
+      },
+      {
+        "variable": "NOTCOV_A + PRIVATE_A",
+        "group": "insurance",
+        "n": 105,
+        "percent": 0.35614951496,
+        "among_valid_outcome_n": 94
+      },
+      {
+        "variable": "AGEP_A",
+        "group": "age",
+        "n": 86,
+        "percent": 0.29170341225,
+        "among_valid_outcome_n": 83
+      },
+      {
+        "variable": "EDUCP_A",
+        "group": "education",
+        "n": 152,
+        "percent": 0.51556882165,
+        "among_valid_outcome_n": 147
+      },
+      {
+        "variable": "PHSTAT_A",
+        "group": "health",
+        "n": 13,
+        "percent": 0.044094701852,
+        "among_valid_outcome_n": 13
+      }
+    ],
+    "invalid_design_n": 0,
+    "strata_n": 52,
+    "psu_n": 643,
+    "audit": {
+      "source_count_matches_codebook": true,
+      "yes_count_matches_codebook": true,
+      "independent_weighted_mean_and_taylor_se": "passed for all displayed estimates",
+      "maximum_absolute_difference": 2.4424906542e-15
+    },
+    "reliability_rule": "Project screening rule, not a complete implementation of NCHS presentation standards: suppress n<30; flag n<30 or relative standard error>30%. No displayed group triggers this rule."
+  },
+  "methods": {
+    "weighting": "WTFA_A final adult weights; PPSU clusters nested in PSTRAT strata; full survey design created before domain subsetting.",
+    "variance": "Taylor linearization using R survey; 95% logit-transformed confidence intervals with domain design degrees of freedom.",
+    "missing": "Outcome codes 7/8/9 and blanks excluded, with no imputation. Each grouping variable uses its own available-case denominator; this is not a complete-case regression sample.",
+    "adjustment": "Annual model adjusts for insurance, age, education and self-rated health.",
+    "interpretation": "Telehealth is self-reported over the past 12 months; insurance is measured at interview. Their time windows do not exactly coincide. Group differences do not establish causation.",
+    "geography": "National subgroup estimates only; public-use NHIS does not support these state maps.",
+    "r_version": "R version 4.6.2 (2026-10-29)",
+    "survey_version": "4.5",
+    "jsonlite_version": "2.0.0"
+  },
+  "provenance": {
+    "url": "https://ftp.cdc.gov/pub/Health_Statistics/NCHS/Datasets/NHIS/2021/adult21csv.zip",
+    "landing_page": "https://www.cdc.gov/nchs/nhis/documentation/2021-nhis.html",
+    "codebook_url": "https://ftp.cdc.gov/pub/Health_Statistics/NCHS/Dataset_Documentation/NHIS/2021/adult-codebook.pdf",
+    "accessed": "2026-11-17",
+    "file": "adult21.csv",
+    "archive_sha256": "6e71f5a34115f9aef51304957c08b6db7a91f8a0a6eb3d9d21cd4f254cbdbf78",
+    "sha256": "4dc1d360065111b445c5dcea15fe9a7d777650ed106f0522e540eb88199c6c01"
+  }
+}

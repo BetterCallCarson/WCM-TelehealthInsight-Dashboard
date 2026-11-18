@@ -1,0 +1,1317 @@
+{
+  "_maintainer": {
+    "name": "Jiajun (Carson) Chen",
+    "email": "jic4015@med.cornell.edu"
+  },
+  "schema_version": "1.0",
+  "source": "AHRQ MEPS HC-239G + HC-243",
+  "year": 2022,
+  "status": "computed_from_public_microdata",
+  "accessed": "2026-11-17",
+  "population": "Office-based visits, all ages, U.S. civilian noninstitutionalized population",
+  "unit": "visit",
+  "provenance": [
+    {
+      "file": "h239gdat.zip",
+      "url": "https://meps.ahrq.gov/mepsweb/data_files/pufs/h239g/h239gdat.zip",
+      "accessed": "2026-11-17",
+      "sha256": "126cb5e0ca25e4bfe41d8b9ca56e74edac862b8cd2298dfd0d3280b8f15823d3",
+      "bytes": 2320565
+    },
+    {
+      "file": "h239gstu.txt",
+      "url": "https://meps.ahrq.gov/mepsweb/data_stats/download_data/pufs/h239g/h239gstu.txt",
+      "accessed": "2026-11-17",
+      "sha256": "821f81526bc287fa3229c4fecb49d608c0b7401c71e7515a68929a16eb71a67a",
+      "bytes": 15760
+    },
+    {
+      "file": "h243dat.zip",
+      "url": "https://meps.ahrq.gov/mepsweb/data_files/pufs/h243/h243dat.zip",
+      "accessed": "2026-11-17",
+      "sha256": "aa17c8bacf091adbeacbef411cf3630759fe49c30ab4765a5964dacaa745938e",
+      "bytes": 6123666
+    },
+    {
+      "file": "h243stu.txt",
+      "url": "https://meps.ahrq.gov/mepsweb/data_stats/download_data/pufs/h243/h243stu.txt",
+      "accessed": "2026-11-17",
+      "sha256": "3f6c462afbbe33aa1efe8073c3d6ae0a30503c2df36465d9309300e40d355f70",
+      "bytes": 359575
+    }
+  ],
+  "documentation": [
+    {
+      "title": "HC-239G documentation",
+      "url": "https://meps.ahrq.gov/data_stats/download_data/pufs/h239g/h239gdoc.pdf"
+    },
+    {
+      "title": "HC-243 documentation",
+      "url": "https://meps.ahrq.gov/data_stats/download_data/pufs/h243/h243doc.pdf"
+    }
+  ],
+  "methods": {
+    "weight": "PERWT22F",
+    "stratum": "VARSTR",
+    "psu": "VARPSU",
+    "estimator": "Survey-weighted ratio means; with-replacement Taylor linearization",
+    "confidence_interval": "95% normal approximation: estimate +/- 1.959964 SE; clipped to [0,100] for percentages and to zero below for payments",
+    "variance_domains": "The complete positive-weight full-year person-file PSU universe is retained; out-of-domain PSUs contribute zero influence.",
+    "strata": 105,
+    "psus": 364,
+    "design_df": 259,
+    "insurance_variable": "INSCOV22",
+    "insurance_definition": "Any private includes TRICARE/CHAMPVA at any time in 2022; public only has no private coverage; uninsured means uninsured all year. Categories describe annual coverage, not coverage on the visit date.",
+    "share_denominator": "All positive-weight office visits within the selected insurance group, including remote visits with unknown modality",
+    "payment_denominator": "Positive-weight visits in each displayed modality/insurance group; zero payments retained",
+    "payment_units": "2022 U.S. dollars per visit; released imputed values retained",
+    "stability_rule": "Dashboard screening rule (not an official AHRQ release standard): flag fewer than 30 sampled persons in a payment domain, modality numerator, or telehealth numerator, RSE > 30%, or boundary proportions. Withhold those small-person-count estimates from the interface and display-ready CSV; preserve computed estimates in aggregate JSON.",
+    "interpretation": "Descriptive, unadjusted comparisons; no causal or predictive interpretation. No patient-level linkage to NHIS."
+  },
+  "quality": {
+    "source_event_n": 151263,
+    "source_person_n": 22431,
+    "analytic_visit_n": 149579,
+    "analytic_person_n": 16259,
+    "zero_weight_visit_n": 1684,
+    "telehealth_source_n": 12616,
+    "telehealth_analytic_n": 12522,
+    "inapplicable_modality_source_n": 138647,
+    "unknown_remote_modality_source_n": 74,
+    "unknown_remote_modality_analytic_n": 71,
+    "missing_telehealth_source_n": 0,
+    "missing_payment_source_n": 0,
+    "unmatched_person_n": 0,
+    "unknown_insurance_analytic_n": 0,
+    "imputation_flag_source_counts": {
+      "0": 438,
+      "1": 24502,
+      "2": 34203,
+      "3": 61681,
+      "4": 28134,
+      "5": 2305
+    },
+    "imputation_flag_labels": {
+      "0": "Not eligible for imputation",
+      "1": "Complete HC data",
+      "2": "Complete MPC data",
+      "3": "Fully imputed",
+      "4": "Partially imputed",
+      "5": "Capitation imputation"
+    },
+    "weighted_office_visits": 2077943098.0937,
+    "checks": {
+      "weighted_visits_match_official_table": true,
+      "total_mean_matches_official_table": true,
+      "total_se_matches_official_table": true,
+      "family_mean_matches_official_table": true,
+      "family_se_matches_official_table": true
+    },
+    "limitations": [
+      "Visit-level estimates count people with repeated visits repeatedly; they do not estimate the percentage of people using telehealth.",
+      "Unweighted codebook counts are distinct from weighted population estimates.",
+      "VISITTYPE=-1 is structural inapplicability among nonremote visits; -8 is unknown remote modality.",
+      "Payments contain released imputation; zero missing values do not mean payments were all directly observed.",
+      "Payments are amounts paid, not charges or standardized prices. Case mix and service differences can explain comparisons.",
+      "Normal confidence intervals are approximate, particularly for rare modalities; unstable estimates are flagged."
+    ]
+  },
+  "overall": {
+    "insurance": "All",
+    "n": 149579,
+    "n_persons": 16259,
+    "telehealth_n": 12522,
+    "telehealth_n_persons": 1878,
+    "telehealth_pct": {
+      "estimate": 9.151376,
+      "ci_low": 7.843767,
+      "ci_high": 10.458986,
+      "se": 0.66716,
+      "n": 149579,
+      "n_persons": 16259,
+      "weighted_denominator": 2077943098.0937,
+      "unstable": false,
+      "flags": []
+    },
+    "total_payment": {
+      "estimate": 293.530646,
+      "ci_low": 279.019117,
+      "ci_high": 308.042175,
+      "se": 7.403977,
+      "n": 149579,
+      "n_persons": 16259,
+      "weighted_denominator": 2077943098.0937,
+      "unstable": false,
+      "flags": []
+    },
+    "family_payment": {
+      "estimate": 56.864966,
+      "ci_low": 48.731395,
+      "ci_high": 64.998538,
+      "se": 4.149858,
+      "n": 149579,
+      "n_persons": 16259,
+      "weighted_denominator": 2077943098.0937,
+      "unstable": false,
+      "flags": []
+    },
+    "modalities": [
+      {
+        "modality": "In person",
+        "n": 137057,
+        "n_persons": 16123,
+        "share_pct": {
+          "estimate": 90.848624,
+          "ci_low": 89.541014,
+          "ci_high": 92.156233,
+          "se": 0.66716,
+          "n": 149579,
+          "n_persons": 16259,
+          "weighted_denominator": 2077943098.0937,
+          "unstable": false,
+          "flags": []
+        },
+        "total_payment": {
+          "estimate": 301.253359,
+          "ci_low": 287.222935,
+          "ci_high": 315.283783,
+          "se": 7.158511,
+          "n": 137057,
+          "n_persons": 16123,
+          "weighted_denominator": 1887782708.004,
+          "unstable": false,
+          "flags": []
+        },
+        "family_payment": {
+          "estimate": 57.004619,
+          "ci_low": 48.552375,
+          "ci_high": 65.456864,
+          "se": 4.312449,
+          "n": 137057,
+          "n_persons": 16123,
+          "weighted_denominator": 1887782708.004,
+          "unstable": false,
+          "flags": []
+        }
+      },
+      {
+        "modality": "Phone",
+        "n": 3232,
+        "n_persons": 866,
+        "share_pct": {
+          "estimate": 2.116197,
+          "ci_low": 1.768999,
+          "ci_high": 2.463396,
+          "se": 0.177145,
+          "n": 149579,
+          "n_persons": 16259,
+          "weighted_denominator": 2077943098.0937,
+          "unstable": false,
+          "flags": []
+        },
+        "total_payment": {
+          "estimate": 214.117856,
+          "ci_low": 142.174577,
+          "ci_high": 286.061135,
+          "se": 36.706429,
+          "n": 3232,
+          "n_persons": 866,
+          "weighted_denominator": 43973375.313,
+          "unstable": false,
+          "flags": []
+        },
+        "family_payment": {
+          "estimate": 36.414253,
+          "ci_low": 27.611078,
+          "ci_high": 45.217428,
+          "se": 4.491498,
+          "n": 3232,
+          "n_persons": 866,
+          "weighted_denominator": 43973375.313,
+          "unstable": false,
+          "flags": []
+        }
+      },
+      {
+        "modality": "Video",
+        "n": 9118,
+        "n_persons": 1145,
+        "share_pct": {
+          "estimate": 6.930474,
+          "ci_low": 5.638019,
+          "ci_high": 8.222929,
+          "se": 0.659428,
+          "n": 149579,
+          "n_persons": 16259,
+          "weighted_denominator": 2077943098.0937,
+          "unstable": false,
+          "flags": []
+        },
+        "total_payment": {
+          "estimate": 218.691896,
+          "ci_low": 137.964605,
+          "ci_high": 299.419187,
+          "se": 41.18815,
+          "n": 9118,
+          "n_persons": 1145,
+          "weighted_denominator": 144011304.5979,
+          "unstable": false,
+          "flags": []
+        },
+        "family_payment": {
+          "estimate": 61.437885,
+          "ci_low": 22.07555,
+          "ci_high": 100.800221,
+          "se": 20.083193,
+          "n": 9118,
+          "n_persons": 1145,
+          "weighted_denominator": 144011304.5979,
+          "unstable": true,
+          "flags": ["Relative standard error exceeds 30%"]
+        }
+      },
+      {
+        "modality": "Other remote",
+        "n": 101,
+        "n_persons": 32,
+        "share_pct": {
+          "estimate": 0.045153,
+          "ci_low": 0.021088,
+          "ci_high": 0.069217,
+          "se": 0.012278,
+          "n": 149579,
+          "n_persons": 16259,
+          "weighted_denominator": 2077943098.0937,
+          "unstable": false,
+          "flags": []
+        },
+        "total_payment": {
+          "estimate": 145.984856,
+          "ci_low": 86.067416,
+          "ci_high": 205.902296,
+          "se": 30.570684,
+          "n": 101,
+          "n_persons": 32,
+          "weighted_denominator": 938243.9463,
+          "unstable": false,
+          "flags": []
+        },
+        "family_payment": {
+          "estimate": 26.544525,
+          "ci_low": 7.64274,
+          "ci_high": 45.44631,
+          "se": 9.643945,
+          "n": 101,
+          "n_persons": 32,
+          "weighted_denominator": 938243.9463,
+          "unstable": true,
+          "flags": ["Relative standard error exceeds 30%"]
+        }
+      },
+      {
+        "modality": "Unknown remote",
+        "n": 71,
+        "n_persons": 25,
+        "share_pct": {
+          "estimate": 0.059552,
+          "ci_low": 0.022314,
+          "ci_high": 0.096791,
+          "se": 0.018999,
+          "n": 149579,
+          "n_persons": 16259,
+          "weighted_denominator": 2077943098.0937,
+          "unstable": true,
+          "flags": [
+            "Relative standard error exceeds 30%",
+            "Fewer than 30 sampled persons with this modality"
+          ]
+        },
+        "total_payment": {
+          "estimate": 155.591088,
+          "ci_low": 109.081658,
+          "ci_high": 202.100519,
+          "se": 23.729737,
+          "n": 71,
+          "n_persons": 25,
+          "weighted_denominator": 1237466.2324,
+          "unstable": true,
+          "flags": ["Fewer than 30 sampled persons"]
+        },
+        "family_payment": {
+          "estimate": 61.348378,
+          "ci_low": 25.699402,
+          "ci_high": 96.997353,
+          "se": 18.188587,
+          "n": 71,
+          "n_persons": 25,
+          "weighted_denominator": 1237466.2324,
+          "unstable": true,
+          "flags": ["Fewer than 30 sampled persons"]
+        }
+      }
+    ]
+  },
+  "groups": [
+    {
+      "insurance": "All",
+      "n": 149579,
+      "n_persons": 16259,
+      "telehealth_n": 12522,
+      "telehealth_n_persons": 1878,
+      "telehealth_pct": {
+        "estimate": 9.151376,
+        "ci_low": 7.843767,
+        "ci_high": 10.458986,
+        "se": 0.66716,
+        "n": 149579,
+        "n_persons": 16259,
+        "weighted_denominator": 2077943098.0937,
+        "unstable": false,
+        "flags": []
+      },
+      "total_payment": {
+        "estimate": 293.530646,
+        "ci_low": 279.019117,
+        "ci_high": 308.042175,
+        "se": 7.403977,
+        "n": 149579,
+        "n_persons": 16259,
+        "weighted_denominator": 2077943098.0937,
+        "unstable": false,
+        "flags": []
+      },
+      "family_payment": {
+        "estimate": 56.864966,
+        "ci_low": 48.731395,
+        "ci_high": 64.998538,
+        "se": 4.149858,
+        "n": 149579,
+        "n_persons": 16259,
+        "weighted_denominator": 2077943098.0937,
+        "unstable": false,
+        "flags": []
+      },
+      "modalities": [
+        {
+          "modality": "In person",
+          "n": 137057,
+          "n_persons": 16123,
+          "share_pct": {
+            "estimate": 90.848624,
+            "ci_low": 89.541014,
+            "ci_high": 92.156233,
+            "se": 0.66716,
+            "n": 149579,
+            "n_persons": 16259,
+            "weighted_denominator": 2077943098.0937,
+            "unstable": false,
+            "flags": []
+          },
+          "total_payment": {
+            "estimate": 301.253359,
+            "ci_low": 287.222935,
+            "ci_high": 315.283783,
+            "se": 7.158511,
+            "n": 137057,
+            "n_persons": 16123,
+            "weighted_denominator": 1887782708.004,
+            "unstable": false,
+            "flags": []
+          },
+          "family_payment": {
+            "estimate": 57.004619,
+            "ci_low": 48.552375,
+            "ci_high": 65.456864,
+            "se": 4.312449,
+            "n": 137057,
+            "n_persons": 16123,
+            "weighted_denominator": 1887782708.004,
+            "unstable": false,
+            "flags": []
+          }
+        },
+        {
+          "modality": "Phone",
+          "n": 3232,
+          "n_persons": 866,
+          "share_pct": {
+            "estimate": 2.116197,
+            "ci_low": 1.768999,
+            "ci_high": 2.463396,
+            "se": 0.177145,
+            "n": 149579,
+            "n_persons": 16259,
+            "weighted_denominator": 2077943098.0937,
+            "unstable": false,
+            "flags": []
+          },
+          "total_payment": {
+            "estimate": 214.117856,
+            "ci_low": 142.174577,
+            "ci_high": 286.061135,
+            "se": 36.706429,
+            "n": 3232,
+            "n_persons": 866,
+            "weighted_denominator": 43973375.313,
+            "unstable": false,
+            "flags": []
+          },
+          "family_payment": {
+            "estimate": 36.414253,
+            "ci_low": 27.611078,
+            "ci_high": 45.217428,
+            "se": 4.491498,
+            "n": 3232,
+            "n_persons": 866,
+            "weighted_denominator": 43973375.313,
+            "unstable": false,
+            "flags": []
+          }
+        },
+        {
+          "modality": "Video",
+          "n": 9118,
+          "n_persons": 1145,
+          "share_pct": {
+            "estimate": 6.930474,
+            "ci_low": 5.638019,
+            "ci_high": 8.222929,
+            "se": 0.659428,
+            "n": 149579,
+            "n_persons": 16259,
+            "weighted_denominator": 2077943098.0937,
+            "unstable": false,
+            "flags": []
+          },
+          "total_payment": {
+            "estimate": 218.691896,
+            "ci_low": 137.964605,
+            "ci_high": 299.419187,
+            "se": 41.18815,
+            "n": 9118,
+            "n_persons": 1145,
+            "weighted_denominator": 144011304.5979,
+            "unstable": false,
+            "flags": []
+          },
+          "family_payment": {
+            "estimate": 61.437885,
+            "ci_low": 22.07555,
+            "ci_high": 100.800221,
+            "se": 20.083193,
+            "n": 9118,
+            "n_persons": 1145,
+            "weighted_denominator": 144011304.5979,
+            "unstable": true,
+            "flags": ["Relative standard error exceeds 30%"]
+          }
+        },
+        {
+          "modality": "Other remote",
+          "n": 101,
+          "n_persons": 32,
+          "share_pct": {
+            "estimate": 0.045153,
+            "ci_low": 0.021088,
+            "ci_high": 0.069217,
+            "se": 0.012278,
+            "n": 149579,
+            "n_persons": 16259,
+            "weighted_denominator": 2077943098.0937,
+            "unstable": false,
+            "flags": []
+          },
+          "total_payment": {
+            "estimate": 145.984856,
+            "ci_low": 86.067416,
+            "ci_high": 205.902296,
+            "se": 30.570684,
+            "n": 101,
+            "n_persons": 32,
+            "weighted_denominator": 938243.9463,
+            "unstable": false,
+            "flags": []
+          },
+          "family_payment": {
+            "estimate": 26.544525,
+            "ci_low": 7.64274,
+            "ci_high": 45.44631,
+            "se": 9.643945,
+            "n": 101,
+            "n_persons": 32,
+            "weighted_denominator": 938243.9463,
+            "unstable": true,
+            "flags": ["Relative standard error exceeds 30%"]
+          }
+        },
+        {
+          "modality": "Unknown remote",
+          "n": 71,
+          "n_persons": 25,
+          "share_pct": {
+            "estimate": 0.059552,
+            "ci_low": 0.022314,
+            "ci_high": 0.096791,
+            "se": 0.018999,
+            "n": 149579,
+            "n_persons": 16259,
+            "weighted_denominator": 2077943098.0937,
+            "unstable": true,
+            "flags": [
+              "Relative standard error exceeds 30%",
+              "Fewer than 30 sampled persons with this modality"
+            ]
+          },
+          "total_payment": {
+            "estimate": 155.591088,
+            "ci_low": 109.081658,
+            "ci_high": 202.100519,
+            "se": 23.729737,
+            "n": 71,
+            "n_persons": 25,
+            "weighted_denominator": 1237466.2324,
+            "unstable": true,
+            "flags": ["Fewer than 30 sampled persons"]
+          },
+          "family_payment": {
+            "estimate": 61.348378,
+            "ci_low": 25.699402,
+            "ci_high": 96.997353,
+            "se": 18.188587,
+            "n": 71,
+            "n_persons": 25,
+            "weighted_denominator": 1237466.2324,
+            "unstable": true,
+            "flags": ["Fewer than 30 sampled persons"]
+          }
+        }
+      ]
+    },
+    {
+      "insurance": "Any private",
+      "n": 91291,
+      "n_persons": 10106,
+      "telehealth_n": 8874,
+      "telehealth_n_persons": 1264,
+      "telehealth_pct": {
+        "estimate": 10.634762,
+        "ci_low": 8.875313,
+        "ci_high": 12.394212,
+        "se": 0.897695,
+        "n": 91291,
+        "n_persons": 10106,
+        "weighted_denominator": 1411537720.6755,
+        "unstable": false,
+        "flags": []
+      },
+      "total_payment": {
+        "estimate": 306.955063,
+        "ci_low": 289.099143,
+        "ci_high": 324.810983,
+        "se": 9.110331,
+        "n": 91291,
+        "n_persons": 10106,
+        "weighted_denominator": 1411537720.6755,
+        "unstable": false,
+        "flags": []
+      },
+      "family_payment": {
+        "estimate": 70.035689,
+        "ci_low": 58.867271,
+        "ci_high": 81.204107,
+        "se": 5.698277,
+        "n": 91291,
+        "n_persons": 10106,
+        "weighted_denominator": 1411537720.6755,
+        "unstable": false,
+        "flags": []
+      },
+      "modalities": [
+        {
+          "modality": "In person",
+          "n": 82417,
+          "n_persons": 10017,
+          "share_pct": {
+            "estimate": 89.365238,
+            "ci_low": 87.605788,
+            "ci_high": 91.124687,
+            "se": 0.897695,
+            "n": 91291,
+            "n_persons": 10106,
+            "weighted_denominator": 1411537720.6755,
+            "unstable": false,
+            "flags": []
+          },
+          "total_payment": {
+            "estimate": 316.661505,
+            "ci_low": 299.610999,
+            "ci_high": 333.712012,
+            "se": 8.699398,
+            "n": 82417,
+            "n_persons": 10017,
+            "weighted_denominator": 1261424039.7147,
+            "unstable": false,
+            "flags": []
+          },
+          "family_payment": {
+            "estimate": 70.488369,
+            "ci_low": 58.759886,
+            "ci_high": 82.216852,
+            "se": 5.98403,
+            "n": 82417,
+            "n_persons": 10017,
+            "weighted_denominator": 1261424039.7147,
+            "unstable": false,
+            "flags": []
+          }
+        },
+        {
+          "modality": "Phone",
+          "n": 1886,
+          "n_persons": 525,
+          "share_pct": {
+            "estimate": 2.099052,
+            "ci_low": 1.67644,
+            "ci_high": 2.521663,
+            "se": 0.215622,
+            "n": 91291,
+            "n_persons": 10106,
+            "weighted_denominator": 1411537720.6755,
+            "unstable": false,
+            "flags": []
+          },
+          "total_payment": {
+            "estimate": 198.996912,
+            "ci_low": 155.88125,
+            "ci_high": 242.112574,
+            "se": 21.998191,
+            "n": 1886,
+            "n_persons": 525,
+            "weighted_denominator": 29628904.8648,
+            "unstable": false,
+            "flags": []
+          },
+          "family_payment": {
+            "estimate": 49.199324,
+            "ci_low": 37.123418,
+            "ci_high": 61.27523,
+            "se": 6.16129,
+            "n": 1886,
+            "n_persons": 525,
+            "weighted_denominator": 29628904.8648,
+            "unstable": false,
+            "flags": []
+          }
+        },
+        {
+          "modality": "Video",
+          "n": 6854,
+          "n_persons": 830,
+          "share_pct": {
+            "estimate": 8.429261,
+            "ci_low": 6.68956,
+            "ci_high": 10.168961,
+            "se": 0.887619,
+            "n": 91291,
+            "n_persons": 10106,
+            "weighted_denominator": 1411537720.6755,
+            "unstable": false,
+            "flags": []
+          },
+          "total_payment": {
+            "estimate": 232.678128,
+            "ci_low": 134.756404,
+            "ci_high": 330.599852,
+            "se": 49.960981,
+            "n": 6854,
+            "n_persons": 830,
+            "weighted_denominator": 118982195.6782,
+            "unstable": false,
+            "flags": []
+          },
+          "family_payment": {
+            "estimate": 70.583884,
+            "ci_low": 22.491184,
+            "ci_high": 118.676584,
+            "se": 24.537543,
+            "n": 6854,
+            "n_persons": 830,
+            "weighted_denominator": 118982195.6782,
+            "unstable": true,
+            "flags": ["Relative standard error exceeds 30%"]
+          }
+        },
+        {
+          "modality": "Other remote",
+          "n": 87,
+          "n_persons": 27,
+          "share_pct": {
+            "estimate": 0.054398,
+            "ci_low": 0.023617,
+            "ci_high": 0.085179,
+            "se": 0.015705,
+            "n": 91291,
+            "n_persons": 10106,
+            "weighted_denominator": 1411537720.6755,
+            "unstable": true,
+            "flags": ["Fewer than 30 sampled persons with this modality"]
+          },
+          "total_payment": {
+            "estimate": 151.299015,
+            "ci_low": 78.414146,
+            "ci_high": 224.183883,
+            "se": 37.186841,
+            "n": 87,
+            "n_persons": 27,
+            "weighted_denominator": 767846.9052,
+            "unstable": true,
+            "flags": ["Fewer than 30 sampled persons"]
+          },
+          "family_payment": {
+            "estimate": 32.010084,
+            "ci_low": 9.837432,
+            "ci_high": 54.182735,
+            "se": 11.312785,
+            "n": 87,
+            "n_persons": 27,
+            "weighted_denominator": 767846.9052,
+            "unstable": true,
+            "flags": [
+              "Fewer than 30 sampled persons",
+              "Relative standard error exceeds 30%"
+            ]
+          }
+        },
+        {
+          "modality": "Unknown remote",
+          "n": 47,
+          "n_persons": 16,
+          "share_pct": {
+            "estimate": 0.052052,
+            "ci_low": 0.007894,
+            "ci_high": 0.09621,
+            "se": 0.02253,
+            "n": 91291,
+            "n_persons": 10106,
+            "weighted_denominator": 1411537720.6755,
+            "unstable": true,
+            "flags": [
+              "Relative standard error exceeds 30%",
+              "Fewer than 30 sampled persons with this modality"
+            ]
+          },
+          "total_payment": {
+            "estimate": 187.040378,
+            "ci_low": 110.775587,
+            "ci_high": 263.30517,
+            "se": 38.911323,
+            "n": 47,
+            "n_persons": 16,
+            "weighted_denominator": 734733.5125,
+            "unstable": true,
+            "flags": ["Fewer than 30 sampled persons"]
+          },
+          "family_payment": {
+            "estimate": 84.067697,
+            "ci_low": 41.132171,
+            "ci_high": 127.003222,
+            "se": 21.906283,
+            "n": 47,
+            "n_persons": 16,
+            "weighted_denominator": 734733.5125,
+            "unstable": true,
+            "flags": ["Fewer than 30 sampled persons"]
+          }
+        }
+      ]
+    },
+    {
+      "insurance": "Public only",
+      "n": 56106,
+      "n_persons": 5690,
+      "telehealth_n": 3502,
+      "telehealth_n_persons": 579,
+      "telehealth_pct": {
+        "estimate": 5.949444,
+        "ci_low": 4.95489,
+        "ci_high": 6.943998,
+        "se": 0.507435,
+        "n": 56106,
+        "n_persons": 5690,
+        "weighted_denominator": 635461353.5969,
+        "unstable": false,
+        "flags": []
+      },
+      "total_payment": {
+        "estimate": 260.995768,
+        "ci_low": 237.85608,
+        "ci_high": 284.135456,
+        "se": 11.80618,
+        "n": 56106,
+        "n_persons": 5690,
+        "weighted_denominator": 635461353.5969,
+        "unstable": false,
+        "flags": []
+      },
+      "family_payment": {
+        "estimate": 24.890484,
+        "ci_low": 17.50493,
+        "ci_high": 32.276038,
+        "se": 3.768209,
+        "n": 56106,
+        "n_persons": 5690,
+        "weighted_denominator": 635461353.5969,
+        "unstable": false,
+        "flags": []
+      },
+      "modalities": [
+        {
+          "modality": "In person",
+          "n": 52604,
+          "n_persons": 5653,
+          "share_pct": {
+            "estimate": 94.050556,
+            "ci_low": 93.056002,
+            "ci_high": 95.04511,
+            "se": 0.507435,
+            "n": 56106,
+            "n_persons": 5690,
+            "weighted_denominator": 635461353.5969,
+            "unstable": false,
+            "flags": []
+          },
+          "total_payment": {
+            "estimate": 265.542759,
+            "ci_low": 241.445625,
+            "ci_high": 289.639893,
+            "se": 12.294682,
+            "n": 52604,
+            "n_persons": 5653,
+            "weighted_denominator": 597654935.9869,
+            "unstable": false,
+            "flags": []
+          },
+          "family_payment": {
+            "estimate": 25.715747,
+            "ci_low": 17.877972,
+            "ci_high": 33.553523,
+            "se": 3.998939,
+            "n": 52604,
+            "n_persons": 5653,
+            "weighted_denominator": 597654935.9869,
+            "unstable": false,
+            "flags": []
+          }
+        },
+        {
+          "modality": "Phone",
+          "n": 1286,
+          "n_persons": 324,
+          "share_pct": {
+            "estimate": 2.089031,
+            "ci_low": 1.542727,
+            "ci_high": 2.635335,
+            "se": 0.278732,
+            "n": 56106,
+            "n_persons": 5690,
+            "weighted_denominator": 635461353.5969,
+            "unstable": false,
+            "flags": []
+          },
+          "total_payment": {
+            "estimate": 257.700432,
+            "ci_low": 39.122609,
+            "ci_high": 476.278256,
+            "se": 111.521347,
+            "n": 1286,
+            "n_persons": 324,
+            "weighted_denominator": 13274983.5676,
+            "unstable": true,
+            "flags": ["Relative standard error exceeds 30%"]
+          },
+          "family_payment": {
+            "estimate": 7.138456,
+            "ci_low": 2.125822,
+            "ci_high": 12.151091,
+            "se": 2.557513,
+            "n": 1286,
+            "n_persons": 324,
+            "weighted_denominator": 13274983.5676,
+            "unstable": true,
+            "flags": ["Relative standard error exceeds 30%"]
+          }
+        },
+        {
+          "modality": "Video",
+          "n": 2183,
+          "n_persons": 298,
+          "share_pct": {
+            "estimate": 3.766781,
+            "ci_low": 2.828237,
+            "ci_high": 4.705325,
+            "se": 0.478858,
+            "n": 56106,
+            "n_persons": 5690,
+            "weighted_denominator": 635461353.5969,
+            "unstable": false,
+            "flags": []
+          },
+          "total_payment": {
+            "estimate": 153.035239,
+            "ci_low": 128.347479,
+            "ci_high": 177.722999,
+            "se": 12.596027,
+            "n": 2183,
+            "n_persons": 298,
+            "weighted_denominator": 23936436.3102,
+            "unstable": false,
+            "flags": []
+          },
+          "family_payment": {
+            "estimate": 14.515383,
+            "ci_low": 4.564705,
+            "ci_high": 24.466061,
+            "se": 5.07697,
+            "n": 2183,
+            "n_persons": 298,
+            "weighted_denominator": 23936436.3102,
+            "unstable": true,
+            "flags": ["Relative standard error exceeds 30%"]
+          }
+        },
+        {
+          "modality": "Other remote",
+          "n": 12,
+          "n_persons": 4,
+          "share_pct": {
+            "estimate": 0.021628,
+            "ci_low": 0,
+            "ci_high": 0.053649,
+            "se": 0.016338,
+            "n": 56106,
+            "n_persons": 5690,
+            "weighted_denominator": 635461353.5969,
+            "unstable": true,
+            "flags": [
+              "Relative standard error exceeds 30%",
+              "Fewer than 30 sampled persons with this modality"
+            ]
+          },
+          "total_payment": {
+            "estimate": 141.663955,
+            "ci_low": 119.784959,
+            "ci_high": 163.542951,
+            "se": 11.162958,
+            "n": 12,
+            "n_persons": 4,
+            "weighted_denominator": 137437.6347,
+            "unstable": true,
+            "flags": ["Fewer than 30 sampled persons"]
+          },
+          "family_payment": {
+            "estimate": 2.374868,
+            "ci_low": 0,
+            "ci_high": 7.852008,
+            "se": 2.794511,
+            "n": 12,
+            "n_persons": 4,
+            "weighted_denominator": 137437.6347,
+            "unstable": true,
+            "flags": [
+              "Fewer than 30 sampled persons",
+              "Relative standard error exceeds 30%"
+            ]
+          }
+        },
+        {
+          "modality": "Unknown remote",
+          "n": 21,
+          "n_persons": 7,
+          "share_pct": {
+            "estimate": 0.072004,
+            "ci_low": 0.000312,
+            "ci_high": 0.143697,
+            "se": 0.036578,
+            "n": 56106,
+            "n_persons": 5690,
+            "weighted_denominator": 635461353.5969,
+            "unstable": true,
+            "flags": [
+              "Relative standard error exceeds 30%",
+              "Fewer than 30 sampled persons with this modality"
+            ]
+          },
+          "total_payment": {
+            "estimate": 101.027707,
+            "ci_low": 72.863443,
+            "ci_high": 129.191971,
+            "se": 14.369786,
+            "n": 21,
+            "n_persons": 7,
+            "weighted_denominator": 457560.0975,
+            "unstable": true,
+            "flags": ["Fewer than 30 sampled persons"]
+          },
+          "family_payment": {
+            "estimate": 11.499157,
+            "ci_low": 0,
+            "ci_high": 27.56747,
+            "se": 8.198269,
+            "n": 21,
+            "n_persons": 7,
+            "weighted_denominator": 457560.0975,
+            "unstable": true,
+            "flags": [
+              "Fewer than 30 sampled persons",
+              "Relative standard error exceeds 30%"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "insurance": "Uninsured all year",
+      "n": 2182,
+      "n_persons": 463,
+      "telehealth_n": 146,
+      "telehealth_n_persons": 35,
+      "telehealth_pct": {
+        "estimate": 7.23982,
+        "ci_low": 3.391768,
+        "ci_high": 11.087871,
+        "se": 1.963328,
+        "n": 2182,
+        "n_persons": 463,
+        "weighted_denominator": 30944023.8213,
+        "unstable": false,
+        "flags": []
+      },
+      "total_payment": {
+        "estimate": 349.295433,
+        "ci_low": 210.347563,
+        "ci_high": 488.243302,
+        "se": 70.893073,
+        "n": 2182,
+        "n_persons": 463,
+        "weighted_denominator": 30944023.8213,
+        "unstable": false,
+        "flags": []
+      },
+      "family_payment": {
+        "estimate": 112.694028,
+        "ci_low": 39.479031,
+        "ci_high": 185.909025,
+        "se": 37.355277,
+        "n": 2182,
+        "n_persons": 463,
+        "weighted_denominator": 30944023.8213,
+        "unstable": true,
+        "flags": ["Relative standard error exceeds 30%"]
+      },
+      "modalities": [
+        {
+          "modality": "In person",
+          "n": 2036,
+          "n_persons": 453,
+          "share_pct": {
+            "estimate": 92.76018,
+            "ci_low": 88.912129,
+            "ci_high": 96.608232,
+            "se": 1.963328,
+            "n": 2182,
+            "n_persons": 463,
+            "weighted_denominator": 30944023.8213,
+            "unstable": false,
+            "flags": []
+          },
+          "total_payment": {
+            "estimate": 367.670162,
+            "ci_low": 218.761597,
+            "ci_high": 516.578727,
+            "se": 75.975154,
+            "n": 2036,
+            "n_persons": 453,
+            "weighted_denominator": 28703732.3024,
+            "unstable": false,
+            "flags": []
+          },
+          "family_payment": {
+            "estimate": 115.924592,
+            "ci_low": 37.421177,
+            "ci_high": 194.428006,
+            "se": 40.053499,
+            "n": 2036,
+            "n_persons": 453,
+            "weighted_denominator": 28703732.3024,
+            "unstable": true,
+            "flags": ["Relative standard error exceeds 30%"]
+          }
+        },
+        {
+          "modality": "Phone",
+          "n": 60,
+          "n_persons": 17,
+          "share_pct": {
+            "estimate": 3.456198,
+            "ci_low": 0.85963,
+            "ci_high": 6.052767,
+            "se": 1.324804,
+            "n": 2182,
+            "n_persons": 463,
+            "weighted_denominator": 30944023.8213,
+            "unstable": true,
+            "flags": [
+              "Relative standard error exceeds 30%",
+              "Fewer than 30 sampled persons with this modality"
+            ]
+          },
+          "total_payment": {
+            "estimate": 92.058429,
+            "ci_low": 56.333249,
+            "ci_high": 127.783608,
+            "se": 18.227467,
+            "n": 60,
+            "n_persons": 17,
+            "weighted_denominator": 1069486.8806,
+            "unstable": true,
+            "flags": ["Fewer than 30 sampled persons"]
+          },
+          "family_payment": {
+            "estimate": 45.603756,
+            "ci_low": 21.583348,
+            "ci_high": 69.624163,
+            "se": 12.255535,
+            "n": 60,
+            "n_persons": 17,
+            "weighted_denominator": 1069486.8806,
+            "unstable": true,
+            "flags": ["Fewer than 30 sampled persons"]
+          }
+        },
+        {
+          "modality": "Video",
+          "n": 81,
+          "n_persons": 17,
+          "share_pct": {
+            "estimate": 3.531126,
+            "ci_low": 0.822706,
+            "ci_high": 6.239547,
+            "se": 1.381872,
+            "n": 2182,
+            "n_persons": 463,
+            "weighted_denominator": 30944023.8213,
+            "unstable": true,
+            "flags": [
+              "Relative standard error exceeds 30%",
+              "Fewer than 30 sampled persons with this modality"
+            ]
+          },
+          "total_payment": {
+            "estimate": 134.013045,
+            "ci_low": 120.400361,
+            "ci_high": 147.625729,
+            "se": 6.945374,
+            "n": 81,
+            "n_persons": 17,
+            "weighted_denominator": 1092672.6095,
+            "unstable": true,
+            "flags": ["Fewer than 30 sampled persons"]
+          },
+          "family_payment": {
+            "estimate": 93.420472,
+            "ci_low": 53.271437,
+            "ci_high": 133.569507,
+            "se": 20.484578,
+            "n": 81,
+            "n_persons": 17,
+            "weighted_denominator": 1092672.6095,
+            "unstable": true,
+            "flags": ["Fewer than 30 sampled persons"]
+          }
+        },
+        {
+          "modality": "Other remote",
+          "n": 2,
+          "n_persons": 1,
+          "share_pct": {
+            "estimate": 0.106513,
+            "ci_low": 0,
+            "ci_high": 0.317955,
+            "se": 0.107881,
+            "n": 2182,
+            "n_persons": 463,
+            "weighted_denominator": 30944023.8213,
+            "unstable": true,
+            "flags": [
+              "Relative standard error exceeds 30%",
+              "Fewer than 30 sampled persons with this modality"
+            ]
+          },
+          "total_payment": {
+            "estimate": 40.2,
+            "ci_low": 40.2,
+            "ci_high": 40.2,
+            "se": 0,
+            "n": 2,
+            "n_persons": 1,
+            "weighted_denominator": 32959.4064,
+            "unstable": true,
+            "flags": ["Fewer than 30 sampled persons"]
+          },
+          "family_payment": {
+            "estimate": 0,
+            "ci_low": 0,
+            "ci_high": 0,
+            "se": 0,
+            "n": 2,
+            "n_persons": 1,
+            "weighted_denominator": 32959.4064,
+            "unstable": true,
+            "flags": ["Fewer than 30 sampled persons"]
+          }
+        },
+        {
+          "modality": "Unknown remote",
+          "n": 3,
+          "n_persons": 2,
+          "share_pct": {
+            "estimate": 0.145982,
+            "ci_low": 0,
+            "ci_high": 0.350779,
+            "se": 0.10449,
+            "n": 2182,
+            "n_persons": 463,
+            "weighted_denominator": 30944023.8213,
+            "unstable": true,
+            "flags": [
+              "Relative standard error exceeds 30%",
+              "Fewer than 30 sampled persons with this modality"
+            ]
+          },
+          "total_payment": {
+            "estimate": 196.748285,
+            "ci_low": 114.341237,
+            "ci_high": 279.155332,
+            "se": 42.045185,
+            "n": 3,
+            "n_persons": 2,
+            "weighted_denominator": 45172.6224,
+            "unstable": true,
+            "flags": ["Fewer than 30 sampled persons"]
+          },
+          "family_payment": {
+            "estimate": 196.748285,
+            "ci_low": 114.341237,
+            "ci_high": 279.155332,
+            "se": 42.045185,
+            "n": 3,
+            "n_persons": 2,
+            "weighted_denominator": 45172.6224,
+            "unstable": true,
+            "flags": ["Fewer than 30 sampled persons"]
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -96,7 +96,9 @@ email: jic4015@med.cornell.edu -->
             <details open>
               <summary>On this page</summary>
               <nav aria-label="Data quality note contents">
-                <a
+                <a href="#data-quality-annual-survey-coverage-and-checks"
+                  >Annual survey coverage and checks</a
+                ><a
                   href="#data-quality-verified-snapshot-scope-and-analytical-units"
                   >Verified snapshot: scope and analytical units</a
                 ><a href="#data-quality-live-source-updates"
@@ -125,6 +127,104 @@ email: jic4015@med.cornell.edu -->
             </details>
           </aside>
           <article class="document-body" aria-label="Data quality note">
+            <h3
+              id="data-quality-annual-survey-coverage-and-checks"
+              tabindex="-1"
+            >
+              Annual survey coverage and checks
+            </h3>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="Annual survey coverage and checks table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Survey year</th>
+                    <th scope="col" class="numeric">NHIS valid adults</th>
+                    <th scope="col" class="numeric">
+                      Adults reporting use in past 12 months
+                    </th>
+                    <th scope="col" class="numeric">
+                      MEPS positive-weight visits
+                    </th>
+                    <th scope="col" class="numeric">
+                      Visits delivered remotely
+                    </th>
+                    <th scope="col" class="numeric">
+                      Mean total paid per visit
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>2021</td>
+                    <td class="numeric">29,217</td>
+                    <td class="numeric">37.02%</td>
+                    <td class="numeric">199,617</td>
+                    <td class="numeric">8.82%</td>
+                    <td class="numeric">$292.52</td>
+                  </tr>
+                  <tr>
+                    <td>2022</td>
+                    <td class="numeric">27,390</td>
+                    <td class="numeric">30.11%</td>
+                    <td class="numeric">149,579</td>
+                    <td class="numeric">9.15%</td>
+                    <td class="numeric">$293.53</td>
+                  </tr>
+                  <tr>
+                    <td>2023</td>
+                    <td class="numeric">29,257</td>
+                    <td class="numeric">26.70%</td>
+                    <td class="numeric">133,735</td>
+                    <td class="numeric">9.20%</td>
+                    <td class="numeric">$285.08</td>
+                  </tr>
+                  <tr>
+                    <td>2024</td>
+                    <td class="numeric">32,324</td>
+                    <td class="numeric">25.03%</td>
+                    <td class="numeric">144,206</td>
+                    <td class="numeric">10.79%</td>
+                    <td class="numeric">$308.05</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              NHIS estimates use the annual Sample Adult weight, strata and
+              nested PSUs. We checked response counts against the annual
+              codebook, reproduced domain proportions and Taylor standard errors
+              independently, and checked the adjusted model coefficients against
+              a second weighted fit. Internet access was absent in 2021 and
+              introduced in July 2022. The full-year breakdown and model include
+              it only in 2023 and 2024. Model coefficients across that boundary
+              have different adjustment sets.
+            </p>
+            <p>
+              MEPS joins each year&#39;s office visits to that year&#39;s
+              full-year person file. The 2021–2024 file pairs are HC-229G/233,
+              HC-239G/243, HC-248G/251 and HC-254G/256. Each annual analysis
+              checks person linkage, weights, design identifiers, modality
+              totals, and agreement with AHRQ&#39;s rounded national visit
+              count, mean total and family payments, and both payment standard
+              errors. The validation table and raw aggregates use survey-year
+              dollars and include zero-payment visits. The dashboard and display
+              CSV convert payment estimates and interval endpoints to 2024
+              dollars using the ratio of 2024 to survey-year annual U.S.
+              all-items CPI-U (270.970, 292.655, 304.702, 313.689 respectively).
+              <a
+                href="https://www.bls.gov/regions/mid-atlantic/data/ConsumerPriceIndexAnnualandSemiAnnual_Table.htm"
+                target="_blank"
+                rel="noreferrer"
+                >BLS annual indexes</a
+              >
+              Subsequent detailed audit counts refer to the 2024 release unless
+              labeled otherwise.
+            </p>
             <p>
               <strong
                 >Verified snapshot sources retrieved November 11, 2026 · CHERY
@@ -187,7 +287,7 @@ email: jic4015@med.cornell.edu -->
                   </tr>
                   <tr>
                     <td>ACS state context</td>
-                    <td>2024 1-year estimates</td>
+                    <td>2021–2024 1-year estimates</td>
                     <td>All households in 50 states and DC</td>
                     <td>
                       All households for broadband subscription; household
@@ -196,7 +296,7 @@ email: jic4015@med.cornell.edu -->
                   </tr>
                   <tr>
                     <td>NHIS Sample Adult</td>
-                    <td>2024 interviews</td>
+                    <td>2021–2024 interviews</td>
                     <td>
                       Civilian noninstitutionalized adults aged 18 or older;
                       sampled adult
@@ -208,7 +308,7 @@ email: jic4015@med.cornell.edu -->
                   </tr>
                   <tr>
                     <td>MEPS office-based visits</td>
-                    <td>Calendar year 2024</td>
+                    <td>Calendar years 2021–2024</td>
                     <td>
                       Office-based medical provider visits at all ages in the
                       civilian noninstitutionalized population; sampled visit
@@ -279,7 +379,7 @@ email: jic4015@med.cornell.edu -->
                   </tr>
                   <tr>
                     <td>ACS household broadband and income</td>
-                    <td>Remain at the verified 2024 values</td>
+                    <td>Use the selected calendar year, 2021–2024</td>
                   </tr>
                   <tr>
                     <td>
@@ -287,17 +387,17 @@ email: jic4015@med.cornell.edu -->
                       state model
                     </td>
                     <td>
-                      Remain based on the verified 2024 CMS–ACS data, even if
-                      the live CMS response revises 2024
+                      Use archived annual CMS and ACS values for the selected
+                      year
                     </td>
                   </tr>
                   <tr>
                     <td>NHIS descriptive comparisons and adjusted model</td>
-                    <td>Remain at the verified 2024 analysis</td>
+                    <td>Use the selected annual survey analysis</td>
                   </tr>
                   <tr>
                     <td>MEPS visit shares and payments</td>
-                    <td>Remain at the verified 2024 analysis</td>
+                    <td>Use the selected annual survey analysis</td>
                   </tr>
                   <tr>
                     <td>Aggregate JSON downloads</td>
@@ -675,11 +775,11 @@ email: jic4015@med.cornell.edu -->
             <p>
               Broadband is the household share with any broadband subscription,
               including cellular-only service. It does not measure connection
-              speed, reliability, or digital literacy. Income is median
-              household income in
-              <strong>2024 inflation-adjusted dollars</strong>. ACS context is
-              paired only with 2024 CMS annual use, even when other CMS years
-              are available.
+              speed, reliability, or digital literacy. Income is in each ACS
+              survey year’s dollars. State comparisons pair each annual ACS
+              estimate with that same year’s annual CMS rate. Selecting a
+              quarter keeps the scatterplot and regression annual. Each of
+              2021–2024 has 51 complete jurisdictions (204 state-year pairs).
             </p>
             <p>
               The annual-change chart compares two selected annual periods only.
@@ -700,10 +800,11 @@ email: jic4015@med.cornell.edu -->
               higher income were more likely to use telehealth.
             </p>
             <p>
-              The separate adjusted state model uses ordinary least squares for
+              The separate adjusted state model uses ordinary least squares
+              separately for each year using
               <code
-                >2024 annual telehealth percentage ~ broadband percentage +
-                median income / 10,000</code
+                >annual telehealth percentage ~ broadband percentage + median
+                income / 10,000</code
               >. All <strong>50 states and D.C. (51 jurisdictions)</strong> have
               complete data, receive equal weight, and enter the model. There
               are three parameters including the intercept and 48 residual
@@ -1319,6 +1420,8 @@ email: jic4015@med.cornell.edu -->
                 <a href="#data-manual-common-conventions">Common conventions</a
                 ><a href="#data-manual-live-source-updates"
                   >Live source updates</a
+                ><a href="#data-manual-annual-survey-files" class="subsection"
+                  >Annual survey files</a
                 ><a href="#data-manual-cms-csv-provenance" class="subsection"
                   >CMS CSV provenance</a
                 ><a href="#data-manual-cms-annual-change-csv" class="subsection"
@@ -1495,20 +1598,35 @@ email: jic4015@med.cornell.edu -->
               not be interpreted as confirmation that no updates are available.
             </p>
             <p>
-              ACS context, the entire 2024 CMS–ACS scatterplot/correlation/model
+              ACS context, the annual CMS–ACS scatterplot/correlation/model
               analysis, NHIS, and MEPS stay fixed to the verified snapshot. This
               includes the CMS 2024 values used in the ACS analysis: they are
               not replaced by a live revision. Aggregate JSON downloads remain
               the verified files described in the data fields below. Source
               checks do not write back to those files.
             </p>
+            <h4 id="data-manual-annual-survey-files" tabindex="-1">
+              Annual survey files
+            </h4>
+            <p>
+              Population Differences and Visits &amp; Payments have independent
+              year selectors. Changing the year updates the estimates,
+              intervals, model or insurance comparison, and CSV exports. The
+              unsuffixed NHIS and MEPS JSON files contain 2024. Earlier files
+              use a year suffix, such as <code>data/nhis-2021.json</code> and
+              <code>data/meps-2021.json</code>. Each file records its source and
+              calculation checks. To reproduce one release, run
+              <code>python3 scripts/nhis.py --year 2021</code> or
+              <code>python3 scripts/meps.py --download --year 2021</code> with
+              the desired year.
+            </p>
             <h4 id="data-manual-cms-csv-provenance" tabindex="-1">
               CMS CSV provenance
             </h4>
             <p>
               The CMS CSV contains the displayed descriptive CMS estimates and
-              the fixed 2024 ACS context. The following fields distinguish the
-              provenance of those two sources:
+              same-year annual ACS context when available. The following fields
+              distinguish the provenance of those two sources:
             </p>
             <div
               class="doc-table-scroll"
@@ -1563,12 +1681,10 @@ email: jic4015@med.cornell.edu -->
               </table>
             </div>
             <p>
-              Keep these fields with the exported data. The presence of 2024 ACS
-              columns does not make newer CMS periods contemporaneous with ACS,
-              and live CMS values must not be substituted into the verified 2024
-              model without rebuilding and checking that analysis. Model CSV
-              exports and aggregate JSON downloads continue to describe the
-              verified analysis.
+              Keep these fields with the exported data. The acs_context_year
+              column identifies the annual ACS estimates. Outside 2021–2024 the
+              ACS fields are empty. Model CSV exports and aggregate JSON
+              downloads continue to describe the verified analysis.
             </p>
             <p>
               The verified CMS series retain 2020–2025. The pinned source CSV
@@ -1582,9 +1698,9 @@ email: jic4015@med.cornell.edu -->
                 rel="noreferrer"
                 >NHIS 2025 documentation</a
               >
-              is available while the dashboard’s NHIS analysis remains 2024.
-              ACS, NHIS, and MEPS refreshes require separate source selection
-              and analytical processing.
+              is available while the dashboard’s NHIS analysis extends through
+              2024. ACS, NHIS, and MEPS refreshes require separate source
+              selection and analytical processing.
             </p>
             <h4 id="data-manual-cms-annual-change-csv" tabindex="-1">
               CMS annual-change CSV
@@ -2039,9 +2155,11 @@ email: jic4015@med.cornell.edu -->
               </table>
             </div>
             <p>
-              ACS fields are fixed to 2024 and must not be treated as context
-              for another CMS year. Published national CMS totals are not
-              required to equal the sum of the 51 mapped geographies.
+              For 2021–2023, historicalContext[year] holds ACS state records by
+              abbreviation, both Pearson correlations, the adjusted model, and
+              the source URLs and SHA-256 hashes. The 2024 records remain in
+              states[].acs2024 and associations. Published national CMS totals
+              are not required to equal the sum of the 51 mapped geographies.
             </p>
             <h4 id="data-manual-cms-adjusted-model-fields" tabindex="-1">
               CMS adjusted model fields
@@ -2811,7 +2929,7 @@ email: jic4015@med.cornell.edu -->
                 <tbody>
                   <tr>
                     <td><code>source</code>, <code>year</code></td>
-                    <td>MEPS source attribution and calendar year 2024</td>
+                    <td>MEPS source attribution and selected calendar year</td>
                   </tr>
                   <tr>
                     <td><code>insurance</code></td>

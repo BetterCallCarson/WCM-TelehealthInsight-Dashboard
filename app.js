@@ -229,10 +229,10 @@ function renderCms() {
       return `<button class="state-tile ${s.abbr === state.selected ? 'selected' : ''}" style="--col:${pos[0]};--row:${pos[1]};--tile-color:${tileColor};--tile-text:${tileTextColor(tileColor)}" data-state="${s.abbr}" aria-label="${esc(s.name)}, ${percent(s.telehealthPct)} telehealth use" aria-pressed="${s.abbr === state.selected}"><span>${s.abbr}</span><small>${Number.isFinite(s.telehealthPct) ? number(s.telehealthPct, 1) : '—'}</small></button>`;
     })
     .join('');
-  const a = s.acs2024;
+  const a = contextFor(s.abbr);
   const diff = r?.telehealthPct - national?.telehealthPct;
   $('state-detail').innerHTML =
-    `<div class="state-code">${state.selected === 'US' ? 'National benchmark' : s.abbr + ' / Selected state'}</div><h3 class="state-name">${esc(s.name)}</h3><div class="big-rate">${percent(r?.telehealthPct)}</div><div class="rate-label">telehealth use · ${esc(state.period)}</div><div class="difference">${state.selected === 'US' ? 'Published CMS national aggregate' : `${number(Math.abs(diff), 1)} pp ${diff >= 0 ? 'above' : 'below'} national`}</div><dl><dt>Telehealth users</dt><dd>${number(r?.telehealthUsers)}</dd><dt>Eligible service users</dt><dd>${number(r?.eligibleUsers)}</dd>${a ? `<dt>Broadband · 2024</dt><dd>${percent(a.broadbandPct)}</dd><dt>90% margin of error</dt><dd>±${number(a.broadbandMoe90, 2)} pp</dd><dt>Median income · 2024</dt><dd>${dollars(a.medianIncome)}</dd><dt>90% margin of error</dt><dd>±${dollars(a.incomeMoe90)}</dd>` : '<dt>State coverage</dt><dd>50 states + D.C.</dd>'}</dl>`;
+    `<div class="state-code">${state.selected === 'US' ? 'National benchmark' : s.abbr + ' / Selected state'}</div><h3 class="state-name">${esc(s.name)}</h3><div class="big-rate">${percent(r?.telehealthPct)}</div><div class="rate-label">telehealth use · ${esc(state.period)}</div><div class="difference">${state.selected === 'US' ? 'Published CMS national aggregate' : `${number(Math.abs(diff), 1)} pp ${diff >= 0 ? 'above' : 'below'} national`}</div><dl><dt>Telehealth users</dt><dd>${number(r?.telehealthUsers)}</dd><dt>Eligible service users</dt><dd>${number(r?.eligibleUsers)}</dd>${a ? `<dt>Broadband · ${a.year}</dt><dd>${percent(a.broadbandPct)}</dd><dt>90% margin of error</dt><dd>±${number(a.broadbandMoe90, 2)} pp</dd><dt>Median income · ${a.year}</dt><dd>${dollars(a.medianIncome)}</dd><dt>90% margin of error</dt><dd>±${dollars(a.incomeMoe90)}</dd>` : state.selected === 'US' ? '<dt>State coverage</dt><dd>50 states + D.C.</dd>' : '<dt>ACS context</dt><dd>Available for 2021–2024</dd>'}</dl>`;
   const rankedRows = rows.toSorted(
     (a, b) => (b.telehealthPct ?? -1) - (a.telehealthPct ?? -1),
   );
@@ -292,26 +292,54 @@ function renderCms() {
  * Reading cms here is intentional: mixing a revised live outcome with an older
  * ACS/model validation would imply an analytical update that has not occurred.
  */
+function contextYear() {
+  return Number(state.period.slice(0, 4));
+}
+
+function contextFor(abbr) {
+  if (contextYear() === 2024)
+    return cms.states.find((s) => s.abbr === abbr)?.acs2024;
+  return cms.historicalContext[contextYear()]?.states[abbr];
+}
+
+function annualAssociations() {
+  return contextYear() === 2024
+    ? cms.associations
+    : cms.historicalContext[contextYear()];
+}
+
 function renderScatter() {
   const income = $('acs-measure').value === 'income';
+  const year = contextYear();
+  const associations = annualAssociations();
+  $('context-year').textContent = 'State context · ' + year;
+  if (!associations) {
+    $('scatter-chart').textContent =
+      'Matched annual data are available for 2021–2024.';
+    $('scatter-caption').textContent = '';
+    return;
+  }
   const points = cms.states.map((s) => ({
     name: s.name,
     abbr: s.abbr,
-    x: income ? s.acs2024?.medianIncome : s.acs2024?.broadbandPct,
-    y: s.annual.find((r) => r.year === 2024)?.telehealthPct,
+    x: income
+      ? contextFor(s.abbr)?.medianIncome
+      : contextFor(s.abbr)?.broadbandPct,
+    y: s.annual.find((r) => r.year === year)?.telehealthPct,
   }));
   $('scatter-chart').innerHTML = scatterChart(points, {
+    year,
     selected: state.selected,
     xKey: income ? 'income' : 'broadbandPct',
     xlabel: income
-      ? 'Median household income (2024 dollars)'
+      ? `Median household income (${year} dollars)`
       : 'Households with broadband (%)',
   });
   const r = income
-    ? cms.associations.incomePearsonR
-    : cms.associations.broadbandPearsonR;
+    ? associations.incomePearsonR
+    : associations.broadbandPearsonR;
   $('scatter-caption').innerHTML =
-    `<strong>Verified 2024 snapshot · 50 states + D.C. · Pearson r = ${number(r, 2)}.</strong> Y-axis: annual CMS telehealth use. ACS broadband includes cellular subscriptions. State-level association does not establish individual access or causation. ACS sampling error is not shown in the plot.`;
+    `<strong>${year} annual snapshot · 50 states + D.C. · Pearson r = ${number(r, 2)}.</strong> Y-axis: annual CMS telehealth use. ACS broadband includes cellular subscriptions. State-level association does not establish individual access or causation. ACS sampling error is not shown in the plot.`;
 }
 const nhisDisplayNotes = {
   insurance:
@@ -330,6 +358,17 @@ const nhisDisplayNotes = {
  * complete-case association model or pool observations with other sources.
  */
 function renderNhis() {
+  document
+    .querySelectorAll('[data-nhis-year]')
+    .forEach((el) => (el.textContent = nhis.year));
+  const hasInternet = Boolean(nhis.groups.internet);
+  $('nhis-group').querySelector('[value="internet"]').disabled = !hasInternet;
+  $('internet-coverage').textContent = hasInternet
+    ? ''
+    : (nhis.year === 2021
+        ? 'Internet access was not collected this year.'
+        : 'Internet access was collected in July–December only.') +
+      ' Annual comparisons and the adjusted model omit Internet access.';
   const n = nhis.overall;
   const rows = nhis.groups[state.nhisGroup];
   $('nhis-metrics').innerHTML =
@@ -351,7 +390,7 @@ function renderNhis() {
   $('nhis-chart').innerHTML = dotChart(rows, {
     compact: false,
     title: `Survey-weighted telehealth use by ${nhis.group_labels[state.nhisGroup]}`,
-    max: 50,
+    max: Math.max(50, ...rows.map((r) => Math.ceil(r.ci_high / 10) * 10)),
   });
   $('nhis-table').innerHTML = table(
     [
@@ -373,7 +412,7 @@ function renderNhis() {
     (m) => m.group === state.nhisGroup,
   );
   $('nhis-source').innerHTML =
-    `Source: <a href="https://www.cdc.gov/nchs/nhis/documentation/2024-nhis.html" target="_blank" rel="noreferrer">2024 NHIS Sample Adult</a> · U.S. civilian noninstitutionalized adults ≥18 · Survey-weighted estimates with logit-based 95% confidence intervals. ${esc(nhisDisplayNotes[state.nhisGroup])} ${missing ? `${number(missing.among_valid_outcome_n)} valid-outcome records excluded for missing group information.` : ''} Sample counts are unweighted. Insurance is measured at interview; telehealth covers the prior 12 months.`;
+    `Source: <a href="https://www.cdc.gov/nchs/nhis/documentation/${nhis.year}-nhis.html" target="_blank" rel="noreferrer">${nhis.year} NHIS Sample Adult</a> · U.S. civilian noninstitutionalized adults ≥18 · Survey-weighted estimates with logit-based 95% confidence intervals. ${esc(nhisDisplayNotes[state.nhisGroup])} ${missing ? `${number(missing.among_valid_outcome_n)} valid-outcome records excluded for missing group information.` : ''} Sample counts are unweighted. Insurance is measured at interview; telehealth covers the prior 12 months.`;
   renderNhisModel();
 }
 /**
@@ -413,8 +452,21 @@ function displayTelehealth(g) {
  * @param {string} metric share_pct, total_payment, or family_payment.
  * @return {!Object} Estimate copy with null point/limits for a sparse modality.
  */
+function paymentIn2024Dollars(summary, year = meps.year) {
+  // The BLS annual U.S. city-average CPI-U measures general purchasing power.
+  const annualCpi = {2021: 270.97, 2022: 292.655, 2023: 304.702, 2024: 313.689};
+  const factor = annualCpi[2024] / annualCpi[year];
+  const converted = {...summary};
+  for (const field of ['estimate', 'ci_low', 'ci_high', 'se']) {
+    if (Number.isFinite(summary[field]))
+      converted[field] = summary[field] * factor;
+  }
+  return converted;
+}
+
 function displayMeps(m, metric) {
-  const v = m[metric];
+  const v =
+    metric === 'share_pct' ? m[metric] : paymentIn2024Dollars(m[metric]);
   return m.n_persons < 30
     ? {...v, estimate: null, ci_low: null, ci_high: null, withheld: true}
     : v;
@@ -425,11 +477,14 @@ function displayMeps(m, metric) {
  * estimate is withheld; the aggregate JSON itself is never rewritten.
  */
 function renderMeps() {
+  document
+    .querySelectorAll('[data-meps-year]')
+    .forEach((el) => (el.textContent = meps.year));
   const g =
     meps.groups.find((g) => g.insurance === state.insurance) || meps.overall;
   const total = state.payment === 'total';
   const key = total ? 'total_payment' : 'family_payment';
-  const p = g[key];
+  const p = paymentIn2024Dollars(g[key]);
   const tele = displayTelehealth(g);
   $('meps-metrics').innerHTML =
     metric(
@@ -440,7 +495,9 @@ function renderMeps() {
         : `95% confidence interval ${ci(tele.ci_low, tele.ci_high)}`,
     ) +
     metric(
-      total ? 'Mean total payments / visit' : 'Mean out-of-pocket / visit',
+      total
+        ? 'Mean total / visit (2024 USD)'
+        : 'Mean out-of-pocket / visit (2024 USD)',
       dollars(p.estimate),
       `${ci(p.ci_low, p.ci_high, ' dollars')} · 95% confidence interval`,
     ) +
@@ -481,12 +538,12 @@ function renderMeps() {
         : `${percent(m.share_pct.estimate)} (${ci(m.share_pct.ci_low, m.share_pct.ci_high)})${flag(m.share_pct)}`,
       m.n_persons < 30
         ? '<span class="badge">Not shown · &lt;30 people</span>'
-        : `${dollars(m[key].estimate)} (${ci(m[key].ci_low, m[key].ci_high, ' dollars')})${flag(m[key])}`,
+        : `${dollars(displayMeps(m, key).estimate)} (${ci(displayMeps(m, key).ci_low, displayMeps(m, key).ci_high, ' dollars')})${flag(m[key])}`,
     ]),
     {numeric: [1, 2, 3]},
   );
   $('meps-source').innerHTML =
-    `Source: <a href="https://meps.ahrq.gov/data_stats/download_data/pufs/h254g/h254gdoc.shtml" target="_blank" rel="noreferrer">MEPS HC-254G</a> + HC-256 · 2024 office-based visits, all ages · Survey-weighted estimates using weights, strata, and primary sampling units. Visit shares use all office visits in the selected insurance group as denominator. Insurance describes coverage during 2024: any private (including TRICARE), public only, or uninsured all year; it is not coverage on the visit date. Modality estimates and overall telehealth shares with fewer than 30 sampled people in the numerator are not shown in charts, tables, or CSV exports. * Unstable: relative standard error &gt;30% or a boundary estimate (sparse rows are also marked). Approximate normal CIs are bounded at zero (and 100% for shares). Read rare-modality estimates cautiously.`;
+    `Source: <a href="${esc(meps.documentation[0].url)}" target="_blank" rel="noreferrer">${esc(meps.source)}</a> · ${meps.year} office-based visits, all ages · Survey-weighted estimates using weights, strata, and primary sampling units. Visit shares use all office visits in the selected insurance group as denominator. Insurance describes coverage during ${meps.year}: any private (including TRICARE), public only, or uninsured all year; it is not coverage on the visit date. Modality estimates and overall telehealth shares with fewer than 30 sampled people in the numerator are not shown in charts, tables, or CSV exports. * Unstable: relative standard error &gt;30% or a boundary estimate (sparse rows are also marked). Approximate normal CIs are bounded at zero (and 100% for shares). Read rare-modality estimates cautiously.`;
   renderMepsComparison();
 }
 /**
@@ -500,7 +557,7 @@ function renderQuality() {
       'Geography & context',
       'Medicare Part B fee-for-service service users',
       'State / period',
-      '2020–2025; ACS 2024',
+      '2020–2025; ACS 2021–2024',
       '50 states + D.C.',
     ],
     [
@@ -508,7 +565,7 @@ function renderQuality() {
       'Population differences',
       'Civilian noninstitutionalized adults ≥18',
       'Person',
-      '2024',
+      nhis.year,
       `${number(nhis.quality.valid_outcome_n)} valid outcomes`,
     ],
     [
@@ -516,7 +573,7 @@ function renderQuality() {
       'Visits & payments',
       'Office-based visits, all ages',
       'Visit',
-      '2024',
+      meps.year,
       `${number(meps.quality.analytic_visit_n)} positive-weight visits`,
     ],
   ];
@@ -571,7 +628,7 @@ function renderQuality() {
       'Remote modality',
       q.telehealth_source_n,
       `${number(q.unknown_remote_modality_source_n)} unknown`,
-      '132,199 nonremote = inapplicable',
+      `${number(q.inapplicable_modality_source_n)} inapplicable modality codes`,
     ],
     [
       'MEPS',
@@ -635,7 +692,7 @@ function download(rows, name) {
 // Export provenance with values so a downloaded live view can be identified later.
 /**
  * Exports the current CMS edition with retrieval and validation metadata.
- * ACS columns always identify their fixed 2024 context, even for other CMS periods.
+ * ACS columns always identify their selected-year context when available.
  */
 function downloadCms() {
   download(
@@ -648,21 +705,23 @@ function downloadCms() {
         telehealth_percent: r?.telehealthPct,
         telehealth_users: r?.telehealthUsers,
         eligible_service_users: r?.eligibleUsers,
-        acs_context_year: 2024,
-        broadband_percent_2024: s.acs2024.broadbandPct,
-        broadband_moe90_pp_2024: s.acs2024.broadbandMoe90,
-        median_household_income_2024: s.acs2024.medianIncome,
-        income_moe90_2024: s.acs2024.incomeMoe90,
+        acs_context_year: contextFor(s.abbr)?.year,
+        broadband_percent: contextFor(s.abbr)?.broadbandPct,
+        broadband_moe90_pp: contextFor(s.abbr)?.broadbandMoe90,
+        median_household_income: contextFor(s.abbr)?.medianIncome,
+        income_moe90: contextFor(s.abbr)?.incomeMoe90,
         context_note:
-          'ACS context is 2024 only; associations must use CMS 2024 annual values',
-        source: 'CMS Medicare Telehealth Trends; ACS 2024 1-year',
+          'ACS fields describe the full selected year when available (2021–2024)',
+        source: 'CMS Medicare Telehealth Trends; ACS 1-year',
         validation_status: liveCms
           ? 'Live CMS data; not revalidated'
           : 'Verified snapshot',
         cms_retrieved_at: liveCms?.checkedAt || cms.accessDate,
         cms_api_url: liveCms?.apiUrl || '',
         cms_source_version: liveCms?.version || '',
-        acs_validation_status: 'Verified 2024 snapshot',
+        acs_validation_status: contextFor(s.abbr)
+          ? 'Matched annual ACS snapshot'
+          : '',
       };
     }),
     `cms-states-${state.period.replace(' ', '-')}.csv`,
@@ -675,7 +734,7 @@ function downloadCms() {
 function downloadNhis() {
   download(
     nhis.groups[state.nhisGroup].map((r) => ({
-      source: 'NHIS 2024',
+      source: `NHIS ${nhis.year}`,
       population: nhis.population,
       measure: nhis.measure,
       group_variable: state.nhisGroup,
@@ -688,7 +747,7 @@ function downloadNhis() {
       method: 'Survey weighted unadjusted; logit CI',
       group_definition: nhis.group_notes[state.nhisGroup],
     })),
-    `nhis-2024-${state.nhisGroup}.csv`,
+    `nhis-${nhis.year}-${state.nhisGroup}.csv`,
   );
 }
 /**
@@ -700,9 +759,10 @@ function downloadMeps() {
   download(
     g.modalities.map((m) => ({
       source: meps.source,
-      year: 2024,
+      year: meps.year,
       insurance: g.insurance,
-      insurance_period: 'Annual INSCOV24; not visit-time payer',
+      payment_dollar_year: 2024,
+      insurance_period: meps.methods.insurance_variable,
       modality: m.modality,
       n_visits: m.n,
       n_persons: m.n_persons,
@@ -733,7 +793,7 @@ function downloadMeps() {
       payment_denominator:
         'Positive-weight visits within modality and insurance group',
     })),
-    `meps-2024-${state.insurance.replaceAll(' ', '-').toLowerCase()}.csv`,
+    `meps-${meps.year}-${state.insurance.replaceAll(' ', '-').toLowerCase()}.csv`,
   );
 }
 /**
@@ -773,7 +833,17 @@ function hideTip() {
  */
 async function start() {
   const results = await Promise.all(
-    ['cms', 'nhis', 'meps'].map(async (name) => {
+    [
+      'cms',
+      'nhis',
+      'meps',
+      'nhis-2021',
+      'nhis-2022',
+      'nhis-2023',
+      'meps-2021',
+      'meps-2022',
+      'meps-2023',
+    ].map(async (name) => {
       const res = await fetch(`./data/${name}.json`);
       if (!res.ok) {
         throw Error(
@@ -784,6 +854,46 @@ async function start() {
     }),
   );
   [cms, nhis, meps] = results;
+  const editions = {
+    nhis: [results[3], results[4], results[5], nhis],
+    meps: [results[6], results[7], results[8], meps],
+  };
+  for (const survey of Object.keys(editions)) {
+    const select = $(survey + '-trend-select');
+    const draw = () =>
+      renderSurveyTrend(survey, editions[survey], select.value);
+    select.addEventListener('change', draw);
+    draw();
+  }
+  for (const survey of Object.keys(editions)) {
+    $(survey + '-year').addEventListener('change', (event) => {
+      const selected = editions[survey].find(
+        (data) => data.year === Number(event.target.value),
+      );
+      if (survey === 'nhis') {
+        nhis = selected;
+        if (!nhis.groups[state.nhisGroup]) state.nhisGroup = 'insurance';
+        if (
+          !nhis.adjusted_model.terms.some((t) => t.group === state.modelGroup)
+        )
+          state.modelGroup = 'Insurance';
+        $('nhis-group').value = state.nhisGroup;
+        renderNhis();
+      } else {
+        meps = selected;
+        renderMeps();
+      }
+      const link = document.querySelector('a[href^="./data/' + survey + '"]');
+      link.href =
+        './data/' +
+        survey +
+        (selected.year === 2024 ? '' : '-' + selected.year) +
+        '.json';
+      link.textContent =
+        survey.toUpperCase() + ' ' + selected.year + ' data (JSON) ↓';
+      renderQuality();
+    });
+  }
   populateCmsPeriods();
   $('cms-state').innerHTML =
     '<option value="US">United States</option>' +
@@ -847,8 +957,8 @@ async function start() {
         .map((g) => {
           const v = displayTelehealth(g);
           return {
-            source: 'MEPS HC-254G + HC-256',
-            year: 2024,
+            source: meps.source,
+            year: meps.year,
             insurance: g.insurance,
             telehealth_percent: v.estimate,
             ci95_low: v.ci_low,
@@ -866,7 +976,7 @@ async function start() {
               'All positive-weight office visits within insurance group',
           };
         }),
-      'meps-2024-telehealth-by-insurance.csv',
+      `meps-${meps.year}-telehealth-by-insurance.csv`,
     ),
   );
   $('cms-download').addEventListener('click', downloadCms);
@@ -943,7 +1053,7 @@ function renderNhisModel() {
     return;
   }
   $('nhis-model').innerHTML =
-    `<div class="section-heading"><div><span class="eyebrow">Adjusted adult associations · 2024</span><h2>Adjusted associations with telehealth use</h2></div><button id="nhis-model-download" class="text-button">Download model ↓</button></div><p class="model-intro">Survey-weighted logistic regression including insurance coverage, age, education, Internet access, and self-rated health. Reference groups are specified for each comparison below. Odds ratios describe relative odds, not probability differences or causal effects.</p><div class="toolbar"><label>Adjusted comparison <select id="nhis-model-group">${[...new Set(m.terms.map((t) => t.group))].map((g) => `<option value="${esc(g)}"${g === state.modelGroup ? ' selected' : ''}>${esc(g)}</option>`).join('')}</select></label><span class="pill">● Adjusted odds ratio &nbsp; ━ 95% confidence interval</span></div><div id="nhis-forest" class="comparison-chart"></div><p id="nhis-forest-caption" class="caption"></p><p class="model-methods">Complete-case sample: <strong>${number(m.n)}</strong> adults (${number(m.excluded_n)} excluded). All covariates enter the same model. Insurance is measured at interview; the outcome covers the prior 12 months.</p><details><summary>View all adjusted associations and model specification</summary><div class="table-wrap">${table(
+    `<div class="section-heading"><div><span class="eyebrow">Adjusted adult associations · ${nhis.year}</span><h2>Adjusted associations with telehealth use</h2></div><button id="nhis-model-download" class="text-button">Download model ↓</button></div><p class="model-intro">Survey-weighted logistic regression including insurance coverage, age, education, ${nhis.groups.internet ? 'Internet access, ' : ''}and self-rated health. Reference groups are specified for each comparison below. Odds ratios describe relative odds, not probability differences or causal effects.</p><div class="toolbar"><label>Adjusted comparison <select id="nhis-model-group">${[...new Set(m.terms.map((t) => t.group))].map((g) => `<option value="${esc(g)}"${g === state.modelGroup ? ' selected' : ''}>${esc(g)}</option>`).join('')}</select></label><span class="pill">● Adjusted odds ratio &nbsp; ━ 95% confidence interval</span></div><div id="nhis-forest" class="comparison-chart"></div><p id="nhis-forest-caption" class="caption"></p><p class="model-methods">Complete-case sample: <strong>${number(m.n)}</strong> adults (${number(m.excluded_n)} excluded). All covariates enter the same model. Insurance is measured at interview; the outcome covers the prior 12 months.</p><details><summary>View all adjusted associations and model specification</summary><div class="table-wrap">${table(
       [
         'Covariate',
         'Comparison',
@@ -968,7 +1078,7 @@ function renderNhisModel() {
   $('nhis-model-download').addEventListener('click', () =>
     download(
       m.terms.map((t) => ({
-        source: 'NHIS 2024',
+        source: `NHIS ${nhis.year}`,
         model: m.model,
         n: m.n,
         outcome: m.outcome,
@@ -980,16 +1090,17 @@ function renderNhisModel() {
         ci95_high: t.ci_high,
         adjustment: m.formula,
       })),
-      'nhis-2024-adjusted-associations.csv',
+      `nhis-${nhis.year}-adjusted-associations.csv`,
     ),
   );
 }
 /**
  * Renders verified state OLS/HC3 coefficients in percentage-point units.
- * The model remains pinned to 2024 regardless of the descriptive CMS edition.
+ * The model remains based on archived annual CMS data regardless of the descriptive CMS edition.
  */
 function renderCmsModel() {
-  const m = cms.associations.adjustedModel;
+  const year = contextYear();
+  const m = annualAssociations()?.adjustedModel;
   if (!m) {
     $('cms-model').hidden = true;
     return;
@@ -997,7 +1108,7 @@ function renderCmsModel() {
   $('cms-model').hidden = false;
   const terms = m.coefficients;
   $('cms-model').innerHTML =
-    `<div class="section-heading"><div><span class="eyebrow">Adjusted state associations · Verified 2024 snapshot</span><h2>Broadband and income associations</h2></div><button id="cms-model-download" class="text-button">Download model ↓</button></div><p class="model-intro">Annual state telehealth use is modeled with broadband subscription and median household income together. These ecological associations compare states and do not establish individual or causal effects.</p><div class="table-wrap">${table(
+    `<div class="section-heading"><div><span class="eyebrow">Adjusted state associations · ${year} annual snapshot</span><h2>Broadband and income associations</h2></div><button id="cms-model-download" class="text-button">Download model ↓</button></div><p class="model-intro">Annual state telehealth use is modeled with broadband subscription and median household income together. These ecological associations compare states and do not establish individual or causal effects.</p><div class="table-wrap">${table(
       ['Term', 'Coefficient (percentage points)', '95% confidence interval'],
       terms
         .filter((t) => t.term !== 'intercept')
@@ -1011,7 +1122,7 @@ function renderCmsModel() {
   $('cms-model-download').addEventListener('click', () =>
     download(
       terms.map((t) => ({
-        source: 'CMS + ACS 2024',
+        source: `CMS + ACS ${year}`,
         model: 'State OLS with HC3 covariance',
         n: m.n,
         term: t.term,
@@ -1023,7 +1134,7 @@ function renderCmsModel() {
         units: t.units,
         interval: 'Normal approximation 1.96 x HC3 SE',
       })),
-      'cms-acs-2024-adjusted-associations.csv',
+      `cms-acs-${year}-adjusted-associations.csv`,
     ),
   );
 }
@@ -1268,6 +1379,81 @@ function renderNhisForest() {
  * Compares disjoint insurance domains, excluding the overlapping All total.
  * The shared display helper ensures sparse telehealth numerators remain withheld.
  */
+/** Render each annual estimate from its own survey edition. Missing domains break the line. */
+function renderSurveyTrend(survey, editions, measure) {
+  const adult = survey === 'nhis';
+  const currency = !adult && measure !== 'share';
+  const labels = adult
+    ? [
+        ...new Set(
+          editions.flatMap((d) =>
+            (d.groups[measure] || []).map((g) => g.label),
+          ),
+        ),
+      ]
+    : editions[0].groups
+        .filter((g) => g.insurance !== 'All')
+        .map((g) => g.insurance);
+  const colors = ['#b31b1b', '#23629a', '#44805b', '#865a94', '#9c621e'];
+  const series = labels.map((label, index) => ({
+    label,
+    color: colors[index],
+    values: editions.map((data) => {
+      let estimate;
+      if (adult) {
+        estimate = data.groups[measure]?.find((g) => g.label === label);
+      } else {
+        const group = data.groups.find((g) => g.insurance === label);
+        estimate = currency
+          ? paymentIn2024Dollars(group[measure], data.year)
+          : displayTelehealth(group);
+      }
+      const value =
+        estimate?.suppressed || estimate?.withheld ? null : estimate?.estimate;
+      return {period: String(data.year), value, estimate};
+    }),
+  }));
+  const title = adult
+    ? 'Adults reporting a phone or video visit in the past 12 months (%)'
+    : currency
+      ? (measure === 'total_payment'
+          ? 'Mean total payment'
+          : 'Mean out-of-pocket payment') + ' per office visit (2024 USD)'
+      : 'Telehealth share of office visits (%)';
+  $(survey + '-trend-chart').innerHTML = lineChart(series, {title, currency});
+  $(survey + '-trend-legend').innerHTML = series
+    .map(
+      (s) =>
+        `<span><i style="background:${s.color}"></i>${esc(s.label)}</span>`,
+    )
+    .join('');
+  $(survey + '-trend-note').textContent =
+    title +
+    '. ' +
+    (adult
+      ? measure === 'internet'
+        ? 'Full-year Internet access estimates begin in 2023.'
+        : 'Each point represents a separately weighted annual survey.'
+      : currency
+        ? 'Includes in-person and remote visits, including zero payments.'
+        : 'Gaps indicate fewer than 30 sampled people with a remote visit.');
+  const format = currency ? dollars : percent;
+  $(survey + '-trend-table').innerHTML = table(
+    ['Group', ...editions.map((d) => String(d.year))],
+    series.map((s) => [
+      esc(s.label),
+      ...s.values.map(({value, estimate}) =>
+        Number.isFinite(value)
+          ? `${format(value)} (${format(estimate.ci_low)}–${format(estimate.ci_high)})${estimate.unstable ? ' · Unstable' : ''}`
+          : estimate
+            ? 'Withheld'
+            : 'Unavailable',
+      ),
+    ]),
+    {numeric: [1, 2, 3, 4]},
+  );
+}
+
 function renderMepsComparison() {
   const groups = meps.groups.filter((g) => g.insurance !== 'All');
   $('meps-insurance-chart').innerHTML = dotChart(

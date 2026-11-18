@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 # Author: Jiajun (Carson) Chen
 # email: jic4015@med.cornell.edu
-"""Rebuild aggregate MEPS 2024 dashboard data using Python's standard library.
+"""Rebuild annual aggregate MEPS dashboard data using Python's standard library.
 
 Run from any directory: python3 scripts/meps.py --download
-Downloads public HC-254G and HC-256 ASCII releases plus official Stata column
+Downloads the selected year’s public event and person ASCII releases plus official Stata column
 specifications into ignored .work/. Only aggregate JSON is published.
 """
 from __future__ import annotations
 
 import argparse
+from datetime import date
 from collections import Counter, defaultdict
 import hashlib
 import json
@@ -20,18 +21,14 @@ import subprocess
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCES = {
-    "h254gdat.zip": "https://meps.ahrq.gov/mepsweb/data_files/pufs/h254g/h254gdat.zip",
-    "h256dat.zip": "https://meps.ahrq.gov/mepsweb/data_files/pufs/h256/h256dat.zip",
-    "h254gstu.txt": "https://meps.ahrq.gov/mepsweb/data_stats/download_data/pufs/h254g/h254gstu.txt",
-    "h256stu.txt": "https://meps.ahrq.gov/mepsweb/data_stats/download_data/pufs/h256/h256stu.txt",
+# Event file, person file, and AHRQ all-event benchmarks (including zero payments).
+# Benchmarks are weighted millions of visits, mean total and SE, mean family and SE.
+RELEASES = {
+    2021: ("h229g", "h233", (2271.4, 293, 9.3, 52, 4.6)),
+    2022: ("h239g", "h243", (2077.9, 294, 7.4, 57, 4.1)),
+    2023: ("h248g", "h251", (2214.2, 285, 6.1, 53, 2.6)),
+    2024: ("h254g", "h256", (2410.1, 308, 7.9, 57, 3.0)),
 }
-DOC_EVENT = (
-    "https://meps.ahrq.gov/data_stats/download_data/pufs/h254g/h254gdoc.shtml"
-)
-DOC_PERSON = (
-    "https://meps.ahrq.gov/data_stats/download_data/pufs/h256/h256doc.shtml"
-)
 INSURANCE = {1: "Any private", 2: "Public only", 3: "Uninsured all year"}
 MODALITIES = ["In person", "Phone", "Video", "Other remote", "Unknown remote"]
 
@@ -127,12 +124,12 @@ def ratio_summary(
             "unstable": True,
             "flags": ["No eligible visits"],
         }
-    total_w = math.fsum(r["PERWT24F"] for r in rows)
-    estimate = math.fsum(r["PERWT24F"] * value(r) for r in rows) / total_w
+    total_w = math.fsum(r["weight"] for r in rows)
+    estimate = math.fsum(r["weight"] * value(r) for r in rows) / total_w
     sums = defaultdict(float)
     for row in rows:
         sums[(row["VARSTR"], row["VARPSU"])] += (
-            row["PERWT24F"] * (value(row) - estimate) / total_w
+            row["weight"] * (value(row) - estimate) / total_w
         )
     variance = 0.0
     for stratum, units in psus.items():
@@ -189,17 +186,30 @@ def main():
     )
     parser.add_argument("--work-dir", type=Path, default=ROOT / ".work")
     parser.add_argument(
-        "--output", type=Path, default=ROOT / "data" / "meps.json"
+        "--output", type=Path, default=None
     )
     parser.add_argument(
         "--access-date",
-        default="2026-11-11",
+        default=date.today().isoformat(),
         help="Recorded date of source retrieval",
     )
+    parser.add_argument("--year", type=int, choices=RELEASES, default=2024)
     args = parser.parse_args()
+    year = args.year
+    yy = str(year)[-2:]
+    event_id, person_id, benchmarks = RELEASES[year]
+    if args.output is None:
+        args.output = ROOT / "data" / ("meps.json" if year == 2024 else f"meps-{year}.json")
+    sources = {}
+    for puf in (event_id, person_id):
+        base = "https://meps.ahrq.gov/mepsweb"
+        sources[puf + "dat.zip"] = f"{base}/data_files/pufs/{puf}/{puf}dat.zip"
+        sources[puf + "stu.txt"] = f"{base}/data_stats/download_data/pufs/{puf}/{puf}stu.txt"
+    weight, insurance = f"PERWT{yy}F", f"INSCOV{yy}"
+    total, family = f"OBXP{yy}X", f"OBSF{yy}X"
     args.work_dir.mkdir(parents=True, exist_ok=True)
     provenance = []
-    for filename, url in SOURCES.items():
+    for filename, url in sources.items():
         path = args.work_dir / f"meps-{filename}"
         if not path.exists():
             if not args.download:
@@ -228,20 +238,20 @@ def main():
         )
     people = read_ascii(
         args.work_dir,
-        "h256",
-        ["DUPERSID", "INSCOV24", "PERWT24F", "VARSTR", "VARPSU"],
+        person_id,
+        ["DUPERSID", insurance, weight, "VARSTR", "VARPSU"],
     )
     events = read_ascii(
         args.work_dir,
-        "h254g",
+        event_id,
         [
             "DUPERSID",
             "EVNTIDX",
             "TELEHEALTHFLAG",
             "VISITTYPE",
-            "OBXP24X",
-            "OBSF24X",
-            "PERWT24F",
+            total,
+            family,
+            weight,
             "VARSTR",
             "VARPSU",
             "IMPFLAG",
@@ -255,15 +265,16 @@ def main():
     unmatched = sum(r["DUPERSID"] not in people_by_id for r in events)
     assert unmatched == 0, "Unmatched event-to-person linkage"
     for event in events:
+        event["weight"] = event[weight]
         person = people_by_id[event["DUPERSID"]]
         assert (
-            event["PERWT24F"] == person["PERWT24F"]
+            event[weight] == person[weight]
         ), "Mismatched event/person weights"
         assert (event["VARSTR"], event["VARPSU"]) == (
             person["VARSTR"],
             person["VARPSU"],
         ), "Mismatched design"
-        event["insurance"] = INSURANCE.get(person["INSCOV24"], "Unknown")
+        event["insurance"] = INSURANCE.get(person[insurance], "Unknown")
         if event["TELEHEALTHFLAG"] == 2:
             assert event["VISITTYPE"] == -1, "Unexpected nonremote modality"
             event["modality"] = "In person"
@@ -275,27 +286,27 @@ def main():
             raise ValueError(
                 "Unexpected telehealth flag; review before publishing"
             )
-    eligible = [r for r in events if r["PERWT24F"] > 0]
+    eligible = [r for r in events if r["weight"] > 0]
     psus = defaultdict(set)
     for person in people:
-        if person["PERWT24F"] > 0:
+        if person[weight] > 0:
             psus[person["VARSTR"]].add(person["VARPSU"])
     assert all(
-        r["OBXP24X"] >= 0 and r["OBSF24X"] >= 0 for r in eligible
+        r[total] >= 0 and r[family] >= 0 for r in eligible
     ), "Negative payment code"
     assert all(
         r["insurance"] != "Unknown" for r in eligible
     ), "Unknown insurance category"
     summaries = []
-    for insurance in ["All", *INSURANCE.values()]:
+    for group_name in ["All", *INSURANCE.values()]:
         domain = [
             r
             for r in eligible
-            if insurance == "All" or r["insurance"] == insurance
+            if group_name == "All" or r["insurance"] == group_name
         ]
         telehealth = [r for r in domain if r["TELEHEALTHFLAG"] == 1]
         summary = {
-            "insurance": insurance,
+            "insurance": group_name,
             "n": len(domain),
             "n_persons": len({r["DUPERSID"] for r in domain}),
             "telehealth_n": len(telehealth),
@@ -304,10 +315,10 @@ def main():
                 domain, psus, lambda r: r["TELEHEALTHFLAG"] == 1, 100, True
             ),
             "total_payment": ratio_summary(
-                domain, psus, lambda r: r["OBXP24X"]
+                domain, psus, lambda r: r[total]
             ),
             "family_payment": ratio_summary(
-                domain, psus, lambda r: r["OBSF24X"]
+                domain, psus, lambda r: r[family]
             ),
             "modalities": [],
         }
@@ -326,10 +337,10 @@ def main():
                         True,
                     ),
                     "total_payment": ratio_summary(
-                        subset, psus, lambda r: r["OBXP24X"]
+                        subset, psus, lambda r: r[total]
                     ),
                     "family_payment": ratio_summary(
-                        subset, psus, lambda r: r["OBSF24X"]
+                        subset, psus, lambda r: r[family]
                     ),
                 }
             )
@@ -352,60 +363,47 @@ def main():
             < 1e-4
         )
         summaries.append(summary)
-    total_w = math.fsum(r["PERWT24F"] for r in eligible)
+    total_w = math.fsum(r["weight"] for r in eligible)
     overall = summaries[0]
     # Independent benchmarks: official HC-254G Table 3/4 rounded estimates and SEs.
+    visits, total_mean, total_se, family_mean, family_se = benchmarks
     checks = {
-        "source_rows_equal_145818": len(events) == 145818,
-        "positive_weight_rows_equal_144206": len(eligible) == 144206,
-        "population_visits_round_to_2410_1_million": round(total_w / 1e6, 1)
-        == 2410.1,
-        "mean_total_payment_rounds_to_308": round(
-            overall["total_payment"]["estimate"]
-        )
-        == 308,
-        "se_total_payment_rounds_to_7_9": round(
-            overall["total_payment"]["se"], 1
-        )
-        == 7.9,
-        "mean_family_payment_rounds_to_57": round(
-            overall["family_payment"]["estimate"]
-        )
-        == 57,
-        "se_family_payment_rounds_to_3_0": round(
-            overall["family_payment"]["se"], 1
-        )
-        == 3.0,
+        "weighted_visits_match_official_table": round(total_w / 1e6, 1) == visits,
+        "total_mean_matches_official_table": round(overall["total_payment"]["estimate"]) == total_mean,
+        "total_se_matches_official_table": round(overall["total_payment"]["se"], 1) == total_se,
+        "family_mean_matches_official_table": round(overall["family_payment"]["estimate"]) == family_mean,
+        "family_se_matches_official_table": round(overall["family_payment"]["se"], 1) == family_se,
     }
     assert all(checks.values()), f"Official benchmark mismatch: {checks}"
     output = {
         "schema_version": "1.0",
-        "source": "AHRQ MEPS HC-254G + HC-256",
-        "year": 2024,
+        "source": f"AHRQ MEPS HC-{event_id[1:].upper()} + HC-{person_id[1:]}",
+        "year": year,
         "status": "computed_from_public_microdata",
         "accessed": args.access_date,
         "population": "Office-based visits, all ages, U.S. civilian noninstitutionalized population",
         "unit": "visit",
         "provenance": provenance,
         "documentation": [
-            {"title": "HC-254G documentation", "url": DOC_EVENT},
-            {"title": "HC-256 documentation", "url": DOC_PERSON},
+            {"title": f"HC-{puf[1:].upper()} documentation",
+             "url": f"https://meps.ahrq.gov/data_stats/download_data/pufs/{puf}/{puf}doc.pdf"}
+            for puf in (event_id, person_id)
         ],
         "methods": {
-            "weight": "PERWT24F",
+            "weight": weight,
             "stratum": "VARSTR",
             "psu": "VARPSU",
             "estimator": "Survey-weighted ratio means; with-replacement Taylor linearization",
             "confidence_interval": "95% normal approximation: estimate +/- 1.959964 SE; clipped to [0,100] for percentages and to zero below for payments",
-            "variance_domains": "The complete positive-weight HC-256 PSU universe is retained; out-of-domain PSUs contribute zero influence.",
+            "variance_domains": "The complete positive-weight full-year person-file PSU universe is retained; out-of-domain PSUs contribute zero influence.",
             "strata": len(psus),
             "psus": sum(len(x) for x in psus.values()),
             "design_df": sum(len(x) - 1 for x in psus.values()),
-            "insurance_variable": "INSCOV24",
-            "insurance_definition": "Any private includes TRICARE/CHAMPVA at any time in 2024; public only has no private coverage; uninsured means uninsured all year. Categories describe annual coverage, not coverage on the visit date.",
+            "insurance_variable": insurance,
+            "insurance_definition": f"Any private includes TRICARE/CHAMPVA at any time in {year}; public only has no private coverage; uninsured means uninsured all year. Categories describe annual coverage, not coverage on the visit date.",
             "share_denominator": "All positive-weight office visits within the selected insurance group, including remote visits with unknown modality",
             "payment_denominator": "Positive-weight visits in each displayed modality/insurance group; zero payments retained",
-            "payment_units": "2024 U.S. dollars per visit; released imputed values retained",
+            "payment_units": f"{year} U.S. dollars per visit; released imputed values retained",
             "stability_rule": "Dashboard screening rule (not an official AHRQ release standard): flag fewer than 30 sampled persons in a payment domain, modality numerator, or telehealth numerator, RSE > 30%, or boundary proportions. Withhold those small-person-count estimates from the interface and display-ready CSV; preserve computed estimates in aggregate JSON.",
             "interpretation": "Descriptive, unadjusted comparisons; no causal or predictive interpretation. No patient-level linkage to NHIS.",
         },
@@ -414,7 +412,7 @@ def main():
             "source_person_n": len(people),
             "analytic_visit_n": len(eligible),
             "analytic_person_n": len({r["DUPERSID"] for r in eligible}),
-            "zero_weight_visit_n": sum(r["PERWT24F"] == 0 for r in events),
+            "zero_weight_visit_n": sum(r["weight"] == 0 for r in events),
             "telehealth_source_n": sum(
                 r["TELEHEALTHFLAG"] == 1 for r in events
             ),
@@ -434,7 +432,7 @@ def main():
                 r["TELEHEALTHFLAG"] not in (1, 2) for r in events
             ),
             "missing_payment_source_n": sum(
-                r["OBXP24X"] < 0 or r["OBSF24X"] < 0 for r in events
+                r[total] < 0 or r[family] < 0 for r in events
             ),
             "unmatched_person_n": unmatched,
             "unknown_insurance_analytic_n": sum(
