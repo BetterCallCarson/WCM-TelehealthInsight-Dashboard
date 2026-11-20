@@ -14,8 +14,8 @@
     "build": "node scripts/build.mjs",
     "docs:render": "node scripts/render-docs.mjs",
     "test": "node --test tests/*.test.mjs",
-    "format": "prettier --config prettier.config.cjs --write . \"!**/preview*.html\" \"!**/documentation.html\" \"!**/dist/**\" \"!**/.work/**\" \"!**/package-lock.json\" \"!**/__MACOSX/**\"",
-    "format:check": "prettier --config prettier.config.cjs --check . \"!**/preview*.html\" \"!**/documentation.html\" \"!**/dist/**\" \"!**/.work/**\" \"!**/package-lock.json\" \"!**/__MACOSX/**\""
+    "format": "prettier --config prettier.config.cjs --write . \"!**/preview*.html\" \"!**/documentation.html\" \"!**/dist/**\" \"!**/.work/**\" \"!**/package-lock.json\" \"!**/__MACOSX/**\" \"!analysis/prediction/model_export/xgb_full_pool.json\" \"!analysis/prediction/nhis_telehealth_prediction_final.html\"",
+    "format:check": "prettier --config prettier.config.cjs --check . \"!**/preview*.html\" \"!**/documentation.html\" \"!**/dist/**\" \"!**/.work/**\" \"!**/package-lock.json\" \"!**/__MACOSX/**\" \"!analysis/prediction/model_export/xgb_full_pool.json\" \"!analysis/prediction/nhis_telehealth_prediction_final.html\""
   },
   "engines": {
     "node": ">=22"
