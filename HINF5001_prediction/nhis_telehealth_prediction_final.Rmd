@@ -1,0 +1,2481 @@
+---
+title: "Predicting Past-Year Telehealth Use: NHIS 2024 Development and 2025 Temporal Validation"
+author: "Team 1: CHERY Lab (prediction analysis: Yao Yao)"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+---
+
+```{r setup, include=FALSE}
+# Warnings stay visible so convergence or rank-deficiency problems show up.
+# Cached chunks are invalidated when either input file changes.
+knitr::opts_chunk$set(
+  echo = TRUE, message = FALSE, warning = TRUE, autodep = TRUE,
+  cache.extra = unname(tools::md5sum(c("adult24.csv", "adult25.csv")))
+)
+
+library(splines)
+library(xgboost)
+library(PRROC)
+library(survey)
+library(grpreg)
+library(parallel)
+
+options(survey.lonely.psu = "adjust", width = 110)
+
+# Parallel steps use at most 4 worker processes (fewer on small machines).
+# One BLAS/OpenMP thread per process avoids oversubscription; these
+# variables take effect only if set before R starts using BLAS, so they can
+# also be set in ~/.Renviron.
+n_workers <- max(1L, min(4L, parallel::detectCores() - 1L))
+Sys.setenv(OMP_NUM_THREADS = "1", OPENBLAS_NUM_THREADS = "1",
+           VECLIB_MAXIMUM_THREADS = "1")
+
+# Stop if any parallel task failed or returned nothing (mclapply otherwise
+# returns the error object silently).
+check_workers <- function(results) {
+  failed <- vapply(results, function(r) is.null(r) || inherits(r, "try-error"),
+                   logical(1))
+  if (any(failed)) {
+    stop("Parallel task(s) ", paste(which(failed), collapse = ", "), " failed: ",
+         paste(unique(vapply(results[failed], function(r) {
+           if (is.null(r)) "no result returned" else as.character(r)
+         }, character(1))), collapse = " | "), call. = FALSE)
+  }
+  results
+}
+```
+
+```{r package-versions}
+# Results were produced with these versions; other versions (especially
+# xgboost >= 2.0) may give slightly different numbers.
+print(sapply(c("xgboost", "PRROC", "survey", "grpreg"),
+             function(p) as.character(packageVersion(p))))
+print(R.version.string)
+```
+
+# Overview
+
+**Outcome.** `VIRAPP12M_A`: had a video or phone appointment with a doctor
+or other health professional in the past 12 months (1 = Yes, 2 = No; 7/8/9
+excluded).
+
+**Design.** The analysis has two phases.
+
+* **Development (2024 only).** The 2024 NHIS Sample Adult file is split
+  80/20 into training and test sets (stratified by outcome), with 5-fold
+  cross-validation inside the training set. Data-based screening (item
+  coverage), variable selection, tuning and model fitting use the training
+  set only. The coding dictionary was drafted from NHIS conventions while
+  viewing predictor distributions in the full 2024 file, but no outcome
+  information. From the 2025 file, only the list of variable names is read,
+  to restrict candidates to items fielded in both years. The 2024 test set
+  is used only to evaluate models whose form was fixed beforehand.
+* **Temporal validation (2025).** The fixed models are evaluated on the
+  2025 file, an independent cross-sectional sample of different
+  respondents collected one year later. Variable availability and coding
+  are checked before evaluation; the models are not refit or modified.
+
+**Variable selection.**
+
+1. *Rule-based screening* of every 2024 item: fielded in 2025; at least 90%
+   of 2024 training respondents with a substantive answer; not a
+   survey-administration field; not redundant with a retained item; worded
+   the same way in both years; and not an item whose answer a telehealth
+   visit in the reference period can produce (counseling that may be
+   delivered by video or phone, online contact with a provider).
+2. *Outcome-proxy diagnostic.* Items that a telehealth visit cannot
+   produce but that may stand in for the outcome (in-person care use,
+   online health activity, treatment, prevention, cost barriers, COVID-19
+   history) are added one at a time to the theory-based model on the
+   training data. Items contributing more than the strongest theory-based
+   predictor are excluded. Unflagged care-use and access items are kept
+   aside as *borderline* items for a sensitivity analysis only, because
+   they measure care seeking itself; unflagged COVID-19 history remains an
+   ordinary candidate.
+3. *Coding.* Screened items are coded with an explicit dictionary (valid
+   codes, nonresponse codes, skip meaning, category grouping, reference
+   level); theory-based items are coded in `prepare_nhis()`. Codes,
+   labels, universes and question wording were checked against the 2024
+   and 2025 Sample Adult codebooks (`codebook_verification.csv`).
+4. *Statistical selection* among all candidates, with no item forced in:
+   bidirectional stepwise selection by BIC starting from the intercept-only
+   model, with group lasso (every item penalized) as a cross-check and
+   repeated half-sample selection to assess stability. The five covariates
+   of the project dashboard's association model (age, insurance, education,
+   Internet access, self-rated health) are part of the theory-based set
+   and are treated like every other candidate. Nested cross-validation
+   evaluates the selection and fitting steps *given the screened candidate
+   set*; screening, coding and the outcome-proxy diagnostic are done once
+   beforehand and are not repeated inside folds.
+5. *Two comparisons*, with a constant (prevalence-only) model as the lower
+   reference. (a) Full theory-based (Andersen) model vs stepwise BIC within
+   the same 22 items: can the theory-based set be simplified? (b)
+   Theory-based models vs models built from the wider screened pool
+   (stepwise BIC, group lasso, XGBoost): how much do more items and
+   different methods add?
+
+**Theory-based set.** Andersen's behavioral model is a conceptual
+framework without a standard variable list. The 22 items are one
+operationalization: commonly used predisposing, enabling and need measures
+available in both NHIS years. It is not a validated standard set.
+Urban-rural classification, a common enabling factor, was missing from the
+initial specification by oversight and was added afterwards; because
+earlier analyses had already shown it to be a strong predictor, this
+addition was not made blind to the data.
+
+**Primary model.** The main-effects stepwise BIC model was fixed as the
+primary model before any test-set or 2025 evaluation. It is a compromise
+between parsimony and predictive performance, not the best-predicting
+model: BIC does not directly optimize out-of-sample log loss, stepwise
+search finds a good model along its search path rather than a guaranteed
+optimum, and fewer items do not by themselves make a model easier to use
+in practice. More flexible models (group lasso, including its sparser
+1-SE version, and gradient boosting) are reported for comparison.
+Interaction and borderline-item analyses are exploratory and do not change
+the primary model.
+
+**Weights.** Models are fit unweighted as the baseline, and
+discrimination and accuracy are reported both unweighted (performance in
+the analysis sample) and survey-weighted (performance for the U.S. adult
+population represented by the complete-case sample). A sensitivity
+analysis refits the primary formula with survey weights. Bootstrap
+intervals resample primary sampling units within strata and apply to the
+*unweighted* metrics of the already-fitted models; they reflect the
+clustered sample but not uncertainty from model training or selection,
+and they are not a full design-based inference for weighted metrics. The
+2025 weighted calibration gap uses a design-based (Taylor linearization)
+interval from the `survey` package.
+
+Run time is roughly 1.5 to 2 hours (nested cross-validation and repeated
+selection dominate). Slow chunks are cached after the first knit, and
+parallel steps run on macOS and Linux.
+
+# Data preparation
+
+## Theory-based predictors
+
+The same function prepares both survey years, so the 2025 validation data
+use the 2024 coding rules.
+
+```{r prepare-function}
+raw_fields <- c(
+  "VIRAPP12M_A", "AGEP_A", "NOTCOV_A", "PRIVATE_A", "EDUCP_A",
+  "ACCSSINT_A", "PHSTAT_A", "SEX_A", "HISPALLP_A", "REGION", "MARITAL_A",
+  "NATUSBORN_A", "EMPWRKLSW1_A", "POVRATTC_A", "HYPEV_A", "DIBEV_A",
+  "ASEV_A", "COPDEV_A", "CANEV_A", "ARTHEV_A", "DEPEV_A", "ANXEV_A",
+  "DISAB3_A", "WTFA_A", "PSTRAT", "PPSU"
+)
+
+# The five covariates of the project dashboard's association model; part of
+# the theory-based set, with no special status in selection.
+dashboard_predictors <- c("age", "insurance", "education", "internet", "health")
+added_predictors <- c(
+  "sex", "race_eth", "region", "marital", "us_born", "worked_last_week",
+  "pov_ratio", "hypertension", "diabetes", "asthma", "copd", "cancer",
+  "arthritis", "depression", "anxiety", "disability"
+)
+expanded_predictors <- c(dashboard_predictors, added_predictors)
+
+# Yes (1) / No (2) items; refused, not ascertained, don't know -> NA.
+yes_no <- function(x) {
+  factor(x, levels = c(2, 1), labels = c("No", "Yes"))
+}
+
+# Items with >= 1% "not ascertained" keep an explicit Unknown category.
+with_unknown <- function(x, codes, labels) {
+  out <- rep("Unknown", length(x))
+  for (i in seq_along(codes)) out[x %in% codes[i]] <- labels[i]
+  factor(out, levels = c(labels, "Unknown"))
+}
+
+prepare_nhis <- function(raw) {
+  stopifnot(all(raw_fields %in% names(raw)))
+  rows <- which(raw$VIRAPP12M_A %in% c(1, 2))
+  d <- raw[rows, ]
+
+  insurance <- rep(NA_character_, nrow(d))
+  insured <- d$NOTCOV_A %in% 2
+  insurance[d$NOTCOV_A %in% 1] <- "Uninsured"
+  insurance[insured & d$PRIVATE_A %in% c(1, 2)] <- "Any private coverage"
+  insurance[insured & d$PRIVATE_A %in% 3] <- "Public / other, no private"
+
+  education <- rep(NA_character_, nrow(d))
+  education[d$EDUCP_A %in% 0:2] <- "Less than high school"
+  education[d$EDUCP_A %in% 3:4] <- "High school / GED"
+  education[d$EDUCP_A %in% 5:7] <- "Some college / associate"
+  education[d$EDUCP_A %in% 8:10] <- "Bachelor's or higher"
+
+  race_eth <- rep(NA_character_, nrow(d))
+  race_eth[d$HISPALLP_A %in% 1] <- "Hispanic"
+  race_eth[d$HISPALLP_A %in% 2] <- "NH White"
+  race_eth[d$HISPALLP_A %in% 3] <- "NH Black"
+  race_eth[d$HISPALLP_A %in% 4] <- "NH Asian"
+  race_eth[d$HISPALLP_A %in% 5:7] <- "NH other / multiple"
+
+  data.frame(
+    telehealth = as.integer(d$VIRAPP12M_A == 1),
+    # AGEP_A 85 = 85 or older (top-coded); 97/98/99 -> NA.
+    age = ifelse(d$AGEP_A %in% 18:85, d$AGEP_A, NA_integer_),
+    insurance = factor(insurance, levels = c(
+      "Any private coverage", "Public / other, no private", "Uninsured"
+    )),
+    education = factor(education, levels = c(
+      "Bachelor's or higher", "Some college / associate",
+      "High school / GED", "Less than high school"
+    )),
+    internet = factor(d$ACCSSINT_A, levels = c(1, 2),
+                      labels = c("Internet access", "No internet access")),
+    health = factor(d$PHSTAT_A, levels = 1:5,
+                    labels = c("Excellent", "Very good", "Good", "Fair", "Poor")),
+    sex = factor(d$SEX_A, levels = 1:2, labels = c("Male", "Female")),
+    race_eth = factor(race_eth, levels = c(
+      "NH White", "Hispanic", "NH Black", "NH Asian", "NH other / multiple"
+    )),
+    region = factor(d$REGION, levels = 1:4,
+                    labels = c("Northeast", "Midwest", "South", "West")),
+    marital = with_unknown(d$MARITAL_A, 1:3,
+                           c("Married", "Living with partner", "Neither")),
+    us_born = with_unknown(d$NATUSBORN_A, 1:2, c("Yes", "No")),
+    # Edited recode (accounts for temporary absence and unpaid family work);
+    # code 9 (don't know) becomes the Unknown category.
+    worked_last_week = with_unknown(d$EMPWRKLSW1_A, 1:2, c("Yes", "No")),
+    # 2024 top-codes the ratio at 11; apply the same cap to every year.
+    pov_ratio = pmin(d$POVRATTC_A, 11),
+    hypertension = yes_no(d$HYPEV_A),
+    diabetes = yes_no(d$DIBEV_A),
+    asthma = yes_no(d$ASEV_A),
+    copd = yes_no(d$COPDEV_A),
+    cancer = yes_no(d$CANEV_A),
+    arthritis = yes_no(d$ARTHEV_A),
+    depression = yes_no(d$DEPEV_A),
+    anxiety = yes_no(d$ANXEV_A),
+    disability = yes_no(d$DISAB3_A),
+    survey_weight = d$WTFA_A,
+    survey_stratum = d$PSTRAT,
+    survey_psu = d$PPSU,
+    source_row = rows
+  )
+}
+```
+
+## Item labels, screening rules and coding dictionary
+
+Item labels and the coding dictionary were written from NHIS conventions
+and then checked item by item against the 2024 and 2025 Sample Adult
+codebooks (codes, labels, universes, question wording; page references in
+`codebook_verification.csv`). The dictionary is exported to
+`coding_dictionary.csv`. For theory-based items, the dictionary documents
+the codes used for screening coverage; their analysis coding is done in
+`prepare_nhis()`.
+
+```{r screening-rules}
+# Item labels, screening rules and the coding dictionary for the NHIS
+# telehealth prediction analysis.
+#
+# The coding dictionary below was written from NHIS conventions and the
+# codes observed in the 2024 file. Entries marked "verify" in particular
+# must be checked against the 2024 and 2025 Sample Adult codebooks; the
+# dictionary is exported to coding_dictionary.csv for that review.
+
+variable_labels <- c(
+  # Theory-based set: 21 items coded in prepare_nhis(), plus URBRRL23
+  AGEP_A = "Age (top-coded 85)", NOTCOV_A = "Not covered by health insurance",
+  PRIVATE_A = "Private insurance", EDUCP_A = "Education",
+  ACCSSINT_A = "Uses the Internet", PHSTAT_A = "Self-rated health",
+  SEX_A = "Sex", HISPALLP_A = "Race/ethnicity (single and multiple race)",
+  REGION = "Census region", MARITAL_A = "Marital status (3 groups)",
+  NATUSBORN_A = "Born in the United States",
+  EMPWRKLSW1_A = "Worked last week (edited recode)",
+  POVRATTC_A = "Family income-to-poverty ratio", HYPEV_A = "Ever hypertension",
+  DIBEV_A = "Ever diabetes", ASEV_A = "Ever asthma", COPDEV_A = "Ever COPD",
+  CANEV_A = "Ever cancer", ARTHEV_A = "Ever arthritis",
+  DEPEV_A = "Ever depression", ANXEV_A = "Ever anxiety disorder",
+  DISAB3_A = "Disability status (Washington Group)",
+  # New candidates: predisposing
+  CITZNSTP_A = "U.S. citizen", LEGMSTAT_A = "Legal marital status (5 groups)",
+  LANGHM_A = "Language other than English spoken at home",
+  AFVET_A = "Ever served on active duty (military)", ORIENT_A = "Sexual orientation",
+  SCHCURENR_A = "Currently enrolled in school", PARSTAT_A = "Parental status",
+  PCNTADLT_A = "Number of adults in family", PCNTKIDS_A = "Number of children in family",
+  # New candidates: enabling / socioeconomic
+  URBRRL23 = "Urban-rural classification (2023 scheme)",
+  MAXEDUCP_A = "Highest education of any adult in family",
+  HOUTENURE_A = "Home owned or rented", HOUYRSLIV_A = "Years at current address",
+  FSNAP12M_A = "Received SNAP, past 12 months",
+  INCWRKO_A = "Income from wages/self-employment", INCINTER_A = "Interest/dividend income",
+  INCSSRR_A = "Social Security/Railroad Retirement income",
+  INCSSISSDI_A = "SSI/SSDI income", INCWELF_A = "Public assistance income",
+  INCRETIRE_A = "Retirement/pension income", INCOTHR_A = "Other income",
+  CEVOTELC_A = "Voted in last local election", CEMMETNG_A = "Attended public meeting",
+  CEVOLUN1_A = "Volunteered", ACCSSHOM_A = "Uses the Internet at home",
+  # New candidates: insurance detail
+  MEDICARE_A = "Medicare", MEDICAID_A = "Medicaid", MILITARY_A = "Military coverage",
+  CHIP_A = "CHIP", OTHPUB_A = "State-sponsored health plan",
+  OTHGOV_A = "Other government coverage", IHS_A = "Indian Health Service",
+  HINOTYR_A = "Uninsured at any time, past 12 months",
+  SINCOVRX_A = "Single-service plan: prescriptions",
+  SINCOVVS_A = "Single-service plan: vision", SINCOVDE_A = "Single-service plan: dental",
+  # New candidates: health behaviours
+  SMKCIGST_A = "Cigarette smoking status", SMKECIGST_A = "E-cigarette use status",
+  CIGAREV_A = "Ever smoked cigars", SMOKELSEV1_A = "Ever used smokeless tobacco",
+  BMICAT_A = "BMI category",
+  # New candidates: health conditions
+  DEMENEV_A = "Ever dementia", PREDIB_A = "Ever prediabetes", STREV_A = "Ever stroke",
+  MIEV_A = "Ever heart attack", ANGEV_A = "Ever angina",
+  CHDEV_A = "Ever coronary heart disease", CHLEV_A = "Ever high cholesterol",
+  EVERCOVD_A = "Ever had COVID-19",
+  # New candidates: mental health and social wellbeing
+  DEPFREQ_A = "Frequency of depressed feelings",
+  ANXFREQ_A = "Frequency of worried/anxious feelings",
+  LONELY_A = "Loneliness", SUPPORT_A = "Social/emotional support",
+  LSATIS4_A = "Life satisfaction",
+  # New candidates: functioning
+  ANYDIFF_A = "Any functional difficulty", SOCWRKLIM_A = "Work limitation",
+  SOCSCLPAR_A = "Difficulty participating in social activities",
+  SOCERRNDS_A = "Difficulty doing errands alone",
+  UPPOBJCT_A = "Difficulty grasping small objects", UPPRAISE_A = "Difficulty raising arms",
+  UPPSLFCR_A = "Difficulty with self-care", COGMEMDFF_A = "Difficulty remembering",
+  COMDIFF_A = "Difficulty communicating", EQUIP_A = "Uses mobility equipment",
+  DIFF_A = "Difficulty walking/climbing steps", HEARINGDF_A = "Hearing difficulty",
+  HEARAID_A = "Uses hearing aid", VISIONDF_A = "Vision difficulty",
+  WEARGLSS_A = "Wears glasses", STEPS_A = "Difficulty climbing 12 steps",
+  WLK100_A = "Difficulty walking 100 yards",
+  # Items whose relation to the outcome is uncertain (checked by the
+  # outcome-proxy diagnostic): access, treatment, prevention, cost barriers,
+  # online health information and in-person care use
+  MEDNG12M_A = "Did not get needed care due to cost, past 12 months",
+  MEDDL12M_A = "Delayed care due to cost, past 12 months",
+  PAYWORRY_A = "Worried about paying medical bills",
+  PAYBLL12M_A = "Problems paying medical bills, past 12 months",
+  MHTHND_A = "Needed mental health counseling but did not get it",
+  MHTHDLY_A = "Delayed mental health counseling due to cost",
+  HITLOOK_A = "Looked up health information online",
+  USUALPL_A = "Has usual place of care", USPLKIND_A = "Type of usual place of care",
+  RX12M_A = "Took prescription medication, past 12 months",
+  RXDG12M_A = "Needed prescription medication but did not get it due to cost",
+  DEPMED_A = "Takes medication for depression", ANXMED_A = "Takes medication for anxiety",
+  SHTFLU12M_A = "Flu vaccine, past 12 months", SHTPNUEV_A = "Ever had pneumonia vaccine",
+  # In-person care use (also checked by the diagnostic) and items whose
+  # answer a telehealth visit can produce (excluded)
+  RETAILHC12MTC_A = "Retail clinic visits, past 12 months",
+  URGCC12MTC_A = "Urgent care visits, past 12 months",
+  EMERG12MTC_A = "Emergency room visits, past 12 months",
+  HOSPONGT_A = "Overnight hospital stay, past 12 months",
+  MHTHRPY_A = "Received counseling from mental health professional, past 12 months",
+  MHRX_A = "Took medication for mental health",
+  HITTEST_A = "Viewed test results online", HITCOMM_A = "Communicated with provider online",
+  WELLNESS_A = "Wellness visit, past 12 months", LASTDR_A = "Time since last doctor visit",
+  # Excluded: redundant with a retained variable
+  RATCAT_A = "Income-to-poverty ratio category", RACEALLP_A = "Race (single and multiple)",
+  HISP_A = "Hispanic origin", HISDETP_A = "Hispanic origin detail",
+  BMICATD_A = "BMI category (detailed)", WEIGHTLBTC_A = "Weight (lb)",
+  HEIGHTTC_A = "Height (in)", HICOV_A = "Any health insurance coverage",
+  EMPLASTWK_A = "Worked for pay last week (unedited)", SMKEV_A = "Ever smoked 100 cigarettes",
+  ECIGEV_A = "Ever used e-cigarettes", PCNT18UPTC = "Adults in household",
+  PCNTLT18TC = "Children in household", SAPARENTSC_A = "Sample adult is parent of sample child",
+  NUMCAN_A = "Number of cancer types", OVER65FLG_A = "Any family member aged 65+",
+  MARSTAT_A = "Current marital status (detailed)", HHX = "Household identifier",
+  # Excluded: survey administration or label not verified
+  INCTCFLG_A = "Income top-code flag", IMPINCFLG_A = "Income imputation flag",
+  PPSU = "Pseudo-PSU", PSTRAT = "Pseudo-stratum", PROXYFLAG_A = "Proxy interview flag",
+  ASTATNEW = "Sample adult status", MLTFAMFLG_A = "Multiple-family household flag",
+  WTFA_A = "Final sample adult weight", HHSTAT_A = "Household status",
+  IMPNUM_A = "Imputation number", RECTYPE = "Record type", SRVY_YR = "Survey year",
+  TBIHLSBMC_A = "Not verified", TBILCDCMG_A = "Not verified",
+  PCNTADWFP1_A = "Not verified (family adults working, recode)",
+  PCNTADWKP1_A = "Not verified (family adults working, recode)"
+)
+for (v in sprintf("HIKIND%02d_A", 1:10)) {
+  variable_labels[v] <- "Insurance type indicator (recode of plan variables)"
+}
+
+core_raw <- c("AGEP_A", "NOTCOV_A", "PRIVATE_A", "EDUCP_A", "ACCSSINT_A", "PHSTAT_A")
+# Theory-based items coded by the dictionary rather than prepare_nhis().
+theory_dictionary_raw <- c("URBRRL23")
+added16_raw <- c("SEX_A", "HISPALLP_A", "REGION", "MARITAL_A", "NATUSBORN_A",
+                 "EMPWRKLSW1_A", "POVRATTC_A", "HYPEV_A", "DIBEV_A", "ASEV_A",
+                 "COPDEV_A", "CANEV_A", "ARTHEV_A", "DEPEV_A", "ANXEV_A", "DISAB3_A")
+
+# Items related to health care fall into three groups.
+# 1. Leakage by definition (excluded): the answer can be produced by a
+#    telehealth visit in the reference period (counseling that may be
+#    delivered by video or phone, online contact with a provider).
+leakage_raw <- c("MHTHRPY_A", "MHRX_A", "HITCOMM_A")
+# 2. Not comparable across years (excluded): urgent-care visits were
+#    reworded in 2025 to include drug-store and grocery clinics.
+not_comparable_raw <- c("URGCC12MTC_A")
+# 3. Uncertain: a telehealth visit does not produce the answer, but the item
+#    may act as a proxy for the outcome (in-person care use, online health
+#    activity, treatment, prevention, cost barriers, COVID-19 history).
+#    These items go through the outcome-proxy diagnostic on the training
+#    data. Flagged items are excluded. Unflagged EVERCOVD_A stays an ordinary
+#    candidate; the other unflagged items describe care use or access and
+#    are used only in a sensitivity analysis.
+uncertain_raw <- c("EVERCOVD_A", "LASTDR_A", "WELLNESS_A", "RETAILHC12MTC_A",
+                   "EMERG12MTC_A", "HOSPONGT_A", "HITTEST_A", "HITLOOK_A",
+                   "RX12M_A", "RXDG12M_A", "DEPMED_A", "ANXMED_A", "USUALPL_A",
+                   "SHTFLU12M_A", "SHTPNUEV_A", "MEDNG12M_A", "MEDDL12M_A",
+                   "PAYWORRY_A", "PAYBLL12M_A", "MHTHND_A", "MHTHDLY_A")
+uncertain_candidate_raw <- c("EVERCOVD_A")
+redundant_raw <- c("RATCAT_A", "RACEALLP_A", "HISP_A", "HISDETP_A", "BMICATD_A",
+                   "WEIGHTLBTC_A", "HEIGHTTC_A", "HICOV_A", sprintf("HIKIND%02d_A", 1:10),
+                   "EMPLASTWK_A", "SMKEV_A", "ECIGEV_A", "PCNT18UPTC", "PCNTLT18TC",
+                   "SAPARENTSC_A", "NUMCAN_A", "OVER65FLG_A", "MARSTAT_A",
+                   # Follow-up items skipped for part of the sample, whose
+                   # skip category would duplicate the parent item
+                   "STEPS_A", "WLK100_A", "USPLKIND_A")
+admin_raw <- c("HHX", "INCTCFLG_A", "IMPINCFLG_A", "PPSU", "PSTRAT", "PROXYFLAG_A",
+               "HHSTAT_A", "IMPNUM_A", "RECTYPE", "SRVY_YR",
+               "ASTATNEW", "MLTFAMFLG_A", "WTFA_A")
+unverified_raw <- c("TBIHLSBMC_A", "TBILCDCMG_A", "PCNTADWFP1_A", "PCNTADWKP1_A")
+too_rare_raw <- c("CHIP_A")  # 3 "yes" answers among 2024 respondents
+
+# ---- Coding dictionary --------------------------------------------------------
+# Each entry lists the analysis categories ("groups") and the NHIS codes in
+# each, the codes treated as nonresponse (refused, not ascertained, don't
+# know), the meaning of a blank (NA) when the item was skipped by design,
+# how nonresponse is handled, and the reference category. Nonresponse gets
+# its own "Missing" category when it is about 1% or more of 2024
+# respondents; otherwise it is assigned to the most common category.
+item <- function(groups, missing = c(7, 8, 9), skip = NULL,
+                 nonresponse = "Missing", ref = names(groups)[1],
+                 type = "categorical", note = "") {
+  stopifnot(ref %in% names(groups),
+            nonresponse %in% c("Missing", "Exclude", names(groups)))
+  list(groups = groups, missing = missing, skip = skip,
+       nonresponse = nonresponse, ref = ref, type = type, note = note)
+}
+yes_no_item <- function(nonresponse = "No", ref = "No", yes = 1, no = 2, ...) {
+  item(setNames(list(yes, no), c("Yes", "No")), nonresponse = nonresponse,
+       ref = ref, type = "binary", ...)
+}
+difficulty_item <- function(merge_cannot = FALSE, ...) {
+  groups <- if (merge_cannot) {
+    list("No difficulty" = 1, "Some difficulty" = 2,
+         "A lot of difficulty or cannot do" = 3:4)
+  } else {
+    list("No difficulty" = 1, "Some difficulty" = 2,
+         "A lot of difficulty" = 3, "Cannot do at all" = 4)
+  }
+  item(groups, nonresponse = "No difficulty", type = "ordinal", ...)
+}
+frequency_item <- function(...) {
+  item(list("Never" = 5, "Daily" = 1, "Weekly" = 2, "Monthly" = 3,
+            "A few times a year" = 4), type = "ordinal", ...)
+}
+
+coding_dictionary <- list(
+  # Theory-based items: the analysis coding is done in
+  # prepare_nhis(); these entries document the same rules (categories,
+  # reference level, nonresponse handling) and supply the codes used for
+  # screening coverage. "Exclude" = nonresponse becomes NA and the
+  # respondent leaves the complete-case sample.
+  AGEP_A = item(list("Age 18-85" = 18:85), missing = 97:99, type = "continuous",
+                nonresponse = "Exclude", note = "85 = 85 or older"),
+  NOTCOV_A = item(list("Not covered" = 1, "Covered" = 2), nonresponse = "Exclude",
+                  note = "combined with PRIVATE_A into insurance in prepare_nhis()"),
+  PRIVATE_A = item(list("Yes" = 1:2, "No" = 3), nonresponse = "Exclude",
+                   note = "combined with NOTCOV_A into insurance in prepare_nhis()"),
+  EDUCP_A = item(list("Bachelor's or higher" = 8:10, "Less than high school" = 0:2,
+                      "High school / GED" = 3:4, "Some college / associate" = 5:7),
+                 missing = 97:99, nonresponse = "Exclude"),
+  ACCSSINT_A = yes_no_item(ref = "Yes", nonresponse = "Exclude"),
+  PHSTAT_A = item(list("Excellent" = 1, "Very good" = 2, "Good" = 3,
+                       "Fair" = 4, "Poor" = 5), type = "ordinal",
+                  nonresponse = "Exclude"),
+  SEX_A = item(list("Male" = 1, "Female" = 2), nonresponse = "Exclude"),
+  HISPALLP_A = item(list("NH White" = 2, "Hispanic" = 1, "NH Black" = 3,
+                         "NH Asian" = 4, "NH other / multiple" = 5:7),
+                    missing = 97:99, nonresponse = "Exclude",
+                    note = "7 = other single and multiple races (valid)"),
+  REGION = item(list("Northeast" = 1, "Midwest" = 2, "South" = 3, "West" = 4),
+                missing = numeric(0), nonresponse = "Exclude"),
+  MARITAL_A = item(list("Married" = 1, "Living with partner" = 2, "Neither" = 3),
+                   note = "nonresponse is the category Unknown in prepare_nhis()"),
+  NATUSBORN_A = yes_no_item(ref = "Yes", nonresponse = "Missing",
+                            note = "nonresponse is the category Unknown in prepare_nhis()"),
+  EMPWRKLSW1_A = yes_no_item(ref = "Yes", nonresponse = "Missing",
+                             note = "edited recode; 9 = don't know; nonresponse is the category Unknown in prepare_nhis()"),
+  POVRATTC_A = item(list("Ratio 0-11" = 0:11), missing = numeric(0), type = "continuous",
+                    nonresponse = "Exclude",
+                    note = "continuous; top-coded at 11 in 2024, capped at 11"),
+  HYPEV_A = yes_no_item(nonresponse = "Exclude"),
+  DIBEV_A = yes_no_item(nonresponse = "Exclude"),
+  ASEV_A = yes_no_item(nonresponse = "Exclude"),
+  COPDEV_A = yes_no_item(nonresponse = "Exclude"),
+  CANEV_A = yes_no_item(nonresponse = "Exclude"),
+  ARTHEV_A = yes_no_item(nonresponse = "Exclude"),
+  DEPEV_A = yes_no_item(nonresponse = "Exclude"),
+  ANXEV_A = yes_no_item(nonresponse = "Exclude"),
+  DISAB3_A = yes_no_item(nonresponse = "Exclude"),
+
+  # Predisposing
+  CITZNSTP_A = yes_no_item(nonresponse = "Missing", ref = "Yes"),
+  LEGMSTAT_A = item(list("Married" = 3, "Separated" = 1, "Divorced" = 2,
+                         "Never married" = 4, "Widowed" = 5),
+                    note = "9 = unknown legal marital status"),
+  LANGHM_A = yes_no_item(nonresponse = "Missing"),
+  AFVET_A = yes_no_item(nonresponse = "Missing"),
+  ORIENT_A = item(list("Straight" = 2, "Gay or lesbian" = 1, "Bisexual" = 3,
+                       "Something else" = 4, "Don't know the answer" = 5),
+                  note = "5 = 'I don't know the answer', a listed response option"),
+  SCHCURENR_A = yes_no_item(nonresponse = "Missing"),
+  PARSTAT_A = item(list("No minor children in family" = 3,
+                        "Parent of a child in family" = 1,
+                        "Minor children in family, not their parent" = 2),
+                   nonresponse = "No minor children in family",
+                   note = "9 = unknown"),
+  PCNTADLT_A = item(list("1" = 1, "2" = 2, "3 or more" = 3), missing = 8,
+                    nonresponse = "2", type = "count"),
+  PCNTKIDS_A = item(list("0" = 0, "1" = 1, "2" = 2, "3 or more" = 3),
+                    missing = 8, nonresponse = "0", type = "count"),
+
+  # Enabling / socioeconomic
+  URBRRL23 = item(list("Large central metro" = 1, "Large fringe metro" = 2,
+                       "Medium or small metro" = 3, "Nonmetropolitan" = 4),
+                  missing = numeric(0), nonresponse = "Large central metro",
+                  type = "ordinal"),
+  MAXEDUCP_A = item(list("Bachelor's or higher" = 8:10,
+                         "Less than high school" = 0:2, "High school / GED" = 3:4,
+                         "Some college / associate" = 5:7),
+                    missing = 97:99, nonresponse = "Bachelor's or higher",
+                    note = "grouped like EDUCP_A"),
+  HOUTENURE_A = item(list("Owned or being bought" = 1, "Rented" = 2,
+                          "Other arrangement" = 3)),
+  HOUYRSLIV_A = item(list("Less than 1 year" = 1, "1-3 years" = 2, "4-10 years" = 3,
+                          "11-20 years" = 4, "More than 20 years" = 5),
+                     type = "ordinal"),
+  FSNAP12M_A = yes_no_item(nonresponse = "Missing"),
+  INCWRKO_A = yes_no_item(nonresponse = "Missing"),
+  INCINTER_A = yes_no_item(nonresponse = "Missing"),
+  INCSSRR_A = yes_no_item(nonresponse = "Missing"),
+  INCSSISSDI_A = yes_no_item(nonresponse = "Missing"),
+  INCWELF_A = yes_no_item(nonresponse = "Missing"),
+  INCRETIRE_A = yes_no_item(nonresponse = "Missing"),
+  INCOTHR_A = yes_no_item(nonresponse = "Missing"),
+  CEVOTELC_A = yes_no_item(nonresponse = "Missing"),
+  CEMMETNG_A = yes_no_item(nonresponse = "Missing"),
+  CEVOLUN1_A = yes_no_item(nonresponse = "Missing"),
+  # Asked only of Internet users; non-users are coded "No" (no Internet use
+  # at home) so the item does not duplicate the Internet access variable.
+  ACCSSHOM_A = yes_no_item(ref = "Yes", nonresponse = "Yes", skip = "No",
+                           note = "blank = not an Internet user, coded No"),
+
+  # Insurance detail
+  MEDICARE_A = yes_no_item(yes = 1:2, no = 3, note = "2 = yes, no detail"),
+  MEDICAID_A = yes_no_item(yes = 1:2, no = 3, note = "2 = yes, no detail"),
+  MILITARY_A = yes_no_item(yes = 1:2, no = 3),
+  OTHPUB_A = yes_no_item(yes = 1:2, no = 3),
+  OTHGOV_A = yes_no_item(yes = 1:2, no = 3),
+  IHS_A = yes_no_item(),
+  # Asked only of the currently insured; the currently uninsured were, by
+  # definition, uninsured at some time in the past 12 months.
+  HINOTYR_A = yes_no_item(skip = "Yes",
+                          note = "blank = currently uninsured, coded Yes"),
+  SINCOVRX_A = yes_no_item(nonresponse = "Missing"),
+  SINCOVVS_A = yes_no_item(nonresponse = "Missing"),
+  SINCOVDE_A = yes_no_item(nonresponse = "Missing"),
+
+  # Health behaviours
+  SMKCIGST_A = item(list("Never" = 4, "Current" = 1:2, "Former" = 3),
+                    missing = c(5, 7, 8, 9),
+                    note = "5 = smoker, current status unknown; 9 = unknown if ever smoked"),
+  SMKECIGST_A = item(list("Never" = 3, "Current" = 1, "Former" = 2),
+                     missing = c(4, 7, 8, 9),
+                     note = "4 = user, current status unknown; 9 = unknown if ever used"),
+  CIGAREV_A = yes_no_item(nonresponse = "Missing"),
+  SMOKELSEV1_A = yes_no_item(nonresponse = "Missing"),
+  BMICAT_A = item(list("Healthy weight" = 2, "Underweight" = 1, "Overweight" = 3,
+                       "Obese" = 4), type = "ordinal"),
+
+  # Health conditions
+  DEMENEV_A = yes_no_item(), PREDIB_A = yes_no_item(), STREV_A = yes_no_item(),
+  MIEV_A = yes_no_item(), ANGEV_A = yes_no_item(), CHDEV_A = yes_no_item(),
+  CHLEV_A = yes_no_item(), EVERCOVD_A = yes_no_item(nonresponse = "Yes"),
+
+  # Mental health and social wellbeing
+  DEPFREQ_A = frequency_item(), ANXFREQ_A = frequency_item(),
+  LONELY_A = item(list("Never" = 5, "Always" = 1, "Usually" = 2, "Sometimes" = 3,
+                       "Rarely" = 4), type = "ordinal"),
+  SUPPORT_A = item(list("Always" = 1, "Usually" = 2, "Sometimes" = 3, "Rarely" = 4,
+                        "Never" = 5), type = "ordinal"),
+  LSATIS4_A = item(list("Very satisfied" = 1, "Satisfied" = 2, "Dissatisfied" = 3,
+                        "Very dissatisfied" = 4), nonresponse = "Satisfied",
+                   type = "ordinal"),
+
+  # Functioning
+  ANYDIFF_A = yes_no_item(),
+  SOCWRKLIM_A = yes_no_item(),
+  SOCSCLPAR_A = difficulty_item(), SOCERRNDS_A = difficulty_item(),
+  UPPOBJCT_A = difficulty_item(merge_cannot = TRUE), UPPRAISE_A = difficulty_item(),
+  UPPSLFCR_A = difficulty_item(), COGMEMDFF_A = difficulty_item(merge_cannot = TRUE),
+  COMDIFF_A = difficulty_item(merge_cannot = TRUE), EQUIP_A = yes_no_item(),
+  DIFF_A = difficulty_item(), HEARINGDF_A = difficulty_item(merge_cannot = TRUE),
+  HEARAID_A = yes_no_item(), VISIONDF_A = difficulty_item(merge_cannot = TRUE),
+  WEARGLSS_A = yes_no_item(ref = "Yes", nonresponse = "Yes"),
+  STEPS_A = difficulty_item(skip = "Uses mobility equipment (not asked)"),
+  WLK100_A = difficulty_item(skip = "Uses mobility equipment (not asked)"),
+
+  # Borderline
+  MEDNG12M_A = yes_no_item(), MEDDL12M_A = yes_no_item(),
+  PAYWORRY_A = item(list("Not at all worried" = 3, "Very worried" = 1,
+                         "Somewhat worried" = 2),
+                    nonresponse = "Not at all worried", type = "ordinal"),
+  PAYBLL12M_A = yes_no_item(),
+  MHTHND_A = yes_no_item(), MHTHDLY_A = yes_no_item(),
+  HITLOOK_A = yes_no_item(nonresponse = "Yes", skip = "No",
+                          note = "blank = not an Internet user, coded No"),
+  USUALPL_A = item(list("Yes" = 1, "No" = 2, "More than one place" = 3),
+                   nonresponse = "Yes"),
+  USPLKIND_A = item(list("Doctor's office or health center" = 1,
+                         "Urgent care or retail clinic" = 2,
+                         "Hospital emergency room" = 3, "VA facility" = 4,
+                         "Other place or no one place" = 5:6),
+                    nonresponse = "Doctor's office or health center",
+                    skip = "No usual place (not asked)"),
+  RX12M_A = yes_no_item(ref = "Yes", nonresponse = "Yes"),
+  # In-person care use and online test results (uncertain items)
+  LASTDR_A = item(list("Within the past year" = 1, "1 to 2 years ago" = 2,
+                       "2 to 5 years ago" = 3:4, "5 or more years ago or never" = c(0, 5, 6)),
+                  nonresponse = "Within the past year", type = "ordinal",
+                  note = "question excludes appointments by video or phone"),
+  WELLNESS_A = yes_no_item(ref = "Yes", nonresponse = "Yes", skip = "No",
+                           note = "refers to the last visit; blank = no doctor visit, coded No"),
+  RETAILHC12MTC_A = item(list("0" = 0, "1" = 1, "2" = 2, "3 or more" = 3:5),
+                         nonresponse = "0", type = "count", note = "5 = 5 or more"),
+  EMERG12MTC_A = item(list("0" = 0, "1" = 1, "2" = 2, "3 or more" = 3:4),
+                      nonresponse = "0", type = "count", note = "4 = 4 or more"),
+  HOSPONGT_A = yes_no_item(),
+  HITTEST_A = yes_no_item(ref = "Yes", nonresponse = "Yes", skip = "No",
+                          note = "blank = not an Internet user, coded No"),
+  RXDG12M_A = yes_no_item(),
+  DEPMED_A = yes_no_item(), ANXMED_A = yes_no_item(),
+  SHTFLU12M_A = yes_no_item(nonresponse = "Missing"),
+  SHTPNUEV_A = yes_no_item(nonresponse = "Missing")
+)
+
+dictionary_codes <- function(entry) unlist(entry$groups, use.names = FALSE)
+
+# Dictionary in long form, for review against the codebooks.
+dictionary_table <- function() {
+  do.call(rbind, lapply(names(coding_dictionary), function(v) {
+    e <- coding_dictionary[[v]]
+    data.frame(
+      variable = v, label = unname(variable_labels[v]), type = e$type,
+      category = names(e$groups),
+      nhis_codes = vapply(e$groups, function(g) {
+        if (length(g) > 4 && all(diff(g) == 1)) sprintf("%g-%g", min(g), max(g))
+        else paste(g, collapse = ",")
+      }, character(1)),
+      reference = names(e$groups) == e$ref,
+      nonresponse_codes = paste(e$missing, collapse = ","),
+      nonresponse_handling = e$nonresponse,
+      skip_meaning = if (is.null(e$skip)) "" else e$skip,
+      note = e$note
+    )
+  }))
+}
+
+# Coverage: share of respondents with a substantive answer. Dictionary codes
+# are used when available; other items fall back to NHIS reserve-code
+# conventions (7/8/9, 97/98/99, ...), which is approximate.
+reserve_codes <- function(x) {
+  v <- x[!is.na(x)]
+  if (!length(v)) return(numeric(0))
+  d <- nchar(as.character(floor(max(v))))
+  top <- 10^d - c(3, 2, 1)
+  others <- setdiff(unique(v), top)
+  if (length(others) && max(others) >= 10^d - 3) numeric(0) else top
+}
+
+item_coverage <- function(v, x) {
+  e <- coding_dictionary[[v]]
+  if (!is.null(e)) {
+    if (e$type == "continuous") {
+      g <- e$groups[[1]]
+      return(mean(!is.na(x) & x >= min(g) & x <= max(g) & !(x %in% e$missing)))
+    }
+    return(mean(x %in% dictionary_codes(e)))
+  }
+  mean(!is.na(x) & !(x %in% reserve_codes(x)))
+}
+
+# Screening uses the 2024 data and only the *names* of the 2025 variables
+# (which items were fielded in 2025). No 2025 values or outcomes are read.
+screen_variables <- function(raw_2024, names_2025, min_coverage = 0.90) {
+  outcome_24 <- raw_2024$VIRAPP12M_A %in% c(1, 2)
+  vars <- setdiff(names(raw_2024), "VIRAPP12M_A")
+
+  out <- do.call(rbind, lapply(vars, function(v) {
+    x <- raw_2024[[v]][outcome_24]
+    data.frame(
+      variable = v,
+      coverage_2024 = if (is.numeric(x)) round(item_coverage(v, x), 3) else NA_real_,
+      coverage_basis = if (v %in% names(coding_dictionary)) "dictionary" else
+        "reserve-code convention (approximate)",
+      share_nonblank_2024 = round(mean(!is.na(x)), 3)
+    )
+  }))
+  out$fielded_2025 <- out$variable %in% names_2025
+
+  low_coverage <- is.na(out$coverage_2024) | out$coverage_2024 < min_coverage
+  v <- out$variable
+
+  # Rules are applied in this order and a later rule overrides an earlier
+  # one, so the list runs from lowest to highest priority. Theory-based
+  # items are kept regardless of coverage (their coverage is reported in the
+  # Rmd); final decisions for uncertain items are set after the
+  # outcome-proxy diagnostic.
+  decision <- rep("Excluded: not reviewed", length(v))
+  rules <- list(
+    list(v %in% names(coding_dictionary), "Candidate: new"),
+    list(v %in% setdiff(uncertain_raw, uncertain_candidate_raw),
+         "Uncertain: outcome-proxy check"),
+    list(low_coverage, "Excluded: 2024 coverage < 90% (skip pattern)"),
+    list(v %in% unverified_raw, "Excluded: label not verified"),
+    list(v %in% too_rare_raw, "Excluded: too few respondents in a category"),
+    list(v %in% admin_raw, "Excluded: survey administration"),
+    list(v %in% redundant_raw, "Excluded: redundant"),
+    list(v %in% not_comparable_raw, "Excluded: wording changed in 2025"),
+    list(v %in% leakage_raw, "Excluded: answer can come from a telehealth visit"),
+    list(v %in% c(core_raw, added16_raw, theory_dictionary_raw),
+         "Candidate: theory-based set"),
+    list(!out$fielded_2025, "Excluded: not fielded in 2025")
+  )
+  for (rule in rules) decision[rule[[1]]] <- rule[[2]]
+  out$decision <- decision
+  out$label <- unname(ifelse(v %in% names(variable_labels), variable_labels[v], ""))
+  out[order(out$decision, out$variable),
+      c("variable", "label", "decision", "coverage_2024", "coverage_basis",
+        "share_nonblank_2024", "fielded_2025")]
+}
+
+# ---- Coding --------------------------------------------------------------------
+# Apply the dictionary. The rules are fixed in advance and are not learned
+# from the data, so the same coding applies inside every CV fold and in 2025.
+code_item <- function(x, e, v = "", on_unknown = c("error", "warning")) {
+  on_unknown <- match.arg(on_unknown)
+  unknown <- !is.na(x) & !(x %in% c(dictionary_codes(e), e$missing))
+  if (any(unknown)) {
+    msg <- sprintf("%s: %d value(s) with codes not in the dictionary (%s)",
+                   v, sum(unknown), paste(sort(unique(x[unknown])), collapse = ","))
+    if (on_unknown == "error") stop(msg, call. = FALSE)
+    warning(msg, call. = FALSE)
+  }
+  out <- rep(NA_character_, length(x))
+  for (g in names(e$groups)) out[x %in% e$groups[[g]]] <- g
+  # A skip label may name an existing category (the skip implies the
+  # answer) or a separate "not asked" category.
+  skipped <- is.na(x) & !is.null(e$skip)
+  if (any(skipped)) out[skipped] <- e$skip
+  out[is.na(out)] <- e$nonresponse
+  levels <- unique(c(e$ref, setdiff(names(e$groups), e$ref), e$skip,
+                     if (e$nonresponse == "Missing") "Missing"))
+  factor(out, levels = levels)
+}
+
+code_items <- function(raw, vars, on_unknown = "error") {
+  as.data.frame(lapply(setNames(vars, vars), function(v) {
+    code_item(raw[[v]], coding_dictionary[[v]], v, on_unknown)
+  }), stringsAsFactors = FALSE, check.names = FALSE)
+}
+
+# Every recode applied to a dataset: several NHIS codes combined into one
+# category, nonresponse assigned to a category, and codes not in the
+# dictionary (treated as nonresponse).
+describe_recodes <- function(raw, vars) {
+  do.call(rbind, lapply(vars, function(v) {
+    e <- coding_dictionary[[v]]
+    x <- raw[[v]]
+    rows <- list()
+    for (g in names(e$groups)) {
+      codes <- e$groups[[g]]
+      if (length(codes) > 1 && e$type != "continuous") {
+        n <- vapply(codes, function(cd) sum(x %in% cd), integer(1))
+        rows[[length(rows) + 1]] <- data.frame(
+          variable = v, action = "combined", codes = paste(codes, collapse = ","),
+          n = paste(n, collapse = "/"), coded_as = g)
+      }
+    }
+    unknown <- !is.na(x) & !(x %in% c(dictionary_codes(e), e$missing))
+    if (any(unknown)) {
+      rows[[length(rows) + 1]] <- data.frame(
+        variable = v, action = "code not in dictionary",
+        codes = paste(sort(unique(x[unknown])), collapse = ","),
+        n = as.character(sum(unknown)), coded_as = e$nonresponse)
+    }
+    coded_nonresp <- x %in% e$missing
+    if (any(coded_nonresp)) {
+      rows[[length(rows) + 1]] <- data.frame(
+        variable = v, action = "nonresponse code",
+        codes = paste(sort(unique(x[coded_nonresp])), collapse = ","),
+        n = as.character(sum(coded_nonresp)), coded_as = e$nonresponse)
+    }
+    blank_no_rule <- is.na(x) & is.null(e$skip)
+    if (any(blank_no_rule)) {
+      rows[[length(rows) + 1]] <- data.frame(
+        variable = v, action = "blank, no skip rule", codes = "blank",
+        n = as.character(sum(blank_no_rule)), coded_as = e$nonresponse)
+    }
+    blank_skip <- is.na(x) & !is.null(e$skip)
+    if (any(blank_skip)) {
+      rows[[length(rows) + 1]] <- data.frame(
+        variable = v, action = "blank, skip rule", codes = "blank",
+        n = as.character(sum(blank_skip)), coded_as = e$skip)
+    }
+    do.call(rbind, rows)
+  }))
+}
+```
+
+## 2024 sample, missingness and split
+
+```{r prepare-2024}
+nhis_2024 <- read.csv("adult24.csv")
+model_data <- prepare_nhis(nhis_2024)
+
+print(c(raw_n = nrow(nhis_2024), valid_outcome_n = nrow(model_data)))
+
+has_complete <- complete.cases(model_data[expanded_predictors])
+sample_check <- table(
+  sample = ifelse(has_complete, "Retained", "Excluded"),
+  telehealth = model_data$telehealth
+)
+print(sample_check)
+print(round(100 * prop.table(sample_check, margin = 1), 1))
+
+analysis_data <- model_data[has_complete, ]
+print(c(complete_case_n = nrow(analysis_data)))
+
+set.seed(2026)
+rows_by_outcome <- split(seq_len(nrow(analysis_data)), analysis_data$telehealth)
+train_rows <- sort(unlist(lapply(rows_by_outcome, function(rows) {
+  sample(rows, size = floor(0.80 * length(rows)))
+}), use.names = FALSE))
+train_data <- analysis_data[train_rows, ]
+test_data <- analysis_data[-train_rows, ]
+
+print(data.frame(
+  dataset = c("Training", "Test"),
+  n = c(nrow(train_data), nrow(test_data)),
+  users = c(sum(train_data$telehealth), sum(test_data$telehealth)),
+  use_pct = round(100 * c(mean(train_data$telehealth),
+                          mean(test_data$telehealth)), 2)
+))
+
+# Stratified 5-fold CV assignment within the training set.
+k <- 5L
+set.seed(2026)
+fold_id <- integer(nrow(train_data))
+for (rows in split(seq_len(nrow(train_data)), train_data$telehealth)) {
+  fold_id[sample(rows)] <- rep(seq_len(k), length.out = length(rows))
+}
+validation_folds <- lapply(seq_len(k), function(f) which(fold_id == f))
+```
+
+## Screening result
+
+Coverage is computed from the predictor values of the 2024 *training*
+respondents; the only 2025 information used is the list of variable names
+(whether an item was fielded in 2025). The screen never uses the outcome
+or any 2025 values. The full table is written to `variable_screening.csv`.
+
+```{r screen-items}
+# Header row only: the list of items fielded in 2025.
+names_2025 <- names(read.csv("adult25.csv", nrows = 0))
+
+screening <- screen_variables(nhis_2024[train_data$source_row, ], names_2025)
+write.csv(dictionary_table(), "coding_dictionary.csv", row.names = FALSE)
+print(as.data.frame(table(decision = screening$decision)), row.names = FALSE)
+
+# Candidate items beyond the theory-based set, and uncertain items that go
+# through the outcome-proxy diagnostic below. Every screened item, uncertain
+# ones included, is coded so that the diagnostic can use it.
+new_candidates <- screening$variable[screening$decision == "Candidate: new"]
+uncertain_items <- screening$variable[
+  screening$decision == "Uncertain: outcome-proxy check"
+]
+pool_items <- c(theory_dictionary_raw, new_candidates, uncertain_items)
+stopifnot(all(pool_items %in% names(coding_dictionary)))
+cat("New candidates:", length(new_candidates),
+    "| uncertain items to check:", length(uncertain_items), "\n")
+
+# Theory-based items are kept regardless of coverage; report any below the
+# 90% threshold that applies to the other items.
+theory_rows <- screening[screening$decision == "Candidate: theory-based set", ]
+cat("Theory-based items with 2024 coverage < 90%:",
+    if (any(theory_rows$coverage_2024 < 0.9)) {
+      paste(theory_rows$variable[theory_rows$coverage_2024 < 0.9], collapse = ", ")
+    } else "none", "\n")
+
+# Items whose coverage is not dictionary-based and whose blanks alone would
+# not exclude them: their exclusion rests on the reserve-code convention.
+approximate <- screening[screening$coverage_basis != "dictionary" &
+                           screening$share_nonblank_2024 >= 0.9 &
+                           screening$decision ==
+                             "Excluded: 2024 coverage < 90% (skip pattern)", ]
+cat("Exclusions resting on approximate coverage:",
+    if (nrow(approximate)) paste(approximate$variable, collapse = ", ") else "none",
+    "\n")
+
+add_pool <- function(data, raw, on_unknown = "error") {
+  cbind(data, code_items(raw[data$source_row, ], pool_items, on_unknown))
+}
+train_data <- add_pool(train_data, nhis_2024)
+test_data <- add_pool(test_data, nhis_2024)
+
+# Smallest category of each item in the training data.
+smallest <- sort(vapply(train_data[pool_items], function(f) min(table(f)),
+                        integer(1)))
+print(head(smallest, 8))
+```
+
+The coding is fixed by the dictionary rather than learned from the data,
+so it is identical inside every cross-validation fold and in 2025. Several
+NHIS codes are combined into one category where categories are small or
+equivalent (for example "cannot do at all" with "a lot of difficulty";
+Medicare "yes, no detail" with "yes"). Nonresponse is handled per item as
+written in the dictionary: a separate "Missing" category when it is about
+1% or more of respondents, otherwise assignment to the most common
+category. Blanks are interpreted as "not asked" only where the dictionary
+gives a skip rule; other blanks are counted as nonresponse and reported
+separately below. A code that the dictionary does not list stops the
+analysis in 2024 and triggers a warning in 2025. Every recode in the
+training data:
+
+```{r recodes-2024}
+print(describe_recodes(nhis_2024[train_data$source_row, ], pool_items),
+      row.names = FALSE)
+```
+
+# Model development (training set only)
+
+## Metrics
+
+```{r metric-functions}
+log_loss <- function(y, p) {
+  p <- pmin(pmax(p, 1e-15), 1 - 1e-15)
+  -mean(y * log(p) + (1 - y) * log1p(-p))
+}
+
+# Mann-Whitney AUROC; tied scores receive average ranks.
+auroc <- function(p, y) {
+  n1 <- sum(y == 1)
+  n0 <- sum(y == 0)
+  (sum(rank(p)[y == 1]) - n1 * (n1 + 1) / 2) / (n1 * n0)
+}
+
+evaluate_prob <- function(prob, y) {
+  auprc <- if (length(unique(prob)) == 1L) {
+    mean(y)
+  } else {
+    pr.curve(scores.class0 = prob[y == 1],
+             scores.class1 = prob[y == 0])$auc.integral
+  }
+  c(log_loss = log_loss(y, prob), AUROC = auroc(prob, y),
+    AUPRC = auprc, Brier = mean((y - prob)^2))
+}
+
+# Calibration-in-the-large (intercept with slope fixed at 1) and slope.
+calibration_stats <- function(prob, y) {
+  lp <- qlogis(pmin(pmax(prob, 1e-6), 1 - 1e-6))
+  c(
+    mean_predicted = mean(prob),
+    mean_observed = mean(y),
+    cal_intercept = unname(coef(glm(y ~ offset(lp), family = binomial()))[1]),
+    cal_slope = unname(coef(glm(y ~ lp, family = binomial()))[2])
+  )
+}
+
+# Stop on non-convergence, aliased coefficients or non-finite predictions.
+# A factor level absent from a fold's training part makes predict() stop
+# with a "new levels" error, which is also surfaced rather than ignored.
+check_fit <- function(fit, label) {
+  if (!fit$converged) stop(label, ": glm did not converge", call. = FALSE)
+  if (anyNA(coef(fit))) {
+    stop(label, ": aliased coefficients ",
+         paste(names(which(is.na(coef(fit)))), collapse = ", "), call. = FALSE)
+  }
+  invisible(fit)
+}
+
+cv_logistic <- function(formula) {
+  vapply(seq_len(k), function(fold) {
+    fit <- glm(formula, data = train_data[fold_id != fold, ],
+               family = binomial())
+    check_fit(fit, paste("fold", fold))
+    valid <- train_data[fold_id == fold, ]
+    p <- predict(fit, newdata = valid, type = "response")
+    stopifnot(all(is.finite(p)))
+    log_loss(valid$telehealth, p)
+  }, numeric(1))
+}
+```
+
+## Candidate model formulas
+
+```{r formulas}
+# The theory-based (Andersen) set: 22 items, including the five covariates
+# used in the project dashboard's association model and urban-rural
+# classification. None of them has a special status: in every selection
+# procedure below they are candidates like any other item.
+andersen_terms <- c("ns(age, df = 3)", "insurance", "education", "internet",
+                    "health", setdiff(added_predictors, "pov_ratio"),
+                    "ns(pov_ratio, df = 3)", theory_dictionary_raw)
+f_null <- telehealth ~ 1
+f_theory <- reformulate(andersen_terms, response = "telehealth")
+```
+
+## Outcome-proxy diagnostic for uncertain items
+
+Items that a telehealth visit cannot produce, but that may act as proxies
+for the outcome (in-person care use, online health activity, treatment,
+prevention, cost barriers, COVID-19 history), are checked on the training
+data. Each item is added to the theory-based model, and its contribution is
+compared with that of the strongest theory-based predictor:
+
+* gain in 5-fold CV log loss when the item is added, against the largest
+  increase in CV log loss when one theory-based item is removed;
+* likelihood-ratio statistic per degree of freedom, against the largest
+  such statistic among theory-based items.
+
+An item that exceeds either benchmark contributes more than any accepted
+predictor and is excluded as a possible proxy for the outcome. Unflagged
+`EVERCOVD_A` remains an ordinary candidate; the other unflagged items
+describe care use or access and are used only in the borderline
+sensitivity analysis. The diagnostic uses training outcomes and is not
+repeated inside the nested cross-validation folds; it can show that an item
+is suspicious but cannot prove that it is safe.
+
+```{r outcome-proxy-check, cache=TRUE}
+fit_terms <- function(terms_) {
+  glm(reformulate(terms_, response = "telehealth"), data = train_data,
+      family = binomial())
+}
+lr_per_df <- function(terms_full, term) {
+  full <- fit_terms(terms_full)
+  reduced <- fit_terms(setdiff(terms_full, term))
+  (reduced$deviance - full$deviance) / (length(coef(full)) - length(coef(reduced)))
+}
+
+theory_cv <- mean(cv_logistic(f_theory))
+benchmark <- data.frame(
+  term = andersen_terms,
+  cv_logloss_change = vapply(andersen_terms, function(t) {
+    mean(cv_logistic(reformulate(setdiff(andersen_terms, t), response = "telehealth"))) -
+      theory_cv
+  }, numeric(1)),
+  lr_per_df = vapply(andersen_terms, lr_per_df, numeric(1),
+                     terms_full = andersen_terms)
+)
+gain_threshold <- max(benchmark$cv_logloss_change)
+lr_threshold <- max(benchmark$lr_per_df)
+cat("Benchmarks: CV log loss", round(gain_threshold, 5),
+    "| LR per df", round(lr_threshold, 1), "\n")
+
+check_items <- intersect(uncertain_raw, pool_items)
+proxy_check <- data.frame(
+  item = check_items,
+  label = unname(variable_labels[check_items]),
+  cv_logloss_gain = vapply(check_items, function(v) {
+    theory_cv - mean(cv_logistic(reformulate(c(andersen_terms, v),
+                                             response = "telehealth")))
+  }, numeric(1)),
+  lr_per_df = vapply(check_items, function(v) {
+    lr_per_df(c(andersen_terms, v), v)
+  }, numeric(1))
+)
+proxy_check$flagged <- proxy_check$cv_logloss_gain > gain_threshold |
+  proxy_check$lr_per_df > lr_threshold
+proxy_check <- proxy_check[order(-proxy_check$cv_logloss_gain), ]
+print(transform(proxy_check, cv_logloss_gain = round(cv_logloss_gain, 5),
+                lr_per_df = round(lr_per_df, 1)), row.names = FALSE)
+```
+
+```{r candidate-pool}
+flagged_items <- proxy_check$item[proxy_check$flagged]
+passed_items <- proxy_check$item[!proxy_check$flagged]
+
+new_candidates <- setdiff(new_candidates, flagged_items)
+borderline_candidates <- setdiff(passed_items, uncertain_candidate_raw)
+
+screening$decision[screening$variable %in% flagged_items] <-
+  "Excluded: outcome-proxy diagnostic"
+screening$decision[screening$variable %in% borderline_candidates] <-
+  "Candidate: borderline (sensitivity only)"
+write.csv(screening, "variable_screening.csv", row.names = FALSE)
+
+cat("Excluded by the diagnostic:",
+    if (length(flagged_items)) paste(flagged_items, collapse = ", ") else "none", "\n")
+cat("Borderline (sensitivity only):", paste(borderline_candidates, collapse = ", "), "\n")
+
+# All candidates: the theory-based set plus the screened new items.
+pool_terms <- c(andersen_terms, new_candidates)
+f_pool <- reformulate(pool_terms, response = "telehealth")
+cat("Candidate terms:", length(pool_terms), "\n")
+
+# No candidate may be an exact linear combination of others (for example, a
+# "not asked" category identical to a category of another item): the full
+# pool, with and without borderline items, must have no aliased terms.
+for (f in list(f_pool, update(f_pool, paste(". ~ . +",
+                                             paste(borderline_candidates,
+                                                   collapse = " + "))))) {
+  aliased <- names(which(is.na(coef(glm(f, data = train_data, family = binomial())))))
+  if (length(aliased)) stop("Aliased coefficients: ", paste(aliased, collapse = ", "))
+}
+```
+
+## Stepwise selection by BIC (primary)
+
+Bidirectional stepwise search starting from the intercept-only model, with
+every candidate (theory-based items included) free to enter or leave. The BIC
+penalty is log(n) per parameter, with each item entering or leaving as a
+whole (all of its levels together). This main-effects model was fixed as
+the primary model before any evaluation, as a compromise between
+parsimony and predictive performance rather than as the best-predicting
+model. BIC does not directly optimize out-of-sample log loss, and the
+stepwise search returns a good model along its path, not a guaranteed
+global optimum.
+
+```{r stepwise-bic, cache=TRUE}
+n_train <- nrow(train_data)
+fit_null <- glm(f_null, data = train_data, family = binomial())
+fit_bic <- step(fit_null, scope = list(lower = f_null, upper = f_pool),
+                direction = "both", k = log(n_train), trace = 0)
+
+bic_terms <- attr(terms(fit_bic), "term.labels")
+f_bic <- reformulate(bic_terms, response = "telehealth")
+
+cat("Selected", length(bic_terms), "terms:\n")
+print(data.frame(
+  order = seq_along(bic_terms),
+  term = bic_terms,
+  label = ifelse(bic_terms %in% names(variable_labels),
+                 variable_labels[bic_terms], "(theory-based set)")
+), row.names = FALSE)
+
+# Were the five dashboard covariates selected without being forced in?
+dashboard_terms <- c("ns(age, df = 3)", "insurance", "education", "internet", "health")
+print(data.frame(term = dashboard_terms, selected = dashboard_terms %in% bic_terms),
+      row.names = FALSE)
+```
+
+## Stepwise BIC within the theory-based items
+
+The same search restricted to the 22 theory-based (Andersen) items. Compared
+with the full theory-based model, it shows whether that set can be
+simplified; compared with the primary model, it isolates the contribution
+of the wider candidate pool.
+
+```{r stepwise-bic-theory, cache=TRUE}
+fit_bic_theory <- step(fit_null, scope = list(lower = f_null, upper = f_theory),
+                       direction = "both", k = log(n_train), trace = 0)
+bic_theory_terms <- attr(terms(fit_bic_theory), "term.labels")
+f_bic_theory <- reformulate(bic_theory_terms, response = "telehealth")
+
+cat("Kept", length(bic_theory_terms), "of", length(andersen_terms),
+    "theory-based terms:", paste(bic_theory_terms, collapse = ", "), "\n")
+cat("Dropped:", paste(setdiff(andersen_terms, bic_theory_terms), collapse = ", "), "\n")
+```
+
+## Group lasso (cross-check)
+
+Each item is one group (all of its dummy columns or spline bases), and
+every group is penalized. The penalty is tuned with the same 5 folds. Both
+the lambda.min fit and the sparser 1-SE fit are carried forward to the
+test-set and 2025 comparisons.
+
+```{r group-lasso, cache=TRUE}
+# Build the design from a given set of rows. The terms object carries the
+# spline knots of those rows ("predvars"), so any other data get the same
+# basis.
+build_design <- function(fit_data) {
+  terms_object <- terms(model.frame(reformulate(pool_terms), data = fit_data))
+  mm <- model.matrix(terms_object, model.frame(terms_object, data = fit_data))
+  term_of_column <- attr(terms_object, "term.labels")[attr(mm, "assign")[-1]]
+  group_id <- as.integer(factor(term_of_column, levels = unique(term_of_column)))
+  list(
+    x = mm[, -1, drop = FALSE], term_of_column = term_of_column,
+    group_id = group_id,
+    matrix_for = function(data) {
+      model.matrix(terms_object, model.frame(terms_object, data = data))[, -1, drop = FALSE]
+    }
+  )
+}
+
+train_design <- build_design(train_data)
+x_train <- train_design$x
+term_of_column <- train_design$term_of_column
+group_id <- train_design$group_id
+design_matrix <- train_design$matrix_for
+
+set.seed(2026)
+cv_glasso <- cv.grpreg(x_train, train_data$telehealth, group = group_id,
+                       penalty = "grLasso", family = "binomial",
+                       fold = fold_id, nlambda = 60)
+
+i_min <- which.min(cv_glasso$cve)
+i_1se <- min(which(cv_glasso$cve <= cv_glasso$cve[i_min] + cv_glasso$cvse[i_min]))
+
+selected_groups <- function(i) {
+  b <- cv_glasso$fit$beta[-1, i]
+  unique(term_of_column[b != 0])
+}
+glasso_min_terms <- selected_groups(i_min)
+glasso_1se_terms <- selected_groups(i_1se)
+
+print(data.frame(
+  rule = c("lambda.min", "lambda.1se"),
+  lambda = signif(cv_glasso$lambda[c(i_min, i_1se)], 3),
+  cv_logloss = round(cv_glasso$cve[c(i_min, i_1se)] / 2, 5),
+  n_terms = c(length(glasso_min_terms), length(glasso_1se_terms))
+), row.names = FALSE)
+
+cat("BIC terms not kept by group lasso (1se):",
+    setdiff(bic_terms, glasso_1se_terms), "\n")
+```
+
+## Selection stability
+
+Two separate questions. (1) *Is the BIC selection itself stable?* Stepwise
+BIC is rerun on 20 random half-samples of the training set. (2) *Which items
+does a different method favour?* Group lasso at the 1-SE penalty is refit on
+50 half-samples. The frequencies are descriptive; disagreement between the
+two methods reflects their different penalties and is not evidence that
+either is wrong.
+
+```{r bic-half-sample, cache=TRUE}
+run_parallel <- function(x, fun) {
+  if (.Platform$OS.type == "unix") {
+    check_workers(mclapply(x, fun, mc.cores = n_workers))
+  } else {
+    lapply(x, fun)
+  }
+}
+
+n_bic_subsamples <- 20L
+set.seed(2026)
+bic_subsample_rows <- lapply(seq_len(n_bic_subsamples),
+                             function(b) sample.int(n_train, floor(n_train / 2)))
+
+bic_on_rows <- function(rows) {
+  half <- train_data[rows, ]
+  lower <- f_null
+  upper <- f_pool
+  # Formulas must look up `half` here, not in the global environment.
+  environment(lower) <- environment(upper) <- environment()
+  start <- glm(lower, data = half, family = binomial())
+  fit <- step(start, scope = list(lower = lower, upper = upper),
+              direction = "both", k = log(nrow(half)), trace = 0)
+  attr(terms(fit), "term.labels")
+}
+bic_subsample_terms <- run_parallel(bic_subsample_rows, bic_on_rows)
+bic_frequency <- table(factor(unlist(bic_subsample_terms), levels = pool_terms))
+cat("Terms selected per half-sample:",
+    paste(range(lengths(bic_subsample_terms)), collapse = " to "), "\n")
+```
+
+```{r glasso-subsampling, cache=TRUE}
+set.seed(2026)
+n_subsamples <- 50L
+lambda_path <- cv_glasso$lambda[seq_len(i_1se)]
+glasso_counts <- setNames(numeric(length(pool_terms)), pool_terms)
+
+for (b in seq_len(n_subsamples)) {
+  rows <- sample.int(n_train, floor(n_train / 2))
+  fit <- grpreg(x_train[rows, ], train_data$telehealth[rows], group = group_id,
+                penalty = "grLasso", family = "binomial", lambda = lambda_path)
+  beta <- fit$beta[-1, ncol(fit$beta)]
+  chosen <- unique(term_of_column[beta != 0])
+  glasso_counts[chosen] <- glasso_counts[chosen] + 1
+}
+
+selection_frequency <- data.frame(
+  term = pool_terms,
+  label = ifelse(pool_terms %in% names(variable_labels),
+                 variable_labels[pool_terms], "(theory-based set)"),
+  in_primary_model = pool_terms %in% bic_terms,
+  bic_half_sample_pct = round(100 * as.numeric(bic_frequency[pool_terms]) /
+                                n_bic_subsamples),
+  glasso_half_sample_pct = round(100 * glasso_counts / n_subsamples)
+)
+selection_frequency <- selection_frequency[
+  order(-selection_frequency$bic_half_sample_pct,
+        -selection_frequency$glasso_half_sample_pct), ]
+print(head(selection_frequency, 35), row.names = FALSE)
+```
+
+## Gradient boosting (XGBoost)
+
+Tuned on the full candidate pool, as a reference for what a flexible
+method can extract from the screened items. The tuning scores below come from the
+same folds used to choose depth, learning rate and number of rounds, so
+they are not unbiased performance estimates.
+
+```{r xgboost-cv, cache=TRUE}
+xgb_matrix <- function(data, vars) {
+  x <- model.matrix(reformulate(vars), data = data)
+  x[, colnames(x) != "(Intercept)", drop = FALSE]
+}
+
+xgb_grid <- expand.grid(max_depth = 1:3, eta = c(0.05, 0.10))
+max_rounds <- 8000L
+
+tune_xgb <- function(vars) {
+  x <- xgb_matrix(train_data, vars)
+  dtrain <- xgb.DMatrix(x, label = train_data$telehealth)
+  results <- xgb_grid
+  results$best_nrounds <- NA_integer_
+  results$cv_logloss <- NA_real_
+
+  for (i in seq_len(nrow(results))) {
+    params <- list(
+      objective = "binary:logistic", eval_metric = "logloss",
+      tree_method = "hist", max_depth = results$max_depth[i],
+      eta = results$eta[i], min_child_weight = 10
+    )
+    cv <- xgb.cv(params = params, data = dtrain, folds = validation_folds,
+                 nrounds = max_rounds, early_stopping_rounds = 50, verbose = 0)
+    loss <- cv$evaluation_log$test_logloss_mean
+    results$best_nrounds[i] <- which.min(loss)
+    results$cv_logloss[i] <- min(loss)
+  }
+
+  stopifnot(all(results$best_nrounds < max_rounds))
+  best <- results[which.min(results$cv_logloss), ]
+  params <- list(
+    objective = "binary:logistic", eval_metric = "logloss",
+    tree_method = "hist", max_depth = best$max_depth, eta = best$eta,
+    min_child_weight = 10
+  )
+  list(grid = results[order(results$cv_logloss), ], params = params,
+       nrounds = best$best_nrounds, vars = vars)
+}
+
+pool_vars <- c(expanded_predictors, theory_dictionary_raw, new_candidates)
+
+set.seed(2026)
+xgb_pool <- tune_xgb(pool_vars)
+print(xgb_pool$grid, row.names = FALSE)
+```
+
+## Nested cross-validation of the selection procedures
+
+Cross-validating a final selected formula, or a group-lasso fit whose
+penalty was tuned on the same folds, does not account for the selection
+step. Here each whole procedure is repeated inside each outer fold, using
+only the other four folds: stepwise BIC (on the full pool and on the
+theory-based items) is rerun, and for group lasso the spline basis is
+rebuilt and the penalty is tuned by an inner 5-fold CV. The held-out fold
+is used only for scoring. This evaluates the selection and fitting steps
+*given the screened candidate set*: screening and dictionary coding are
+done once beforehand and are not repeated inside folds, and the inner CV
+of group lasso uses the spline basis of the outer training part. It is
+therefore not an evaluation of the complete pipeline from the raw file.
+
+```{r nested-cv, cache=TRUE}
+run_folds <- function(fun) {
+  if (.Platform$OS.type == "unix") {
+    check_workers(mclapply(seq_len(k), fun, mc.cores = min(k, n_workers)))
+  } else {
+    lapply(seq_len(k), fun)
+  }
+}
+
+nested_bic_fold <- function(fold, upper_formula) {
+  inner <- train_data[fold_id != fold, ]
+  outer <- train_data[fold_id == fold, ]
+  lower <- f_null
+  upper <- upper_formula
+  # Formulas must look up `inner` here, not in the global environment.
+  environment(lower) <- environment(upper) <- environment()
+  start <- glm(lower, data = inner, family = binomial())
+  fit <- step(start, scope = list(lower = lower, upper = upper),
+              direction = "both", k = log(nrow(inner)), trace = 0)
+  check_fit(fit, paste("nested BIC, fold", fold))
+  p <- predict(fit, newdata = outer, type = "response")
+  stopifnot(all(is.finite(p)))
+  list(loss = log_loss(outer$telehealth, p),
+       terms = attr(terms(fit), "term.labels"))
+}
+
+nested_glasso_fold <- function(fold) {
+  inner <- train_data[fold_id != fold, ]
+  outer <- train_data[fold_id == fold, ]
+  design <- build_design(inner)
+  set.seed(2026 + fold)
+  inner_fold <- integer(nrow(inner))
+  for (rows in split(seq_len(nrow(inner)), inner$telehealth)) {
+    inner_fold[sample(rows)] <- rep(seq_len(k), length.out = length(rows))
+  }
+  cv_in <- cv.grpreg(design$x, inner$telehealth, group = design$group_id,
+                     penalty = "grLasso", family = "binomial",
+                     fold = inner_fold, nlambda = 60)
+  j_min <- which.min(cv_in$cve)
+  j_1se <- min(which(cv_in$cve <= cv_in$cve[j_min] + cv_in$cvse[j_min]))
+  x_out <- design$matrix_for(outer)
+  score <- function(j) {
+    log_loss(outer$telehealth,
+             as.numeric(predict(cv_in$fit, x_out, lambda = cv_in$lambda[j],
+                                type = "response")))
+  }
+  c(lambda_min = score(j_min), lambda_1se = score(j_1se))
+}
+
+nested_bic <- run_folds(function(f) nested_bic_fold(f, f_pool))
+nested_bic_theory <- run_folds(function(f) nested_bic_fold(f, f_theory))
+nested_glasso <- do.call(rbind, run_folds(nested_glasso_fold))
+
+nested_bic_loss <- vapply(nested_bic, `[[`, numeric(1), "loss")
+nested_bic_theory_loss <- vapply(nested_bic_theory, `[[`, numeric(1), "loss")
+print(round(data.frame(
+  fold = seq_len(k),
+  stepwise_BIC_pool = nested_bic_loss,
+  stepwise_BIC_theory = nested_bic_theory_loss,
+  group_lasso_min = nested_glasso[, "lambda_min"],
+  group_lasso_1se = nested_glasso[, "lambda_1se"]
+), 5), row.names = FALSE)
+
+# How often each term is reselected by stepwise BIC (full pool) across
+# outer folds.
+all_selected <- unlist(lapply(nested_bic, `[[`, "terms"))
+reselected <- table(factor(all_selected, levels = union(bic_terms, all_selected)))
+print(data.frame(term = names(reselected),
+                 folds_selected = as.integer(reselected),
+                 in_primary_model = names(reselected) %in% bic_terms),
+      row.names = FALSE)
+```
+
+## Comparison of cross-validated performance
+
+For the selection procedures, the nested estimates are the ones to
+compare. XGBoost was tuned on the same folds used to score it, so its
+tuning scores are shown in a separate column and are not ranked against
+the other models. The 2024 test set gives the final comparison of all
+models, including XGBoost.
+
+```{r cv-comparison, cache=TRUE}
+cv_table <- data.frame(
+  model = c("Theory-based, all 22 items", "Theory-based, stepwise BIC",
+            "Full screened pool, no selection", "Stepwise BIC, full pool (primary)",
+            "Group lasso, lambda.min", "Group lasso, lambda.1se",
+            "Full pool, XGBoost"),
+  n_terms = c(length(andersen_terms), length(bic_theory_terms), length(pool_terms),
+              length(bic_terms), length(glasso_min_terms),
+              length(glasso_1se_terms), length(pool_terms)),
+  cv_logloss = c(
+    mean(cv_logistic(f_theory)), mean(nested_bic_theory_loss),
+    mean(cv_logistic(f_pool)), mean(nested_bic_loss),
+    mean(nested_glasso[, "lambda_min"]), mean(nested_glasso[, "lambda_1se"]),
+    NA_real_
+  ),
+  # Not comparable with the column above: tuned and scored on the same folds.
+  xgb_tuning_score = c(rep(NA_real_, 6), min(xgb_pool$grid$cv_logloss)),
+  estimate = c("standard CV", "nested CV", "standard CV", "nested CV",
+               "nested CV", "nested CV", "tuning score (not ranked)")
+)
+cv_table$cv_logloss <- round(cv_table$cv_logloss, 5)
+cv_table$xgb_tuning_score <- round(cv_table$xgb_tuning_score, 5)
+print(cv_table, row.names = FALSE)
+
+cat("Apparent CV log loss of the final BIC formula (selection not repeated):",
+    round(mean(cv_logistic(f_bic)), 5), "| nested:", round(mean(nested_bic_loss), 5),
+    "\n")
+```
+
+## Sensitivity: borderline items
+
+Starting from the BIC model, borderline items (uncertain items that
+passed the outcome-proxy diagnostic but describe care use or access) are
+offered for forward entry under the same BIC criterion. This analysis is exploratory:
+the items are selected on the full training set and then cross-validated
+as a fixed formula, so the reported CV log loss is an *apparent* value,
+not comparable with the nested estimates above. It does not change the
+primary model.
+
+```{r borderline-sensitivity, cache=TRUE}
+f_bic_border_upper <- reformulate(c(bic_terms, borderline_candidates),
+                                  response = "telehealth")
+fit_border <- step(fit_bic, scope = list(lower = f_bic, upper = f_bic_border_upper),
+                   direction = "forward", k = log(n_train), trace = 0)
+border_added <- setdiff(attr(terms(fit_border), "term.labels"),
+                        bic_terms)
+cat("Borderline items entering:",
+    if (length(border_added)) paste(border_added, collapse = ", ") else "none", "\n")
+if (length(border_added)) {
+  print(round(c(
+    apparent_cv_logloss_bic = mean(cv_logistic(f_bic)),
+    apparent_cv_logloss_bic_plus_borderline = mean(cv_logistic(formula(fit_border)))
+  ), 5))
+}
+```
+
+## Final fits on the full training set
+
+```{r final-fits}
+fit_theory <- glm(f_theory, data = train_data, family = binomial())
+fit_theory_bic <- glm(f_bic_theory, data = train_data, family = binomial())
+fit_primary <- glm(f_bic, data = train_data, family = binomial())
+
+set.seed(2026)
+xgb_fit <- function(tuned) {
+  xgb.train(tuned$params,
+            xgb.DMatrix(xgb_matrix(train_data, tuned$vars),
+                        label = train_data$telehealth),
+            nrounds = tuned$nrounds, verbose = 0)
+}
+xgb_pool_fit <- xgb_fit(xgb_pool)
+
+baseline_prob <- mean(train_data$telehealth)
+primary_model <- "Stepwise BIC logistic"
+
+predict_all <- function(data) {
+  stopifnot(identical(colnames(design_matrix(data)), colnames(x_train)))
+  list(
+    "Constant baseline" = rep(baseline_prob, nrow(data)),
+    "Theory-based logistic" = unname(predict(fit_theory, data, type = "response")),
+    "Theory-based BIC logistic" = unname(predict(fit_theory_bic, data,
+                                                 type = "response")),
+    "Stepwise BIC logistic" = unname(predict(fit_primary, data, type = "response")),
+    "Group lasso (lambda.min)" = as.numeric(predict(
+      cv_glasso$fit, design_matrix(data), lambda = cv_glasso$lambda[i_min],
+      type = "response")),
+    "Group lasso (lambda.1se)" = as.numeric(predict(
+      cv_glasso$fit, design_matrix(data), lambda = cv_glasso$lambda[i_1se],
+      type = "response")),
+    "Full pool XGBoost" = predict(xgb_pool_fit,
+                                  xgb.DMatrix(xgb_matrix(data, pool_vars)))
+  )
+}
+```
+
+# 2024 held-out test set
+
+```{r evaluate-test}
+y_test <- test_data$telehealth
+test_prob <- predict_all(test_data)
+
+test_results <- t(vapply(test_prob, evaluate_prob, numeric(4), y = y_test))
+print(round(test_results, 4))
+```
+
+Survey-weighted versions of the same metrics describe performance for the
+population represented by the complete-case test respondents (weights are
+the original NHIS adult weights; complete-case exclusion is not
+reweighted).
+
+```{r weighted-metrics-function}
+# Weighted Mann-Whitney AUROC: sum over positive-negative pairs of
+# w_i * w_j * [p_i > p_j] (ties count one half), divided by the product of
+# the positive and negative weight totals.
+weighted_auroc <- function(p, y, w) {
+  g <- match(p, sort(unique(p)))
+  w_pos <- tapply(w * (y == 1), g, sum)
+  w_neg <- tapply(w * (y == 0), g, sum)
+  below <- cumsum(w_neg) - w_neg
+  sum(w_pos * (below + 0.5 * w_neg)) / (sum(w_pos) * sum(w_neg))
+}
+
+weighted_metrics <- function(prob, y, w) {
+  p <- pmin(pmax(prob, 1e-15), 1 - 1e-15)
+  w <- w / sum(w)
+  c(log_loss = -sum(w * (y * log(p) + (1 - y) * log1p(-p))),
+    AUROC = weighted_auroc(prob, y, w),
+    Brier = sum(w * (y - prob)^2))
+}
+
+stopifnot(abs(weighted_auroc(test_prob[[primary_model]], y_test,
+                             rep(1, length(y_test))) -
+                auroc(test_prob[[primary_model]], y_test)) < 1e-10)
+
+weight_test <- test_data$survey_weight
+print(round(t(vapply(test_prob, weighted_metrics, numeric(3),
+                     y = y_test, w = weight_test)), 4))
+```
+
+## Bootstrap confidence intervals
+
+Paired bootstrap with 1,000 replicates. Within each NHIS stratum,
+primary sampling units (PSUs) are drawn with replacement and all of their
+sampled respondents are kept, so the intervals account for stratified
+cluster sampling. They apply to the *unweighted* metrics of models that are
+already fitted: they do not include uncertainty from training or variable
+selection, and they are not a full design-based inference for weighted
+metrics (which would use replicate weights or linearization). Gains are
+positive when the primary model is better.
+
+```{r bootstrap-function}
+# Row indices grouped by PSU within stratum.
+psu_index <- function(data) {
+  key <- paste(data$survey_stratum, data$survey_psu)
+  rows_by_psu <- split(seq_len(nrow(data)), key)
+  stratum_of_psu <- sub(" .*", "", names(rows_by_psu))
+  split(rows_by_psu, stratum_of_psu)
+}
+
+draw_psu_sample <- function(index) {
+  unlist(lapply(index, function(psus) {
+    psus[sample.int(length(psus), length(psus), replace = TRUE)]
+  }), use.names = FALSE)
+}
+
+bootstrap_compare <- function(prob, y, index, B = 1000, seed = 2026) {
+  set.seed(seed)
+  primary <- prob[[primary_model]]
+  comparators <- c("Theory-based logistic",
+                   "Theory-based BIC logistic", "Group lasso (lambda.min)",
+                   "Group lasso (lambda.1se)", "Full pool XGBoost")
+  draws <- replicate(B, {
+    i <- draw_psu_sample(index)
+    a_primary <- auroc(primary[i], y[i])
+    l_primary <- log_loss(y[i], primary[i])
+    c(primary_AUROC = a_primary,
+      unlist(lapply(setNames(comparators, comparators), function(m) {
+        c(AUROC_gain = a_primary - auroc(prob[[m]][i], y[i]),
+          logloss_gain = log_loss(y[i], prob[[m]][i]) - l_primary)
+      })))
+  })
+  t(apply(draws, 1, quantile, probs = c(0.025, 0.5, 0.975)))
+}
+
+test_psu_index <- psu_index(test_data)
+cat("Test set:", length(test_psu_index), "strata,",
+    sum(lengths(test_psu_index)), "PSUs\n")
+print(round(bootstrap_compare(test_prob, y_test, test_psu_index), 4))
+```
+
+## Calibration
+
+```{r calibration-test}
+print(round(t(vapply(test_prob[-1], calibration_stats, numeric(4),
+                     y = y_test)), 4))
+
+calibration_by_band <- function(prob, y, weight = rep(1, length(y))) {
+  band <- cut(prob, breaks = seq(0, 1, by = 0.10), include.lowest = TRUE)
+  do.call(rbind, lapply(split(seq_along(prob), band, drop = TRUE),
+                        function(rows) {
+    w <- weight[rows]
+    data.frame(
+      n = length(rows),
+      weighted_share_pct = 100 * sum(w) / sum(weight),
+      predicted = weighted.mean(prob[rows], w),
+      observed = weighted.mean(y[rows], w),
+      gap_pp = 100 * (weighted.mean(y[rows], w) - weighted.mean(prob[rows], w))
+    )
+  }))
+}
+
+cal_test <- calibration_by_band(test_prob[[primary_model]], y_test)
+print(round(cal_test, 4))
+```
+
+# 2025 temporal validation
+
+All models above are now fixed. This is the first point at which values
+from the 2025 file are read; nothing below changes a model.
+
+## Availability and coding checks
+
+```{r load-2025}
+nhis_2025 <- read.csv("adult25.csv")
+valid_2025 <- nhis_2025$VIRAPP12M_A %in% c(1, 2)
+print(c(raw_n = nrow(nhis_2025), valid_outcome_n = sum(valid_2025)))
+
+# Raw NHIS items behind each analysis variable.
+raw_item_map <- c(
+  age = "AGEP_A", insurance = "NOTCOV_A", education = "EDUCP_A",
+  internet = "ACCSSINT_A", health = "PHSTAT_A", sex = "SEX_A",
+  race_eth = "HISPALLP_A", region = "REGION", marital = "MARITAL_A",
+  us_born = "NATUSBORN_A", worked_last_week = "EMPWRKLSW1_A",
+  pov_ratio = "POVRATTC_A", hypertension = "HYPEV_A", diabetes = "DIBEV_A",
+  asthma = "ASEV_A", copd = "COPDEV_A", cancer = "CANEV_A",
+  arthritis = "ARTHEV_A", depression = "DEPEV_A", anxiety = "ANXEV_A",
+  disability = "DISAB3_A"
+)
+raw_items_of <- function(vars) {
+  items <- ifelse(vars %in% names(raw_item_map), raw_item_map[vars], vars)
+  unique(c(items, if ("insurance" %in% vars) "PRIVATE_A"))
+}
+
+model_items <- list(
+  "Theory-based logistic" = raw_items_of(c(expanded_predictors, theory_dictionary_raw)),
+  "Theory-based BIC logistic" = raw_items_of(all.vars(f_bic_theory)[-1]),
+  "Stepwise BIC logistic" = raw_items_of(all.vars(f_bic)[-1]),
+  "Group lasso / full pool XGBoost" = raw_items_of(pool_vars),
+  "Borderline items (sensitivity)" = borderline_candidates
+)
+availability <- data.frame(
+  model = names(model_items),
+  items = lengths(model_items),
+  missing_in_2025 = vapply(model_items, function(x) {
+    miss <- setdiff(x, names(nhis_2025))
+    if (length(miss)) paste(miss, collapse = ", ") else "none"
+  }, character(1))
+)
+print(availability, row.names = FALSE)
+stopifnot(all(model_items[["Stepwise BIC logistic"]] %in% names(nhis_2025)))
+```
+
+Response codes in 2025 are compared with the coding dictionary. A code
+that the dictionary does not list triggers a warning and is treated as
+nonresponse: for screened items it receives the item's nonresponse
+handling; for theory-based items it becomes missing and the
+respondent drops out of the complete-case sample. Codes listed in the
+dictionary but absent in 2025 are also reported.
+
+```{r coding-check-2025}
+check_coding <- function(item) {
+  e <- coding_dictionary[[item]]
+  x25 <- nhis_2025[[item]][valid_2025]
+  observed <- x25[!is.na(x25) & !(x25 %in% e$missing)]
+  if (e$type == "continuous") {
+    g <- e$groups[[1]]
+    outside <- observed[observed < min(g) | observed > max(g)]
+    return(data.frame(
+      item = item, coverage_2025 = round(item_coverage(item, x25), 3),
+      not_in_dictionary = if (length(outside)) sprintf("%g to %g", min(outside),
+                                                       max(outside)) else "",
+      n_not_in_dictionary = length(outside), absent_in_2025 = ""))
+  }
+  codes <- dictionary_codes(e)
+  unknown <- sort(unique(observed[!(observed %in% codes)]))
+  data.frame(
+    item = item, coverage_2025 = round(item_coverage(item, x25), 3),
+    not_in_dictionary = paste(unknown, collapse = ","),
+    n_not_in_dictionary = sum(observed %in% unknown),
+    absent_in_2025 = paste(setdiff(codes, observed), collapse = ",")
+  )
+}
+
+coding_check <- do.call(rbind, lapply(model_items[["Group lasso / full pool XGBoost"]],
+                                      check_coding))
+coding_check$in_primary_model <- coding_check$item %in%
+  model_items[["Stepwise BIC logistic"]]
+coding_check$label <- unname(ifelse(coding_check$item %in% names(variable_labels),
+                                    variable_labels[coding_check$item], ""))
+
+cat("Items with codes not in the dictionary, or dictionary codes absent in 2025:\n")
+print(coding_check[coding_check$not_in_dictionary != "" |
+                     coding_check$absent_in_2025 != "", ], row.names = FALSE)
+cat("\nLowest 2025 coverage among items in the primary model:\n")
+primary_check <- coding_check[coding_check$in_primary_model,
+                              c("item", "label", "coverage_2025")]
+print(head(primary_check[order(primary_check$coverage_2025), ], 5),
+      row.names = FALSE)
+```
+
+## Validation sample and distribution shift
+
+```{r prepare-2025}
+validation_all <- prepare_nhis(nhis_2025)
+print(c(valid_outcome_n = nrow(validation_all),
+        use_pct = round(100 * mean(validation_all$telehealth), 2)))
+
+for (v in expanded_predictors) {
+  if (is.factor(train_data[[v]])) {
+    stopifnot(identical(levels(train_data[[v]]), levels(validation_all[[v]])))
+  }
+}
+
+complete_2025 <- complete.cases(validation_all[expanded_predictors])
+validation_2025 <- add_pool(validation_all[complete_2025, ], nhis_2025,
+                            on_unknown = "warning")
+y_2025 <- validation_2025$telehealth
+weight_2025 <- validation_2025$survey_weight
+stopifnot(all(is.finite(weight_2025)), all(weight_2025 > 0))
+print(c(complete_case_n = nrow(validation_2025)))
+
+cat("Recodes applied to the 2025 data (same dictionary as 2024):\n")
+print(describe_recodes(nhis_2025[validation_2025$source_row, ], pool_items),
+      row.names = FALSE)
+
+# Distribution shift in screened items of the primary model: share of each
+# level, 2024 training vs 2025 (unweighted, percent).
+for (v in intersect(bic_terms, new_candidates)) {
+  shares <- rbind(
+    train_2024 = 100 * prop.table(table(train_data[[v]])),
+    val_2025 = 100 * prop.table(table(validation_2025[[v]]))
+  )
+  cat("\n", v, "-", variable_labels[v], "\n")
+  print(round(shares, 1))
+}
+```
+
+## Discrimination and overall performance
+
+```{r evaluate-2025}
+prob_2025 <- predict_all(validation_2025)
+
+results_2025 <- t(vapply(prob_2025, evaluate_prob, numeric(4), y = y_2025))
+print(round(results_2025, 4))
+
+cat("Survey-weighted:\n")
+print(round(t(vapply(prob_2025, weighted_metrics, numeric(3),
+                     y = y_2025, w = weight_2025)), 4))
+
+validation_psu_index <- psu_index(validation_2025)
+cat("2025 validation:", length(validation_psu_index), "strata,",
+    sum(lengths(validation_psu_index)), "PSUs\n")
+print(round(bootstrap_compare(prob_2025, y_2025, validation_psu_index), 4))
+
+print(round(t(vapply(prob_2025[-1], calibration_stats, numeric(4),
+                     y = y_2025)), 4))
+```
+
+## Calibration across survey years
+
+Open symbols mark probability bands with fewer than 30 respondents.
+
+```{r plot-calibration-years, fig.width=6, fig.height=6}
+cal_2025 <- calibration_by_band(prob_2025[[primary_model]], y_2025)
+print(round(cal_2025, 4))
+
+axis_max <- max(0.7, cal_test$observed, cal_test$predicted,
+                cal_2025$observed, cal_2025$predicted)
+plot(NA_real_, NA_real_, xlim = c(0, axis_max), ylim = c(0, axis_max),
+     asp = 1, xlab = "Mean predicted probability",
+     ylab = "Observed proportion",
+     main = paste0(primary_model, ": calibration by survey year"))
+abline(0, 1, lty = 2, col = "gray55")
+points(cal_test$predicted, cal_test$observed,
+       pch = ifelse(cal_test$n < 30, 1, 19), col = "#B31B1B")
+points(cal_2025$predicted, cal_2025$observed,
+       pch = ifelse(cal_2025$n < 30, 2, 17), col = "#2166AC")
+legend("topleft", bty = "n",
+       legend = c("2024 held-out test", "2025 validation",
+                  "Open symbol: n < 30"),
+       pch = c(19, 17, 1), col = c("#B31B1B", "#2166AC", "gray40"))
+```
+
+## Survey-weighted calibration in 2025
+
+```{r weighted-calibration-2025, fig.width=6, fig.height=6}
+weighted_cal_2025 <- calibration_by_band(prob_2025[[primary_model]], y_2025,
+                                         weight_2025)
+print(round(weighted_cal_2025, 4))
+
+plot(weighted_cal_2025$predicted, weighted_cal_2025$observed,
+     xlim = c(0, axis_max), ylim = c(0, axis_max), asp = 1,
+     pch = ifelse(weighted_cal_2025$n < 30, 1, 19), col = "#2166AC",
+     xlab = "Weighted mean predicted probability",
+     ylab = "Weighted observed proportion",
+     main = "Survey-weighted calibration, 2025 NHIS")
+abline(0, 1, lty = 2, col = "gray55")
+legend("topleft", "Open symbol: n < 30", pch = 1, col = "#2166AC", bty = "n")
+```
+
+Design-based 95% CI for the weighted calibration gap (observed minus
+predicted, percentage points). The full survey design is built first and
+the validation sample is then treated as a domain.
+
+```{r weighted-gap-ci-2025}
+design_rows <- validation_2025$source_row
+stopifnot(all(nhis_2025$WTFA_A[design_rows] == weight_2025))
+
+nhis_2025$in_validation <- FALSE
+nhis_2025$in_validation[design_rows] <- TRUE
+
+weighted_gap <- function(model_name) {
+  nhis_2025$gap_pp <- NA_real_
+  nhis_2025$gap_pp[design_rows] <- 100 * (y_2025 - prob_2025[[model_name]])
+  design <- svydesign(ids = ~PPSU, strata = ~PSTRAT, weights = ~WTFA_A,
+                      data = nhis_2025, nest = TRUE)
+  domain <- subset(design, in_validation)
+  est <- svymean(~gap_pp, domain)
+  ci <- confint(est, df = degf(domain))
+  c(gap_pp = unname(coef(est)), lower_95 = ci[1, 1], upper_95 = ci[1, 2])
+}
+
+gap_table <- t(vapply(
+  c("Theory-based logistic", "Theory-based BIC logistic", primary_model),
+  weighted_gap, numeric(3)
+))
+print(round(gap_table, 3))
+
+print(round(c(
+  weighted_observed_pct = 100 * weighted.mean(y_2025, weight_2025),
+  weighted_predicted_pct = 100 * weighted.mean(prob_2025[[primary_model]],
+                                               weight_2025)
+), 2))
+```
+
+# Sensitivity: survey-weighted model fitting
+
+The primary formula is refit with the NHIS adult weights (rescaled to mean
+1; quasibinomial family, so point estimates equal weighted maximum
+likelihood). Variable selection is not repeated. Both versions are scored
+unweighted and weighted in the 2024 test set and in 2025.
+
+```{r weighted-fit}
+train_w <- train_data$survey_weight / mean(train_data$survey_weight)
+fit_primary_weighted <- glm(f_bic, data = train_data, family = quasibinomial(),
+                            weights = train_w)
+
+score_versions <- function(data, y, w) {
+  p_unw <- unname(predict(fit_primary, data, type = "response"))
+  p_w <- unname(predict(fit_primary_weighted, data, type = "response"))
+  rbind(
+    "Unweighted fit, unweighted metrics" = evaluate_prob(p_unw, y)[c("log_loss", "AUROC", "Brier")],
+    "Weighted fit, unweighted metrics" = evaluate_prob(p_w, y)[c("log_loss", "AUROC", "Brier")],
+    "Unweighted fit, weighted metrics" = weighted_metrics(p_unw, y, w),
+    "Weighted fit, weighted metrics" = weighted_metrics(p_w, y, w)
+  )
+}
+
+cat("2024 test set\n")
+print(round(score_versions(test_data, y_test, weight_test), 4))
+cat("\n2025 validation\n")
+print(round(score_versions(validation_2025, y_2025, weight_2025), 4))
+
+cat("\nWeighted mean predicted vs observed in 2025 (percent):\n")
+print(round(100 * c(
+  observed = weighted.mean(y_2025, weight_2025),
+  unweighted_fit = weighted.mean(predict(fit_primary, validation_2025,
+                                         type = "response"), weight_2025),
+  weighted_fit = weighted.mean(predict(fit_primary_weighted, validation_2025,
+                                       type = "response"), weight_2025)
+), 2))
+```
+
+# Sensitivity: collinearity and interactions
+
+## Collinearity
+
+Generalized variance inflation factors (Fox and Monette), computed from the
+correlation of the coefficient estimates as in `car::vif()`. For an item
+with df parameters, GVIF^(1/(2·df)) is comparable to the square root of a
+classic VIF; values above about 2.2 (VIF > 5) deserve attention.
+
+```{r collinearity-gvif}
+gvif_table <- function(fit) {
+  R <- cov2cor(vcov(fit)[-1, -1])
+  assign <- attr(model.matrix(fit), "assign")[-1]
+  labels <- attr(terms(fit), "term.labels")
+  det_R <- det(R)
+  out <- t(vapply(seq_along(labels), function(j) {
+    idx <- which(assign == j)
+    g <- det(R[idx, idx, drop = FALSE]) * det(R[-idx, -idx, drop = FALSE]) / det_R
+    c(df = length(idx), GVIF = g, GVIF_adjusted = g^(1 / (2 * length(idx))))
+  }, numeric(3)))
+  out <- data.frame(term = labels, round(out, 3))
+  out[order(-out$GVIF_adjusted), ]
+}
+
+cat("Primary (stepwise BIC) model\n")
+print(head(gvif_table(fit_primary), 10), row.names = FALSE)
+cat("\nTheory-based (Andersen) model\n")
+print(head(gvif_table(fit_theory), 10), row.names = FALSE)
+```
+
+Several items with large raw GVIFs have a Missing/Unknown category. One
+possible explanation is that largely the same respondents (about 3%) are
+unascertained on several of these items; the cross-tabulation below checks
+how much these categories overlap. This is a diagnostic, not a proof of
+the source of the inflation.
+
+```{r missing-overlap}
+# Respondents in the Missing/Unknown category of at least one item, and of
+# every item, in each group of items with high GVIF.
+missing_overlap <- function(data, items, level) {
+  flags <- vapply(items, function(v) data[[v]] == level, logical(nrow(data)))
+  c(any_item = sum(rowSums(flags) > 0), all_items = sum(rowSums(flags) == length(items)))
+}
+print(rbind(
+  "Primary: voted / public meeting (Missing)" =
+    missing_overlap(train_data, c("CEVOTELC_A", "CEMMETNG_A"), "Missing"),
+  "Theory-based: marital / U.S.-born / worked (Unknown)" =
+    missing_overlap(train_data, c("marital", "us_born", "worked_last_week"), "Unknown")
+))
+```
+
+Pairwise association between the predictors of the primary model
+(Cramér's V; continuous variables split into quartiles):
+
+```{r pairwise-association}
+as_categories <- function(x) {
+  if (is.numeric(x)) cut(x, unique(quantile(x, 0:4 / 4)), include.lowest = TRUE) else x
+}
+cramers_v <- function(a, b) {
+  tab <- table(as_categories(a), as_categories(b))
+  chi2 <- suppressWarnings(chisq.test(tab, correct = FALSE)$statistic)
+  unname(sqrt(chi2 / (sum(tab) * (min(dim(tab)) - 1))))
+}
+
+primary_vars <- all.vars(f_bic)[-1]
+var_pairs <- t(combn(primary_vars, 2))
+association <- data.frame(
+  var1 = var_pairs[, 1], var2 = var_pairs[, 2],
+  cramers_v = round(apply(var_pairs, 1, function(p) {
+    cramers_v(train_data[[p[1]]], train_data[[p[2]]])
+  }), 3)
+)
+print(head(association[order(-association$cramers_v), ], 12), row.names = FALSE)
+```
+
+## Pairwise interactions
+
+This analysis is exploratory. All pairwise interactions among the terms
+of each model are screened in one pass (change in BIC when each is added
+alone); those that lower BIC are then offered to a forward stepwise BIC
+search. Selection uses the full training set, and the resulting formula is
+then cross-validated, so the CV log loss is an *apparent* value that is not
+comparable with the nested estimates.
+
+```{r interaction-selection, cache=TRUE}
+select_interactions <- function(fit) {
+  labels <- attr(terms(fit), "term.labels")
+  candidates <- apply(t(combn(labels, 2)), 1, paste, collapse = ":")
+  screen <- add1(fit, scope = reformulate(c(labels, candidates)),
+                 k = log(n_train))[-1, ]
+  base_bic <- extractAIC(fit, k = log(n_train))[2]
+  screen <- data.frame(interaction = rownames(screen), df = screen$Df,
+                       delta_BIC = screen$AIC - base_bic)
+  screen <- screen[order(screen$delta_BIC), ]
+
+  passed <- screen$interaction[screen$delta_BIC < 0]
+  final_formula <- formula(fit)
+  if (length(passed)) {
+    upper <- update(formula(fit), paste(". ~ . +", paste(passed, collapse = " + ")))
+    final_fit <- step(fit, scope = list(lower = formula(fit), upper = upper),
+                      direction = "forward", k = log(n_train), trace = 0)
+    final_formula <- formula(final_fit)
+  }
+  added <- setdiff(attr(terms(final_formula), "term.labels"), labels)
+  list(screen = screen, n_candidates = length(candidates),
+       added = added, formula = final_formula)
+}
+
+interactions <- list(
+  "Stepwise BIC" = select_interactions(fit_primary),
+  "Theory-based" = select_interactions(fit_theory)
+)
+
+for (m in names(interactions)) {
+  x <- interactions[[m]]
+  cat("\n", m, "model:", sum(x$screen$delta_BIC < 0), "of", x$n_candidates,
+      "interactions lower BIC when added alone\n")
+  shown <- head(x$screen, 10)
+  shown$delta_BIC <- round(shown$delta_BIC, 1)
+  print(shown, row.names = FALSE)
+  cat("Entered by forward BIC:",
+      if (length(x$added)) paste(x$added, collapse = ", ") else "none", "\n")
+}
+```
+
+```{r interaction-performance, cache=TRUE}
+base_formulas <- list("Stepwise BIC" = f_bic, "Theory-based" = f_theory)
+
+interaction_results <- do.call(rbind, lapply(names(base_formulas), function(m) {
+  do.call(rbind, lapply(c("Main effects", "With interactions"), function(version) {
+    f <- if (version == "Main effects") base_formulas[[m]] else interactions[[m]]$formula
+    fit <- glm(f, data = train_data, family = binomial())
+    p_test <- predict(fit, test_data, type = "response")
+    p_2025 <- predict(fit, validation_2025, type = "response")
+    data.frame(
+      model = m, version = version, n_parameters = length(coef(fit)),
+      apparent_cv_logloss = round(mean(cv_logistic(f)), 5),
+      test_logloss = round(log_loss(y_test, p_test), 4),
+      test_AUROC = round(auroc(p_test, y_test), 4),
+      logloss_2025 = round(log_loss(y_2025, p_2025), 4),
+      AUROC_2025 = round(auroc(p_2025, y_2025), 4)
+    )
+  }))
+}))
+print(interaction_results, row.names = FALSE)
+```
+
+The primary model remains the main-effects model fixed before
+evaluation; the interaction results do not change it and are not used to
+choose between model structures.
+
+# Interpretation of the primary model
+
+Odds ratios from the stepwise BIC model (unweighted, training set). They
+describe adjusted associations useful for prediction, are conditional on
+the selected model (post-selection intervals are too narrow), and are not
+causal effects or population estimates. The intervals ignore the survey
+design and the selection step, so they should not be used to call any
+predictor a significant risk factor. Category names come from the coding
+dictionary.
+
+```{r odds-ratios}
+coefs <- summary(fit_primary)$coefficients
+keep <- !grepl("^\\(Intercept\\)|^ns\\(", rownames(coefs))
+or_table <- data.frame(
+  term = rownames(coefs)[keep],
+  OR = exp(coefs[keep, "Estimate"]),
+  lower_95 = exp(coefs[keep, "Estimate"] - 1.96 * coefs[keep, "Std. Error"]),
+  upper_95 = exp(coefs[keep, "Estimate"] + 1.96 * coefs[keep, "Std. Error"])
+)
+or_table$item <- vapply(or_table$term, function(t) {
+  hit <- names(variable_labels)[startsWith(t, names(variable_labels))]
+  if (length(hit)) variable_labels[hit[which.max(nchar(hit))]] else ""
+}, character(1))
+print(or_table, row.names = FALSE, digits = 3)
+```
+
+The curves below are *reference-profile* predictions: predicted
+probability for one hypothetical adult whose other predictors are fixed at
+the most common category (or the median). They show the shape of the
+spline terms; they are not population-average effects.
+
+```{r spline-effects, fig.width=8, fig.height=4}
+model_vars <- all.vars(f_bic)[-1]
+reference_profile <- train_data[1, model_vars]
+for (v in model_vars) {
+  x <- train_data[[v]]
+  reference_profile[[v]] <- if (is.factor(x)) {
+    factor(names(which.max(table(x))), levels = levels(x))
+  } else median(x)
+}
+
+par(mfrow = c(1, 2))
+if ("age" %in% model_vars) {
+  age_grid <- reference_profile[rep(1, 68), ]
+  age_grid$age <- 18:85
+  plot(18:85, predict(fit_primary, age_grid, type = "response"), type = "l",
+       lwd = 2, col = "#B31B1B", xlab = "Age (years)",
+       ylab = "Predicted probability (reference profile)", main = "Age")
+}
+if ("pov_ratio" %in% model_vars) {
+  pov_seq <- seq(0, 11, by = 0.1)
+  pov_grid <- reference_profile[rep(1, length(pov_seq)), ]
+  pov_grid$pov_ratio <- pov_seq
+  plot(pov_seq, predict(fit_primary, pov_grid, type = "response"), type = "l",
+       lwd = 2, col = "#B31B1B", xlab = "Family income / poverty threshold",
+       ylab = "Predicted probability (reference profile)",
+       main = "Income-to-poverty ratio")
+}
+par(mfrow = c(1, 1))
+```
+
+```{r drop-one-importance, cache=TRUE}
+# Increase in mean CV log loss when each item is removed from the primary
+# model.
+base_loss <- mean(cv_logistic(f_bic))
+drop_one <- vapply(bic_terms, function(t) {
+  kept <- setdiff(bic_terms, t)
+  mean(cv_logistic(reformulate(kept, response = "telehealth"))) - base_loss
+}, numeric(1))
+importance <- data.frame(
+  term = names(drop_one),
+  label = ifelse(names(drop_one) %in% names(variable_labels),
+                 variable_labels[names(drop_one)], ""),
+  cv_logloss_increase = round(drop_one, 5)
+)
+print(importance[order(-importance$cv_logloss_increase), ], row.names = FALSE)
+```
+
+# Model export
+
+The fitted models are written to `model_export/` so that they can be
+reported in full (TRIPOD) and applied to new data without rerunning this
+document. The logistic and group lasso models are exported as coefficient
+tables, together with the spline knots and factor levels estimated from the
+2024 training data; the XGBoost model is saved in xgboost's JSON format.
+Full R model objects are not saved, because they contain a copy of the
+training data. The standalone scoring function below reads only the
+exported files; the last chunk checks that it reproduces the 2025
+predictions of every exported model.
+
+```{r model-export}
+export_dir <- "model_export"
+dir.create(export_dir, showWarnings = FALSE)
+
+# Coefficients. Column names follow R's model.matrix() naming: a factor
+# level is the variable name followed by the level label, and a spline
+# basis is the term followed by 1, 2, 3. The first level of each factor is
+# the reference category.
+logistic_fits <- list(
+  "Theory-based logistic" = fit_theory,
+  "Theory-based BIC logistic" = fit_theory_bic,
+  "Stepwise BIC logistic" = fit_primary
+)
+logistic_coefficients <- do.call(rbind, lapply(names(logistic_fits), function(m) {
+  fit <- logistic_fits[[m]]
+  stopifnot(!anyNA(coef(fit)))
+  assign_ <- attr(model.matrix(fit), "assign")
+  data.frame(
+    model = m,
+    term = c("(Intercept)", attr(terms(fit), "term.labels"))[assign_ + 1],
+    column = names(coef(fit)),
+    estimate = unname(coef(fit)),
+    std_error = unname(sqrt(diag(vcov(fit))))
+  )
+}))
+
+# Group lasso: penalized estimates on the original scale, nonzero groups
+# only. No standard errors are defined for these estimates.
+glasso_coefficients <- do.call(rbind, lapply(
+  list("Group lasso (lambda.min)" = i_min, "Group lasso (lambda.1se)" = i_1se),
+  function(i) {
+    b <- coef(cv_glasso$fit, lambda = cv_glasso$lambda[i])
+    stopifnot(identical(names(b)[-1], colnames(x_train)))
+    keep <- c(TRUE, b[-1] != 0)
+    data.frame(
+      term = c("(Intercept)", term_of_column)[keep],
+      column = names(b)[keep],
+      estimate = unname(b[keep]),
+      std_error = NA_real_
+    )
+  }))
+glasso_coefficients$model <- sub("\\.[0-9]+$", "", rownames(glasso_coefficients))
+glasso_coefficients <- glasso_coefficients[, names(logistic_coefficients)]
+
+model_coefficients <- rbind(logistic_coefficients, glasso_coefficients)
+rownames(model_coefficients) <- NULL
+write.csv(model_coefficients, file.path(export_dir, "model_coefficients.csv"),
+          row.names = FALSE)
+
+# Spline knots (quantiles of the 2024 training data). All models were fit to
+# the same rows, so they share one set of knots.
+spline_knots <- function(fit) {
+  calls <- as.list(attr(terms(fit), "predvars"))[-1]
+  do.call(rbind, lapply(calls, function(e) {
+    if (!is.call(e) || !deparse(e[[1]]) %in% c("ns", "splines::ns")) return(NULL)
+    v <- deparse(e[[2]])
+    rbind(data.frame(variable = v, type = "interior", value = unname(eval(e$knots))),
+          data.frame(variable = v, type = "boundary",
+                     value = unname(eval(e$Boundary.knots))))
+  }))
+}
+knots_table <- spline_knots(fit_theory)
+sort_knots <- function(k) k[order(k$variable, k$type, k$value), "value"]
+for (fit in logistic_fits) {
+  k <- spline_knots(fit)
+  stopifnot(identical(sort_knots(k),
+                      sort_knots(knots_table[knots_table$variable %in% k$variable, ])))
+}
+write.csv(knots_table, file.path(export_dir, "spline_knots.csv"), row.names = FALSE)
+print(knots_table, row.names = FALSE)
+
+# Factor levels, in model order (the first level is the reference).
+model_vars_all <- unique(sub("^ns\\(([^,]+),.*$", "\\1",
+                             setdiff(model_coefficients$term, "(Intercept)")))
+factor_vars <- model_vars_all[vapply(model_vars_all,
+                                     function(v) is.factor(train_data[[v]]),
+                                     logical(1))]
+for (m in names(logistic_fits)) {
+  xl <- logistic_fits[[m]]$xlevels
+  for (v in names(xl)) stopifnot(identical(xl[[v]], levels(train_data[[v]])))
+}
+factor_levels <- do.call(rbind, lapply(factor_vars, function(v) {
+  lev <- levels(train_data[[v]])
+  data.frame(variable = v, level_order = seq_along(lev), level = lev,
+             reference = seq_along(lev) == 1)
+}))
+write.csv(factor_levels, file.path(export_dir, "factor_levels.csv"), row.names = FALSE)
+
+# XGBoost: model file, input columns and tuning result.
+invisible(xgb.save(xgb_pool_fit, file.path(export_dir, "xgb_full_pool.json")))
+write.csv(data.frame(feature = colnames(xgb_matrix(train_data, pool_vars))),
+          file.path(export_dir, "xgb_features.csv"), row.names = FALSE)
+write.csv(data.frame(setting = c(names(xgb_pool$params), "nrounds"),
+                     value = c(vapply(xgb_pool$params, as.character, ""),
+                               as.character(xgb_pool$nrounds))),
+          file.path(export_dir, "xgb_settings.csv"), row.names = FALSE)
+
+# Coding rules needed to prepare the raw NHIS items.
+invisible(file.copy("coding_dictionary.csv", export_dir, overwrite = TRUE))
+
+cat("Exported columns per model:\n")
+print(table(model_coefficients$model))
+```
+
+The scoring function is written to `model_export/predict_from_csv.R`. It
+expects data in which the model variables are already coded as in this
+analysis (coding dictionary; age in years; income-to-poverty ratio capped
+at 11).
+
+```{cat, engine.opts = list(file = "model_export/predict_from_csv.R", lang = "r")}
+# Predicted probability of past-year telehealth use from the exported
+# coefficient tables (HINF 5001, Team 1 prediction models).
+#
+# data:  one row per respondent. Every variable the model uses must already
+#        be coded as in the analysis (see coding_dictionary.csv): age in
+#        years; pov_ratio capped at 11; categorical variables as character
+#        or factor using the labels in factor_levels.csv.
+# model: a model name in model_coefficients.csv, for example
+#        "Stepwise BIC logistic".
+predict_from_csv <- function(data, model, export_dir = "model_export") {
+  read <- function(f) read.csv(file.path(export_dir, f), stringsAsFactors = FALSE)
+  coefs <- read("model_coefficients.csv")
+  coefs <- coefs[coefs$model == model, ]
+  if (nrow(coefs) == 0) stop("Unknown model: ", model)
+  factor_levels <- read("factor_levels.csv")
+  factor_levels <- factor_levels[order(factor_levels$variable,
+                                       factor_levels$level_order), ]
+  knots <- read("spline_knots.csv")
+
+  columns <- list()
+  for (term in setdiff(unique(coefs$term), "(Intercept)")) {
+    if (startsWith(term, "ns(")) {
+      v <- sub("^ns\\(([^,]+),.*$", "\\1", term)
+      k <- knots[knots$variable == v, ]
+      basis <- splines::ns(data[[v]],
+                           knots = k$value[k$type == "interior"],
+                           Boundary.knots = k$value[k$type == "boundary"])
+      for (j in seq_len(ncol(basis))) columns[[paste0(term, j)]] <- basis[, j]
+    } else if (term %in% factor_levels$variable) {
+      lev <- factor_levels$level[factor_levels$variable == term]
+      x <- as.character(data[[term]])
+      unknown <- setdiff(unique(x[!is.na(x)]), lev)
+      if (length(unknown)) {
+        stop("Unknown level(s) of ", term, ": ", paste(unknown, collapse = ", "))
+      }
+      for (l in lev[-1]) columns[[paste0(term, l)]] <- as.numeric(x == l)
+    } else {
+      columns[[term]] <- as.numeric(data[[term]])
+    }
+  }
+  x <- do.call(cbind, columns)
+
+  beta <- setNames(coefs$estimate, coefs$column)
+  slope <- beta[names(beta) != "(Intercept)"]
+  absent <- setdiff(names(slope), colnames(x))
+  if (length(absent)) stop("Columns not built: ", paste(absent, collapse = ", "))
+  eta <- beta[["(Intercept)"]] + drop(x[, names(slope), drop = FALSE] %*% slope)
+  plogis(eta)
+}
+```
+
+A short README is written alongside the files.
+
+```{cat, engine.opts = list(file = "model_export/README.md", lang = "markdown")}
+# Exported prediction models: past-year telehealth use (NHIS)
+
+Models developed on the NHIS 2024 adult file (80% training split, seed 2026)
+and temporally validated on the NHIS 2025 adult file. Generated by
+`nhis_telehealth_prediction_final.Rmd`; see that document for methods.
+
+| File | Contents |
+|---|---|
+| `model_coefficients.csv` | Intercept and coefficients (log-odds scale) of the theory-based, theory-based BIC and primary (stepwise BIC) logistic models, with standard errors; nonzero penalized coefficients of the two group lasso models (no standard errors) |
+| `spline_knots.csv` | Interior and boundary knots of the natural splines `ns(age, df = 3)` and `ns(pov_ratio, df = 3)` (2024 training data) |
+| `factor_levels.csv` | Levels of each categorical variable; the first level is the reference |
+| `coding_dictionary.csv` | Rules that turn raw NHIS codes into the model variables, including nonresponse and skip handling |
+| `predict_from_csv.R` | `predict_from_csv(data, model)`: predicted probabilities from the files above |
+| `xgb_full_pool.json`, `xgb_features.csv`, `xgb_settings.csv` | XGBoost model (xgboost JSON format), its input columns (R `model.matrix` dummy coding) and tuning settings |
+
+Input data must be coded as in the analysis: age in years, income-to-poverty
+ratio capped at 11, categorical variables labelled as in `factor_levels.csv`.
+Models were fit without survey weights. Predictions describe the NHIS adult
+population of 2024–2025 and have not been validated outside this survey.
+Raw NHIS files are not included; they are available from the National
+Center for Health Statistics.
+```
+
+```{r model-export-check}
+# Reproduce the 2025 predictions from the exported files alone.
+scorer <- new.env()
+sys.source(file.path(export_dir, "predict_from_csv.R"), envir = scorer)
+export_check <- data.frame(model = unique(model_coefficients$model))
+export_check$max_abs_difference <- vapply(export_check$model, function(m) {
+  max(abs(scorer$predict_from_csv(validation_2025, m, export_dir) - prob_2025[[m]]))
+}, numeric(1))
+
+xgb_reloaded <- xgb.load(file.path(export_dir, "xgb_full_pool.json"))
+export_check <- rbind(export_check, data.frame(
+  model = "Full pool XGBoost",
+  max_abs_difference = max(abs(
+    predict(xgb_reloaded, xgb.DMatrix(xgb_matrix(validation_2025, pool_vars))) -
+      prob_2025[["Full pool XGBoost"]]))
+))
+print(export_check, row.names = FALSE)
+stopifnot(export_check$max_abs_difference < 1e-6)
+list.files(export_dir)
+```
+
+# Limitations
+
+* **Prior viewing of evaluation data.** In the current pipeline,
+  development uses only 2024 training data and the list of 2025 variable
+  names. Earlier iterations of this project, however, examined results in
+  both the 2024 test set and the 2025 file (including before the decision
+  to expand the predictor set), and the coding dictionary was drafted
+  while viewing predictor distributions in the full 2024 file. Neither
+  evaluation set should therefore be described as untouched or fully
+  independent; the 2025 analysis is a temporal validation by the
+  development team.
+* **Scope of the validation.** The 2025 file tests transportability to the
+  next year of the same survey and questionnaire, not to other
+  populations or data sources.
+* **What nested CV covers.** Nested CV repeats variable selection and model
+  fitting inside folds, but not screening, coding or the outcome-proxy
+  diagnostic (which uses training outcomes), and the inner CV of group
+  lasso shares the spline basis of the outer training part. XGBoost tuning
+  was not nested; its tuning scores are reported separately. Interaction
+  and borderline-item analyses select on the full training set and report
+  apparent CV values.
+* **Uncertainty intervals.** Bootstrap intervals resample PSUs within
+  strata for unweighted metrics of fixed models; they exclude uncertainty
+  from training and selection and are not design-based intervals for
+  weighted metrics.
+* **Weights and missing data.** Models are fit unweighted; weighted metrics
+  and a weighted refit are reported. Weighted results represent the
+  complete-case population; the original weights do not correct for
+  exclusion of respondents with missing predictors.
+* **Coding and item classification.** The coding dictionary was checked
+  against the 2024 and 2025 codebooks; the check should still be
+  spot-checked by the team. Nonresponse is assigned to the most common
+  category for items with little nonresponse, which can misclassify a small
+  number of respondents. Excluding items whose answer a telehealth visit
+  can produce is a judgment about question content; the outcome-proxy
+  diagnostic can flag suspicious items but cannot prove that an unflagged
+  item is free of leakage. Care-use and access items that passed the
+  diagnostic are examined only in a sensitivity analysis.
+* **Theory-based specification.** The 22 theory-based items are one
+  operationalization of Andersen's model, not a standard variable set, and
+  cover individual predisposing, enabling and need factors plus
+  urban-rural classification, but not other contextual factors or health
+  behaviors. Urban-rural classification was added after earlier analyses
+  had shown it to be a strong predictor, so the theory-based set is not
+  fully specified independently of the data.
+* **Income and year-specific coding.** The income-to-poverty ratio is based
+  on the first of 10 income imputations and is top-coded at 11 in 2024 and
+  12 in 2025; it is capped at 11 for both years.
+* **Selection stability.** Some selected items are not reselected in every
+  fold or half-sample (see the stability tables); the primary model should
+  be read as one good parsimonious model, not the unique correct one.
+* **Post-selection inference.** Odds ratios and their intervals are
+  conditional on the selected model, ignore the survey design, and
+  describe associations, not causal effects.
+* **Software environment.** Package versions are printed but not locked;
+  other versions (notably of xgboost) may give slightly different results.
+
+# Summary
+
+* Item pool: `r nrow(screening)` items in the 2024 file, `r sum(screening$fielded_2025)` of them also fielded in 2025;
+  `r length(pool_terms)` candidate terms after screening (including the 22
+  theory-based terms); excluded by the outcome-proxy diagnostic:
+  `r if (length(flagged_items)) paste(flagged_items, collapse = ", ") else "none"`.
+* Primary model (stepwise BIC from the intercept-only model):
+  `r length(bic_terms)` terms. Stepwise BIC within the theory-based items
+  kept `r length(bic_theory_terms)` of `r length(andersen_terms)` terms.
+* CV log loss (nested for selection procedures; XGBoost tuning score not
+  ranked): theory-based all items `r sprintf("%.4f", cv_table$cv_logloss[1])`,
+  theory-based BIC `r sprintf("%.4f", cv_table$cv_logloss[2])`, primary
+  `r sprintf("%.4f", cv_table$cv_logloss[4])`, group lasso
+  `r sprintf("%.4f", cv_table$cv_logloss[5])`.
+* AUROC, 2024 test: theory-based `r sprintf("%.3f", test_results["Theory-based logistic", "AUROC"])`,
+  theory-based BIC `r sprintf("%.3f", test_results["Theory-based BIC logistic", "AUROC"])`,
+  primary `r sprintf("%.3f", test_results[primary_model, "AUROC"])`.
+* AUROC, 2025: theory-based `r sprintf("%.3f", results_2025["Theory-based logistic", "AUROC"])`,
+  theory-based BIC `r sprintf("%.3f", results_2025["Theory-based BIC logistic", "AUROC"])`,
+  primary `r sprintf("%.3f", results_2025[primary_model, "AUROC"])`.
+* 2025 survey-weighted calibration gap (observed − predicted) for the
+  primary model: `r sprintf("%.2f", gap_table[primary_model, "gap_pp"])`
+  percentage points (95% CI `r sprintf("%.2f", gap_table[primary_model, "lower_95"])`
+  to `r sprintf("%.2f", gap_table[primary_model, "upper_95"])`).
+* Exploratory interactions entering the primary model by forward BIC:
+  `r paste(interactions[["Stepwise BIC"]]$added, collapse = ", ")`;
+  2025 AUROC `r sprintf("%.4f", interaction_results$AUROC_2025[1])` without vs
+  `r sprintf("%.4f", interaction_results$AUROC_2025[2])` with interactions.
+
+```{r session-info}
+sessionInfo()
+```

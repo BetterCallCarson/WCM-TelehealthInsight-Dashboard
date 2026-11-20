@@ -1,0 +1,401 @@
+"model","term","column","estimate","std_error"
+"Theory-based logistic","(Intercept)","(Intercept)",-1.62526129734131,0.128062116892313
+"Theory-based logistic","ns(age, df = 3)","ns(age, df = 3)1",-0.306656783590838,0.0706536277058486
+"Theory-based logistic","ns(age, df = 3)","ns(age, df = 3)2",0.1146987055994,0.171387780809466
+"Theory-based logistic","ns(age, df = 3)","ns(age, df = 3)3",-0.505208106491941,0.0801018801760833
+"Theory-based logistic","insurance","insurancePublic / other, no private",0.116715737160211,0.0396806613095884
+"Theory-based logistic","insurance","insuranceUninsured",-0.649350956819075,0.0816898788583288
+"Theory-based logistic","education","educationSome college / associate",-0.343810179539013,0.0398371437131649
+"Theory-based logistic","education","educationHigh school / GED",-0.636041753433303,0.0451409740831069
+"Theory-based logistic","education","educationLess than high school",-0.797437463450968,0.0756421716984819
+"Theory-based logistic","internet","internetNo internet access",-0.577430515734809,0.0780781232159761
+"Theory-based logistic","health","healthVery good",0.248466761351062,0.0464044462645923
+"Theory-based logistic","health","healthGood",0.431617956339709,0.0492710679610986
+"Theory-based logistic","health","healthFair",0.650608243041344,0.0628385648402378
+"Theory-based logistic","health","healthPoor",0.689481360110686,0.0950784479756602
+"Theory-based logistic","sex","sexFemale",0.263286538933943,0.0318181336343678
+"Theory-based logistic","race_eth","race_ethHispanic",-0.0152975317643358,0.0535037333686957
+"Theory-based logistic","race_eth","race_ethNH Black",0.0683712242196464,0.055620774920267
+"Theory-based logistic","race_eth","race_ethNH Asian",-0.120784995888332,0.0766349841623316
+"Theory-based logistic","race_eth","race_ethNH other / multiple",-0.0285906384068133,0.092013678860615
+"Theory-based logistic","region","regionMidwest",-0.231698973277932,0.051498332267675
+"Theory-based logistic","region","regionSouth",-0.0392236896590778,0.0465041916438509
+"Theory-based logistic","region","regionWest",0.312258543331769,0.0487770387716512
+"Theory-based logistic","marital","maritalLiving with partner",-0.132213619779891,0.068301524296832
+"Theory-based logistic","marital","maritalNeither",-0.114161546672191,0.0351283690528843
+"Theory-based logistic","marital","maritalUnknown",0.352685991289233,0.307890065457149
+"Theory-based logistic","us_born","us_bornNo",-0.235241977073325,0.0540210209616006
+"Theory-based logistic","us_born","us_bornUnknown",-0.270220949457494,0.359568035119122
+"Theory-based logistic","worked_last_week","worked_last_weekNo",0.0364942436464571,0.0422428436650622
+"Theory-based logistic","worked_last_week","worked_last_weekUnknown",-0.208393339239306,0.325432494064911
+"Theory-based logistic","hypertension","hypertensionYes",0.0586349932324269,0.0369726466548234
+"Theory-based logistic","diabetes","diabetesYes",0.229752664125653,0.0501293087836135
+"Theory-based logistic","asthma","asthmaYes",0.192832863837418,0.0422065510886622
+"Theory-based logistic","copd","copdYes",0.142204782044298,0.0671541177242546
+"Theory-based logistic","cancer","cancerYes",0.328226171706042,0.0453873888124178
+"Theory-based logistic","arthritis","arthritisYes",0.209802171395124,0.0395109874851521
+"Theory-based logistic","depression","depressionYes",0.530820820996398,0.0443648261924019
+"Theory-based logistic","anxiety","anxietyYes",0.550235773931027,0.0450299998491755
+"Theory-based logistic","disability","disabilityYes",0.259093931490856,0.0522071689657787
+"Theory-based logistic","ns(pov_ratio, df = 3)","ns(pov_ratio, df = 3)1",0.335231299920171,0.0746583535803989
+"Theory-based logistic","ns(pov_ratio, df = 3)","ns(pov_ratio, df = 3)2",0.543289685670718,0.165565013918239
+"Theory-based logistic","ns(pov_ratio, df = 3)","ns(pov_ratio, df = 3)3",0.468211363484856,0.0650727206443678
+"Theory-based logistic","URBRRL23","URBRRL23Large fringe metro",-0.12318956918063,0.0438285780768967
+"Theory-based logistic","URBRRL23","URBRRL23Medium or small metro",-0.368725473978426,0.041612297022175
+"Theory-based logistic","URBRRL23","URBRRL23Nonmetropolitan",-0.557831471969916,0.0486535668166495
+"Theory-based BIC logistic","(Intercept)","(Intercept)",-1.76318879689665,0.116363247458086
+"Theory-based BIC logistic","depression","depressionYes",0.527454566737065,0.0442038723270445
+"Theory-based BIC logistic","education","educationSome college / associate",-0.336521837711514,0.0395765249959394
+"Theory-based BIC logistic","education","educationHigh school / GED",-0.624669521004682,0.0447500980131578
+"Theory-based BIC logistic","education","educationLess than high school",-0.781425169083634,0.0746656246813196
+"Theory-based BIC logistic","health","healthVery good",0.250400143077156,0.0462090492053861
+"Theory-based BIC logistic","health","healthGood",0.438047050194316,0.0487709209417716
+"Theory-based BIC logistic","health","healthFair",0.672806727891972,0.0617836943621827
+"Theory-based BIC logistic","health","healthPoor",0.728217568653088,0.0936701210271771
+"Theory-based BIC logistic","anxiety","anxietyYes",0.553474748657184,0.0448332057997297
+"Theory-based BIC logistic","region","regionMidwest",-0.22447718907752,0.0513734070017549
+"Theory-based BIC logistic","region","regionSouth",-0.0224029612475268,0.0461000458894447
+"Theory-based BIC logistic","region","regionWest",0.30747946353861,0.0483873383072536
+"Theory-based BIC logistic","URBRRL23","URBRRL23Large fringe metro",-0.116185540780472,0.0435928518463463
+"Theory-based BIC logistic","URBRRL23","URBRRL23Medium or small metro",-0.359840446004838,0.0410875014905558
+"Theory-based BIC logistic","URBRRL23","URBRRL23Nonmetropolitan",-0.545905822535862,0.0475073231242737
+"Theory-based BIC logistic","insurance","insurancePublic / other, no private",0.122840545117275,0.038980069815584
+"Theory-based BIC logistic","insurance","insuranceUninsured",-0.657214487313791,0.0812760869694149
+"Theory-based BIC logistic","internet","internetNo internet access",-0.591139594801557,0.077819274149572
+"Theory-based BIC logistic","sex","sexFemale",0.254259391379238,0.0315822276189957
+"Theory-based BIC logistic","ns(pov_ratio, df = 3)","ns(pov_ratio, df = 3)1",0.354825427692882,0.0730068976174836
+"Theory-based BIC logistic","ns(pov_ratio, df = 3)","ns(pov_ratio, df = 3)2",0.579724051898656,0.160640386749612
+"Theory-based BIC logistic","ns(pov_ratio, df = 3)","ns(pov_ratio, df = 3)3",0.488040455053539,0.0626319548201573
+"Theory-based BIC logistic","cancer","cancerYes",0.333665362864027,0.0452324510019645
+"Theory-based BIC logistic","asthma","asthmaYes",0.207395103496363,0.0415199551655324
+"Theory-based BIC logistic","disability","disabilityYes",0.264746656228515,0.0520258303299353
+"Theory-based BIC logistic","ns(age, df = 3)","ns(age, df = 3)1",-0.220304238721586,0.0665375403071173
+"Theory-based BIC logistic","ns(age, df = 3)","ns(age, df = 3)2",0.289739312957589,0.165926734636684
+"Theory-based BIC logistic","ns(age, df = 3)","ns(age, df = 3)3",-0.432164236882004,0.0691078346347033
+"Theory-based BIC logistic","arthritis","arthritisYes",0.218299844572446,0.0393315560555811
+"Theory-based BIC logistic","diabetes","diabetesYes",0.239143342947617,0.0495180791621958
+"Theory-based BIC logistic","us_born","us_bornNo",-0.262740313845702,0.0469994696946716
+"Theory-based BIC logistic","us_born","us_bornUnknown",-0.0900797111154986,0.0931931044567276
+"Stepwise BIC logistic","(Intercept)","(Intercept)",-2.23356710482141,0.122361995544493
+"Stepwise BIC logistic","depression","depressionYes",0.438258585634509,0.0450835385209864
+"Stepwise BIC logistic","education","educationSome college / associate",-0.280019065791406,0.0400968768011005
+"Stepwise BIC logistic","education","educationHigh school / GED",-0.503118324726286,0.0456603211744732
+"Stepwise BIC logistic","education","educationLess than high school",-0.628696242803802,0.075746583691672
+"Stepwise BIC logistic","ANXFREQ_A","ANXFREQ_ADaily",0.489815530913478,0.0582026075957851
+"Stepwise BIC logistic","ANXFREQ_A","ANXFREQ_AWeekly",0.405995066935559,0.0535593705350607
+"Stepwise BIC logistic","ANXFREQ_A","ANXFREQ_AMonthly",0.281147159641466,0.0559485647148626
+"Stepwise BIC logistic","ANXFREQ_A","ANXFREQ_AA few times a year",0.134967891087101,0.0435973867565642
+"Stepwise BIC logistic","ANXFREQ_A","ANXFREQ_AMissing",0.0239868351590184,0.182001233413157
+"Stepwise BIC logistic","region","regionMidwest",-0.195602757935814,0.0517604540822057
+"Stepwise BIC logistic","region","regionSouth",0.00368644559703453,0.046631233415977
+"Stepwise BIC logistic","region","regionWest",0.310615950911172,0.0488494082176592
+"Stepwise BIC logistic","health","healthVery good",0.191264029858274,0.046821996824318
+"Stepwise BIC logistic","health","healthGood",0.35158730089046,0.0497257654307631
+"Stepwise BIC logistic","health","healthFair",0.520907987315495,0.0637484500351278
+"Stepwise BIC logistic","health","healthPoor",0.545038727857456,0.0952695824904336
+"Stepwise BIC logistic","URBRRL23","URBRRL23Large fringe metro",-0.11034878099253,0.0438838913677818
+"Stepwise BIC logistic","URBRRL23","URBRRL23Medium or small metro",-0.347822887961348,0.0410913308029536
+"Stepwise BIC logistic","URBRRL23","URBRRL23Nonmetropolitan",-0.534962911139181,0.047252501057379
+"Stepwise BIC logistic","insurance","insurancePublic / other, no private",0.0736602365111396,0.0407288593977088
+"Stepwise BIC logistic","insurance","insuranceUninsured",-0.622375213952997,0.0817492909571805
+"Stepwise BIC logistic","EVERCOVD_A","EVERCOVD_AYes",0.286192864050442,0.0333057289149004
+"Stepwise BIC logistic","anxiety","anxietyYes",0.416996583892981,0.0468090649635356
+"Stepwise BIC logistic","ACCSSHOM_A","ACCSSHOM_ANo",-0.539761591762399,0.0688462966855327
+"Stepwise BIC logistic","CEVOTELC_A","CEVOTELC_AYes",0.251681120016332,0.0351628470516123
+"Stepwise BIC logistic","CEVOTELC_A","CEVOTELC_AMissing",0.0934905800485812,0.268740004266031
+"Stepwise BIC logistic","SOCWRKLIM_A","SOCWRKLIM_AYes",0.266621729067073,0.0442564626434784
+"Stepwise BIC logistic","cancer","cancerYes",0.321370576925835,0.0456298763988593
+"Stepwise BIC logistic","MILITARY_A","MILITARY_AYes",0.434355593928163,0.0638573788475618
+"Stepwise BIC logistic","sex","sexFemale",0.241072022869121,0.032467354600289
+"Stepwise BIC logistic","PREDIB_A","PREDIB_AYes",0.195201606493166,0.040645523716577
+"Stepwise BIC logistic","ns(pov_ratio, df = 3)","ns(pov_ratio, df = 3)1",0.245700949483081,0.0742558330773685
+"Stepwise BIC logistic","ns(pov_ratio, df = 3)","ns(pov_ratio, df = 3)2",0.357357050055287,0.163729124425799
+"Stepwise BIC logistic","ns(pov_ratio, df = 3)","ns(pov_ratio, df = 3)3",0.39575742595276,0.0636072542847629
+"Stepwise BIC logistic","asthma","asthmaYes",0.199333716337934,0.0418188089513495
+"Stepwise BIC logistic","ns(age, df = 3)","ns(age, df = 3)1",-0.250909383525684,0.0713660013996499
+"Stepwise BIC logistic","ns(age, df = 3)","ns(age, df = 3)2",0.105337076593646,0.1714966824173
+"Stepwise BIC logistic","ns(age, df = 3)","ns(age, df = 3)3",-0.464914101378309,0.0753435451464718
+"Stepwise BIC logistic","arthritis","arthritisYes",0.157123342424065,0.040048697803899
+"Stepwise BIC logistic","EQUIP_A","EQUIP_AYes",0.235337743808589,0.0594142063402453
+"Stepwise BIC logistic","CHLEV_A","CHLEV_AYes",0.131422282829047,0.0362581459420272
+"Stepwise BIC logistic","CEMMETNG_A","CEMMETNG_AYes",0.219400438169548,0.0483217373963765
+"Stepwise BIC logistic","CEMMETNG_A","CEMMETNG_AMissing",0.0504636261380943,0.278362601868499
+"Group lasso (lambda.min)","(Intercept)","(Intercept)",-2.10789712586751,NA
+"Group lasso (lambda.min)","ns(age, df = 3)","ns(age, df = 3)1",-0.134869761749763,NA
+"Group lasso (lambda.min)","ns(age, df = 3)","ns(age, df = 3)2",0.365389035642276,NA
+"Group lasso (lambda.min)","ns(age, df = 3)","ns(age, df = 3)3",-0.296840093262271,NA
+"Group lasso (lambda.min)","insurance","insurancePublic / other, no private",0.0697347326754548,NA
+"Group lasso (lambda.min)","insurance","insuranceUninsured",-0.387130472452657,NA
+"Group lasso (lambda.min)","education","educationSome college / associate",-0.112597891532752,NA
+"Group lasso (lambda.min)","education","educationHigh school / GED",-0.205796155900238,NA
+"Group lasso (lambda.min)","education","educationLess than high school",-0.281687683023174,NA
+"Group lasso (lambda.min)","internet","internetNo internet access",-0.033911237653883,NA
+"Group lasso (lambda.min)","health","healthVery good",0.148851895336215,NA
+"Group lasso (lambda.min)","health","healthGood",0.266610937190219,NA
+"Group lasso (lambda.min)","health","healthFair",0.390774146407761,NA
+"Group lasso (lambda.min)","health","healthPoor",0.381194653242634,NA
+"Group lasso (lambda.min)","sex","sexFemale",0.240790707280459,NA
+"Group lasso (lambda.min)","race_eth","race_ethHispanic",0.0131426892498385,NA
+"Group lasso (lambda.min)","race_eth","race_ethNH Black",0.024496989337868,NA
+"Group lasso (lambda.min)","race_eth","race_ethNH Asian",-0.0105846788780873,NA
+"Group lasso (lambda.min)","race_eth","race_ethNH other / multiple",0.00269656178809153,NA
+"Group lasso (lambda.min)","region","regionMidwest",-0.205853897282247,NA
+"Group lasso (lambda.min)","region","regionSouth",-0.0157332340836566,NA
+"Group lasso (lambda.min)","region","regionWest",0.283665296541446,NA
+"Group lasso (lambda.min)","marital","maritalLiving with partner",-0.0248880965636605,NA
+"Group lasso (lambda.min)","marital","maritalNeither",-0.00891748802097523,NA
+"Group lasso (lambda.min)","marital","maritalUnknown",0.0125154263572365,NA
+"Group lasso (lambda.min)","us_born","us_bornNo",-0.0383462859839023,NA
+"Group lasso (lambda.min)","us_born","us_bornUnknown",0.00405883119388584,NA
+"Group lasso (lambda.min)","diabetes","diabetesYes",0.130881370300671,NA
+"Group lasso (lambda.min)","asthma","asthmaYes",0.163634229723659,NA
+"Group lasso (lambda.min)","copd","copdYes",0.0855339361831896,NA
+"Group lasso (lambda.min)","cancer","cancerYes",0.274999972597028,NA
+"Group lasso (lambda.min)","arthritis","arthritisYes",0.111067910287606,NA
+"Group lasso (lambda.min)","depression","depressionYes",0.390169403794939,NA
+"Group lasso (lambda.min)","anxiety","anxietyYes",0.391363997220127,NA
+"Group lasso (lambda.min)","disability","disabilityYes",0.0230760186703582,NA
+"Group lasso (lambda.min)","ns(pov_ratio, df = 3)","ns(pov_ratio, df = 3)1",0.139744707625444,NA
+"Group lasso (lambda.min)","ns(pov_ratio, df = 3)","ns(pov_ratio, df = 3)2",0.158782506074914,NA
+"Group lasso (lambda.min)","ns(pov_ratio, df = 3)","ns(pov_ratio, df = 3)3",0.279727028138666,NA
+"Group lasso (lambda.min)","URBRRL23","URBRRL23Large fringe metro",-0.117202552653272,NA
+"Group lasso (lambda.min)","URBRRL23","URBRRL23Medium or small metro",-0.347770478838978,NA
+"Group lasso (lambda.min)","URBRRL23","URBRRL23Nonmetropolitan",-0.523842203733939,NA
+"Group lasso (lambda.min)","ACCSSHOM_A","ACCSSHOM_ANo",-0.459595097111561,NA
+"Group lasso (lambda.min)","AFVET_A","AFVET_AYes",0.123172432063888,NA
+"Group lasso (lambda.min)","AFVET_A","AFVET_AMissing",0.0740509934252646,NA
+"Group lasso (lambda.min)","ANXFREQ_A","ANXFREQ_ADaily",0.393420536117672,NA
+"Group lasso (lambda.min)","ANXFREQ_A","ANXFREQ_AWeekly",0.320164636181323,NA
+"Group lasso (lambda.min)","ANXFREQ_A","ANXFREQ_AMonthly",0.22033914415207,NA
+"Group lasso (lambda.min)","ANXFREQ_A","ANXFREQ_AA few times a year",0.0988238123184241,NA
+"Group lasso (lambda.min)","ANXFREQ_A","ANXFREQ_AMissing",0.0495497030130888,NA
+"Group lasso (lambda.min)","ANYDIFF_A","ANYDIFF_AYes",0.00145639844462356,NA
+"Group lasso (lambda.min)","BMICAT_A","BMICAT_AUnderweight",0.0183417028412906,NA
+"Group lasso (lambda.min)","BMICAT_A","BMICAT_AOverweight",-0.038409595049288,NA
+"Group lasso (lambda.min)","BMICAT_A","BMICAT_AObese",0.0167640659935403,NA
+"Group lasso (lambda.min)","BMICAT_A","BMICAT_AMissing",-0.040875945708166,NA
+"Group lasso (lambda.min)","CEMMETNG_A","CEMMETNG_AYes",0.163575732092672,NA
+"Group lasso (lambda.min)","CEMMETNG_A","CEMMETNG_AMissing",0.0178893287135905,NA
+"Group lasso (lambda.min)","CEVOLUN1_A","CEVOLUN1_AYes",0.0925995312250412,NA
+"Group lasso (lambda.min)","CEVOLUN1_A","CEVOLUN1_AMissing",0.0132965567243962,NA
+"Group lasso (lambda.min)","CEVOTELC_A","CEVOTELC_AYes",0.189190099080074,NA
+"Group lasso (lambda.min)","CEVOTELC_A","CEVOTELC_AMissing",0.0849782870419912,NA
+"Group lasso (lambda.min)","CHDEV_A","CHDEV_AYes",0.102331540156682,NA
+"Group lasso (lambda.min)","CHLEV_A","CHLEV_AYes",0.0984702933735108,NA
+"Group lasso (lambda.min)","CITZNSTP_A","CITZNSTP_ANo",-0.0227422307131884,NA
+"Group lasso (lambda.min)","CITZNSTP_A","CITZNSTP_AMissing",-0.00788737725619388,NA
+"Group lasso (lambda.min)","COGMEMDFF_A","COGMEMDFF_ASome difficulty",0.0698005223365129,NA
+"Group lasso (lambda.min)","COGMEMDFF_A","COGMEMDFF_AA lot of difficulty or cannot do",0.165874383341859,NA
+"Group lasso (lambda.min)","DEMENEV_A","DEMENEV_AYes",-0.311041957770133,NA
+"Group lasso (lambda.min)","DEPFREQ_A","DEPFREQ_ADaily",-0.0840326950569699,NA
+"Group lasso (lambda.min)","DEPFREQ_A","DEPFREQ_AWeekly",0.0423757463840803,NA
+"Group lasso (lambda.min)","DEPFREQ_A","DEPFREQ_AMonthly",0.0318393809766445,NA
+"Group lasso (lambda.min)","DEPFREQ_A","DEPFREQ_AA few times a year",0.0313829920179803,NA
+"Group lasso (lambda.min)","DEPFREQ_A","DEPFREQ_AMissing",0.0134992878858456,NA
+"Group lasso (lambda.min)","DIFF_A","DIFF_ASome difficulty",0.0614208728561906,NA
+"Group lasso (lambda.min)","DIFF_A","DIFF_AA lot of difficulty",0.0850698391896759,NA
+"Group lasso (lambda.min)","DIFF_A","DIFF_ACannot do at all",0.36255156275068,NA
+"Group lasso (lambda.min)","EQUIP_A","EQUIP_AYes",0.0726579748853978,NA
+"Group lasso (lambda.min)","EVERCOVD_A","EVERCOVD_AYes",0.267567125914922,NA
+"Group lasso (lambda.min)","FSNAP12M_A","FSNAP12M_AYes",0.0145093527641478,NA
+"Group lasso (lambda.min)","FSNAP12M_A","FSNAP12M_AMissing",-0.00120134402134938,NA
+"Group lasso (lambda.min)","HEARAID_A","HEARAID_AYes",0.0632684403002993,NA
+"Group lasso (lambda.min)","HEARINGDF_A","HEARINGDF_ASome difficulty",-0.0303117921708822,NA
+"Group lasso (lambda.min)","HEARINGDF_A","HEARINGDF_AA lot of difficulty or cannot do",-0.178963641162481,NA
+"Group lasso (lambda.min)","HINOTYR_A","HINOTYR_AYes",-0.141408249869903,NA
+"Group lasso (lambda.min)","HOUTENURE_A","HOUTENURE_ARented",0.0129969325702273,NA
+"Group lasso (lambda.min)","HOUTENURE_A","HOUTENURE_AOther arrangement",-0.019365441893181,NA
+"Group lasso (lambda.min)","HOUTENURE_A","HOUTENURE_AMissing",0.00407686666585491,NA
+"Group lasso (lambda.min)","HOUYRSLIV_A","HOUYRSLIV_A1-3 years",0.0362311270756938,NA
+"Group lasso (lambda.min)","HOUYRSLIV_A","HOUYRSLIV_A4-10 years",-0.00432262672421149,NA
+"Group lasso (lambda.min)","HOUYRSLIV_A","HOUYRSLIV_A11-20 years",-0.0159420375748606,NA
+"Group lasso (lambda.min)","HOUYRSLIV_A","HOUYRSLIV_AMore than 20 years",-0.0384438991121177,NA
+"Group lasso (lambda.min)","HOUYRSLIV_A","HOUYRSLIV_AMissing",-0.0293514033298937,NA
+"Group lasso (lambda.min)","IHS_A","IHS_AYes",-0.277083073762953,NA
+"Group lasso (lambda.min)","INCINTER_A","INCINTER_AYes",0.00176761040653434,NA
+"Group lasso (lambda.min)","INCINTER_A","INCINTER_AMissing",0.057072294239875,NA
+"Group lasso (lambda.min)","INCOTHR_A","INCOTHR_AYes",0.170933319229397,NA
+"Group lasso (lambda.min)","INCOTHR_A","INCOTHR_AMissing",0.0577077880479059,NA
+"Group lasso (lambda.min)","INCSSISSDI_A","INCSSISSDI_AYes",0.159295025750884,NA
+"Group lasso (lambda.min)","INCSSISSDI_A","INCSSISSDI_AMissing",-0.0514340950354764,NA
+"Group lasso (lambda.min)","LANGHM_A","LANGHM_AYes",-0.0783413335503619,NA
+"Group lasso (lambda.min)","LANGHM_A","LANGHM_AMissing",-0.0111427397553759,NA
+"Group lasso (lambda.min)","LEGMSTAT_A","LEGMSTAT_ASeparated",0.00475066771955919,NA
+"Group lasso (lambda.min)","LEGMSTAT_A","LEGMSTAT_ADivorced",0.0150863406480952,NA
+"Group lasso (lambda.min)","LEGMSTAT_A","LEGMSTAT_ANever married",-0.0393829963105718,NA
+"Group lasso (lambda.min)","LEGMSTAT_A","LEGMSTAT_AWidowed",-0.0945892663140839,NA
+"Group lasso (lambda.min)","LEGMSTAT_A","LEGMSTAT_AMissing",0.017445387239983,NA
+"Group lasso (lambda.min)","LONELY_A","LONELY_AAlways",-0.0816567613315173,NA
+"Group lasso (lambda.min)","LONELY_A","LONELY_AUsually",0.171249441440573,NA
+"Group lasso (lambda.min)","LONELY_A","LONELY_ASometimes",0.0143453690621948,NA
+"Group lasso (lambda.min)","LONELY_A","LONELY_ARarely",0.0115164878191211,NA
+"Group lasso (lambda.min)","LONELY_A","LONELY_AMissing",0.0249169578139145,NA
+"Group lasso (lambda.min)","LSATIS4_A","LSATIS4_ASatisfied",0.0180876048757882,NA
+"Group lasso (lambda.min)","LSATIS4_A","LSATIS4_ADissatisfied",-0.0701357459993928,NA
+"Group lasso (lambda.min)","LSATIS4_A","LSATIS4_AVery dissatisfied",0.0321996064770174,NA
+"Group lasso (lambda.min)","MAXEDUCP_A","MAXEDUCP_ALess than high school",-0.332628556567435,NA
+"Group lasso (lambda.min)","MAXEDUCP_A","MAXEDUCP_AHigh school / GED",-0.346411724040001,NA
+"Group lasso (lambda.min)","MAXEDUCP_A","MAXEDUCP_ASome college / associate",-0.213695284705891,NA
+"Group lasso (lambda.min)","MEDICAID_A","MEDICAID_AYes",-0.0503049040695391,NA
+"Group lasso (lambda.min)","MEDICARE_A","MEDICARE_AYes",-0.0291806693610788,NA
+"Group lasso (lambda.min)","MIEV_A","MIEV_AYes",0.013351782768583,NA
+"Group lasso (lambda.min)","MILITARY_A","MILITARY_AYes",0.218985170535838,NA
+"Group lasso (lambda.min)","ORIENT_A","ORIENT_AGay or lesbian",0.232018735913279,NA
+"Group lasso (lambda.min)","ORIENT_A","ORIENT_ABisexual",0.189767546502878,NA
+"Group lasso (lambda.min)","ORIENT_A","ORIENT_ASomething else",0.192509125407178,NA
+"Group lasso (lambda.min)","ORIENT_A","ORIENT_ADon't know the answer",0.343236127529093,NA
+"Group lasso (lambda.min)","ORIENT_A","ORIENT_AMissing",-0.0316575049513132,NA
+"Group lasso (lambda.min)","OTHGOV_A","OTHGOV_AYes",-0.0725485759280299,NA
+"Group lasso (lambda.min)","PARSTAT_A","PARSTAT_AParent of a child in family",-0.0212545909302883,NA
+"Group lasso (lambda.min)","PARSTAT_A","PARSTAT_AMinor children in family, not their parent",-0.149249779161328,NA
+"Group lasso (lambda.min)","PCNTADLT_A","PCNTADLT_A2",0.0123273253936139,NA
+"Group lasso (lambda.min)","PCNTADLT_A","PCNTADLT_A3 or more",-0.0413415891004232,NA
+"Group lasso (lambda.min)","PCNTKIDS_A","PCNTKIDS_A1",0.0113683942108566,NA
+"Group lasso (lambda.min)","PCNTKIDS_A","PCNTKIDS_A2",-0.0064120490678847,NA
+"Group lasso (lambda.min)","PCNTKIDS_A","PCNTKIDS_A3 or more",-0.0158248385754098,NA
+"Group lasso (lambda.min)","PREDIB_A","PREDIB_AYes",0.134214142292704,NA
+"Group lasso (lambda.min)","SCHCURENR_A","SCHCURENR_AYes",0.122731940263802,NA
+"Group lasso (lambda.min)","SCHCURENR_A","SCHCURENR_AMissing",-0.00425659054315478,NA
+"Group lasso (lambda.min)","SINCOVDE_A","SINCOVDE_AYes",0.0525010707584571,NA
+"Group lasso (lambda.min)","SINCOVDE_A","SINCOVDE_AMissing",-0.175076979562665,NA
+"Group lasso (lambda.min)","SINCOVRX_A","SINCOVRX_AYes",0.0356977020095472,NA
+"Group lasso (lambda.min)","SINCOVRX_A","SINCOVRX_AMissing",-0.357576367692926,NA
+"Group lasso (lambda.min)","SMKCIGST_A","SMKCIGST_ACurrent",-0.136894420170954,NA
+"Group lasso (lambda.min)","SMKCIGST_A","SMKCIGST_AFormer",0.0296727106363673,NA
+"Group lasso (lambda.min)","SMKCIGST_A","SMKCIGST_AMissing",-0.125347532821327,NA
+"Group lasso (lambda.min)","SMKECIGST_A","SMKECIGST_ACurrent",0.116971526116221,NA
+"Group lasso (lambda.min)","SMKECIGST_A","SMKECIGST_AFormer",0.0604344014646595,NA
+"Group lasso (lambda.min)","SMKECIGST_A","SMKECIGST_AMissing",0.0276752454586734,NA
+"Group lasso (lambda.min)","SOCERRNDS_A","SOCERRNDS_ASome difficulty",0.0449658677167082,NA
+"Group lasso (lambda.min)","SOCERRNDS_A","SOCERRNDS_AA lot of difficulty",0.0330430324229359,NA
+"Group lasso (lambda.min)","SOCERRNDS_A","SOCERRNDS_ACannot do at all",0.0333137932999168,NA
+"Group lasso (lambda.min)","SOCSCLPAR_A","SOCSCLPAR_ASome difficulty",0.0954179305108995,NA
+"Group lasso (lambda.min)","SOCSCLPAR_A","SOCSCLPAR_AA lot of difficulty",0.0770848065600214,NA
+"Group lasso (lambda.min)","SOCSCLPAR_A","SOCSCLPAR_ACannot do at all",0.0524066227210683,NA
+"Group lasso (lambda.min)","SOCWRKLIM_A","SOCWRKLIM_AYes",0.182267607090978,NA
+"Group lasso (lambda.min)","STREV_A","STREV_AYes",0.00236957352968511,NA
+"Group lasso (lambda.min)","SUPPORT_A","SUPPORT_AUsually",0.0113250212570134,NA
+"Group lasso (lambda.min)","SUPPORT_A","SUPPORT_ASometimes",0.00568714319837828,NA
+"Group lasso (lambda.min)","SUPPORT_A","SUPPORT_ARarely",-0.010758193339755,NA
+"Group lasso (lambda.min)","SUPPORT_A","SUPPORT_ANever",0.015938507622035,NA
+"Group lasso (lambda.min)","SUPPORT_A","SUPPORT_AMissing",-0.012723206533064,NA
+"Group lasso (lambda.min)","UPPRAISE_A","UPPRAISE_ASome difficulty",-0.0180648761617238,NA
+"Group lasso (lambda.min)","UPPRAISE_A","UPPRAISE_AA lot of difficulty",-0.217920033053314,NA
+"Group lasso (lambda.min)","UPPRAISE_A","UPPRAISE_ACannot do at all",-0.000202890565013412,NA
+"Group lasso (lambda.min)","UPPSLFCR_A","UPPSLFCR_ASome difficulty",0.134060163401099,NA
+"Group lasso (lambda.min)","UPPSLFCR_A","UPPSLFCR_AA lot of difficulty",-0.0675454698206544,NA
+"Group lasso (lambda.min)","UPPSLFCR_A","UPPSLFCR_ACannot do at all",0.331981383356984,NA
+"Group lasso (lambda.min)","VISIONDF_A","VISIONDF_ASome difficulty",-0.0109826111997126,NA
+"Group lasso (lambda.min)","VISIONDF_A","VISIONDF_AA lot of difficulty or cannot do",0.0416974422940411,NA
+"Group lasso (lambda.min)","WEARGLSS_A","WEARGLSS_ANo",-0.066770093595908,NA
+"Group lasso (lambda.1se)","(Intercept)","(Intercept)",-1.9267165211261,NA
+"Group lasso (lambda.1se)","ns(age, df = 3)","ns(age, df = 3)1",-0.0670932752373161,NA
+"Group lasso (lambda.1se)","ns(age, df = 3)","ns(age, df = 3)2",0.292398896820435,NA
+"Group lasso (lambda.1se)","ns(age, df = 3)","ns(age, df = 3)3",-0.165590260309364,NA
+"Group lasso (lambda.1se)","insurance","insurancePublic / other, no private",0.0206040255921655,NA
+"Group lasso (lambda.1se)","insurance","insuranceUninsured",-0.299795562783729,NA
+"Group lasso (lambda.1se)","education","educationSome college / associate",-0.124197994951427,NA
+"Group lasso (lambda.1se)","education","educationHigh school / GED",-0.228741401787588,NA
+"Group lasso (lambda.1se)","education","educationLess than high school",-0.301082089984407,NA
+"Group lasso (lambda.1se)","internet","internetNo internet access",-0.00586851450842376,NA
+"Group lasso (lambda.1se)","health","healthVery good",0.113192262233667,NA
+"Group lasso (lambda.1se)","health","healthGood",0.198552175551627,NA
+"Group lasso (lambda.1se)","health","healthFair",0.299610243266146,NA
+"Group lasso (lambda.1se)","health","healthPoor",0.304386503712721,NA
+"Group lasso (lambda.1se)","sex","sexFemale",0.182245619298643,NA
+"Group lasso (lambda.1se)","region","regionMidwest",-0.166791630406717,NA
+"Group lasso (lambda.1se)","region","regionSouth",-0.0160332507287368,NA
+"Group lasso (lambda.1se)","region","regionWest",0.235168126444252,NA
+"Group lasso (lambda.1se)","us_born","us_bornNo",-0.016010069814759,NA
+"Group lasso (lambda.1se)","us_born","us_bornUnknown",-3.95710534483985e-05,NA
+"Group lasso (lambda.1se)","diabetes","diabetesYes",0.0808785246472066,NA
+"Group lasso (lambda.1se)","asthma","asthmaYes",0.161931449965782,NA
+"Group lasso (lambda.1se)","copd","copdYes",0.0382472602961251,NA
+"Group lasso (lambda.1se)","cancer","cancerYes",0.22559739060842,NA
+"Group lasso (lambda.1se)","arthritis","arthritisYes",0.0836931750888327,NA
+"Group lasso (lambda.1se)","depression","depressionYes",0.419746870481912,NA
+"Group lasso (lambda.1se)","anxiety","anxietyYes",0.419684767670749,NA
+"Group lasso (lambda.1se)","disability","disabilityYes",0.0306784648493727,NA
+"Group lasso (lambda.1se)","ns(pov_ratio, df = 3)","ns(pov_ratio, df = 3)1",0.117602495517576,NA
+"Group lasso (lambda.1se)","ns(pov_ratio, df = 3)","ns(pov_ratio, df = 3)2",0.118777418774956,NA
+"Group lasso (lambda.1se)","ns(pov_ratio, df = 3)","ns(pov_ratio, df = 3)3",0.22118175219793,NA
+"Group lasso (lambda.1se)","URBRRL23","URBRRL23Large fringe metro",-0.107173154662879,NA
+"Group lasso (lambda.1se)","URBRRL23","URBRRL23Medium or small metro",-0.290430984321634,NA
+"Group lasso (lambda.1se)","URBRRL23","URBRRL23Nonmetropolitan",-0.438285174080581,NA
+"Group lasso (lambda.1se)","ACCSSHOM_A","ACCSSHOM_ANo",-0.456231702225919,NA
+"Group lasso (lambda.1se)","AFVET_A","AFVET_AYes",0.0136587318842141,NA
+"Group lasso (lambda.1se)","AFVET_A","AFVET_AMissing",0.00417198549117763,NA
+"Group lasso (lambda.1se)","ANXFREQ_A","ANXFREQ_ADaily",0.345640569633696,NA
+"Group lasso (lambda.1se)","ANXFREQ_A","ANXFREQ_AWeekly",0.298556384288293,NA
+"Group lasso (lambda.1se)","ANXFREQ_A","ANXFREQ_AMonthly",0.208166245793232,NA
+"Group lasso (lambda.1se)","ANXFREQ_A","ANXFREQ_AA few times a year",0.0958167685466914,NA
+"Group lasso (lambda.1se)","ANXFREQ_A","ANXFREQ_AMissing",0.0412133656906666,NA
+"Group lasso (lambda.1se)","ANYDIFF_A","ANYDIFF_AYes",0.00261954733123547,NA
+"Group lasso (lambda.1se)","CEMMETNG_A","CEMMETNG_AYes",0.124500770706217,NA
+"Group lasso (lambda.1se)","CEMMETNG_A","CEMMETNG_AMissing",0.00986231359262446,NA
+"Group lasso (lambda.1se)","CEVOLUN1_A","CEVOLUN1_AYes",0.0649423695406795,NA
+"Group lasso (lambda.1se)","CEVOLUN1_A","CEVOLUN1_AMissing",0.0164737280037934,NA
+"Group lasso (lambda.1se)","CEVOTELC_A","CEVOTELC_AYes",0.155019150210196,NA
+"Group lasso (lambda.1se)","CEVOTELC_A","CEVOTELC_AMissing",0.0736596060829981,NA
+"Group lasso (lambda.1se)","CHDEV_A","CHDEV_AYes",0.0472109709404823,NA
+"Group lasso (lambda.1se)","CHLEV_A","CHLEV_AYes",0.0638121674803694,NA
+"Group lasso (lambda.1se)","COGMEMDFF_A","COGMEMDFF_ASome difficulty",0.0482376718093984,NA
+"Group lasso (lambda.1se)","COGMEMDFF_A","COGMEMDFF_AA lot of difficulty or cannot do",0.093050803533404,NA
+"Group lasso (lambda.1se)","DEMENEV_A","DEMENEV_AYes",-0.103823929036209,NA
+"Group lasso (lambda.1se)","DEPFREQ_A","DEPFREQ_ADaily",-0.0044020334046074,NA
+"Group lasso (lambda.1se)","DEPFREQ_A","DEPFREQ_AWeekly",0.00853337829851913,NA
+"Group lasso (lambda.1se)","DEPFREQ_A","DEPFREQ_AMonthly",0.00695710630928325,NA
+"Group lasso (lambda.1se)","DEPFREQ_A","DEPFREQ_AA few times a year",0.00502107762810836,NA
+"Group lasso (lambda.1se)","DEPFREQ_A","DEPFREQ_AMissing",0.000866155346559396,NA
+"Group lasso (lambda.1se)","DIFF_A","DIFF_ASome difficulty",0.0359360618719785,NA
+"Group lasso (lambda.1se)","DIFF_A","DIFF_AA lot of difficulty",0.0457319543953721,NA
+"Group lasso (lambda.1se)","DIFF_A","DIFF_ACannot do at all",0.188035957570848,NA
+"Group lasso (lambda.1se)","EQUIP_A","EQUIP_AYes",0.0751195277100157,NA
+"Group lasso (lambda.1se)","EVERCOVD_A","EVERCOVD_AYes",0.262335220600504,NA
+"Group lasso (lambda.1se)","HINOTYR_A","HINOTYR_AYes",-0.12686331735257,NA
+"Group lasso (lambda.1se)","IHS_A","IHS_AYes",-0.020594962756475,NA
+"Group lasso (lambda.1se)","INCOTHR_A","INCOTHR_AYes",0.133946229019659,NA
+"Group lasso (lambda.1se)","INCOTHR_A","INCOTHR_AMissing",0.024199127459069,NA
+"Group lasso (lambda.1se)","INCSSISSDI_A","INCSSISSDI_AYes",0.0719342863605955,NA
+"Group lasso (lambda.1se)","INCSSISSDI_A","INCSSISSDI_AMissing",-0.00511113588930415,NA
+"Group lasso (lambda.1se)","LANGHM_A","LANGHM_AYes",-0.0295246539561015,NA
+"Group lasso (lambda.1se)","LANGHM_A","LANGHM_AMissing",-0.00360024146587473,NA
+"Group lasso (lambda.1se)","LONELY_A","LONELY_AAlways",-0.012460788533014,NA
+"Group lasso (lambda.1se)","LONELY_A","LONELY_AUsually",0.0310713410761116,NA
+"Group lasso (lambda.1se)","LONELY_A","LONELY_ASometimes",0.00566064234696373,NA
+"Group lasso (lambda.1se)","LONELY_A","LONELY_ARarely",0.00500291618444173,NA
+"Group lasso (lambda.1se)","LONELY_A","LONELY_AMissing",0.00440284702511289,NA
+"Group lasso (lambda.1se)","MAXEDUCP_A","MAXEDUCP_ALess than high school",-0.285910504369057,NA
+"Group lasso (lambda.1se)","MAXEDUCP_A","MAXEDUCP_AHigh school / GED",-0.287079564572915,NA
+"Group lasso (lambda.1se)","MAXEDUCP_A","MAXEDUCP_ASome college / associate",-0.174040347448995,NA
+"Group lasso (lambda.1se)","MILITARY_A","MILITARY_AYes",0.270533041293459,NA
+"Group lasso (lambda.1se)","ORIENT_A","ORIENT_AGay or lesbian",0.129679432194257,NA
+"Group lasso (lambda.1se)","ORIENT_A","ORIENT_ABisexual",0.11979689717392,NA
+"Group lasso (lambda.1se)","ORIENT_A","ORIENT_ASomething else",0.129415366057328,NA
+"Group lasso (lambda.1se)","ORIENT_A","ORIENT_ADon't know the answer",0.165697967781035,NA
+"Group lasso (lambda.1se)","ORIENT_A","ORIENT_AMissing",0.000212823422900069,NA
+"Group lasso (lambda.1se)","PARSTAT_A","PARSTAT_AParent of a child in family",0.000567648523653958,NA
+"Group lasso (lambda.1se)","PARSTAT_A","PARSTAT_AMinor children in family, not their parent",-0.0128669601745328,NA
+"Group lasso (lambda.1se)","PCNTADLT_A","PCNTADLT_A2",0.000561336805886918,NA
+"Group lasso (lambda.1se)","PCNTADLT_A","PCNTADLT_A3 or more",-0.00121213401828382,NA
+"Group lasso (lambda.1se)","PREDIB_A","PREDIB_AYes",0.132838901893376,NA
+"Group lasso (lambda.1se)","SCHCURENR_A","SCHCURENR_AYes",0.00247825325004507,NA
+"Group lasso (lambda.1se)","SCHCURENR_A","SCHCURENR_AMissing",0.000142454413675821,NA
+"Group lasso (lambda.1se)","SINCOVDE_A","SINCOVDE_AYes",0.0539788617797796,NA
+"Group lasso (lambda.1se)","SINCOVDE_A","SINCOVDE_AMissing",-0.136647567182136,NA
+"Group lasso (lambda.1se)","SINCOVRX_A","SINCOVRX_AYes",0.00762324783629545,NA
+"Group lasso (lambda.1se)","SINCOVRX_A","SINCOVRX_AMissing",-0.083710878852166,NA
+"Group lasso (lambda.1se)","SMKCIGST_A","SMKCIGST_ACurrent",-0.0315796737169546,NA
+"Group lasso (lambda.1se)","SMKCIGST_A","SMKCIGST_AFormer",0.0144534936445218,NA
+"Group lasso (lambda.1se)","SMKCIGST_A","SMKCIGST_AMissing",-0.0205971443470159,NA
+"Group lasso (lambda.1se)","SMKECIGST_A","SMKECIGST_ACurrent",0.0151836349558418,NA
+"Group lasso (lambda.1se)","SMKECIGST_A","SMKECIGST_AFormer",0.00876415576863971,NA
+"Group lasso (lambda.1se)","SMKECIGST_A","SMKECIGST_AMissing",-0.000896716009795516,NA
+"Group lasso (lambda.1se)","SOCSCLPAR_A","SOCSCLPAR_ASome difficulty",0.065588957890627,NA
+"Group lasso (lambda.1se)","SOCSCLPAR_A","SOCSCLPAR_AA lot of difficulty",0.0594057561919543,NA
+"Group lasso (lambda.1se)","SOCSCLPAR_A","SOCSCLPAR_ACannot do at all",0.0325348681829642,NA
+"Group lasso (lambda.1se)","SOCWRKLIM_A","SOCWRKLIM_AYes",0.188279503274776,NA
+"Group lasso (lambda.1se)","UPPSLFCR_A","UPPSLFCR_ASome difficulty",0.0576444157051037,NA
+"Group lasso (lambda.1se)","UPPSLFCR_A","UPPSLFCR_AA lot of difficulty",-0.0158307820866629,NA
+"Group lasso (lambda.1se)","UPPSLFCR_A","UPPSLFCR_ACannot do at all",0.120131932582072,NA
+"Group lasso (lambda.1se)","WEARGLSS_A","WEARGLSS_ANo",-0.0479743109718655,NA

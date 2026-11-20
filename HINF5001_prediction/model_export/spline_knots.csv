@@ -1,0 +1,9 @@
+"variable","type","value"
+"age","interior",43
+"age","interior",65
+"age","boundary",18
+"age","boundary",85
+"pov_ratio","interior",2.33
+"pov_ratio","interior",4.78333333333332
+"pov_ratio","boundary",0
+"pov_ratio","boundary",11

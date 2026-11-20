@@ -1,0 +1,8 @@
+"setting","value"
+"objective","binary:logistic"
+"eval_metric","logloss"
+"tree_method","hist"
+"max_depth","2"
+"eta","0.05"
+"min_child_weight","10"
+"nrounds","995"

@@ -1,0 +1,241 @@
+"variable","level_order","level","reference"
+"insurance",1,"Any private coverage",TRUE
+"insurance",2,"Public / other, no private",FALSE
+"insurance",3,"Uninsured",FALSE
+"education",1,"Bachelor's or higher",TRUE
+"education",2,"Some college / associate",FALSE
+"education",3,"High school / GED",FALSE
+"education",4,"Less than high school",FALSE
+"internet",1,"Internet access",TRUE
+"internet",2,"No internet access",FALSE
+"health",1,"Excellent",TRUE
+"health",2,"Very good",FALSE
+"health",3,"Good",FALSE
+"health",4,"Fair",FALSE
+"health",5,"Poor",FALSE
+"sex",1,"Male",TRUE
+"sex",2,"Female",FALSE
+"race_eth",1,"NH White",TRUE
+"race_eth",2,"Hispanic",FALSE
+"race_eth",3,"NH Black",FALSE
+"race_eth",4,"NH Asian",FALSE
+"race_eth",5,"NH other / multiple",FALSE
+"region",1,"Northeast",TRUE
+"region",2,"Midwest",FALSE
+"region",3,"South",FALSE
+"region",4,"West",FALSE
+"marital",1,"Married",TRUE
+"marital",2,"Living with partner",FALSE
+"marital",3,"Neither",FALSE
+"marital",4,"Unknown",FALSE
+"us_born",1,"Yes",TRUE
+"us_born",2,"No",FALSE
+"us_born",3,"Unknown",FALSE
+"worked_last_week",1,"Yes",TRUE
+"worked_last_week",2,"No",FALSE
+"worked_last_week",3,"Unknown",FALSE
+"hypertension",1,"No",TRUE
+"hypertension",2,"Yes",FALSE
+"diabetes",1,"No",TRUE
+"diabetes",2,"Yes",FALSE
+"asthma",1,"No",TRUE
+"asthma",2,"Yes",FALSE
+"copd",1,"No",TRUE
+"copd",2,"Yes",FALSE
+"cancer",1,"No",TRUE
+"cancer",2,"Yes",FALSE
+"arthritis",1,"No",TRUE
+"arthritis",2,"Yes",FALSE
+"depression",1,"No",TRUE
+"depression",2,"Yes",FALSE
+"anxiety",1,"No",TRUE
+"anxiety",2,"Yes",FALSE
+"disability",1,"No",TRUE
+"disability",2,"Yes",FALSE
+"URBRRL23",1,"Large central metro",TRUE
+"URBRRL23",2,"Large fringe metro",FALSE
+"URBRRL23",3,"Medium or small metro",FALSE
+"URBRRL23",4,"Nonmetropolitan",FALSE
+"ANXFREQ_A",1,"Never",TRUE
+"ANXFREQ_A",2,"Daily",FALSE
+"ANXFREQ_A",3,"Weekly",FALSE
+"ANXFREQ_A",4,"Monthly",FALSE
+"ANXFREQ_A",5,"A few times a year",FALSE
+"ANXFREQ_A",6,"Missing",FALSE
+"EVERCOVD_A",1,"No",TRUE
+"EVERCOVD_A",2,"Yes",FALSE
+"ACCSSHOM_A",1,"Yes",TRUE
+"ACCSSHOM_A",2,"No",FALSE
+"CEVOTELC_A",1,"No",TRUE
+"CEVOTELC_A",2,"Yes",FALSE
+"CEVOTELC_A",3,"Missing",FALSE
+"SOCWRKLIM_A",1,"No",TRUE
+"SOCWRKLIM_A",2,"Yes",FALSE
+"MILITARY_A",1,"No",TRUE
+"MILITARY_A",2,"Yes",FALSE
+"PREDIB_A",1,"No",TRUE
+"PREDIB_A",2,"Yes",FALSE
+"EQUIP_A",1,"No",TRUE
+"EQUIP_A",2,"Yes",FALSE
+"CHLEV_A",1,"No",TRUE
+"CHLEV_A",2,"Yes",FALSE
+"CEMMETNG_A",1,"No",TRUE
+"CEMMETNG_A",2,"Yes",FALSE
+"CEMMETNG_A",3,"Missing",FALSE
+"AFVET_A",1,"No",TRUE
+"AFVET_A",2,"Yes",FALSE
+"AFVET_A",3,"Missing",FALSE
+"ANYDIFF_A",1,"No",TRUE
+"ANYDIFF_A",2,"Yes",FALSE
+"BMICAT_A",1,"Healthy weight",TRUE
+"BMICAT_A",2,"Underweight",FALSE
+"BMICAT_A",3,"Overweight",FALSE
+"BMICAT_A",4,"Obese",FALSE
+"BMICAT_A",5,"Missing",FALSE
+"CEVOLUN1_A",1,"No",TRUE
+"CEVOLUN1_A",2,"Yes",FALSE
+"CEVOLUN1_A",3,"Missing",FALSE
+"CHDEV_A",1,"No",TRUE
+"CHDEV_A",2,"Yes",FALSE
+"CITZNSTP_A",1,"Yes",TRUE
+"CITZNSTP_A",2,"No",FALSE
+"CITZNSTP_A",3,"Missing",FALSE
+"COGMEMDFF_A",1,"No difficulty",TRUE
+"COGMEMDFF_A",2,"Some difficulty",FALSE
+"COGMEMDFF_A",3,"A lot of difficulty or cannot do",FALSE
+"DEMENEV_A",1,"No",TRUE
+"DEMENEV_A",2,"Yes",FALSE
+"DEPFREQ_A",1,"Never",TRUE
+"DEPFREQ_A",2,"Daily",FALSE
+"DEPFREQ_A",3,"Weekly",FALSE
+"DEPFREQ_A",4,"Monthly",FALSE
+"DEPFREQ_A",5,"A few times a year",FALSE
+"DEPFREQ_A",6,"Missing",FALSE
+"DIFF_A",1,"No difficulty",TRUE
+"DIFF_A",2,"Some difficulty",FALSE
+"DIFF_A",3,"A lot of difficulty",FALSE
+"DIFF_A",4,"Cannot do at all",FALSE
+"FSNAP12M_A",1,"No",TRUE
+"FSNAP12M_A",2,"Yes",FALSE
+"FSNAP12M_A",3,"Missing",FALSE
+"HEARAID_A",1,"No",TRUE
+"HEARAID_A",2,"Yes",FALSE
+"HEARINGDF_A",1,"No difficulty",TRUE
+"HEARINGDF_A",2,"Some difficulty",FALSE
+"HEARINGDF_A",3,"A lot of difficulty or cannot do",FALSE
+"HINOTYR_A",1,"No",TRUE
+"HINOTYR_A",2,"Yes",FALSE
+"HOUTENURE_A",1,"Owned or being bought",TRUE
+"HOUTENURE_A",2,"Rented",FALSE
+"HOUTENURE_A",3,"Other arrangement",FALSE
+"HOUTENURE_A",4,"Missing",FALSE
+"HOUYRSLIV_A",1,"Less than 1 year",TRUE
+"HOUYRSLIV_A",2,"1-3 years",FALSE
+"HOUYRSLIV_A",3,"4-10 years",FALSE
+"HOUYRSLIV_A",4,"11-20 years",FALSE
+"HOUYRSLIV_A",5,"More than 20 years",FALSE
+"HOUYRSLIV_A",6,"Missing",FALSE
+"IHS_A",1,"No",TRUE
+"IHS_A",2,"Yes",FALSE
+"INCINTER_A",1,"No",TRUE
+"INCINTER_A",2,"Yes",FALSE
+"INCINTER_A",3,"Missing",FALSE
+"INCOTHR_A",1,"No",TRUE
+"INCOTHR_A",2,"Yes",FALSE
+"INCOTHR_A",3,"Missing",FALSE
+"INCSSISSDI_A",1,"No",TRUE
+"INCSSISSDI_A",2,"Yes",FALSE
+"INCSSISSDI_A",3,"Missing",FALSE
+"LANGHM_A",1,"No",TRUE
+"LANGHM_A",2,"Yes",FALSE
+"LANGHM_A",3,"Missing",FALSE
+"LEGMSTAT_A",1,"Married",TRUE
+"LEGMSTAT_A",2,"Separated",FALSE
+"LEGMSTAT_A",3,"Divorced",FALSE
+"LEGMSTAT_A",4,"Never married",FALSE
+"LEGMSTAT_A",5,"Widowed",FALSE
+"LEGMSTAT_A",6,"Missing",FALSE
+"LONELY_A",1,"Never",TRUE
+"LONELY_A",2,"Always",FALSE
+"LONELY_A",3,"Usually",FALSE
+"LONELY_A",4,"Sometimes",FALSE
+"LONELY_A",5,"Rarely",FALSE
+"LONELY_A",6,"Missing",FALSE
+"LSATIS4_A",1,"Very satisfied",TRUE
+"LSATIS4_A",2,"Satisfied",FALSE
+"LSATIS4_A",3,"Dissatisfied",FALSE
+"LSATIS4_A",4,"Very dissatisfied",FALSE
+"MAXEDUCP_A",1,"Bachelor's or higher",TRUE
+"MAXEDUCP_A",2,"Less than high school",FALSE
+"MAXEDUCP_A",3,"High school / GED",FALSE
+"MAXEDUCP_A",4,"Some college / associate",FALSE
+"MEDICAID_A",1,"No",TRUE
+"MEDICAID_A",2,"Yes",FALSE
+"MEDICARE_A",1,"No",TRUE
+"MEDICARE_A",2,"Yes",FALSE
+"MIEV_A",1,"No",TRUE
+"MIEV_A",2,"Yes",FALSE
+"ORIENT_A",1,"Straight",TRUE
+"ORIENT_A",2,"Gay or lesbian",FALSE
+"ORIENT_A",3,"Bisexual",FALSE
+"ORIENT_A",4,"Something else",FALSE
+"ORIENT_A",5,"Don't know the answer",FALSE
+"ORIENT_A",6,"Missing",FALSE
+"OTHGOV_A",1,"No",TRUE
+"OTHGOV_A",2,"Yes",FALSE
+"PARSTAT_A",1,"No minor children in family",TRUE
+"PARSTAT_A",2,"Parent of a child in family",FALSE
+"PARSTAT_A",3,"Minor children in family, not their parent",FALSE
+"PCNTADLT_A",1,"1",TRUE
+"PCNTADLT_A",2,"2",FALSE
+"PCNTADLT_A",3,"3 or more",FALSE
+"PCNTKIDS_A",1,"0",TRUE
+"PCNTKIDS_A",2,"1",FALSE
+"PCNTKIDS_A",3,"2",FALSE
+"PCNTKIDS_A",4,"3 or more",FALSE
+"SCHCURENR_A",1,"No",TRUE
+"SCHCURENR_A",2,"Yes",FALSE
+"SCHCURENR_A",3,"Missing",FALSE
+"SINCOVDE_A",1,"No",TRUE
+"SINCOVDE_A",2,"Yes",FALSE
+"SINCOVDE_A",3,"Missing",FALSE
+"SINCOVRX_A",1,"No",TRUE
+"SINCOVRX_A",2,"Yes",FALSE
+"SINCOVRX_A",3,"Missing",FALSE
+"SMKCIGST_A",1,"Never",TRUE
+"SMKCIGST_A",2,"Current",FALSE
+"SMKCIGST_A",3,"Former",FALSE
+"SMKCIGST_A",4,"Missing",FALSE
+"SMKECIGST_A",1,"Never",TRUE
+"SMKECIGST_A",2,"Current",FALSE
+"SMKECIGST_A",3,"Former",FALSE
+"SMKECIGST_A",4,"Missing",FALSE
+"SOCERRNDS_A",1,"No difficulty",TRUE
+"SOCERRNDS_A",2,"Some difficulty",FALSE
+"SOCERRNDS_A",3,"A lot of difficulty",FALSE
+"SOCERRNDS_A",4,"Cannot do at all",FALSE
+"SOCSCLPAR_A",1,"No difficulty",TRUE
+"SOCSCLPAR_A",2,"Some difficulty",FALSE
+"SOCSCLPAR_A",3,"A lot of difficulty",FALSE
+"SOCSCLPAR_A",4,"Cannot do at all",FALSE
+"STREV_A",1,"No",TRUE
+"STREV_A",2,"Yes",FALSE
+"SUPPORT_A",1,"Always",TRUE
+"SUPPORT_A",2,"Usually",FALSE
+"SUPPORT_A",3,"Sometimes",FALSE
+"SUPPORT_A",4,"Rarely",FALSE
+"SUPPORT_A",5,"Never",FALSE
+"SUPPORT_A",6,"Missing",FALSE
+"UPPRAISE_A",1,"No difficulty",TRUE
+"UPPRAISE_A",2,"Some difficulty",FALSE
+"UPPRAISE_A",3,"A lot of difficulty",FALSE
+"UPPRAISE_A",4,"Cannot do at all",FALSE
+"UPPSLFCR_A",1,"No difficulty",TRUE
+"UPPSLFCR_A",2,"Some difficulty",FALSE
+"UPPSLFCR_A",3,"A lot of difficulty",FALSE
+"UPPSLFCR_A",4,"Cannot do at all",FALSE
+"VISIONDF_A",1,"No difficulty",TRUE
+"VISIONDF_A",2,"Some difficulty",FALSE
+"VISIONDF_A",3,"A lot of difficulty or cannot do",FALSE
+"WEARGLSS_A",1,"Yes",TRUE
+"WEARGLSS_A",2,"No",FALSE

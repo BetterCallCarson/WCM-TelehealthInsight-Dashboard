@@ -1,0 +1,630 @@
+"variable","label","decision","coverage_2024","coverage_basis","share_nonblank_2024","fielded_2025"
+"ACCSSHOM_A","Uses the Internet at home","Candidate: new",0.928,"dictionary",0.928,TRUE
+"AFVET_A","Ever served on active duty (military)","Candidate: new",0.971,"dictionary",1,TRUE
+"ANGEV_A","Ever angina","Candidate: new",0.999,"dictionary",1,TRUE
+"ANXFREQ_A","Frequency of worried/anxious feelings","Candidate: new",0.991,"dictionary",1,TRUE
+"ANYDIFF_A","Any functional difficulty","Candidate: new",1,"dictionary",1,TRUE
+"BMICAT_A","BMI category","Candidate: new",0.983,"dictionary",1,TRUE
+"CEMMETNG_A","Attended public meeting","Candidate: new",0.964,"dictionary",1,TRUE
+"CEVOLUN1_A","Volunteered","Candidate: new",0.968,"dictionary",1,TRUE
+"CEVOTELC_A","Voted in last local election","Candidate: new",0.961,"dictionary",1,TRUE
+"CHDEV_A","Ever coronary heart disease","Candidate: new",0.998,"dictionary",1,TRUE
+"CHLEV_A","Ever high cholesterol","Candidate: new",0.998,"dictionary",1,TRUE
+"CIGAREV_A","Ever smoked cigars","Candidate: new",0.986,"dictionary",1,TRUE
+"CITZNSTP_A","U.S. citizen","Candidate: new",0.969,"dictionary",1,TRUE
+"COGMEMDFF_A","Difficulty remembering","Candidate: new",1,"dictionary",1,TRUE
+"COMDIFF_A","Difficulty communicating","Candidate: new",1,"dictionary",1,TRUE
+"DEMENEV_A","Ever dementia","Candidate: new",1,"dictionary",1,TRUE
+"DEPFREQ_A","Frequency of depressed feelings","Candidate: new",0.99,"dictionary",1,TRUE
+"DIFF_A","Difficulty walking/climbing steps","Candidate: new",1,"dictionary",1,TRUE
+"EQUIP_A","Uses mobility equipment","Candidate: new",1,"dictionary",1,TRUE
+"EVERCOVD_A","Ever had COVID-19","Candidate: new",0.995,"dictionary",1,TRUE
+"FSNAP12M_A","Received SNAP, past 12 months","Candidate: new",0.964,"dictionary",1,TRUE
+"HEARAID_A","Uses hearing aid","Candidate: new",1,"dictionary",1,TRUE
+"HEARINGDF_A","Hearing difficulty","Candidate: new",1,"dictionary",1,TRUE
+"HINOTYR_A","Uninsured at any time, past 12 months","Candidate: new",0.932,"dictionary",0.933,TRUE
+"HOUTENURE_A","Home owned or rented","Candidate: new",0.966,"dictionary",1,TRUE
+"HOUYRSLIV_A","Years at current address","Candidate: new",0.964,"dictionary",1,TRUE
+"IHS_A","Indian Health Service","Candidate: new",1,"dictionary",1,TRUE
+"INCINTER_A","Interest/dividend income","Candidate: new",0.948,"dictionary",1,TRUE
+"INCOTHR_A","Other income","Candidate: new",0.959,"dictionary",0.965,TRUE
+"INCRETIRE_A","Retirement/pension income","Candidate: new",0.958,"dictionary",0.965,TRUE
+"INCSSISSDI_A","SSI/SSDI income","Candidate: new",0.957,"dictionary",0.965,TRUE
+"INCSSRR_A","Social Security/Railroad Retirement income","Candidate: new",0.959,"dictionary",0.965,TRUE
+"INCWELF_A","Public assistance income","Candidate: new",0.96,"dictionary",0.965,TRUE
+"INCWRKO_A","Income from wages/self-employment","Candidate: new",0.963,"dictionary",1,TRUE
+"LANGHM_A","Language other than English spoken at home","Candidate: new",0.97,"dictionary",1,TRUE
+"LEGMSTAT_A","Legal marital status (5 groups)","Candidate: new",0.97,"dictionary",1,TRUE
+"LONELY_A","Loneliness","Candidate: new",0.973,"dictionary",1,TRUE
+"LSATIS4_A","Life satisfaction","Candidate: new",0.998,"dictionary",1,TRUE
+"MAXEDUCP_A","Highest education of any adult in family","Candidate: new",1,"dictionary",1,TRUE
+"MEDICAID_A","Medicaid","Candidate: new",1,"dictionary",1,TRUE
+"MEDICARE_A","Medicare","Candidate: new",1,"dictionary",1,TRUE
+"MIEV_A","Ever heart attack","Candidate: new",1,"dictionary",1,TRUE
+"MILITARY_A","Military coverage","Candidate: new",1,"dictionary",1,TRUE
+"ORIENT_A","Sexual orientation","Candidate: new",0.967,"dictionary",1,TRUE
+"OTHGOV_A","Other government coverage","Candidate: new",1,"dictionary",1,TRUE
+"OTHPUB_A","State-sponsored health plan","Candidate: new",1,"dictionary",1,TRUE
+"PARSTAT_A","Parental status","Candidate: new",0.995,"dictionary",1,TRUE
+"PCNTADLT_A","Number of adults in family","Candidate: new",1,"dictionary",1,TRUE
+"PCNTKIDS_A","Number of children in family","Candidate: new",1,"dictionary",1,TRUE
+"PREDIB_A","Ever prediabetes","Candidate: new",0.999,"dictionary",1,TRUE
+"SCHCURENR_A","Currently enrolled in school","Candidate: new",0.97,"dictionary",1,TRUE
+"SINCOVDE_A","Single-service plan: dental","Candidate: new",0.992,"dictionary",1,TRUE
+"SINCOVRX_A","Single-service plan: prescriptions","Candidate: new",0.991,"dictionary",1,TRUE
+"SINCOVVS_A","Single-service plan: vision","Candidate: new",0.99,"dictionary",1,TRUE
+"SMKCIGST_A","Cigarette smoking status","Candidate: new",0.986,"dictionary",1,TRUE
+"SMKECIGST_A","E-cigarette use status","Candidate: new",0.986,"dictionary",1,TRUE
+"SMOKELSEV1_A","Ever used smokeless tobacco","Candidate: new",0.986,"dictionary",1,TRUE
+"SOCERRNDS_A","Difficulty doing errands alone","Candidate: new",1,"dictionary",1,TRUE
+"SOCSCLPAR_A","Difficulty participating in social activities","Candidate: new",1,"dictionary",1,TRUE
+"SOCWRKLIM_A","Work limitation","Candidate: new",0.999,"dictionary",1,TRUE
+"STREV_A","Ever stroke","Candidate: new",1,"dictionary",1,TRUE
+"SUPPORT_A","Social/emotional support","Candidate: new",0.972,"dictionary",1,TRUE
+"UPPOBJCT_A","Difficulty grasping small objects","Candidate: new",1,"dictionary",1,TRUE
+"UPPRAISE_A","Difficulty raising arms","Candidate: new",0.999,"dictionary",1,TRUE
+"UPPSLFCR_A","Difficulty with self-care","Candidate: new",1,"dictionary",1,TRUE
+"VISIONDF_A","Vision difficulty","Candidate: new",1,"dictionary",1,TRUE
+"WEARGLSS_A","Wears glasses","Candidate: new",1,"dictionary",1,TRUE
+"ACCSSINT_A","Uses the Internet","Candidate: theory-based set",1,"dictionary",1,TRUE
+"AGEP_A","Age (top-coded 85)","Candidate: theory-based set",1,"dictionary",1,TRUE
+"ANXEV_A","Ever anxiety disorder","Candidate: theory-based set",1,"dictionary",1,TRUE
+"ARTHEV_A","Ever arthritis","Candidate: theory-based set",1,"dictionary",1,TRUE
+"ASEV_A","Ever asthma","Candidate: theory-based set",1,"dictionary",1,TRUE
+"CANEV_A","Ever cancer","Candidate: theory-based set",1,"dictionary",1,TRUE
+"COPDEV_A","Ever COPD","Candidate: theory-based set",1,"dictionary",1,TRUE
+"DEPEV_A","Ever depression","Candidate: theory-based set",1,"dictionary",1,TRUE
+"DIBEV_A","Ever diabetes","Candidate: theory-based set",1,"dictionary",1,TRUE
+"DISAB3_A","Disability status (Washington Group)","Candidate: theory-based set",1,"dictionary",1,TRUE
+"EDUCP_A","Education","Candidate: theory-based set",1,"dictionary",1,TRUE
+"EMPWRKLSW1_A","Worked last week (edited recode)","Candidate: theory-based set",0.971,"dictionary",1,TRUE
+"HISPALLP_A","Race/ethnicity (single and multiple race)","Candidate: theory-based set",1,"dictionary",1,TRUE
+"HYPEV_A","Ever hypertension","Candidate: theory-based set",1,"dictionary",1,TRUE
+"MARITAL_A","Marital status (3 groups)","Candidate: theory-based set",0.971,"dictionary",1,TRUE
+"NATUSBORN_A","Born in the United States","Candidate: theory-based set",0.971,"dictionary",1,TRUE
+"NOTCOV_A","Not covered by health insurance","Candidate: theory-based set",1,"dictionary",1,TRUE
+"PHSTAT_A","Self-rated health","Candidate: theory-based set",1,"dictionary",1,TRUE
+"POVRATTC_A","Family income-to-poverty ratio","Candidate: theory-based set",1,"dictionary",1,TRUE
+"PRIVATE_A","Private insurance","Candidate: theory-based set",1,"dictionary",1,TRUE
+"REGION","Census region","Candidate: theory-based set",1,"dictionary",1,TRUE
+"SEX_A","Sex","Candidate: theory-based set",1,"dictionary",1,TRUE
+"URBRRL23","Urban-rural classification (2023 scheme)","Candidate: theory-based set",1,"dictionary",1,TRUE
+"AFNOW","","Excluded: 2024 coverage < 90% (skip pattern)",0.717,"reserve-code convention (approximate)",0.717,TRUE
+"AFVETTRN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.086,"reserve-code convention (approximate)",0.086,TRUE
+"AGE65","","Excluded: 2024 coverage < 90% (skip pattern)",0.002,"reserve-code convention (approximate)",0.002,TRUE
+"ANXLEVEL_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.713,"reserve-code convention (approximate)",0.717,TRUE
+"ASAT12M_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.147,"reserve-code convention (approximate)",0.147,TRUE
+"ASER12M_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.147,"reserve-code convention (approximate)",0.147,TRUE
+"ASTILL_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.146,"reserve-code convention (approximate)",0.147,TRUE
+"BLADDAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.005,"reserve-code convention (approximate)",0.005,TRUE
+"BLADDCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"BLOODAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.001,"reserve-code convention (approximate)",0.001,TRUE
+"BLOODCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"BONEAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.001,"reserve-code convention (approximate)",0.001,TRUE
+"BONECAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"BRAINAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.001,"reserve-code convention (approximate)",0.001,TRUE
+"BRAINCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"BREASAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.025,"reserve-code convention (approximate)",0.025,TRUE
+"BREASCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"CANEWLKR_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.094,"reserve-code convention (approximate)",0.094,TRUE
+"CERVIAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.006,"reserve-code convention (approximate)",0.006,TRUE
+"CERVICAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.077,"reserve-code convention (approximate)",0.078,TRUE
+"CEVOLUN2_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.723,"reserve-code convention (approximate)",0.723,TRUE
+"CHDEDUC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0,"reserve-code convention (approximate)",0,TRUE
+"CHFLG_A","","Excluded: 2024 coverage < 90% (skip pattern)",NA,"reserve-code convention (approximate)",0,TRUE
+"CHHDHP_A","","Excluded: 2024 coverage < 90% (skip pattern)",0,"reserve-code convention (approximate)",0,TRUE
+"CHL12M_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.329,"reserve-code convention (approximate)",0.334,TRUE
+"CHLMED_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.334,"reserve-code convention (approximate)",0.334,TRUE
+"CHPREM_A","","Excluded: 2024 coverage < 90% (skip pattern)",0,"reserve-code convention (approximate)",0,TRUE
+"CHXCHNG_A","","Excluded: 2024 coverage < 90% (skip pattern)",0,"reserve-code convention (approximate)",0,TRUE
+"CIG30D_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.024,"reserve-code convention (approximate)",0.024,TRUE
+"CIGAR30D_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.286,"reserve-code convention (approximate)",0.287,TRUE
+"CIGARCUR_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.291,"reserve-code convention (approximate)",0.291,TRUE
+"CIGNOW_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.077,"reserve-code convention (approximate)",0.077,TRUE
+"COGAMTDFF_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.21,"reserve-code convention (approximate)",0.21,TRUE
+"COGFRQDFF_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.21,"reserve-code convention (approximate)",0.21,TRUE
+"COGTYPEDFF_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.246,"reserve-code convention (approximate)",0.247,TRUE
+"COLONAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.007,"reserve-code convention (approximate)",0.007,TRUE
+"COLONCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"COLRCAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.008,"reserve-code convention (approximate)",0.008,TRUE
+"COLRCCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"COMBAT_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.069,"reserve-code convention (approximate)",0.069,TRUE
+"COVER65_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.334,"reserve-code convention (approximate)",0.334,TRUE
+"COVER_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.666,"reserve-code convention (approximate)",0.666,TRUE
+"DEPLEVEL_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.476,"reserve-code convention (approximate)",0.479,TRUE
+"DEVDONSET_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.158,"reserve-code convention (approximate)",0.158,TRUE
+"DIBAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.109,"reserve-code convention (approximate)",0.113,TRUE
+"DIBGLP_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.223,"reserve-code convention (approximate)",0.223,TRUE
+"DIBINSSTOP_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.034,"reserve-code convention (approximate)",0.034,TRUE
+"DIBINSSTYR_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.001,"reserve-code convention (approximate)",0.001,TRUE
+"DIBINSTIME_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.034,"reserve-code convention (approximate)",0.034,TRUE
+"DIBINS_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.223,"reserve-code convention (approximate)",0.223,TRUE
+"DIBPILL_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.223,"reserve-code convention (approximate)",0.223,TRUE
+"DIBTYPE_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.107,"reserve-code convention (approximate)",0.113,TRUE
+"DIFYRSTC1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.109,"reserve-code convention (approximate)",0.113,TRUE
+"ECIGNOW_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.18,"reserve-code convention (approximate)",0.18,TRUE
+"EMPDYSMSS3_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.604,"reserve-code convention (approximate)",0.608,TRUE
+"EMPHEALINS_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.605,"reserve-code convention (approximate)",0.608,TRUE
+"EMPLSTWOR1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.414,"reserve-code convention (approximate)",0.416,TRUE
+"EMPNOWRK_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.434,"reserve-code convention (approximate)",0.434,TRUE
+"EMPSICKLV_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.603,"reserve-code convention (approximate)",0.608,TRUE
+"EMPWHENWRK_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.414,"reserve-code convention (approximate)",0.415,TRUE
+"EMPWHYNOT_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.416,"reserve-code convention (approximate)",0.416,TRUE
+"EMPWKHRS3_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.556,"reserve-code convention (approximate)",0.558,TRUE
+"EMPWRKFT1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.559,"reserve-code convention (approximate)",0.559,TRUE
+"EQSTEPS_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.068,"reserve-code convention (approximate)",0.069,TRUE
+"EQWLK100_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.068,"reserve-code convention (approximate)",0.069,TRUE
+"EQWLK13M_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.058,"reserve-code convention (approximate)",0.058,TRUE
+"ESOPHAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.001,"reserve-code convention (approximate)",0.001,TRUE
+"ESOPHCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"EVRMARRIED_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.522,"reserve-code convention (approximate)",0.524,TRUE
+"EXCHANGE_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.616,"reserve-code convention (approximate)",0.616,TRUE
+"EXCHPR1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.565,"reserve-code convention (approximate)",0.59,TRUE
+"EXCHPR2_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.012,"reserve-code convention (approximate)",0.015,TRUE
+"FLUNCH12M1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.196,"reserve-code convention (approximate)",0.205,TRUE
+"FWIC12M_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.442,"reserve-code convention (approximate)",0.458,TRUE
+"GALLBAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0,"reserve-code convention (approximate)",0,TRUE
+"GALLBCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"GESDIB_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.541,"reserve-code convention (approximate)",0.541,TRUE
+"HDNCKAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.002,"reserve-code convention (approximate)",0.002,TRUE
+"HDNCKCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"HEARAIDFR_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.064,"reserve-code convention (approximate)",0.064,TRUE
+"HHRESPSA_FLG","","Excluded: 2024 coverage < 90% (skip pattern)",0.706,"reserve-code convention (approximate)",0.706,TRUE
+"HICOSTR1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.367,"reserve-code convention (approximate)",0.49,TRUE
+"HICOSTR2_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.007,"reserve-code convention (approximate)",0.012,TRUE
+"HILASTMY_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.021,"reserve-code convention (approximate)",0.021,TRUE
+"HILAST_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.066,"reserve-code convention (approximate)",0.07,TRUE
+"HINOTMYR_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.033,"reserve-code convention (approximate)",0.034,TRUE
+"HISTOPAGE_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.036,"reserve-code convention (approximate)",0.036,TRUE
+"HISTOPCOST_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.036,"reserve-code convention (approximate)",0.036,TRUE
+"HISTOPELIG_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.036,"reserve-code convention (approximate)",0.036,TRUE
+"HISTOPJOB_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.036,"reserve-code convention (approximate)",0.036,TRUE
+"HISTOPMISS_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.036,"reserve-code convention (approximate)",0.036,TRUE
+"HOUGVASST_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.291,"reserve-code convention (approximate)",0.292,TRUE
+"HSAHRA1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.201,"reserve-code convention (approximate)",0.215,TRUE
+"HSAHRA2_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.003,"reserve-code convention (approximate)",0.003,TRUE
+"HYP12M_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.324,"reserve-code convention (approximate)",0.326,TRUE
+"HYPDIF_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.375,"reserve-code convention (approximate)",0.376,TRUE
+"HYPMED_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.376,"reserve-code convention (approximate)",0.376,TRUE
+"LANGDOC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.184,"reserve-code convention (approximate)",0.184,TRUE
+"LANGMED_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.183,"reserve-code convention (approximate)",0.184,TRUE
+"LANGSOC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.18,"reserve-code convention (approximate)",0.181,TRUE
+"LANGSPECR_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.182,"reserve-code convention (approximate)",0.184,TRUE
+"LARYNAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0,"reserve-code convention (approximate)",0,TRUE
+"LARYNCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"LCVDACT_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.034,"reserve-code convention (approximate)",0.034,TRUE
+"LEUKEAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.002,"reserve-code convention (approximate)",0.002,TRUE
+"LEUKECAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"LIVERAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.001,"reserve-code convention (approximate)",0.001,TRUE
+"LIVERCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"LONGCOVD2_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.578,"reserve-code convention (approximate)",0.58,TRUE
+"LUNGAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.004,"reserve-code convention (approximate)",0.004,TRUE
+"LUNGCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"LYMPHAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.004,"reserve-code convention (approximate)",0.004,TRUE
+"LYMPHCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"MADEDUC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.116,"reserve-code convention (approximate)",0.123,TRUE
+"MAFLG_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.001,"reserve-code convention (approximate)",0.001,TRUE
+"MAHDHP_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.005,"reserve-code convention (approximate)",0.005,TRUE
+"MAPREM_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.12,"reserve-code convention (approximate)",0.123,TRUE
+"MAXCHNG_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.111,"reserve-code convention (approximate)",0.123,TRUE
+"MCADVR_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.153,"reserve-code convention (approximate)",0.16,TRUE
+"MCAIDPRB_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.068,"reserve-code convention (approximate)",0.068,TRUE
+"MCAREPRB_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.036,"reserve-code convention (approximate)",0.037,TRUE
+"MCCHOICE_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.317,"reserve-code convention (approximate)",0.331,TRUE
+"MCDNCOV_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.155,"reserve-code convention (approximate)",0.16,TRUE
+"MCHMO_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.312,"reserve-code convention (approximate)",0.331,TRUE
+"MCPARTD_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.334,"reserve-code convention (approximate)",0.347,TRUE
+"MCPART_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.342,"reserve-code convention (approximate)",0.347,TRUE
+"MCVSCOV_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.155,"reserve-code convention (approximate)",0.16,TRUE
+"MELANAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.007,"reserve-code convention (approximate)",0.007,TRUE
+"MELANCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"MHTPYNOW_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.139,"reserve-code convention (approximate)",0.14,TRUE
+"MILSPC1R_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.06,"reserve-code convention (approximate)",0.06,TRUE
+"MILSPC1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.047,"reserve-code convention (approximate)",0.048,TRUE
+"MILSPC2_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.06,"reserve-code convention (approximate)",0.06,TRUE
+"MILSPC3_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.06,"reserve-code convention (approximate)",0.06,TRUE
+"MOUTHAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0,"reserve-code convention (approximate)",0,TRUE
+"MOUTHCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"NOEQSTEPS_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.094,"reserve-code convention (approximate)",0.094,TRUE
+"NOEQWLK100_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.094,"reserve-code convention (approximate)",0.094,TRUE
+"NOEQWLK13M_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.059,"reserve-code convention (approximate)",0.059,TRUE
+"OGDEDUC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.002,"reserve-code convention (approximate)",0.002,TRUE
+"OGFLG_A","","Excluded: 2024 coverage < 90% (skip pattern)",0,"reserve-code convention (approximate)",0,TRUE
+"OGHDHP_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.001,"reserve-code convention (approximate)",0.001,TRUE
+"OGPREM_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.002,"reserve-code convention (approximate)",0.002,TRUE
+"OGXCHNG_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.002,"reserve-code convention (approximate)",0.002,TRUE
+"OPDEDUC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.006,"reserve-code convention (approximate)",0.006,TRUE
+"OPFLG_A","","Excluded: 2024 coverage < 90% (skip pattern)",0,"reserve-code convention (approximate)",0,TRUE
+"OPHDHP_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.001,"reserve-code convention (approximate)",0.001,TRUE
+"OPPREM_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.006,"reserve-code convention (approximate)",0.006,TRUE
+"OPXCHNG_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.006,"reserve-code convention (approximate)",0.006,TRUE
+"OTHERAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.013,"reserve-code convention (approximate)",0.013,TRUE
+"OTHERCANP_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"OVARYAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.003,"reserve-code convention (approximate)",0.003,TRUE
+"OVARYCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.077,"reserve-code convention (approximate)",0.078,TRUE
+"PANCRAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.001,"reserve-code convention (approximate)",0.001,TRUE
+"PANCRCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"PAYNOBLLNW_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.1,"reserve-code convention (approximate)",0.102,TRUE
+"PERASST_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.094,"reserve-code convention (approximate)",0.094,TRUE
+"PLEXCHOG_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.001,"reserve-code convention (approximate)",0.002,TRUE
+"PLEXCHOP_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.005,"reserve-code convention (approximate)",0.006,TRUE
+"PLEXCHPR1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.024,"reserve-code convention (approximate)",0.025,TRUE
+"PLN1PAY1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.584,"reserve-code convention (approximate)",0.616,TRUE
+"PLN1PAY2_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.584,"reserve-code convention (approximate)",0.616,TRUE
+"PLN1PAY3_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.584,"reserve-code convention (approximate)",0.616,TRUE
+"PLN1PAY4_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.584,"reserve-code convention (approximate)",0.616,TRUE
+"PLN1PAY5_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.584,"reserve-code convention (approximate)",0.616,TRUE
+"PLN1PAY6_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.584,"reserve-code convention (approximate)",0.616,TRUE
+"PLN2PAY1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.015,"reserve-code convention (approximate)",0.015,TRUE
+"PLN2PAY2_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.015,"reserve-code convention (approximate)",0.015,TRUE
+"PLN2PAY3_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.015,"reserve-code convention (approximate)",0.015,TRUE
+"PLN2PAY4_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.015,"reserve-code convention (approximate)",0.015,TRUE
+"PLN2PAY5_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.015,"reserve-code convention (approximate)",0.015,TRUE
+"PLN2PAY6_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.015,"reserve-code convention (approximate)",0.015,TRUE
+"PLNEXCHG1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.108,"reserve-code convention (approximate)",0.116,TRUE
+"PLNEXCHG2_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.003,"reserve-code convention (approximate)",0.003,TRUE
+"PLNWRKR1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.591,"reserve-code convention (approximate)",0.616,TRUE
+"PLNWRKR2_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.015,"reserve-code convention (approximate)",0.015,TRUE
+"POLHLD1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.589,"reserve-code convention (approximate)",0.616,TRUE
+"POLHLD2_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.015,"reserve-code convention (approximate)",0.015,TRUE
+"PRDEDUC1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.568,"reserve-code convention (approximate)",0.616,TRUE
+"PRDEDUC2_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.013,"reserve-code convention (approximate)",0.015,TRUE
+"PRDNCOV1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.575,"reserve-code convention (approximate)",0.616,TRUE
+"PRDNCOV2_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.015,"reserve-code convention (approximate)",0.015,TRUE
+"PREGNOW_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.224,"reserve-code convention (approximate)",0.224,TRUE
+"PRFLG_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.025,"reserve-code convention (approximate)",0.025,TRUE
+"PRHDHP1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.388,"reserve-code convention (approximate)",0.429,TRUE
+"PRHDHP2_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.006,"reserve-code convention (approximate)",0.007,TRUE
+"PROSTAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.016,"reserve-code convention (approximate)",0.017,TRUE
+"PROSTCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.059,"reserve-code convention (approximate)",0.059,TRUE
+"PROXYREL2_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.018,"reserve-code convention (approximate)",0.018,TRUE
+"PRPLCOV1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.464,"reserve-code convention (approximate)",0.465,TRUE
+"PRPLCOV1_C_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.001,"reserve-code convention (approximate)",0.001,TRUE
+"PRPLCOV2_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.01,"reserve-code convention (approximate)",0.011,TRUE
+"PRPLCOV2_C_A","","Excluded: 2024 coverage < 90% (skip pattern)",0,"reserve-code convention (approximate)",0,TRUE
+"PRPOLH1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.125,"reserve-code convention (approximate)",0.125,TRUE
+"PRPOLH2_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.005,"reserve-code convention (approximate)",0.005,TRUE
+"PRPREM1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.025,"reserve-code convention (approximate)",0.025,TRUE
+"PRRXCOV1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.576,"reserve-code convention (approximate)",0.616,TRUE
+"PRRXCOV2_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.015,"reserve-code convention (approximate)",0.015,TRUE
+"PRTNRAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.062,"reserve-code convention (approximate)",0.062,TRUE
+"PRTNREDUCP_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.062,"reserve-code convention (approximate)",0.062,TRUE
+"PRTNRSEX_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.062,"reserve-code convention (approximate)",0.062,TRUE
+"PRTNRWKFT_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.046,"reserve-code convention (approximate)",0.046,TRUE
+"PRTNRWRK_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.06,"reserve-code convention (approximate)",0.062,TRUE
+"PRVSCOV1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.57,"reserve-code convention (approximate)",0.616,TRUE
+"PRVSCOV2_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.015,"reserve-code convention (approximate)",0.015,TRUE
+"PXCHNG1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.025,"reserve-code convention (approximate)",0.025,TRUE
+"RECTUAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.001,"reserve-code convention (approximate)",0.001,TRUE
+"RECTUCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"RSNHICONF_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.066,"reserve-code convention (approximate)",0.07,TRUE
+"RSNHICOST_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.066,"reserve-code convention (approximate)",0.07,TRUE
+"RSNHIELIG_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.065,"reserve-code convention (approximate)",0.07,TRUE
+"RSNHIJOB_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.067,"reserve-code convention (approximate)",0.07,TRUE
+"RSNHIMEET_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.066,"reserve-code convention (approximate)",0.07,TRUE
+"RSNHIMISS_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.067,"reserve-code convention (approximate)",0.07,TRUE
+"RSNHIOTH_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.067,"reserve-code convention (approximate)",0.07,TRUE
+"RSNHIWAIT_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.067,"reserve-code convention (approximate)",0.07,TRUE
+"RSNHIWANT_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.067,"reserve-code convention (approximate)",0.07,TRUE
+"RXDL12M_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.747,"reserve-code convention (approximate)",0.747,TRUE
+"RXLS12M_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.747,"reserve-code convention (approximate)",0.747,TRUE
+"RXSK12M_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.747,"reserve-code convention (approximate)",0.747,TRUE
+"SASPPHISP_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.488,"reserve-code convention (approximate)",0.488,TRUE
+"SASPPRACE_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.488,"reserve-code convention (approximate)",0.488,TRUE
+"SCHDYMSSTC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.056,"reserve-code convention (approximate)",0.056,TRUE
+"SHTFLUM_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.447,"reserve-code convention (approximate)",0.47,TRUE
+"SHTFLUY_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.468,"reserve-code convention (approximate)",0.47,TRUE
+"SHTPNEUNB_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.289,"reserve-code convention (approximate)",0.306,TRUE
+"SKNDKAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.008,"reserve-code convention (approximate)",0.008,TRUE
+"SKNDKCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"SKNMAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.013,"reserve-code convention (approximate)",0.013,TRUE
+"SKNMCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"SKNNMAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.028,"reserve-code convention (approximate)",0.029,TRUE
+"SKNNMCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"SMK30D_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.026,"reserve-code convention (approximate)",0.026,TRUE
+"SMKNOW_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.356,"reserve-code convention (approximate)",0.357,TRUE
+"SMOKELSCR1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.118,"reserve-code convention (approximate)",0.118,TRUE
+"SPOUSAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.425,"reserve-code convention (approximate)",0.426,TRUE
+"SPOUSEDUCP_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.425,"reserve-code convention (approximate)",0.426,TRUE
+"SPOUSEP_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.023,"reserve-code convention (approximate)",0.023,TRUE
+"SPOUSESEX_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.426,"reserve-code convention (approximate)",0.426,TRUE
+"SPOUSLIV_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.449,"reserve-code convention (approximate)",0.449,TRUE
+"SPOUSWKFT_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.256,"reserve-code convention (approximate)",0.257,TRUE
+"SPOUSWRK_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.423,"reserve-code convention (approximate)",0.425,TRUE
+"SSISSDIBTH_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.081,"reserve-code convention (approximate)",0.082,TRUE
+"SSISSDIDSB_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.081,"reserve-code convention (approximate)",0.082,TRUE
+"STOMAAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.001,"reserve-code convention (approximate)",0.001,TRUE
+"STOMACAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"SYMPNOW1_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.08,"reserve-code convention (approximate)",0.081,TRUE
+"TBIEVAL_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.033,"reserve-code convention (approximate)",0.033,TRUE
+"TBILEAGUE_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.004,"reserve-code convention (approximate)",0.004,TRUE
+"TBISPORT_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.033,"reserve-code convention (approximate)",0.033,TRUE
+"THROAAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.001,"reserve-code convention (approximate)",0.001,TRUE
+"THROACAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"THYROAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.005,"reserve-code convention (approximate)",0.005,TRUE
+"THYROCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.136,"reserve-code convention (approximate)",0.137,TRUE
+"UTERUAGETC_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.004,"reserve-code convention (approximate)",0.004,TRUE
+"UTERUCAN_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.077,"reserve-code convention (approximate)",0.078,TRUE
+"VACAREEV_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.054,"reserve-code convention (approximate)",0.054,TRUE
+"VADISB_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.085,"reserve-code convention (approximate)",0.086,TRUE
+"VAHOSP_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.086,"reserve-code convention (approximate)",0.086,TRUE
+"WCHAIR_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.094,"reserve-code convention (approximate)",0.094,TRUE
+"WELLVIS_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.177,"reserve-code convention (approximate)",0.179,TRUE
+"WLK13M_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.897,"reserve-code convention (approximate)",0.9,TRUE
+"YRSINUS_A","","Excluded: 2024 coverage < 90% (skip pattern)",0.153,"reserve-code convention (approximate)",0.156,TRUE
+"HITCOMM_A","Communicated with provider online","Excluded: answer can come from a telehealth visit",0.927,"reserve-code convention (approximate)",0.928,TRUE
+"MHRX_A","Took medication for mental health","Excluded: answer can come from a telehealth visit",0.814,"reserve-code convention (approximate)",0.815,TRUE
+"MHTHRPY_A","Received counseling from mental health professional, past 12 months","Excluded: answer can come from a telehealth visit",0.992,"reserve-code convention (approximate)",1,TRUE
+"PCNTADWFP1_A","Not verified (family adults working, recode)","Excluded: label not verified",0.967,"reserve-code convention (approximate)",1,TRUE
+"PCNTADWKP1_A","Not verified (family adults working, recode)","Excluded: label not verified",0.97,"reserve-code convention (approximate)",1,TRUE
+"TBIHLSBMC_A","Not verified","Excluded: label not verified",0.988,"reserve-code convention (approximate)",1,TRUE
+"TBILCDCMG_A","Not verified","Excluded: label not verified",0.988,"reserve-code convention (approximate)",1,TRUE
+"ADVACTIVE_A","","Excluded: not fielded in 2025",0.98,"reserve-code convention (approximate)",1,FALSE
+"ANIMALWLK_A","","Excluded: not fielded in 2025",0.98,"reserve-code convention (approximate)",1,FALSE
+"ANYINJURY_A","","Excluded: not fielded in 2025",0.989,"reserve-code convention (approximate)",1,FALSE
+"ANYSBURN1_A","","Excluded: not fielded in 2025",0.977,"reserve-code convention (approximate)",1,FALSE
+"AVGNUMCIG_A","","Excluded: not fielded in 2025",NA,"reserve-code convention (approximate)",1,FALSE
+"AVGPACKCIG_A","","Excluded: not fielded in 2025",0.011,"reserve-code convention (approximate)",0.011,FALSE
+"CFSEV_A","","Excluded: not fielded in 2025",1,"reserve-code convention (approximate)",1,FALSE
+"CFSNOW_A","","Excluded: not fielded in 2025",0.017,"reserve-code convention (approximate)",0.017,FALSE
+"COLDFLU12M_A","","Excluded: not fielded in 2025",1,"reserve-code convention (approximate)",1,FALSE
+"COMUSESL_A","","Excluded: not fielded in 2025",1,"reserve-code convention (approximate)",1,FALSE
+"CRIMEWLK_A","","Excluded: not fielded in 2025",0.978,"reserve-code convention (approximate)",1,FALSE
+"CROHNSEV_A","","Excluded: not fielded in 2025",1,"reserve-code convention (approximate)",1,FALSE
+"CTLNGCAN1_A","","Excluded: not fielded in 2025",0.291,"reserve-code convention (approximate)",0.298,FALSE
+"CTLNGWHN1_A","","Excluded: not fielded in 2025",0.292,"reserve-code convention (approximate)",0.298,FALSE
+"CTSCANEV1_A","","Excluded: not fielded in 2025",0.692,"reserve-code convention (approximate)",0.713,FALSE
+"CURFOOD_A","","Excluded: not fielded in 2025",0.999,"reserve-code convention (approximate)",1,FALSE
+"CURRESP_A","","Excluded: not fielded in 2025",0.999,"reserve-code convention (approximate)",1,FALSE
+"CURSKIN_A","","Excluded: not fielded in 2025",0.999,"reserve-code convention (approximate)",1,FALSE
+"CVDPAROS_A","","Excluded: not fielded in 2025",0.572,"reserve-code convention (approximate)",0.58,FALSE
+"CVDSMELCHG_A","","Excluded: not fielded in 2025",0.574,"reserve-code convention (approximate)",0.58,FALSE
+"CVDSMREC2_A","","Excluded: not fielded in 2025",0.223,"reserve-code convention (approximate)",0.223,FALSE
+"CVDSYMSM2_A","","Excluded: not fielded in 2025",0.576,"reserve-code convention (approximate)",0.58,FALSE
+"CVDSYMTST2_A","","Excluded: not fielded in 2025",0.577,"reserve-code convention (approximate)",0.58,FALSE
+"CVDTSTREC2_A","","Excluded: not fielded in 2025",0.208,"reserve-code convention (approximate)",0.208,FALSE
+"CVDVAC1M2_A","","Excluded: not fielded in 2025",0.61,"reserve-code convention (approximate)",0.78,FALSE
+"CVDVAC1Y2_A","","Excluded: not fielded in 2025",0.745,"reserve-code convention (approximate)",0.778,FALSE
+"DRK12ANYR_A","","Excluded: not fielded in 2025",0.202,"reserve-code convention (approximate)",0.203,FALSE
+"DRK12MN_A","","Excluded: not fielded in 2025",0.865,"reserve-code convention (approximate)",0.871,FALSE
+"DRK12MTP_A","","Excluded: not fielded in 2025",0.865,"reserve-code convention (approximate)",0.871,FALSE
+"DRK12MWK_A","","Excluded: not fielded in 2025",0.865,"reserve-code convention (approximate)",0.871,FALSE
+"DRK12MYR_A","","Excluded: not fielded in 2025",0.865,"reserve-code convention (approximate)",0.871,FALSE
+"DRKADVISE1_A","","Excluded: not fielded in 2025",0.664,"reserve-code convention (approximate)",0.665,FALSE
+"DRKANY30D_A","","Excluded: not fielded in 2025",0.217,"reserve-code convention (approximate)",0.217,FALSE
+"DRKAVG12M_A","","Excluded: not fielded in 2025",0.662,"reserve-code convention (approximate)",0.666,FALSE
+"DRKBNG12M_A","","Excluded: not fielded in 2025",0.595,"reserve-code convention (approximate)",0.597,FALSE
+"DRKBNG30D_A","","Excluded: not fielded in 2025",0.19,"reserve-code convention (approximate)",0.192,FALSE
+"DRKHVY12M_A","","Excluded: not fielded in 2025",0.665,"reserve-code convention (approximate)",0.666,FALSE
+"DRKLIFE_A","","Excluded: not fielded in 2025",0.985,"reserve-code convention (approximate)",1,FALSE
+"DRKSTAT_A","","Excluded: not fielded in 2025",1,"reserve-code convention (approximate)",1,FALSE
+"DRYMTH12M_A","","Excluded: not fielded in 2025",1,"reserve-code convention (approximate)",1,FALSE
+"DXFOOD_A","","Excluded: not fielded in 2025",0.105,"reserve-code convention (approximate)",0.105,FALSE
+"DXRESP_A","","Excluded: not fielded in 2025",0.498,"reserve-code convention (approximate)",0.499,FALSE
+"DXSKIN_A","","Excluded: not fielded in 2025",0.108,"reserve-code convention (approximate)",0.109,FALSE
+"EFFORT_A","","Excluded: not fielded in 2025",0.987,"reserve-code convention (approximate)",1,FALSE
+"EMDINDSTN1_A","","Excluded: not fielded in 2025",0.598,"reserve-code convention (approximate)",0.608,FALSE
+"EMDINDSTN2_A","","Excluded: not fielded in 2025",0.598,"reserve-code convention (approximate)",0.608,FALSE
+"EMDOCCUPN1_A","","Excluded: not fielded in 2025",0.599,"reserve-code convention (approximate)",0.608,FALSE
+"EMDOCCUPN2_A","","Excluded: not fielded in 2025",0.599,"reserve-code convention (approximate)",0.608,FALSE
+"EMDSUPER_A","","Excluded: not fielded in 2025",0.604,"reserve-code convention (approximate)",0.608,FALSE
+"EMDWRKCAT1_A","","Excluded: not fielded in 2025",0.601,"reserve-code convention (approximate)",0.608,FALSE
+"FDSBALANCE_A","","Excluded: not fielded in 2025",0.966,"reserve-code convention (approximate)",1,FALSE
+"FDSCAT3_A","","Excluded: not fielded in 2025",0.967,"reserve-code convention (approximate)",1,FALSE
+"FDSCAT4_A","","Excluded: not fielded in 2025",0.967,"reserve-code convention (approximate)",1,FALSE
+"FDSHUNGRY_A","","Excluded: not fielded in 2025",0.146,"reserve-code convention (approximate)",0.146,FALSE
+"FDSLAST_A","","Excluded: not fielded in 2025",0.966,"reserve-code convention (approximate)",1,FALSE
+"FDSLESS_A","","Excluded: not fielded in 2025",0.146,"reserve-code convention (approximate)",0.146,FALSE
+"FDSNEDAYS_A","","Excluded: not fielded in 2025",0.012,"reserve-code convention (approximate)",0.012,FALSE
+"FDSNOTEAT_A","","Excluded: not fielded in 2025",0.065,"reserve-code convention (approximate)",0.065,FALSE
+"FDSRUNOUT_A","","Excluded: not fielded in 2025",0.967,"reserve-code convention (approximate)",1,FALSE
+"FDSSKIPDYS_A","","Excluded: not fielded in 2025",0.05,"reserve-code convention (approximate)",0.051,FALSE
+"FDSSKIP_A","","Excluded: not fielded in 2025",0.146,"reserve-code convention (approximate)",0.146,FALSE
+"FDSWEIGHT_A","","Excluded: not fielded in 2025",0.145,"reserve-code convention (approximate)",0.146,FALSE
+"FGEFRQTRD_A","","Excluded: not fielded in 2025",0.987,"reserve-code convention (approximate)",1,FALSE
+"FGELEVTRD_A","","Excluded: not fielded in 2025",0.703,"reserve-code convention (approximate)",0.705,FALSE
+"FGELNGTRD_A","","Excluded: not fielded in 2025",0.703,"reserve-code convention (approximate)",0.705,FALSE
+"FLUPREG2_A","","Excluded: not fielded in 2025",0.005,"reserve-code convention (approximate)",0.005,FALSE
+"FLUPREG_A","","Excluded: not fielded in 2025",0.002,"reserve-code convention (approximate)",0.002,FALSE
+"FSNAP30D_A","","Excluded: not fielded in 2025",0.108,"reserve-code convention (approximate)",0.108,FALSE
+"FUNWLK_A","","Excluded: not fielded in 2025",0.979,"reserve-code convention (approximate)",1,FALSE
+"HEARNYRM_A","","Excluded: not fielded in 2025",0.997,"reserve-code convention (approximate)",0.999,FALSE
+"HEARQTRM_A","","Excluded: not fielded in 2025",0.999,"reserve-code convention (approximate)",0.999,FALSE
+"HEPEV_A","","Excluded: not fielded in 2025",1,"reserve-code convention (approximate)",1,FALSE
+"HLTHCOND_A","","Excluded: not fielded in 2025",0.998,"reserve-code convention (approximate)",1,FALSE
+"HOMEWLK_A","","Excluded: not fielded in 2025",0.635,"reserve-code convention (approximate)",0.636,FALSE
+"HOPELESS_A","","Excluded: not fielded in 2025",0.988,"reserve-code convention (approximate)",1,FALSE
+"HOUSECOST_A","","Excluded: not fielded in 2025",0.964,"reserve-code convention (approximate)",1,FALSE
+"INJBONES_A","","Excluded: not fielded in 2025",0.045,"reserve-code convention (approximate)",0.045,FALSE
+"INJCHORES_A","","Excluded: not fielded in 2025",0.069,"reserve-code convention (approximate)",0.069,FALSE
+"INJER_A","","Excluded: not fielded in 2025",0.024,"reserve-code convention (approximate)",0.024,FALSE
+"INJFALLHOM_A","","Excluded: not fielded in 2025",0.006,"reserve-code convention (approximate)",0.006,FALSE
+"INJFALLWRK_A","","Excluded: not fielded in 2025",0.001,"reserve-code convention (approximate)",0.001,FALSE
+"INJFALL_A","","Excluded: not fielded in 2025",0.069,"reserve-code convention (approximate)",0.069,FALSE
+"INJFUTWRK_A","","Excluded: not fielded in 2025",0.019,"reserve-code convention (approximate)",0.019,FALSE
+"INJHOME_A","","Excluded: not fielded in 2025",0.069,"reserve-code convention (approximate)",0.069,FALSE
+"INJHOSP_A","","Excluded: not fielded in 2025",0.01,"reserve-code convention (approximate)",0.01,FALSE
+"INJLIMIT_A","","Excluded: not fielded in 2025",0.104,"reserve-code convention (approximate)",0.104,FALSE
+"INJMOTOR_A","","Excluded: not fielded in 2025",0.069,"reserve-code convention (approximate)",0.069,FALSE
+"INJMVTYPE1_A","","Excluded: not fielded in 2025",0.005,"reserve-code convention (approximate)",0.005,FALSE
+"INJMVTYPE2_A","","Excluded: not fielded in 2025",0.005,"reserve-code convention (approximate)",0.005,FALSE
+"INJMVTYPE3_A","","Excluded: not fielded in 2025",0.005,"reserve-code convention (approximate)",0.005,FALSE
+"INJMVTYPE4_A","","Excluded: not fielded in 2025",0.005,"reserve-code convention (approximate)",0.005,FALSE
+"INJMVTYPE5_A","","Excluded: not fielded in 2025",0.005,"reserve-code convention (approximate)",0.005,FALSE
+"INJREDUCE_A","","Excluded: not fielded in 2025",0.065,"reserve-code convention (approximate)",0.065,FALSE
+"INJSAWDOC_A","","Excluded: not fielded in 2025",0.069,"reserve-code convention (approximate)",0.069,FALSE
+"INJSPORTS_A","","Excluded: not fielded in 2025",0.069,"reserve-code convention (approximate)",0.069,FALSE
+"INJSTITCH_A","","Excluded: not fielded in 2025",0.045,"reserve-code convention (approximate)",0.045,FALSE
+"INJSTOPCHG_A","","Excluded: not fielded in 2025",0.065,"reserve-code convention (approximate)",0.065,FALSE
+"INJWORK_A","","Excluded: not fielded in 2025",0.042,"reserve-code convention (approximate)",0.042,FALSE
+"INJWRKDYTC_A","","Excluded: not fielded in 2025",0.069,"reserve-code convention (approximate)",0.069,FALSE
+"INTV_MON","","Excluded: not fielded in 2025",1,"reserve-code convention (approximate)",1,FALSE
+"INTV_QRT","","Excluded: not fielded in 2025",1,"reserve-code convention (approximate)",1,FALSE
+"K6SPD_A","","Excluded: not fielded in 2025",0.985,"reserve-code convention (approximate)",1,FALSE
+"KIDWEAKEV_A","","Excluded: not fielded in 2025",1,"reserve-code convention (approximate)",1,FALSE
+"LIVEBIRTH_A","","Excluded: not fielded in 2025",0.223,"reserve-code convention (approximate)",0.224,FALSE
+"LIVEREV_A","","Excluded: not fielded in 2025",1,"reserve-code convention (approximate)",1,FALSE
+"MEDRXTRT_A","","Excluded: not fielded in 2025",0.998,"reserve-code convention (approximate)",1,FALSE
+"MENTHOLC_A","","Excluded: not fielded in 2025",0.103,"reserve-code convention (approximate)",0.103,FALSE
+"MENTHOLF_A","","Excluded: not fielded in 2025",0.25,"reserve-code convention (approximate)",0.253,FALSE
+"MODFREQW_A","","Excluded: not fielded in 2025",0.981,"reserve-code convention (approximate)",1,FALSE
+"MODLNR_A","","Excluded: not fielded in 2025",0.705,"reserve-code convention (approximate)",0.708,FALSE
+"MODLTPR_A","","Excluded: not fielded in 2025",0.705,"reserve-code convention (approximate)",0.708,FALSE
+"MODMIN_A","","Excluded: not fielded in 2025",0.705,"reserve-code convention (approximate)",0.708,FALSE
+"MODNR_A","","Excluded: not fielded in 2025",0.981,"reserve-code convention (approximate)",1,FALSE
+"MODTPR_A","","Excluded: not fielded in 2025",0.981,"reserve-code convention (approximate)",1,FALSE
+"NERVOUS_A","","Excluded: not fielded in 2025",0.988,"reserve-code convention (approximate)",1,FALSE
+"NUMBRN1TC_A","","Excluded: not fielded in 2025",0.325,"reserve-code convention (approximate)",0.328,FALSE
+"NUMINJTC_A","","Excluded: not fielded in 2025",0.069,"reserve-code convention (approximate)",0.069,FALSE
+"PA18_02R_A","","Excluded: not fielded in 2025",0.973,"reserve-code convention (approximate)",1,FALSE
+"PA18_05R_A","","Excluded: not fielded in 2025",0.97,"reserve-code convention (approximate)",1,FALSE
+"PEOPLEWLK_A","","Excluded: not fielded in 2025",0.976,"reserve-code convention (approximate)",1,FALSE
+"PREGFLUYR_A","","Excluded: not fielded in 2025",0.219,"reserve-code convention (approximate)",0.219,FALSE
+"PSOREV_A","","Excluded: not fielded in 2025",1,"reserve-code convention (approximate)",1,FALSE
+"RELAXWLK_A","","Excluded: not fielded in 2025",0.979,"reserve-code convention (approximate)",1,FALSE
+"REPFUTWRK_A","","Excluded: not fielded in 2025",0.011,"reserve-code convention (approximate)",0.012,FALSE
+"REPLIMIT_A","","Excluded: not fielded in 2025",0.088,"reserve-code convention (approximate)",0.088,FALSE
+"REPREDUCE_A","","Excluded: not fielded in 2025",0.048,"reserve-code convention (approximate)",0.048,FALSE
+"REPSAWDOC_A","","Excluded: not fielded in 2025",0.05,"reserve-code convention (approximate)",0.05,FALSE
+"REPSTOPCHG_A","","Excluded: not fielded in 2025",0.048,"reserve-code convention (approximate)",0.048,FALSE
+"REPSTRAIN_A","","Excluded: not fielded in 2025",0.989,"reserve-code convention (approximate)",1,FALSE
+"REPWRKCAUS_A","","Excluded: not fielded in 2025",0.05,"reserve-code convention (approximate)",0.05,FALSE
+"REPWRKDYTC_A","","Excluded: not fielded in 2025",0.05,"reserve-code convention (approximate)",0.05,FALSE
+"RESTLESS_A","","Excluded: not fielded in 2025",0.988,"reserve-code convention (approximate)",1,FALSE
+"ROADSWLK_A","","Excluded: not fielded in 2025",0.982,"reserve-code convention (approximate)",1,FALSE
+"SAD_A","","Excluded: not fielded in 2025",0.989,"reserve-code convention (approximate)",1,FALSE
+"SBURNALC_A","","Excluded: not fielded in 2025",0.258,"reserve-code convention (approximate)",0.259,FALSE
+"SBURNPHY_A","","Excluded: not fielded in 2025",0.328,"reserve-code convention (approximate)",0.328,FALSE
+"SBURNSCR_A","","Excluded: not fielded in 2025",0.327,"reserve-code convention (approximate)",0.328,FALSE
+"SBURNTAN_A","","Excluded: not fielded in 2025",0.142,"reserve-code convention (approximate)",0.142,FALSE
+"SBURNWAT_A","","Excluded: not fielded in 2025",0.327,"reserve-code convention (approximate)",0.328,FALSE
+"SBURNWRK_A","","Excluded: not fielded in 2025",0.328,"reserve-code convention (approximate)",0.328,FALSE
+"SHINGRIX3_A","","Excluded: not fielded in 2025",0.058,"reserve-code convention (approximate)",0.066,FALSE
+"SHINGRIXFS1_A","","Excluded: not fielded in 2025",0.168,"reserve-code convention (approximate)",0.174,FALSE
+"SHINGRIXN3_A","","Excluded: not fielded in 2025",0.044,"reserve-code convention (approximate)",0.044,FALSE
+"SHINGWHEN1_A","","Excluded: not fielded in 2025",0.023,"reserve-code convention (approximate)",0.027,FALSE
+"SHINGYEARP_A","","Excluded: not fielded in 2025",0.239,"reserve-code convention (approximate)",0.266,FALSE
+"SHOPSWLK_A","","Excluded: not fielded in 2025",0.982,"reserve-code convention (approximate)",1,FALSE
+"SHTCVD191_A","","Excluded: not fielded in 2025",0.994,"reserve-code convention (approximate)",1,FALSE
+"SHTCVD19NM2_A","","Excluded: not fielded in 2025",0.78,"reserve-code convention (approximate)",0.782,FALSE
+"SHTHEPA_A","","Excluded: not fielded in 2025",0.901,"reserve-code convention (approximate)",1,FALSE
+"SHTSHINGL1_A","","Excluded: not fielded in 2025",0.59,"reserve-code convention (approximate)",0.598,FALSE
+"SIDEWLK_A","","Excluded: not fielded in 2025",0.981,"reserve-code convention (approximate)",1,FALSE
+"SLPFLL_A","","Excluded: not fielded in 2025",0.976,"reserve-code convention (approximate)",1,FALSE
+"SLPHOURS_A","","Excluded: not fielded in 2025",0.974,"reserve-code convention (approximate)",1,FALSE
+"SLPMED1_A","","Excluded: not fielded in 2025",0.975,"reserve-code convention (approximate)",1,FALSE
+"SLPMED2_A","","Excluded: not fielded in 2025",0.975,"reserve-code convention (approximate)",1,FALSE
+"SLPMED3_A","","Excluded: not fielded in 2025",0.975,"reserve-code convention (approximate)",1,FALSE
+"SLPMEDINTRO_A","","Excluded: not fielded in 2025",0.977,"reserve-code convention (approximate)",1,FALSE
+"SLPREST_A","","Excluded: not fielded in 2025",0.976,"reserve-code convention (approximate)",1,FALSE
+"SLPSTY_A","","Excluded: not fielded in 2025",0.976,"reserve-code convention (approximate)",1,FALSE
+"SMELLCOMP_A","","Excluded: not fielded in 2025",0.964,"reserve-code convention (approximate)",1,FALSE
+"SMELLDF_A","","Excluded: not fielded in 2025",0.973,"reserve-code convention (approximate)",1,FALSE
+"SMELLPAR_A","","Excluded: not fielded in 2025",0.968,"reserve-code convention (approximate)",1,FALSE
+"SMELLPHT_A","","Excluded: not fielded in 2025",0.971,"reserve-code convention (approximate)",1,FALSE
+"SMKAGE_A","","Excluded: not fielded in 2025",0.353,"reserve-code convention (approximate)",0.357,FALSE
+"SMKQT12M_A","","Excluded: not fielded in 2025",0.103,"reserve-code convention (approximate)",0.103,FALSE
+"SMKQTNP_A","","Excluded: not fielded in 2025",0.251,"reserve-code convention (approximate)",0.253,FALSE
+"SMKQTTP_A","","Excluded: not fielded in 2025",0.251,"reserve-code convention (approximate)",0.253,FALSE
+"SMKQTY_A","","Excluded: not fielded in 2025",0.251,"reserve-code convention (approximate)",0.253,FALSE
+"SMKTLK1_A","","Excluded: not fielded in 2025",0.12,"reserve-code convention (approximate)",0.12,FALSE
+"STRFREQW_A","","Excluded: not fielded in 2025",0.981,"reserve-code convention (approximate)",1,FALSE
+"STRNR_A","","Excluded: not fielded in 2025",0.981,"reserve-code convention (approximate)",1,FALSE
+"STRTPR_A","","Excluded: not fielded in 2025",0.981,"reserve-code convention (approximate)",1,FALSE
+"SUNSKIN1_A","","Excluded: not fielded in 2025",0.974,"reserve-code convention (approximate)",1,FALSE
+"SUNTAN1_A","","Excluded: not fielded in 2025",0.978,"reserve-code convention (approximate)",1,FALSE
+"TASTECOMP_A","","Excluded: not fielded in 2025",0.966,"reserve-code convention (approximate)",1,FALSE
+"TASTEDF_A","","Excluded: not fielded in 2025",0.972,"reserve-code convention (approximate)",1,FALSE
+"TASTEFLAV_A","","Excluded: not fielded in 2025",0.968,"reserve-code convention (approximate)",1,FALSE
+"TASTEUNW_A","","Excluded: not fielded in 2025",0.971,"reserve-code convention (approximate)",1,FALSE
+"TDAPPREG_A","","Excluded: not fielded in 2025",0.01,"reserve-code convention (approximate)",0.011,FALSE
+"TRAFFICWLK_A","","Excluded: not fielded in 2025",0.981,"reserve-code convention (approximate)",1,FALSE
+"TRANSITWLK_A","","Excluded: not fielded in 2025",0.961,"reserve-code convention (approximate)",1,FALSE
+"TRANSPOR_A","","Excluded: not fielded in 2025",0.965,"reserve-code convention (approximate)",1,FALSE
+"TRAVEL_A","","Excluded: not fielded in 2025",0.995,"reserve-code convention (approximate)",1,FALSE
+"TSTSMHP2_A","","Excluded: not fielded in 2025",0.972,"reserve-code convention (approximate)",1,FALSE
+"TSTSMLAST_A","","Excluded: not fielded in 2025",0.038,"reserve-code convention (approximate)",0.039,FALSE
+"ULCCOLEV_A","","Excluded: not fielded in 2025",0.999,"reserve-code convention (approximate)",1,FALSE
+"VIGFREQW_A","","Excluded: not fielded in 2025",0.981,"reserve-code convention (approximate)",1,FALSE
+"VIGLNR_A","","Excluded: not fielded in 2025",0.348,"reserve-code convention (approximate)",0.349,FALSE
+"VIGLTPR_A","","Excluded: not fielded in 2025",0.348,"reserve-code convention (approximate)",0.349,FALSE
+"VIGMIN_A","","Excluded: not fielded in 2025",0.348,"reserve-code convention (approximate)",0.349,FALSE
+"VIGNR_A","","Excluded: not fielded in 2025",0.981,"reserve-code convention (approximate)",1,FALSE
+"VIGTPR_A","","Excluded: not fielded in 2025",0.981,"reserve-code convention (approximate)",1,FALSE
+"WEATHERWLK_A","","Excluded: not fielded in 2025",0.979,"reserve-code convention (approximate)",1,FALSE
+"WLKLEISDAY_A","","Excluded: not fielded in 2025",0.585,"reserve-code convention (approximate)",0.586,FALSE
+"WLKLEISTC_A","","Excluded: not fielded in 2025",0.582,"reserve-code convention (approximate)",0.583,FALSE
+"WLKLEISTPD_A","","Excluded: not fielded in 2025",0.583,"reserve-code convention (approximate)",0.585,FALSE
+"WLKLEIS_A","","Excluded: not fielded in 2025",0.969,"reserve-code convention (approximate)",0.986,FALSE
+"WLKTRANDAY_A","","Excluded: not fielded in 2025",0.158,"reserve-code convention (approximate)",0.158,FALSE
+"WLKTRANTC_A","","Excluded: not fielded in 2025",0.157,"reserve-code convention (approximate)",0.157,FALSE
+"WLKTRANTPD_A","","Excluded: not fielded in 2025",0.157,"reserve-code convention (approximate)",0.158,FALSE
+"WLKTRAN_A","","Excluded: not fielded in 2025",0.969,"reserve-code convention (approximate)",0.986,FALSE
+"WORKHEALTH_A","","Excluded: not fielded in 2025",0.997,"reserve-code convention (approximate)",1,FALSE
+"WORTHLESS_A","","Excluded: not fielded in 2025",0.988,"reserve-code convention (approximate)",1,FALSE
+"WRKHLTHFC_A","","Excluded: not fielded in 2025",0.919,"reserve-code convention (approximate)",0.919,FALSE
+"BMICATD_A","BMI category (detailed)","Excluded: redundant",0.983,"reserve-code convention (approximate)",1,TRUE
+"ECIGEV_A","Ever used e-cigarettes","Excluded: redundant",0.986,"reserve-code convention (approximate)",1,TRUE
+"EMPLASTWK_A","Worked for pay last week (unedited)","Excluded: redundant",0.97,"reserve-code convention (approximate)",1,TRUE
+"HEIGHTTC_A","Height (in)","Excluded: redundant",0.997,"reserve-code convention (approximate)",1,TRUE
+"HICOV_A","Any health insurance coverage","Excluded: redundant",1,"reserve-code convention (approximate)",1,TRUE
+"HIKIND01_A","Insurance type indicator (recode of plan variables)","Excluded: redundant",1,"reserve-code convention (approximate)",1,TRUE
+"HIKIND02_A","Insurance type indicator (recode of plan variables)","Excluded: redundant",1,"reserve-code convention (approximate)",1,TRUE
+"HIKIND03_A","Insurance type indicator (recode of plan variables)","Excluded: redundant",1,"reserve-code convention (approximate)",1,TRUE
+"HIKIND04_A","Insurance type indicator (recode of plan variables)","Excluded: redundant",1,"reserve-code convention (approximate)",1,TRUE
+"HIKIND05_A","Insurance type indicator (recode of plan variables)","Excluded: redundant",1,"reserve-code convention (approximate)",1,TRUE
+"HIKIND06_A","Insurance type indicator (recode of plan variables)","Excluded: redundant",1,"reserve-code convention (approximate)",1,TRUE
+"HIKIND07_A","Insurance type indicator (recode of plan variables)","Excluded: redundant",1,"reserve-code convention (approximate)",1,TRUE
+"HIKIND08_A","Insurance type indicator (recode of plan variables)","Excluded: redundant",1,"reserve-code convention (approximate)",1,TRUE
+"HIKIND09_A","Insurance type indicator (recode of plan variables)","Excluded: redundant",1,"reserve-code convention (approximate)",1,TRUE
+"HIKIND10_A","Insurance type indicator (recode of plan variables)","Excluded: redundant",1,"reserve-code convention (approximate)",1,TRUE
+"HISDETP_A","Hispanic origin detail","Excluded: redundant",0.999,"reserve-code convention (approximate)",1,TRUE
+"HISP_A","Hispanic origin","Excluded: redundant",1,"reserve-code convention (approximate)",1,TRUE
+"MARSTAT_A","Current marital status (detailed)","Excluded: redundant",0.698,"reserve-code convention (approximate)",1,TRUE
+"NUMCAN_A","Number of cancer types","Excluded: redundant",1,"reserve-code convention (approximate)",1,TRUE
+"OVER65FLG_A","Any family member aged 65+","Excluded: redundant",1,"reserve-code convention (approximate)",1,TRUE
+"PCNT18UPTC","Adults in household","Excluded: redundant",1,"reserve-code convention (approximate)",1,TRUE
+"PCNTLT18TC","Children in household","Excluded: redundant",1,"reserve-code convention (approximate)",1,TRUE
+"RACEALLP_A","Race (single and multiple)","Excluded: redundant",0.949,"reserve-code convention (approximate)",1,TRUE
+"RATCAT_A","Income-to-poverty ratio category","Excluded: redundant",1,"reserve-code convention (approximate)",1,TRUE
+"SAPARENTSC_A","Sample adult is parent of sample child","Excluded: redundant",0.996,"reserve-code convention (approximate)",1,TRUE
+"SMKEV_A","Ever smoked 100 cigarettes","Excluded: redundant",0.986,"reserve-code convention (approximate)",1,TRUE
+"STEPS_A","Difficulty climbing 12 steps","Excluded: redundant",0.905,"dictionary",0.906,TRUE
+"USPLKIND_A","Type of usual place of care","Excluded: redundant",0.915,"dictionary",0.916,TRUE
+"WEIGHTLBTC_A","Weight (lb)","Excluded: redundant",0.985,"reserve-code convention (approximate)",1,TRUE
+"WLK100_A","Difficulty walking 100 yards","Excluded: redundant",0.905,"dictionary",0.906,TRUE
+"ASTATNEW","Sample adult status","Excluded: survey administration",1,"reserve-code convention (approximate)",1,TRUE
+"HHSTAT_A","Household status","Excluded: survey administration",1,"reserve-code convention (approximate)",1,TRUE
+"HHX","Household identifier","Excluded: survey administration",NA,"reserve-code convention (approximate)",1,TRUE
+"IMPINCFLG_A","Income imputation flag","Excluded: survey administration",1,"reserve-code convention (approximate)",1,TRUE
+"IMPNUM_A","Imputation number","Excluded: survey administration",1,"reserve-code convention (approximate)",1,TRUE
+"INCTCFLG_A","Income top-code flag","Excluded: survey administration",1,"reserve-code convention (approximate)",1,TRUE
+"MLTFAMFLG_A","Multiple-family household flag","Excluded: survey administration",1,"reserve-code convention (approximate)",1,TRUE
+"PPSU","Pseudo-PSU","Excluded: survey administration",1,"reserve-code convention (approximate)",1,TRUE
+"PROXYFLAG_A","Proxy interview flag","Excluded: survey administration",1,"reserve-code convention (approximate)",1,TRUE
+"PSTRAT","Pseudo-stratum","Excluded: survey administration",1,"reserve-code convention (approximate)",1,TRUE
+"RECTYPE","Record type","Excluded: survey administration",1,"reserve-code convention (approximate)",1,TRUE
+"SRVY_YR","Survey year","Excluded: survey administration",1,"reserve-code convention (approximate)",1,TRUE
+"WTFA_A","Final sample adult weight","Excluded: survey administration",1,"reserve-code convention (approximate)",1,TRUE
+"CHIP_A","CHIP","Excluded: too few respondents in a category",1,"reserve-code convention (approximate)",1,TRUE
+"URGCC12MTC_A","Urgent care visits, past 12 months","Excluded: wording changed in 2025",0.999,"reserve-code convention (approximate)",1,TRUE
+"ANXMED_A","Takes medication for anxiety","Candidate: borderline (sensitivity only)",0.993,"dictionary",1,TRUE
+"DEPMED_A","Takes medication for depression","Candidate: borderline (sensitivity only)",0.992,"dictionary",1,TRUE
+"EMERG12MTC_A","Emergency room visits, past 12 months","Candidate: borderline (sensitivity only)",0.999,"dictionary",1,TRUE
+"HITLOOK_A","Looked up health information online","Excluded: outcome-proxy diagnostic",0.927,"dictionary",0.928,TRUE
+"HITTEST_A","Viewed test results online","Excluded: outcome-proxy diagnostic",0.927,"dictionary",0.928,TRUE
+"HOSPONGT_A","Overnight hospital stay, past 12 months","Candidate: borderline (sensitivity only)",1,"dictionary",1,TRUE
+"LASTDR_A","Time since last doctor visit","Excluded: outcome-proxy diagnostic",0.999,"dictionary",1,TRUE
+"MEDDL12M_A","Delayed care due to cost, past 12 months","Candidate: borderline (sensitivity only)",1,"dictionary",1,TRUE
+"MEDNG12M_A","Did not get needed care due to cost, past 12 months","Candidate: borderline (sensitivity only)",1,"dictionary",1,TRUE
+"MHTHDLY_A","Delayed mental health counseling due to cost","Candidate: borderline (sensitivity only)",0.992,"dictionary",1,TRUE
+"MHTHND_A","Needed mental health counseling but did not get it","Candidate: borderline (sensitivity only)",0.992,"dictionary",1,TRUE
+"PAYBLL12M_A","Problems paying medical bills, past 12 months","Candidate: borderline (sensitivity only)",0.998,"dictionary",1,TRUE
+"PAYWORRY_A","Worried about paying medical bills","Candidate: borderline (sensitivity only)",0.999,"dictionary",1,TRUE
+"RETAILHC12MTC_A","Retail clinic visits, past 12 months","Candidate: borderline (sensitivity only)",0.999,"dictionary",1,TRUE
+"RX12M_A","Took prescription medication, past 12 months","Excluded: outcome-proxy diagnostic",0.999,"dictionary",1,TRUE
+"RXDG12M_A","Needed prescription medication but did not get it due to cost","Candidate: borderline (sensitivity only)",0.999,"dictionary",1,TRUE
+"SHTFLU12M_A","Flu vaccine, past 12 months","Candidate: borderline (sensitivity only)",0.994,"dictionary",1,TRUE
+"SHTPNUEV_A","Ever had pneumonia vaccine","Candidate: borderline (sensitivity only)",0.97,"dictionary",1,TRUE
+"USUALPL_A","Has usual place of care","Candidate: borderline (sensitivity only)",0.999,"dictionary",1,TRUE
+"WELLNESS_A","Wellness visit, past 12 months","Candidate: borderline (sensitivity only)",0.995,"dictionary",0.997,TRUE
