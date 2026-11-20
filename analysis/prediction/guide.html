@@ -1,0 +1,267 @@
+<!doctype html>
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>NHIS model development and validation — Research guide</title>
+    <link rel="icon" href="../../assets/wcm-ti-icon.svg" />
+    <link rel="stylesheet" href="../../styles.css" />
+    <link rel="stylesheet" href="../../documentation.css" />
+  </head>
+  <body class="documentation-page">
+    <a class="skip" href="#main">Skip to guide</a>
+    <header class="site-header">
+      <div class="masthead">
+        <a
+          class="project-brand"
+          href="../../"
+          aria-label="Weill Cornell Medicine Telehealth Insights home"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 336 76"
+            fill="none"
+            aria-hidden="true"
+          >
+            <g fill="#B31B1B">
+              <path
+                d="M4 8H17L27 46L38 10Q38.6 8 40.5 8H51.5Q53.4 8 54 10L65 46L75 8H88L73 64Q72.5 66 70.5 66H60Q58.5 66 58 64L46 27L34 64Q33.5 66 32 66H21.5Q19.5 66 19 64Z"
+              />
+              <path
+                d="M145 14L139 26C135 21 130 19 124 19C114 19 108 26 108 37C108 48 114 55 124 55C130 55 135 52 139 48L147 59C141 66 134 69 124 69C105 69 93 56 93 37C93 18 106 6 124 6C133 6 140 9 145 14Z"
+              />
+              <path
+                d="M155 66V8H169Q171 8 172 10L186 38L200 10Q201 8 203 8H217V66H203V33L192 54H180L169 33V66Z"
+              />
+            </g>
+            <path d="M228 33H246V41H226V35Z" fill="#B31B1B" />
+            <g fill="#E7751D">
+              <path d="M254 8H306L302 22H288V66H272V22H254Z" />
+              <path d="M316 8H332V62L328 66H316Z" />
+            </g></svg
+        ></a>
+        <p class="site-name">
+          Weill Cornell Medicine <strong>Telehealth Insights</strong>
+        </p>
+      </div>
+      <nav class="site-nav" aria-label="Research modules">
+        <a href="../../index.html#states">States</a>
+        <a href="../../index.html#people">Population</a>
+        <a href="../../index.html#visits">Visits</a>
+        <!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+        <a href="../../validation.html" class="active" aria-current="location"
+          >Prediction</a
+        >
+        <a href="../../index.html#quality">Methods</a>
+        <a class="documentation-link" href="../../documentation.html"
+          >Data documentation</a
+        >
+      </nav>
+    </header>
+    <main id="main">
+      <!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+      <div class="hero">
+        <a class="eyebrow" href="../../validation.html">Model validation</a>
+        <h1>NHIS model development and validation</h1>
+        <p class="edition">Verified snapshot · NHIS 2024–2025</p>
+        <!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+        <p class="snapshot-finding">
+          The primary model achieved an unweighted AUROC of 0.717 in the 2025
+          survey. Its average predicted use was 25.62%, compared with 26.26%
+          observed among eligible adults after survey weighting.
+        </p>
+      </div>
+      <!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+      <div class="document-layout">
+        <aside class="document-contents">
+          <details open>
+            <summary>On this page</summary>
+            <nav aria-label="Guide contents">
+              <a href="#study-analysis-materials">Analysis materials</a
+              ><a href="#study-models-and-scoring">Models and scoring</a
+              ><a href="#study-reproduce-the-research-report"
+                >Reproduce the research report</a
+              >
+            </nav>
+          </details>
+        </aside>
+        <article class="document-body">
+          <p>
+            The primary model estimates whether a US adult reported a phone or
+            video appointment in the previous 12 months. Development used 25,500
+            NHIS 2024 Sample Adult respondents. The 2024 holdout contained 6,377
+            respondents and the 2025 evaluation contained 23,605. The outcome
+            and predictors come from the same interview. The 2025 respondents
+            form a new cross-sectional sample.
+          </p>
+          <h2 id="study-analysis-materials" tabindex="-1">
+            Analysis materials
+          </h2>
+          <ul>
+            <li>
+              <a href="nhis_telehealth_prediction_final.html"
+                >Rendered research report</a
+              >
+              with the study methods, full results, sensitivity analyses, model
+              export checks and session information.
+            </li>
+            <li>
+              <a href="nhis_telehealth_prediction_final.Rmd"
+                >R Markdown analysis</a
+              >
+              with the source for model fitting, evaluation and coefficient
+              export.
+            </li>
+            <li>
+              <a href="figures/study_design.png">Study design diagram (PNG)</a>
+              and
+              <a href="figures/study_design.pdf">printable diagram (PDF)</a>.
+              Earlier analyses of the holdout samples informed the final study
+              design.
+            </li>
+            <li>
+              <a href="supplementary/variable_screening.csv"
+                >Variable screening decisions</a
+              >
+              and
+              <a href="supplementary/codebook_verification.csv"
+                >codebook verification</a
+              >. The verification table documents the home Internet access item
+              and five coding corrections.
+            </li>
+          </ul>
+          <h2 id="study-models-and-scoring" tabindex="-1">
+            Models and scoring
+          </h2>
+          <div
+            class="doc-table-scroll"
+            tabindex="0"
+            role="region"
+            aria-label="Models and scoring table"
+          >
+            <table class="doc-table">
+              <thead>
+                <tr>
+                  <th scope="col">File</th>
+                  <th scope="col">Use</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <a href="model_export/model_coefficients.csv"
+                      >Model coefficients</a
+                    >
+                  </td>
+                  <td>
+                    Logistic model intercepts and log-odds coefficients with
+                    conditional standard errors, and nonzero penalized
+                    group-lasso coefficients
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="model_export/spline_knots.csv">Spline knots</a>
+                  </td>
+                  <td>
+                    Training-sample interior and boundary knots for the age and
+                    income-to-poverty natural splines
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="model_export/factor_levels.csv">Factor levels</a>
+                  </td>
+                  <td>Ordered category labels and reference levels</td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="model_export/coding_dictionary.csv"
+                      >Coding dictionary</a
+                    >
+                  </td>
+                  <td>
+                    Raw NHIS codes, missing-value rules, structural skips and
+                    derived categories
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="model_export/predict_from_csv.R"
+                      >R scoring function</a
+                    >
+                  </td>
+                  <td>
+                    Reconstructs logistic and group-lasso scores from already
+                    coded inputs and the exported coefficients
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <a href="model_export/xgb_full_pool.json">XGBoost model</a>,
+                    <a href="model_export/xgb_features.csv">features</a>,
+                    <a href="model_export/xgb_settings.csv">settings</a>
+                  </td>
+                  <td>
+                    Saved booster, R design-matrix column order, and tuning
+                    configuration
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p>
+            The baseline models were fitted without survey weights. Performance
+            is reported with and without the original survey weights for
+            respondents who met the common complete-case criteria. Exact
+            category labels, age in years, and a common income-to-poverty cap of
+            11 are required for coefficient-based scoring. The model export
+            check compares reconstructed 2025 scores with predictions from the
+            original fitted models.
+          </p>
+          <h2 id="study-reproduce-the-research-report" tabindex="-1">
+            Reproduce the research report
+          </h2>
+          <p>
+            Obtain the public Sample Adult CSV files from the
+            <a
+              href="https://www.cdc.gov/nchs/nhis/documentation/2024-nhis.html"
+              target="_blank"
+              rel="noreferrer"
+              >2024 NHIS release</a
+            >
+            and the
+            <a
+              href="https://www.cdc.gov/nchs/nhis/documentation/2025-nhis.html"
+              target="_blank"
+              rel="noreferrer"
+              >2025 NHIS release</a
+            >. Extract <code>adult24.csv</code> and
+            <code>adult25.csv</code> together outside the publish directory. Set
+            the environment variable <code>NHIS_DATA_DIR</code> to that
+            directory, or place the two files next to the R Markdown source
+            during a local analysis.
+          </p>
+          <p>
+            From this directory, render the R Markdown file with the Knit
+            command in RStudio or the command below. Install R, Pandoc and the R
+            packages <code>rmarkdown</code>, <code>knitr</code>,
+            <code>xgboost</code>, <code>PRROC</code>, <code>survey</code> and
+            <code>grpreg</code> first. The report records the versions used to
+            produce the supplied run. A full run on two to four cores takes
+            approximately two hours and refreshes the model exports and
+            screening table.
+          </p>
+          <pre><code>Rscript -e &#39;rmarkdown::render(&quot;nhis_telehealth_prediction_final.Rmd&quot;)&#39;</code></pre>
+          <p>
+            The dashboard displays the aggregate metrics from this analysis.
+          </p>
+        </article>
+      </div>
+      <footer>
+        <span>A research resource by <strong>CHERY LAB</strong></span
+        ><a href="../../validation.html">Back to model validation</a>
+      </footer>
+    </main>
+  </body>
+</html>

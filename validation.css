@@ -1,0 +1,236 @@
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+/* Use the same typography and reading scale as the annual survey pages. */
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.validation-page .panel p {
+  max-width: 82ch;
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.validation-page .panel h3 {
+  font-family: var(--sans);
+  font-weight: 600;
+  margin-top: 18px;
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.validation-page .study-grid,
+.validation-page .calibration-layout {
+  display: grid;
+  gap: 0 clamp(24px, 4vw, 64px);
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.validation-page .study-grid p {
+  margin: 8px 0 12px;
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.validation-page summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 12px 0;
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.validation-page summary:hover,
+.validation-page .hero a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.validation-page .table-wrap th,
+.validation-page .table-wrap td {
+  text-align: right;
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.validation-page .table-wrap th:first-child {
+  text-align: left;
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.validation-page .table-wrap tbody th {
+  background-color: transparent;
+  font-weight: 400;
+  text-transform: none;
+}
+
+/* All calibration bars share a signed axis. Table values provide a precise alternative. */
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.gap-figure {
+  margin: 20px 0;
+  max-width: 900px;
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.gap-figure figcaption {
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.gap-row {
+  display: grid;
+  grid-template-columns: max-content minmax(22px, 1fr) 3.8em;
+  align-items: center;
+  gap: clamp(6px, 1vw, 18px);
+  padding: 3px 0;
+  font-variant-numeric: tabular-nums;
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.gap-row > :first-child {
+  min-width: 4.7em;
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.gap-row > :last-child {
+  text-align: right;
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.gap-axis {
+  display: flex;
+  justify-content: space-between;
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.gap-heading {
+  color: var(--secondary);
+  border-bottom: 1px solid var(--line);
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.gap-track {
+  position: relative;
+  height: 100%;
+  min-height: 26px;
+  background: linear-gradient(
+    to right,
+    transparent calc(50% - 1px),
+    var(--secondary) calc(50% - 1px),
+    var(--secondary) 50%,
+    transparent 50%
+  );
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.gap-track i {
+  position: absolute;
+  background: var(--accent);
+  height: 11px;
+  min-width: 1px;
+  top: calc(50% - 5.5px);
+}
+
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+@media (min-width: 1050px) {
+  /* author: Yao Yao(yay4008@med.cornell.edu) */
+  .validation-page .study-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  /* author: Yao Yao(yay4008@med.cornell.edu) */
+  .validation-page .calibration-layout {
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  }
+}
+
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.auroc-figure {
+  margin: 0;
+  max-width: 52rem;
+  font-variant-numeric: tabular-nums;
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.auroc-key,
+.auroc-values {
+  color: var(--ink);
+  font-weight: 500;
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.auroc-figure ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.auroc-figure li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  align-items: center;
+  column-gap: 1rem;
+  padding: 0.6rem 0;
+  border-top: 1px solid var(--line);
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.auroc-axis {
+  display: flex;
+  justify-content: space-between;
+  margin-left: calc((100% - 1rem) / 2.4 + 1rem);
+  color: var(--secondary);
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.auroc-track {
+  position: relative;
+  height: 1.2rem;
+  background: linear-gradient(var(--line), var(--line)) center / 100% 1px
+    no-repeat;
+  margin-inline: 0.9rem;
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.auroc-axis {
+  padding-inline: 0.1rem;
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.auroc-track::before {
+  content: '';
+  position: absolute;
+  left: var(--start);
+  width: var(--length);
+  height: 3px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--secondary);
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.auroc-track i,
+.auroc-track b {
+  position: absolute;
+  top: 50%;
+  width: 0.55rem;
+  height: 0.55rem;
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.auroc-track i {
+  border: 3px solid var(--ink);
+  background: var(--white);
+  border-radius: 50%;
+  left: var(--test);
+  transform: translate(-50%, -50%);
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.auroc-track b {
+  background: var(--accent);
+  left: var(--validation);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.auroc-values {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.1rem 0.7rem;
+  line-height: 1.4;
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.auroc-values span {
+  white-space: nowrap;
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.auroc-values i {
+  font-style: normal;
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+.auroc-values span:nth-child(2) i {
+  color: var(--accent);
+}
+/* author: Yao Yao(yay4008@med.cornell.edu) */
+@media (max-width: 780px) {
+  /* author: Yao Yao(yay4008@med.cornell.edu) */
+  .auroc-figure li {
+    grid-template-columns: 1fr;
+  }
+  /* author: Yao Yao(yay4008@med.cornell.edu) */
+  .auroc-values {
+    grid-column: 1;
+  }
+  /* author: Yao Yao(yay4008@med.cornell.edu) */
+  .auroc-axis {
+    margin-left: 0;
+  }
+}

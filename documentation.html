@@ -27,7 +27,7 @@ email: jic4015@med.cornell.edu -->
       <div class="masthead">
         <a
           class="project-brand"
-          href="./index.html#states"
+          href="./"
           aria-label="Weill Cornell Medicine Telehealth Insights home"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
@@ -60,6 +60,8 @@ email: jic4015@med.cornell.edu -->
         <a href="./index.html#states">States</a>
         <a href="./index.html#people">Population</a>
         <a href="./index.html#visits">Visits</a>
+        <!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+        <a href="./validation.html">Prediction</a>
         <a href="./index.html#quality">Methods</a>
         <a
           class="documentation-link active"
@@ -72,7 +74,17 @@ email: jic4015@med.cornell.edu -->
     <main id="main">
       <section class="hero">
         <h1>Data documentation</h1>
-        <p>Sources, definitions, and limitations for the dashboard.</p>
+        <p class="edition">Verified snapshot · 2021–2024 comparisons</p>
+        <p class="snapshot-finding" data-finding-for="data-quality">
+          All 50 states and D.C. have matched Medicare, broadband and income
+          data in each year from 2021 to 2024. National survey comparisons use
+          the eligible adults or visits within each survey.
+        </p>
+        <p class="snapshot-finding" data-finding-for="data-manual" hidden>
+          In 2024, 25.03% of adults reported a remote appointment in NHIS, while
+          10.79% of office visits were remote in MEPS. The first percentage
+          counts people and the second counts visits.
+        </p>
       </section>
       <nav class="document-switcher" aria-label="Documentation sections">
         <a href="#data-quality" data-document="data-quality" aria-current="true"
@@ -115,6 +127,9 @@ email: jic4015@med.cornell.edu -->
                   href="#data-quality-nhis-adjusted-association-model"
                   class="subsection"
                   >NHIS adjusted association model</a
+                ><a
+                  href="#data-quality-nhis-prediction-study-design-and-quality"
+                  >NHIS prediction study design and quality</a
                 ><a
                   href="#data-quality-meps-sample-unknown-modality-and-payments"
                   >MEPS sample, unknown modality, and payments</a
@@ -240,10 +255,10 @@ email: jic4015@med.cornell.edu -->
             </p>
             <p>
               The dashboard contains descriptive estimates, a CMS–ACS state
-              regression, and a survey-weighted NHIS association model. Adjusted
-              associations are distinguished from unadjusted comparisons.
-              Neither statistical adjustment nor correlation establishes a
-              causal effect.
+              regression, a survey-weighted NHIS association model, and an NHIS
+              prediction study. Adjusted associations are distinguished from
+              unadjusted comparisons. Neither statistical adjustment nor
+              correlation establishes a causal effect.
             </p>
             <p>
               CMS refers to the Centers for Medicare &amp; Medicaid Services;
@@ -304,6 +319,20 @@ email: jic4015@med.cornell.edu -->
                     <td>
                       Adults with a valid telehealth response and a valid value
                       for the selected grouping variable
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>NHIS prediction study</td>
+                    <td>
+                      2024 development and holdout, 2025 temporal validation
+                    </td>
+                    <td>
+                      Sample adults aged 18 or older with eligible responses and
+                      baseline predictors
+                    </td>
+                    <td>
+                      25,500 training adults, 6,377 holdout adults, and 23,605
+                      validation adults
                     </td>
                   </tr>
                   <tr>
@@ -431,8 +460,8 @@ email: jic4015@med.cornell.edu -->
                 rel="noreferrer"
                 >NHIS 2025 data and documentation</a
               >
-              are available, but this dashboard retains the verified 2024
-              analysis.
+              support the temporal model evaluation. The NHIS annual descriptive
+              series covers 2021–2024.
               <a
                 href="https://www.census.gov/data/developers/data-sets/acs-1year.2023.html"
                 target="_blank"
@@ -1066,6 +1095,56 @@ email: jic4015@med.cornell.edu -->
               validated for predicting individual outcomes.
             </p>
             <h3
+              id="data-quality-nhis-prediction-study-design-and-quality"
+              tabindex="-1"
+            >
+              NHIS prediction study design and quality
+            </h3>
+            <p>
+              The target is a self-reported phone or video appointment in the
+              <strong>preceding 12 months</strong> (<code>VIRAPP12M_A</code>).
+              In 2024, 32,324 adults supplied valid outcome responses and 31,877
+              met the prediction study’s complete-case criteria. An
+              outcome-stratified split assigned 25,500 to training and 6,377 to
+              holdout evaluation. Five-fold cross-validation within training
+              supported development. Variable screening, coding, and the
+              outcome-proxy diagnostic preceded nested evaluation of the
+              selection procedures. XGBoost tuning had its own cross-validation.
+            </p>
+            <p>
+              The primary unweighted logistic regression retained 23 predictor
+              terms through stepwise BIC. The comparison models include a
+              training-prevalence baseline, Andersen-framework logistic models,
+              group lasso, and XGBoost. All fitted models were held fixed for
+              the 2025 evaluation. Of 23,987 adults with a valid outcome in
+              2025, 23,605 met the prediction sample criteria. Earlier
+              development iterations examined both evaluation sets. This is a
+              temporal evaluation by the development team in a subsequent NHIS
+              sample. Selection uncertainty, performance in other settings, and
+              calibration within specific demographic groups remain open
+              questions.
+            </p>
+            <p>
+              The descriptive series uses its own available-case denominators.
+              For example, the 2024 adult use estimate draws on 32,324 valid
+              responses, and the separate five-covariate association model uses
+              32,027 complete cases. Use the prediction sample only for model
+              evaluation. <a href="./validation.html">Model validation</a> ·
+              <a
+                href="https://www.cdc.gov/nchs/nhis/documentation/2024-nhis.html"
+                target="_blank"
+                rel="noreferrer"
+                >2024 NHIS documentation</a
+              >
+              ·
+              <a
+                href="https://www.cdc.gov/nchs/nhis/documentation/2025-nhis.html"
+                target="_blank"
+                rel="noreferrer"
+                >2025 NHIS documentation</a
+              >
+            </p>
+            <h3
               id="data-quality-meps-sample-unknown-modality-and-payments"
               tabindex="-1"
             >
@@ -1367,9 +1446,10 @@ email: jic4015@med.cornell.edu -->
               proof that the data are unbiased. Recall error, nonresponse,
               survey coverage, imputation, residual confounding, and policy or
               measurement changes remain. Overlapping confidence intervals are
-              not a formal test of a group difference. These numerical checks do
-              not evaluate task-based usability, model specification
-              sensitivity, or predictive performance.
+              not a formal test of a group difference. The source audit above
+              covers descriptive estimates and association-model calculations.
+              The NHIS prediction study evaluates discrimination, probability
+              error, and calibration using held-out observations.
             </p>
             <h3 id="data-quality-reproduction-and-updates" tabindex="-1">
               Reproduction and updates
@@ -1443,6 +1523,9 @@ email: jic4015@med.cornell.edu -->
                   href="#data-manual-nhis-adjusted-model-fields"
                   class="subsection"
                   >NHIS adjusted model fields</a
+                ><a
+                  href="#data-manual-nhis-prediction-measures-and-scoring-inputs"
+                  >NHIS prediction measures and scoring inputs</a
                 ><a href="#data-manual-meps-source-variables-and-recodes"
                   >MEPS source variables and recodes</a
                 ><a href="#data-manual-meps-data-fields">MEPS data fields</a
@@ -1698,9 +1781,9 @@ email: jic4015@med.cornell.edu -->
                 rel="noreferrer"
                 >NHIS 2025 documentation</a
               >
-              is available while the dashboard’s NHIS analysis extends through
-              2024. ACS, NHIS, and MEPS refreshes require separate source
-              selection and analytical processing.
+              describes the temporal validation file. The descriptive series
+              ends in 2024. ACS, NHIS, and MEPS refreshes require separate
+              source selection and analytical processing.
             </p>
             <h4 id="data-manual-cms-annual-change-csv" tabindex="-1">
               CMS annual-change CSV
@@ -2631,6 +2714,99 @@ email: jic4015@med.cornell.edu -->
               circumstances throughout the preceding telehealth recall period.
             </p>
             <h3
+              id="data-manual-nhis-prediction-measures-and-scoring-inputs"
+              tabindex="-1"
+            >
+              NHIS prediction measures and scoring inputs
+            </h3>
+            <div
+              class="doc-table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="NHIS prediction measures and scoring inputs table"
+            >
+              <table class="doc-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Measure or field</th>
+                    <th scope="col">Interpretation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Outcome</td>
+                    <td>
+                      <code>VIRAPP12M_A</code> equals 1 for a reported past-year
+                      phone/video appointment and 2 for no such appointment.
+                      Both values enter the analysis.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>AUROC</td>
+                    <td>
+                      Probability of assigning a higher score to a sampled user
+                      than to a nonuser, with half credit for ties. The 95%
+                      intervals shown for the unweighted primary AUROC resample
+                      PSUs within strata with the fitted model held fixed.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Brier score</td>
+                    <td>
+                      Mean squared difference between predicted probabilities
+                      and binary outcomes. Smaller values indicate lower error.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Weighted metrics</td>
+                    <td>
+                      Calculated with final adult survey weights in the eligible
+                      evaluation sample. The primary model itself was fitted
+                      without survey weights.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Calibration band</td>
+                    <td>
+                      Group defined by a range of predicted probabilities.
+                      Sample counts are unweighted. Weighted mean predictions
+                      and observed proportions refer to the same eligible
+                      people.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Calibration gap</td>
+                    <td>
+                      Observed proportion minus average predicted probability,
+                      in percentage points. The overall 2025 interval
+                      incorporates the survey strata and PSUs.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Home Internet access</td>
+                    <td>
+                      The primary model’s <code>ACCSSHOM_A</code> asks whether
+                      Internet access is available at home. The parent item
+                      <code>ACCSSINT_A</code> measures any Internet access. Home
+                      access is asked only when the parent response is yes.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              To reuse a model, apply the released category labels, reference
+              levels, skip and nonresponse rules, and training spline knots. Age
+              is measured in years. The income-to-poverty ratio uses the first
+              income imputation and is capped at 11 in both years. The
+              regression models use log-odds coefficients. The XGBoost export
+              has its own ordered input columns and fitted tree weights.
+              <a
+                href="./analysis/prediction/nhis_telehealth_prediction_final.html"
+                >Full analysis output</a
+              >
+            </p>
+            <h3
               id="data-manual-meps-source-variables-and-recodes"
               tabindex="-1"
             >
@@ -2994,9 +3170,9 @@ email: jic4015@med.cornell.edu -->
         </div>
       </section>
       <footer>
-        <span>WCM-TI · CHERY Lab</span
+        <span>A research resource by <strong>CHERY LAB</strong></span
         ><span>Sources retrieved November 11, 2026</span
-        ><a href="./index.html#states">Explore the dashboard ↗</a>
+        ><a href="./">Explore the dashboard ↗</a>
       </footer>
     </main>
   </body>

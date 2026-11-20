@@ -24,7 +24,7 @@ email: jic4015@med.cornell.edu -->
       <div class="masthead">
         <a
           class="project-brand"
-          href="#states"
+          href="./"
           aria-label="Weill Cornell Medicine Telehealth Insights home"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
@@ -57,6 +57,8 @@ email: jic4015@med.cornell.edu -->
         <a href="#states" data-view="states" class="active">States</a>
         <a href="#people" data-view="people">Population</a>
         <a href="#visits" data-view="visits">Visits</a>
+        <!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+        <a href="./validation.html">Prediction</a>
         <a href="#quality" data-view="quality">Methods</a>
         <a class="documentation-link" href="./documentation.html"
           >Data documentation</a
@@ -70,13 +72,33 @@ email: jic4015@med.cornell.edu -->
             <div>
               <div class="eyebrow" id="hero-kicker">States &amp; access</div>
               <h1 id="hero-title">Telehealth, across states</h1>
-              <p id="hero-description">
-                Compare state telehealth rates, trends, broadband access, and
-                income.
-              </p>
             </div>
           </section>
           <p class="edition">Verified snapshot · Nov 11, 2026</p>
+          <p
+            id="states-finding"
+            class="snapshot-finding"
+            data-finding="states"
+            hidden
+          ></p>
+          <p
+            id="people-finding"
+            class="snapshot-finding"
+            data-finding="people"
+            hidden
+          ></p>
+          <p
+            id="visits-finding"
+            class="snapshot-finding"
+            data-finding="visits"
+            hidden
+          ></p>
+          <p
+            id="quality-finding"
+            class="snapshot-finding"
+            data-finding="quality"
+            hidden
+          ></p>
         </div>
         <div
           id="cms-metrics"
@@ -344,16 +366,6 @@ email: jic4015@med.cornell.edu -->
           </details>
         </section>
         <section id="nhis-model" class="panel model-panel"></section>
-        <div class="interpretation">
-          <span class="eyebrow">Interpretation</span>
-          <p>
-            The population comparison above shows
-            <strong>unadjusted, survey-weighted estimates</strong>. Differences
-            may reflect age, health, coverage, and other factors. They are not
-            causal effects. The separate adjusted comparisons account for the
-            listed covariates, but unmeasured confounding may remain.
-          </p>
-        </div>
       </section>
       <section id="view-visits" class="view" hidden>
         <section class="panel">
@@ -474,9 +486,8 @@ email: jic4015@med.cornell.edu -->
           <p class="serif-lead">Three sources, distinct populations</p>
           <p>
             The sources answer complementary questions and are not pooled into a
-            single telehealth rate. This overview describes the verified
-            snapshot. Optional live CMS updates are labelled separately in
-            States & access.
+            single telehealth rate. Optional live CMS updates are labelled
+            separately in States & access.
           </p>
           <a class="primary-link" href="./documentation.html#data-quality"
             >Read the data quality note ↗</a
@@ -486,7 +497,6 @@ email: jic4015@med.cornell.edu -->
         <section class="panel">
           <div class="section-heading">
             <div>
-              <span class="eyebrow">Transparency by design</span>
               <h2>From source file to display</h2>
             </div>
           </div>
@@ -504,8 +514,7 @@ email: jic4015@med.cornell.edu -->
               <h3>Uncertainty stays visible</h3>
               <p>
                 Survey estimates use weights, strata, and primary sampling
-                units. Confidence intervals show sampling uncertainty; they do
-                not remove nonresponse or measurement bias.
+                units. Confidence intervals summarize sampling uncertainty.
               </p>
             </div>
             <div>
@@ -518,18 +527,11 @@ email: jic4015@med.cornell.edu -->
                 labelled as not revalidated.
               </p>
             </div>
-            <div>
-              <h3>Analytical scope</h3>
-              <p>
-                Explore geographic patterns, population differences, visit
-                payments, and adjusted cross-sectional associations. The
-                estimates describe use and payments within each source
-                population.
-              </p>
-            </div>
           </div>
         </section>
         <div class="resource-row">
+          <!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+          <a href="./validation.html">NHIS model validation ↗</a>
           <a href="./documentation.html#data-manual">Data manual ↗</a
           ><a href="./data/cms.json" download
             >Verified CMS + ACS snapshot (JSON) ↓</a
@@ -573,13 +575,11 @@ email: jic4015@med.cornell.edu -->
           <div>
             <span class="eyebrow">A research resource by</span
             ><span class="brand-name"
-              >CHERY <span class="brand-lab">LAB</span></span
+              >&nbsp;CHERY <span class="brand-lab">LAB</span></span
             >
           </div>
         </div>
-        <span>WCM-TI · CHERY Lab</span
-        ><span>For research · Not clinical decision support</span
-        ><a href="#quality">About the data ↗</a>
+        <a href="#quality">About the data ↗</a>
       </footer>
     </main>
     <div id="tooltip" role="tooltip" hidden></div>

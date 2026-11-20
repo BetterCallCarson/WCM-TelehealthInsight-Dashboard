@@ -1,5 +1,5 @@
 "variable","label","decision","coverage_2024","coverage_basis","share_nonblank_2024","fielded_2025"
-"ACCSSHOM_A","Uses the Internet at home","Candidate: new",0.928,"dictionary",0.928,TRUE
+"ACCSSHOM_A","Has Internet access at home","Candidate: new",0.928,"dictionary",0.928,TRUE
 "AFVET_A","Ever served on active duty (military)","Candidate: new",0.971,"dictionary",1,TRUE
 "ANGEV_A","Ever angina","Candidate: new",0.999,"dictionary",1,TRUE
 "ANXFREQ_A","Frequency of worried/anxious feelings","Candidate: new",0.991,"dictionary",1,TRUE

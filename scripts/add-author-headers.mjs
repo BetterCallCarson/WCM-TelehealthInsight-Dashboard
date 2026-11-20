@@ -32,6 +32,14 @@ async function annotate(directory) {
       continue;
     }
     const file = path.join(directory, entry.name);
+    // author: Yao Yao(yay4008@med.cornell.edu)
+    // Imported analysis files carry their own attribution and model serialization.
+    if (
+      entry.isDirectory() &&
+      entry.name === 'prediction' &&
+      path.basename(directory) === 'analysis'
+    )
+      continue;
     if (entry.isDirectory()) {
       await annotate(file);
       continue;
@@ -83,7 +91,10 @@ async function annotate(directory) {
       }
       continue;
     }
-    if (text.slice(0, 500).includes(`Author: ${author}`)) {
+    if (
+      text.slice(0, 500).includes(`Author: ${author}`) ||
+      text.slice(0, 500).includes('author: Yao Yao(yay4008@med.cornell.edu)')
+    ) {
       continue;
     }
     let header;

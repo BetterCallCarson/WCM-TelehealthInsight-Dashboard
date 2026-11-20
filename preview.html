@@ -224,6 +224,17 @@ email: jic4015@med.cornell.edu */
         margin: 16px 0 0;
         color: var(--muted);
       }
+      /* author: Yao Yao(yay4008@med.cornell.edu) */
+      /* Keep the finding visually distinct from the snapshot label across research pages. */
+      main .snapshot-finding {
+        max-width: 67ch;
+        margin: 0.5rem 0 1rem;
+        padding-left: 0.85rem;
+        border-left: 4px solid var(--accent);
+        color: var(--ink);
+        font-size: clamp(24px, 1.65vw, 30px);
+        line-height: 1.45;
+      }
       .overview {
         display: grid;
         grid-template-columns: minmax(0, 1fr);
@@ -1271,6 +1282,41 @@ email: jic4015@med.cornell.edu */
           grid-row: 2;
         }
       }
+
+      /* Keep navigation available while allowing the mobile masthead to scroll away. */
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+      }
+      html {
+        scroll-padding-top: 7rem;
+      }
+      @media (max-width: 1100px) {
+        .site-header {
+          display: contents;
+        }
+        .masthead {
+          padding: 12px 20px;
+        }
+        .site-header .site-nav {
+          position: sticky;
+          top: 0;
+          z-index: 20;
+          margin: 0;
+          padding: 4px 12px;
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          background: var(--white);
+          border-bottom: 1px solid var(--line);
+        }
+        .site-nav a {
+          flex-shrink: 0;
+        }
+        html {
+          scroll-padding-top: 4rem;
+        }
+      }
     </style>
   </head>
   <body>
@@ -1279,7 +1325,7 @@ email: jic4015@med.cornell.edu */
       <div class="masthead">
         <a
           class="project-brand"
-          href="#states"
+          href="./"
           aria-label="Weill Cornell Medicine Telehealth Insights home"
           ><svg
             xmlns="http://www.w3.org/2000/svg"
@@ -1312,6 +1358,8 @@ email: jic4015@med.cornell.edu */
         <a href="#states" data-view="states" class="active">States</a>
         <a href="#people" data-view="people">Population</a>
         <a href="#visits" data-view="visits">Visits</a>
+        <!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+        <a href="./validation.html">Prediction</a>
         <a href="#quality" data-view="quality">Methods</a>
         <a class="documentation-link" href="./documentation.html"
           >Data documentation</a
@@ -1325,13 +1373,33 @@ email: jic4015@med.cornell.edu */
             <div>
               <div class="eyebrow" id="hero-kicker">States &amp; access</div>
               <h1 id="hero-title">Telehealth, across states</h1>
-              <p id="hero-description">
-                Compare state telehealth rates, trends, broadband access, and
-                income.
-              </p>
             </div>
           </section>
           <p class="edition">Verified snapshot · Nov 11, 2026</p>
+          <p
+            id="states-finding"
+            class="snapshot-finding"
+            data-finding="states"
+            hidden
+          ></p>
+          <p
+            id="people-finding"
+            class="snapshot-finding"
+            data-finding="people"
+            hidden
+          ></p>
+          <p
+            id="visits-finding"
+            class="snapshot-finding"
+            data-finding="visits"
+            hidden
+          ></p>
+          <p
+            id="quality-finding"
+            class="snapshot-finding"
+            data-finding="quality"
+            hidden
+          ></p>
         </div>
         <div
           id="cms-metrics"
@@ -1599,16 +1667,6 @@ email: jic4015@med.cornell.edu */
           </details>
         </section>
         <section id="nhis-model" class="panel model-panel"></section>
-        <div class="interpretation">
-          <span class="eyebrow">Interpretation</span>
-          <p>
-            The population comparison above shows
-            <strong>unadjusted, survey-weighted estimates</strong>. Differences
-            may reflect age, health, coverage, and other factors. They are not
-            causal effects. The separate adjusted comparisons account for the
-            listed covariates, but unmeasured confounding may remain.
-          </p>
-        </div>
       </section>
       <section id="view-visits" class="view" hidden>
         <section class="panel">
@@ -1729,9 +1787,8 @@ email: jic4015@med.cornell.edu */
           <p class="serif-lead">Three sources, distinct populations</p>
           <p>
             The sources answer complementary questions and are not pooled into a
-            single telehealth rate. This overview describes the verified
-            snapshot. Optional live CMS updates are labelled separately in
-            States & access.
+            single telehealth rate. Optional live CMS updates are labelled
+            separately in States & access.
           </p>
           <a class="primary-link" href="./documentation.html#data-quality"
             >Read the data quality note ↗</a
@@ -1741,7 +1798,6 @@ email: jic4015@med.cornell.edu */
         <section class="panel">
           <div class="section-heading">
             <div>
-              <span class="eyebrow">Transparency by design</span>
               <h2>From source file to display</h2>
             </div>
           </div>
@@ -1759,8 +1815,7 @@ email: jic4015@med.cornell.edu */
               <h3>Uncertainty stays visible</h3>
               <p>
                 Survey estimates use weights, strata, and primary sampling
-                units. Confidence intervals show sampling uncertainty; they do
-                not remove nonresponse or measurement bias.
+                units. Confidence intervals summarize sampling uncertainty.
               </p>
             </div>
             <div>
@@ -1773,18 +1828,11 @@ email: jic4015@med.cornell.edu */
                 labelled as not revalidated.
               </p>
             </div>
-            <div>
-              <h3>Analytical scope</h3>
-              <p>
-                Explore geographic patterns, population differences, visit
-                payments, and adjusted cross-sectional associations. The
-                estimates describe use and payments within each source
-                population.
-              </p>
-            </div>
           </div>
         </section>
         <div class="resource-row">
+          <!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+          <a href="./validation.html">NHIS model validation ↗</a>
           <a href="./documentation.html#data-manual">Data manual ↗</a
           ><a href="./data/cms.json" download
             >Verified CMS + ACS snapshot (JSON) ↓</a
@@ -1828,13 +1876,11 @@ email: jic4015@med.cornell.edu */
           <div>
             <span class="eyebrow">A research resource by</span
             ><span class="brand-name"
-              >CHERY <span class="brand-lab">LAB</span></span
+              >&nbsp;CHERY <span class="brand-lab">LAB</span></span
             >
           </div>
         </div>
-        <span>WCM-TI · CHERY Lab</span
-        ><span>For research · Not clinical decision support</span
-        ><a href="#quality">About the data ↗</a>
+        <a href="#quality">About the data ↗</a>
       </footer>
     </main>
     <div id="tooltip" role="tooltip" hidden></div>
@@ -31465,6 +31511,7 @@ email: jic4015@med.cornell.edu */
         let cms;
         let nhis;
         let meps;
+        let firstMepsYear;
         let liveCms = null;
         let cmsRefreshPending = false;
         // Only descriptive CMS views can use session data. Models explicitly read the verified snapshot.
@@ -31523,26 +31570,10 @@ email: jic4015@med.cornell.edu */
           FL: [10, 8],
         };
         const heroes = {
-          states: [
-            'States & access',
-            'Telehealth, across states',
-            'Compare state telehealth rates, trends, broadband access, and income.',
-          ],
-          people: [
-            'Population differences',
-            'Who uses telehealth?',
-            'Compare telehealth use across adult population groups.',
-          ],
-          visits: [
-            'Visits & payments',
-            'Visits, coverage & payments',
-            'Compare visit types and payments across insurance groups.',
-          ],
-          quality: [
-            'Research reference',
-            'Data & methods',
-            'Understand the populations, measures, exclusions, and uncertainty behind every view in this dashboard.',
-          ],
+          states: ['States & access', 'Telehealth, across states'],
+          people: ['Population differences', 'Who uses telehealth?'],
+          visits: ['Visits & payments', 'Visits, coverage & payments'],
+          quality: ['Research reference', 'Data & methods'],
         };
         /**
          * Builds a summary card from trusted or already escaped HTML fragments.
@@ -31668,6 +31699,15 @@ email: jic4015@med.cornell.edu */
           const rankedRows = rows.toSorted(
             (a, b) => (b.telehealthPct ?? -1) - (a.telehealthPct ?? -1),
           );
+          // Compare only available estimates within the selected annual or quarterly period.
+          const available = rankedRows.filter((row) =>
+            Number.isFinite(row.telehealthPct),
+          );
+          const lowest = available.at(-1);
+          const highest = available[0];
+          $('states-finding').textContent = available.length
+            ? `In ${state.period}, telehealth use among Medicare fee-for-service beneficiaries who used eligible services ranged from ${percent(lowest.telehealthPct)} in ${lowest.name} to ${percent(highest.telehealthPct)} in ${highest.name}.`
+            : `CMS reports no state estimates for ${state.period}.`;
           $('cms-table-wrap').innerHTML = table(
             ['State', 'Telehealth use', 'Users', 'Eligible service users'],
             rankedRows.map((s) => [
@@ -31773,7 +31813,7 @@ email: jic4015@med.cornell.edu */
             ? associations.incomePearsonR
             : associations.broadbandPearsonR;
           $('scatter-caption').innerHTML =
-            `<strong>${year} annual snapshot · 50 states + D.C. · Pearson r = ${number(r, 2)}.</strong> Y-axis: annual CMS telehealth use. ACS broadband includes cellular subscriptions. State-level association does not establish individual access or causation. ACS sampling error is not shown in the plot.`;
+            `<strong>${year} annual snapshot · 50 states + D.C. · Pearson r = ${number(r, 2)}.</strong> Y-axis: annual CMS telehealth use. ACS broadband includes cellular subscriptions. ACS sampling error is not shown in the plot.`;
         }
         const nhisDisplayNotes = {
           insurance:
@@ -31806,6 +31846,17 @@ email: jic4015@med.cornell.edu */
               ' Annual comparisons and the adjusted model omit Internet access.';
           const n = nhis.overall;
           const rows = nhis.groups[state.nhisGroup];
+          // Descriptive differences use the same available-case groups as the chart.
+          const ordered = rows
+            .filter((row) => !row.suppressed && Number.isFinite(row.estimate))
+            .toSorted((a, b) => a.estimate - b.estimate);
+          const low = ordered[0];
+          const high = ordered.at(-1);
+          $('people-finding').textContent =
+            `In ${nhis.year}, ${percent(n.estimate)} of U.S. adults reported a phone or video appointment in the past year.` +
+            (ordered.length >= 2
+              ? ` By ${nhis.group_labels[state.nhisGroup].toLowerCase()}, estimates ranged from ${percent(low.estimate)} (${low.label}) to ${percent(high.estimate)} (${high.label}).`
+              : '');
           $('nhis-metrics').innerHTML =
             metric(
               'Adults reporting telehealth use',
@@ -31938,6 +31989,23 @@ email: jic4015@med.cornell.edu */
           const key = total ? 'total_payment' : 'family_payment';
           const p = paymentIn2024Dollars(g[key]);
           const tele = displayTelehealth(g);
+          const coverage =
+            g.insurance === 'All'
+              ? 'across all insurance groups'
+              : `in the “${g.insurance}” group`;
+          const baseline = displayTelehealth(
+            firstMepsYear.groups.find((row) => row.insurance === g.insurance),
+          );
+          const comparison =
+            meps.year !== firstMepsYear.year &&
+            Number.isFinite(baseline.estimate)
+              ? `, compared with ${percent(baseline.estimate)} in ${firstMepsYear.year}`
+              : '';
+          const visitShare = tele.withheld
+            ? `In ${meps.year}, fewer than 30 sampled people ${coverage} had a remote visit, so the remote share is withheld.`
+            : `In ${meps.year}, ${percent(tele.estimate)} of office-based visits ${coverage} took place remotely${comparison}.`;
+          $('visits-finding').textContent =
+            `${visitShare} Across all visit types in this group, ${total ? 'total' : 'out-of-pocket'} payments averaged ${dollars(p.estimate)} per visit in 2024 dollars.`;
           $('meps-metrics').innerHTML =
             metric(
               'Telehealth share of visits',
@@ -31998,7 +32066,7 @@ email: jic4015@med.cornell.edu */
             {numeric: [1, 2, 3]},
           );
           $('meps-source').innerHTML =
-            `Source: <a href="${esc(meps.documentation[0].url)}" target="_blank" rel="noreferrer">${esc(meps.source)}</a> · ${meps.year} office-based visits, all ages · Survey-weighted estimates using weights, strata, and primary sampling units. Visit shares use all office visits in the selected insurance group as denominator. Insurance describes coverage during ${meps.year}: any private (including TRICARE), public only, or uninsured all year; it is not coverage on the visit date. Modality estimates and overall telehealth shares with fewer than 30 sampled people in the numerator are not shown in charts, tables, or CSV exports. * Unstable: relative standard error &gt;30% or a boundary estimate (sparse rows are also marked). Approximate normal CIs are bounded at zero (and 100% for shares). Read rare-modality estimates cautiously.`;
+            `Source: <a href="${esc(meps.documentation[0].url)}" target="_blank" rel="noreferrer">${esc(meps.source)}</a> · ${meps.year} office-based visits, all ages · Survey-weighted estimates using weights, strata, and primary sampling units. Visit shares use all office visits in the selected insurance group as denominator. Insurance describes coverage during ${meps.year}: any private (including TRICARE), public only, or uninsured all year; it is not coverage on the visit date. Modality estimates and overall telehealth shares with fewer than 30 sampled people in the numerator are not shown in charts, tables, or CSV exports. * Unstable: relative standard error &gt;30% or a boundary estimate (sparse rows are also marked). Approximate normal CIs are bounded at zero (and 100% for shares).`;
           renderMepsComparison();
         }
         /**
@@ -32130,7 +32198,9 @@ email: jic4015@med.cornell.edu */
           const h = heroes[state.view];
           $('hero-kicker').textContent = h[0];
           $('hero-title').innerHTML = h[1];
-          $('hero-description').textContent = h[2];
+          document.querySelectorAll('[data-finding]').forEach((el) => {
+            el.hidden = el.dataset.finding !== state.view;
+          });
           document.title = `${{states: 'States & access', people: 'Population differences', visits: 'Visits & payments', quality: 'Data & methods'}[state.view]} — Weill Cornell Medicine Telehealth Insights`;
           hideTip();
           renderEdition();
@@ -32322,10 +32392,22 @@ email: jic4015@med.cornell.edu */
             }),
           );
           [cms, nhis, meps] = results;
+          firstMepsYear = results[6];
           const editions = {
             nhis: [results[3], results[4], results[5], nhis],
             meps: [results[6], results[7], results[8], meps],
           };
+          // These two national survey series have different units and can move in opposite directions.
+          const [firstNhis, lastNhis] = [
+            editions.nhis[0],
+            editions.nhis.at(-1),
+          ];
+          const [firstMeps, lastMeps] = [
+            editions.meps[0],
+            editions.meps.at(-1),
+          ];
+          $('quality-finding').textContent =
+            `From ${firstNhis.year} to ${lastNhis.year}, the share of adults reporting telehealth fell from ${percent(firstNhis.overall.estimate)} to ${percent(lastNhis.overall.estimate)}, while the remote share of office visits rose from ${percent(firstMeps.overall.telehealth_pct.estimate)} to ${percent(lastMeps.overall.telehealth_pct.estimate)}. NHIS counts people; MEPS counts visits, including repeat visits by the same person.`;
           for (const survey of Object.keys(editions)) {
             const select = $(survey + '-trend-select');
             const draw = () =>
@@ -32602,7 +32684,7 @@ email: jic4015@med.cornell.edu */
                   `${number(t.ciLow, 3)}–${number(t.ciHigh, 3)}`,
                 ]),
               {numeric: [1, 2]},
-            )}</div><p class="model-methods">Ordinary least squares · HC3 robust standard errors · Approximate normal 95% confidence intervals · n = ${m.n}. Outcome: CMS telehealth use in percentage points. Broadband: per 1 percentage point; income: per $10,000. Each state and D.C. has equal weight. ACS measurement uncertainty is not included in this model. No adjustment for other state characteristics is made.</p><details><summary>View model specification and limitations</summary><div class="model-methods"><p><code>CMS telehealth percentage = intercept + broadband percentage + median household income / 10,000</code></p><p>Intercept: ${number(terms[0].estimate, 3)} pp (95% CI ${number(terms[0].ciLow, 3)}–${number(terms[0].ciHigh, 3)}). The intercept describes zero-valued predictors outside the observed data range and has no substantive interpretation here.</p><p>The 51 jurisdictions constitute the included state/DC set. Model-based intervals describe uncertainty under the regression assumptions, not sampling error in CMS claims. Correlated predictors, omitted variables, and geographic dependence can affect these associations. No causal or predictive claim is made.</p></div></details>`;
+            )}</div><p class="model-methods">Ordinary least squares · HC3 robust standard errors · Approximate normal 95% confidence intervals · n = ${m.n}. Outcome: CMS telehealth use in percentage points. Broadband: per 1 percentage point; income: per $10,000. Each state and D.C. has equal weight. ACS measurement uncertainty is not included in this model. No adjustment for other state characteristics is made.</p><details><summary>View model specification and limitations</summary><div class="model-methods"><p><code>CMS telehealth percentage = intercept + broadband percentage + median household income / 10,000</code></p><p>Intercept: ${number(terms[0].estimate, 3)} pp (95% CI ${number(terms[0].ciLow, 3)}–${number(terms[0].ciHigh, 3)}). The intercept describes zero-valued predictors outside the observed data range and has no substantive interpretation here.</p><p>The 51 jurisdictions constitute the included state/DC set. Model-based intervals describe uncertainty under the regression assumptions, not sampling error in CMS claims. Correlated predictors, omitted variables, and geographic dependence can affect these associations.</p></div></details>`;
           $('cms-model-download').addEventListener('click', () =>
             download(
               terms.map((t) => ({

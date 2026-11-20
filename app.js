@@ -38,6 +38,7 @@ const state = {
 let cms;
 let nhis;
 let meps;
+let firstMepsYear;
 let liveCms = null;
 let cmsRefreshPending = false;
 // Only descriptive CMS views can use session data. Models explicitly read the verified snapshot.
@@ -96,26 +97,10 @@ const positions = {
   FL: [10, 8],
 };
 const heroes = {
-  states: [
-    'States & access',
-    'Telehealth, across states',
-    'Compare state telehealth rates, trends, broadband access, and income.',
-  ],
-  people: [
-    'Population differences',
-    'Who uses telehealth?',
-    'Compare telehealth use across adult population groups.',
-  ],
-  visits: [
-    'Visits & payments',
-    'Visits, coverage & payments',
-    'Compare visit types and payments across insurance groups.',
-  ],
-  quality: [
-    'Research reference',
-    'Data & methods',
-    'Understand the populations, measures, exclusions, and uncertainty behind every view in this dashboard.',
-  ],
+  states: ['States & access', 'Telehealth, across states'],
+  people: ['Population differences', 'Who uses telehealth?'],
+  visits: ['Visits & payments', 'Visits, coverage & payments'],
+  quality: ['Research reference', 'Data & methods'],
 };
 /**
  * Builds a summary card from trusted or already escaped HTML fragments.
@@ -236,6 +221,15 @@ function renderCms() {
   const rankedRows = rows.toSorted(
     (a, b) => (b.telehealthPct ?? -1) - (a.telehealthPct ?? -1),
   );
+  // Compare only available estimates within the selected annual or quarterly period.
+  const available = rankedRows.filter((row) =>
+    Number.isFinite(row.telehealthPct),
+  );
+  const lowest = available.at(-1);
+  const highest = available[0];
+  $('states-finding').textContent = available.length
+    ? `In ${state.period}, telehealth use among Medicare fee-for-service beneficiaries who used eligible services ranged from ${percent(lowest.telehealthPct)} in ${lowest.name} to ${percent(highest.telehealthPct)} in ${highest.name}.`
+    : `CMS reports no state estimates for ${state.period}.`;
   $('cms-table-wrap').innerHTML = table(
     ['State', 'Telehealth use', 'Users', 'Eligible service users'],
     rankedRows.map((s) => [
@@ -339,7 +333,7 @@ function renderScatter() {
     ? associations.incomePearsonR
     : associations.broadbandPearsonR;
   $('scatter-caption').innerHTML =
-    `<strong>${year} annual snapshot · 50 states + D.C. · Pearson r = ${number(r, 2)}.</strong> Y-axis: annual CMS telehealth use. ACS broadband includes cellular subscriptions. State-level association does not establish individual access or causation. ACS sampling error is not shown in the plot.`;
+    `<strong>${year} annual snapshot · 50 states + D.C. · Pearson r = ${number(r, 2)}.</strong> Y-axis: annual CMS telehealth use. ACS broadband includes cellular subscriptions. ACS sampling error is not shown in the plot.`;
 }
 const nhisDisplayNotes = {
   insurance:
@@ -371,6 +365,17 @@ function renderNhis() {
       ' Annual comparisons and the adjusted model omit Internet access.';
   const n = nhis.overall;
   const rows = nhis.groups[state.nhisGroup];
+  // Descriptive differences use the same available-case groups as the chart.
+  const ordered = rows
+    .filter((row) => !row.suppressed && Number.isFinite(row.estimate))
+    .toSorted((a, b) => a.estimate - b.estimate);
+  const low = ordered[0];
+  const high = ordered.at(-1);
+  $('people-finding').textContent =
+    `In ${nhis.year}, ${percent(n.estimate)} of U.S. adults reported a phone or video appointment in the past year.` +
+    (ordered.length >= 2
+      ? ` By ${nhis.group_labels[state.nhisGroup].toLowerCase()}, estimates ranged from ${percent(low.estimate)} (${low.label}) to ${percent(high.estimate)} (${high.label}).`
+      : '');
   $('nhis-metrics').innerHTML =
     metric(
       'Adults reporting telehealth use',
@@ -486,6 +491,22 @@ function renderMeps() {
   const key = total ? 'total_payment' : 'family_payment';
   const p = paymentIn2024Dollars(g[key]);
   const tele = displayTelehealth(g);
+  const coverage =
+    g.insurance === 'All'
+      ? 'across all insurance groups'
+      : `in the “${g.insurance}” group`;
+  const baseline = displayTelehealth(
+    firstMepsYear.groups.find((row) => row.insurance === g.insurance),
+  );
+  const comparison =
+    meps.year !== firstMepsYear.year && Number.isFinite(baseline.estimate)
+      ? `, compared with ${percent(baseline.estimate)} in ${firstMepsYear.year}`
+      : '';
+  const visitShare = tele.withheld
+    ? `In ${meps.year}, fewer than 30 sampled people ${coverage} had a remote visit, so the remote share is withheld.`
+    : `In ${meps.year}, ${percent(tele.estimate)} of office-based visits ${coverage} took place remotely${comparison}.`;
+  $('visits-finding').textContent =
+    `${visitShare} Across all visit types in this group, ${total ? 'total' : 'out-of-pocket'} payments averaged ${dollars(p.estimate)} per visit in 2024 dollars.`;
   $('meps-metrics').innerHTML =
     metric(
       'Telehealth share of visits',
@@ -543,7 +564,7 @@ function renderMeps() {
     {numeric: [1, 2, 3]},
   );
   $('meps-source').innerHTML =
-    `Source: <a href="${esc(meps.documentation[0].url)}" target="_blank" rel="noreferrer">${esc(meps.source)}</a> · ${meps.year} office-based visits, all ages · Survey-weighted estimates using weights, strata, and primary sampling units. Visit shares use all office visits in the selected insurance group as denominator. Insurance describes coverage during ${meps.year}: any private (including TRICARE), public only, or uninsured all year; it is not coverage on the visit date. Modality estimates and overall telehealth shares with fewer than 30 sampled people in the numerator are not shown in charts, tables, or CSV exports. * Unstable: relative standard error &gt;30% or a boundary estimate (sparse rows are also marked). Approximate normal CIs are bounded at zero (and 100% for shares). Read rare-modality estimates cautiously.`;
+    `Source: <a href="${esc(meps.documentation[0].url)}" target="_blank" rel="noreferrer">${esc(meps.source)}</a> · ${meps.year} office-based visits, all ages · Survey-weighted estimates using weights, strata, and primary sampling units. Visit shares use all office visits in the selected insurance group as denominator. Insurance describes coverage during ${meps.year}: any private (including TRICARE), public only, or uninsured all year; it is not coverage on the visit date. Modality estimates and overall telehealth shares with fewer than 30 sampled people in the numerator are not shown in charts, tables, or CSV exports. * Unstable: relative standard error &gt;30% or a boundary estimate (sparse rows are also marked). Approximate normal CIs are bounded at zero (and 100% for shares).`;
   renderMepsComparison();
 }
 /**
@@ -667,7 +688,9 @@ function navigate() {
   const h = heroes[state.view];
   $('hero-kicker').textContent = h[0];
   $('hero-title').innerHTML = h[1];
-  $('hero-description').textContent = h[2];
+  document.querySelectorAll('[data-finding]').forEach((el) => {
+    el.hidden = el.dataset.finding !== state.view;
+  });
   document.title = `${{states: 'States & access', people: 'Population differences', visits: 'Visits & payments', quality: 'Data & methods'}[state.view]} — Weill Cornell Medicine Telehealth Insights`;
   hideTip();
   renderEdition();
@@ -854,10 +877,16 @@ async function start() {
     }),
   );
   [cms, nhis, meps] = results;
+  firstMepsYear = results[6];
   const editions = {
     nhis: [results[3], results[4], results[5], nhis],
     meps: [results[6], results[7], results[8], meps],
   };
+  // These two national survey series have different units and can move in opposite directions.
+  const [firstNhis, lastNhis] = [editions.nhis[0], editions.nhis.at(-1)];
+  const [firstMeps, lastMeps] = [editions.meps[0], editions.meps.at(-1)];
+  $('quality-finding').textContent =
+    `From ${firstNhis.year} to ${lastNhis.year}, the share of adults reporting telehealth fell from ${percent(firstNhis.overall.estimate)} to ${percent(lastNhis.overall.estimate)}, while the remote share of office visits rose from ${percent(firstMeps.overall.telehealth_pct.estimate)} to ${percent(lastMeps.overall.telehealth_pct.estimate)}. NHIS counts people; MEPS counts visits, including repeat visits by the same person.`;
   for (const survey of Object.keys(editions)) {
     const select = $(survey + '-trend-select');
     const draw = () =>
@@ -1118,7 +1147,7 @@ function renderCmsModel() {
           `${number(t.ciLow, 3)}–${number(t.ciHigh, 3)}`,
         ]),
       {numeric: [1, 2]},
-    )}</div><p class="model-methods">Ordinary least squares · HC3 robust standard errors · Approximate normal 95% confidence intervals · n = ${m.n}. Outcome: CMS telehealth use in percentage points. Broadband: per 1 percentage point; income: per $10,000. Each state and D.C. has equal weight. ACS measurement uncertainty is not included in this model. No adjustment for other state characteristics is made.</p><details><summary>View model specification and limitations</summary><div class="model-methods"><p><code>CMS telehealth percentage = intercept + broadband percentage + median household income / 10,000</code></p><p>Intercept: ${number(terms[0].estimate, 3)} pp (95% CI ${number(terms[0].ciLow, 3)}–${number(terms[0].ciHigh, 3)}). The intercept describes zero-valued predictors outside the observed data range and has no substantive interpretation here.</p><p>The 51 jurisdictions constitute the included state/DC set. Model-based intervals describe uncertainty under the regression assumptions, not sampling error in CMS claims. Correlated predictors, omitted variables, and geographic dependence can affect these associations. No causal or predictive claim is made.</p></div></details>`;
+    )}</div><p class="model-methods">Ordinary least squares · HC3 robust standard errors · Approximate normal 95% confidence intervals · n = ${m.n}. Outcome: CMS telehealth use in percentage points. Broadband: per 1 percentage point; income: per $10,000. Each state and D.C. has equal weight. ACS measurement uncertainty is not included in this model. No adjustment for other state characteristics is made.</p><details><summary>View model specification and limitations</summary><div class="model-methods"><p><code>CMS telehealth percentage = intercept + broadband percentage + median household income / 10,000</code></p><p>Intercept: ${number(terms[0].estimate, 3)} pp (95% CI ${number(terms[0].ciLow, 3)}–${number(terms[0].ciHigh, 3)}). The intercept describes zero-valued predictors outside the observed data range and has no substantive interpretation here.</p><p>The 51 jurisdictions constitute the included state/DC set. Model-based intervals describe uncertainty under the regression assumptions, not sampling error in CMS claims. Correlated predictors, omitted variables, and geographic dependence can affect these associations.</p></div></details>`;
   $('cms-model-download').addEventListener('click', () =>
     download(
       terms.map((t) => ({

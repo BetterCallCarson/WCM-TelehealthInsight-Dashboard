@@ -1,3 +1,6 @@
+<!-- Author: Jiajun (Carson) Chen
+email: jic4015@med.cornell.edu -->
+
 # Security Policy
 
 ## Supported Versions

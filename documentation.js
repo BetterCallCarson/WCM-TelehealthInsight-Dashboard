@@ -37,6 +37,9 @@ function showDocument() {
   for (const doc of documents) {
     doc.hidden = doc !== active;
   }
+  for (const finding of document.querySelectorAll('[data-finding-for]')) {
+    finding.hidden = finding.dataset.findingFor !== active.id;
+  }
   for (const link of links) {
     const selected = link.dataset.document === active.id;
     if (selected) {
@@ -52,11 +55,7 @@ function showDocument() {
     );
   }
   if (target === active) {
-    requestAnimationFrame(() =>
-      document
-        .querySelector('.document-switcher')
-        .scrollIntoView({block: 'start', behavior: 'instant'}),
-    );
+    requestAnimationFrame(() => window.scrollTo({top: 0, behavior: 'instant'}));
   }
 }
 window.addEventListener('hashchange', showDocument);

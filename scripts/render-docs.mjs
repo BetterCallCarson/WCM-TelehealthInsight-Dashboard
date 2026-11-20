@@ -135,10 +135,12 @@ const isTableRule = (line) =>
  * @return {{html: string, headings: !Array<!Object>}} Body and contents entries.
  * @throws {Error} If a table row has a different width from its header.
  */
-function renderMarkdown(markdown, prefix) {
+function renderMarkdown(markdown, prefix, headingOffset = 1) {
   // File attribution is source metadata, not content for the public documentation.
   const lines = markdown
-    .replace(/^<!-- Author:[\s\S]*?-->\s*/, '')
+    // author: Yao Yao(yay4008@med.cornell.edu)
+    // Source-only credits can appear both at the top and before later code fences.
+    .replace(/^[\t ]*<!--\s*author:[\s\S]*?-->[\t ]*$/gim, '')
     .replace(/\r/g, '')
     .split('\n');
   const parts = [];
@@ -171,7 +173,7 @@ function renderMarkdown(markdown, prefix) {
         i++;
         continue;
       }
-      const level = Math.min(6, heading[1].length + 1);
+      const level = Math.min(6, heading[1].length + headingOffset);
       const id = slug(heading[2]);
       section = heading[2];
       headings.push({id, label: heading[2], level: heading[1].length});
@@ -246,6 +248,8 @@ const definitions = [
     id: 'data-quality',
     anchor: 'methods-and-quality',
     title: 'Data quality note',
+    finding:
+      'All 50 states and D.C. have matched Medicare, broadband and income data in each year from 2021 to 2024. National survey comparisons use the eligible adults or visits within each survey.',
     description:
       'Sources, analytical populations, processing decisions, and interpretation limits',
   },
@@ -253,6 +257,8 @@ const definitions = [
     id: 'data-manual',
     anchor: 'data-manual',
     title: 'Data manual',
+    finding:
+      'In 2024, 25.03% of adults reported a remote appointment in NHIS, while 10.79% of office visits were remote in MEPS. The first percentage counts people and the second counts visits.',
     description:
       'Field definitions, units, recodes, and downloadable data structures',
   },
@@ -304,10 +310,11 @@ ${favicon}<link rel="stylesheet" href="./styles.css"><link rel="stylesheet" href
 <a class="skip" href="#main">Skip to documentation</a>
 ${navigation}
 <main id="main">
-<section class="hero"><h1>Data documentation</h1><p>Sources, definitions, and limitations for the dashboard.</p></section>
+<section class="hero"><h1>Data documentation</h1><p class="edition">Verified snapshot · 2021–2024 comparisons</p>
+${definitions.map((doc, index) => `<p class="snapshot-finding" data-finding-for="${doc.id}"${index ? ' hidden' : ''}>${doc.finding}</p>`).join('')}</section>
 <nav class="document-switcher" aria-label="Documentation sections"><a href="#data-quality" data-document="data-quality" aria-current="true">Data quality note</a><a href="#data-manual" data-document="data-manual">Data manual</a></nav>
 ${documentHtml}
-<footer><span>WCM-TI · CHERY Lab</span><span>Sources retrieved November 11, 2026</span><a href="./index.html#states">Explore the dashboard ↗</a></footer>
+<footer><span>A research resource by <strong>CHERY LAB</strong></span><span>Sources retrieved November 11, 2026</span><a href="./">Explore the dashboard ↗</a></footer>
 </main>
 </body></html>`;
 if (/href="[^"]*README\.md/i.test(html)) {
@@ -319,4 +326,39 @@ await writeFile(
 );
 console.log(
   `Rendered research documentation: ${documents.reduce((n, doc) => n + doc.headings.length, 0)} sections in one standalone page.`,
+);
+
+// author: Yao Yao(yay4008@med.cornell.edu)
+// Keep the rendered guide beside its Markdown so all research-file links
+// retain their original relative targets in local previews and GitHub Pages.
+const studyDir = path.join(root, 'analysis', 'prediction');
+const studySource = await readFile(path.join(studyDir, 'README.md'), 'utf8');
+const guide = renderMarkdown(studySource, 'study', 0);
+const guideNav = headerMatch[0]
+  .replace(
+    /href="#(states|people|visits|quality)"/g,
+    'href="../../index.html#$1"',
+  )
+  .replace(/href="\.\//g, 'href="../../')
+  .replace(/ data-view="[^"]+"/g, '')
+  .replace(/ class="active"/g, '')
+  .replace(
+    'href="../../validation.html"',
+    'href="../../validation.html" class="active" aria-current="location"',
+  );
+const guideTitle = 'NHIS model development and validation';
+const credit = '<!-- author: Yao Yao(yay4008@med.cornell.edu) -->';
+
+// author: Yao Yao(yay4008@med.cornell.edu)
+const guideHtml = `<!doctype html>
+${credit}
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${guideTitle} — Research guide</title><link rel="icon" href="../../assets/wcm-ti-icon.svg"><link rel="stylesheet" href="../../styles.css"><link rel="stylesheet" href="../../documentation.css"></head>
+<body class="documentation-page"><a class="skip" href="#main">Skip to guide</a>${guideNav}
+<main id="main">${credit}<div class="hero"><a class="eyebrow" href="../../validation.html">Model validation</a><h1>${guideTitle}</h1><p class="edition">Verified snapshot · NHIS 2024–2025</p>${credit}<p class="snapshot-finding">The primary model achieved an unweighted AUROC of 0.717 in the 2025 survey. Its average predicted use was 25.62%, compared with 26.26% observed among eligible adults after survey weighting.</p></div>
+${credit}<div class="document-layout"><aside class="document-contents"><details open><summary>On this page</summary><nav aria-label="Guide contents">${guide.headings.map((h) => `<a href="#${h.id}">${inline(h.label)}</a>`).join('')}</nav></details></aside><article class="document-body">${guide.html}</article></div>
+<footer><span>A research resource by <strong>CHERY LAB</strong></span><a href="../../validation.html">Back to model validation</a></footer></main></body></html>`;
+await writeFile(
+  path.join(studyDir, 'guide.html'),
+  await format(guideHtml, {...formattingOptions, filepath: 'guide.html'}),
 );

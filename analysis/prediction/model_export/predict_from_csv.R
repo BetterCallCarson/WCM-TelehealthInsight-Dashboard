@@ -1,3 +1,4 @@
+# author: Yao Yao(yay4008@med.cornell.edu)
 # Predicted probability of past-year telehealth use from the exported
 # coefficient tables (HINF 5001, Team 1 prediction models).
 #
@@ -7,7 +8,9 @@
 #        or factor using the labels in factor_levels.csv.
 # model: a model name in model_coefficients.csv, for example
 #        "Stepwise BIC logistic".
+# author: Yao Yao(yay4008@med.cornell.edu)
 predict_from_csv <- function(data, model, export_dir = "model_export") {
+  # author: Yao Yao(yay4008@med.cornell.edu)
   read <- function(f) read.csv(file.path(export_dir, f), stringsAsFactors = FALSE)
   coefs <- read("model_coefficients.csv")
   coefs <- coefs[coefs$model == model, ]

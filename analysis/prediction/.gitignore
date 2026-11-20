@@ -1,0 +1,5 @@
+# Local survey files and cached model fits can contain respondent records.
+adult24.csv
+adult25.csv
+*_cache/
+*_files/

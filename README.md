@@ -15,7 +15,7 @@ Weill Cornell Medicine Telehealth Insights (WCM-TI) is a public-data dashboard f
 
 The product combines descriptive graphics, explicit denominators, confidence intervals where estimated, downloadable aggregates, and two stored association models. An optional browser action checks the official CMS release and can update descriptive CMS views for the current session. Those values are marked not revalidated; matched-year context and models retain their verified inputs. This report documents the methods, quality controls, field definitions, validation evidence, design decisions, and procedures needed to reproduce and publish the project.
 
-The populations and units differ across sources. The dashboard does not estimate a pooled national telehealth rate, causal effects, or individual predictions. Its contribution is a transparent research interface in which source definitions and uncertainty remain visible alongside the findings.
+The NHIS prediction study evaluates how well interview responses identify adults who reported a phone or video appointment in the past 12 months. It follows a model developed in 2024 into a new 2025 survey sample. The published validation is a fixed, aggregate analysis. Each descriptive trend retains its own population, denominator, and survey years. [Model validation](./validation.html) · [Prediction analysis and reproduction guide](./analysis/prediction/guide.html)
 
 ### Report contents
 
@@ -30,7 +30,7 @@ The populations and units differ across sources. The dashboard does not estimate
 9. [Interpretation and future maintenance](#interpretation)
 10. [Primary sources](#references)
 
-This report is the single maintained source for research methods, data quality, field definitions, validation, design, and deployment guidance. The website continues to present its data quality note and data manual together on one separate documentation page. The README is the repository report, not an additional research module or sidebar destination.
+This report maintains the dashboard methods, data quality note, field dictionary, results, design, and deployment guidance. The separate prediction study includes a detailed analysis notebook and model exports. The website continues to present its data quality note and data manual together on one separate documentation page. The README is the repository report, not an additional research module or sidebar destination.
 
 <a id="scope"></a>
 
@@ -43,9 +43,10 @@ The intended audience is external researchers who need to compare telehealth pat
 | States and connectivity | CMS Medicare Part B fee-for-service beneficiaries; ACS households | Verified state comparisons, quarterly trends, and annual percentage-point changes for 2020–2025, with optional live CMS series; matched 2021–2024 broadband and income comparisons and the adjusted model remain fixed to the verified snapshot |
 | Population differences  | NHIS 2021–2024 U.S. civilian noninstitutionalized adults          | Survey-weighted telehealth use by insurance, age, education, Internet access, and health; a separate adjusted logistic association model with selectable covariate forest plots                                                                 |
 | Visits and payments     | MEPS 2021–2024 office-based visits, all ages                      | Survey-weighted visit modality and mean total/family payments by insurance; a side-by-side comparison of telehealth visit shares with 95% confidence intervals                                                                                  |
+| NHIS model validation   | NHIS 2024 development and 2025 temporal validation samples        | Prediction of reported past-year use, with model comparisons, uncertainty, and observed versus predicted probabilities                                                                                                                          |
 | Data and methods        | All sources                                                       | Source versions, denominators, missingness, uncertainty, and interpretation limits                                                                                                                                                              |
 
-The three modules have different populations and units of analysis. Their rates should not be pooled or interpreted as directly interchangeable measures. The adjusted models report associations and do not establish causal effects; state-level associations do not identify relationships between individual people.
+The state, adult, and visit modules have different populations and units of analysis. Their rates should not be pooled or interpreted as directly interchangeable measures. The adjusted models report associations and do not establish causal effects; state-level associations do not identify relationships between individual people.
 
 Read the [data quality note](./documentation.html#data-quality) for source coverage, exclusions, uncertainty, and interpretation limits. The [data manual](./documentation.html#data-manual) explains measures, variables, units, and downloadable data.
 
@@ -68,7 +69,7 @@ CMS is the Centers for Medicare & Medicaid Services; ACS is the American Communi
 
 Live CMS data remain in browser memory for the session. **Restore verified snapshot**, or a page refresh, returns to the shipped CMS data. The selected-year ACS scatterplot, Pearson correlations, and adjusted state model always use the verified CMS–ACS snapshot, including when live CMS values contain a revision to 2024. NHIS, MEPS, all model outputs, and downloadable aggregate JSON files remain unchanged.
 
-This control does not check whether every source is current. [NHIS 2025 data and documentation](https://www.cdc.gov/nchs/nhis/documentation/2025-nhis.html) are available; the dashboard’s verified NHIS analysis extends through 2024. ACS, NHIS, and MEPS updates require separate source review and analytical processing. See the [data quality note](./documentation.html#data-quality) and [data manual](./documentation.html#data-manual) for scope and export metadata.
+This control does not check whether every source is current. [NHIS 2025 data and documentation](https://www.cdc.gov/nchs/nhis/documentation/2025-nhis.html) are available; the descriptive series covers 2021–2024 and the prediction study evaluates 2025 separately. ACS, NHIS, and MEPS updates require separate source review and analytical processing. See the [data quality note](./documentation.html#data-quality) and [data manual](./documentation.html#data-manual) for scope and export metadata.
 
 <a id="methods-and-quality"></a>
 
@@ -91,18 +92,19 @@ MEPS joins each year's office visits to that year's full-year person file. The 2
 
 This dashboard describes telehealth use using three separate analytical modules. It publishes aggregates computed from official public files, with source-specific populations and denominators. It does not pool CMS, NHIS, and MEPS into one national telehealth rate.
 
-The dashboard contains descriptive estimates, a CMS–ACS state regression, and a survey-weighted NHIS association model. Adjusted associations are distinguished from unadjusted comparisons. Neither statistical adjustment nor correlation establishes a causal effect.
+The dashboard contains descriptive estimates, a CMS–ACS state regression, a survey-weighted NHIS association model, and an NHIS prediction study. Adjusted associations are distinguished from unadjusted comparisons. Neither statistical adjustment nor correlation establishes a causal effect.
 
 CMS refers to the Centers for Medicare & Medicaid Services; ACS to the American Community Survey; NHIS to the National Health Interview Survey; and MEPS to the Medical Expenditure Panel Survey.
 
 ### Verified snapshot: scope and analytical units
 
-| Module                         | Period                          | Population and unit                                                                                             | Main denominator                                                                                             |
-| ------------------------------ | ------------------------------- | --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| CMS Medicare Telehealth Trends | Annual and quarterly, 2020–2025 | Medicare Part B fee-for-service service users; published geographic aggregates                                  | Unique users of telehealth-eligible services during the reporting period                                     |
-| ACS state context              | 2021–2024 1-year estimates      | All households in 50 states and DC                                                                              | All households for broadband subscription; household income distribution for median income                   |
-| NHIS Sample Adult              | 2021–2024 interviews            | Civilian noninstitutionalized adults aged 18 or older; sampled adult                                            | Adults with a valid telehealth response and a valid value for the selected grouping variable                 |
-| MEPS office-based visits       | Calendar years 2021–2024        | Office-based medical provider visits at all ages in the civilian noninstitutionalized population; sampled visit | Positive-weight office visits for shares; visits in the selected insurance/modality domain for mean payments |
+| Module                         | Period                                                 | Population and unit                                                                                             | Main denominator                                                                                             |
+| ------------------------------ | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| CMS Medicare Telehealth Trends | Annual and quarterly, 2020–2025                        | Medicare Part B fee-for-service service users; published geographic aggregates                                  | Unique users of telehealth-eligible services during the reporting period                                     |
+| ACS state context              | 2021–2024 1-year estimates                             | All households in 50 states and DC                                                                              | All households for broadband subscription; household income distribution for median income                   |
+| NHIS Sample Adult              | 2021–2024 interviews                                   | Civilian noninstitutionalized adults aged 18 or older; sampled adult                                            | Adults with a valid telehealth response and a valid value for the selected grouping variable                 |
+| NHIS prediction study          | 2024 development and holdout, 2025 temporal validation | Sample adults aged 18 or older with eligible responses and baseline predictors                                  | 25,500 training adults, 6,377 holdout adults, and 23,605 validation adults                                   |
+| MEPS office-based visits       | Calendar years 2021–2024                               | Office-based medical provider visits at all ages in the civilian noninstitutionalized population; sampled visit | Positive-weight office visits for shares; visits in the selected insurance/modality domain for mean payments |
 
 Only CMS–ACS supplies state comparisons. NHIS and MEPS provide national subgroup estimates. No person-level records are linked across these sources; MEPS events are linked only to their own MEPS person file. The published site provides aggregate data; it does not distribute individual-level source records.
 
@@ -125,7 +127,7 @@ Live data are held in browser memory and are not saved into the published datase
 
 The pinned CMS source file already contains 2026 Q1, while the verified dashboard retained 2020–2025. Making an additional period visible through the API therefore does not, by itself, mean CMS published a new release. Source revisions may also change values for previously available periods.
 
-The CMS action does not establish that ACS, NHIS, or MEPS are the newest available releases. [NHIS 2025 data and documentation](https://www.cdc.gov/nchs/nhis/documentation/2025-nhis.html) are available, but this dashboard retains the verified 2024 analysis. [ACS data queries require an API key](https://www.census.gov/data/developers/data-sets/acs-1year.2023.html); ACS updates and the survey-file processing needed for NHIS and MEPS are separate analytical tasks. Review the official source documentation when selecting a release for a new analysis.
+The CMS action does not establish that ACS, NHIS, or MEPS are the newest available releases. [NHIS 2025 data and documentation](https://www.cdc.gov/nchs/nhis/documentation/2025-nhis.html) support the temporal model evaluation. The NHIS annual descriptive series covers 2021–2024. [ACS data queries require an API key](https://www.census.gov/data/developers/data-sets/acs-1year.2023.html); ACS updates and the survey-file processing needed for NHIS and MEPS are separate analytical tasks. Review the official source documentation when selecting a release for a new analysis.
 
 For reproducing a CMS view loaded from the API, retain its CSV export and provenance columns. The fixed aggregate JSON and model downloads do not represent that live session. The [data manual](./documentation.html#data-manual) defines the export fields.
 
@@ -226,6 +228,14 @@ The adjusted-association forest plot selects one covariate group at a time from 
 
 Relative to any private coverage, the adjusted odds ratio is **1.100** (95% CI **1.016–1.191**) for public/other coverage without private and **0.460** (95% CI **0.391–0.542**) for uninsured adults. These are conditional cross-sectional associations. The interview-time insurance/past-year telehealth mismatch remains, and adjustment does not resolve unmeasured confounding. Age nonlinearity, interactions, alternative insurance definitions, and missing-data sensitivity have not been assessed. The model estimates associations in the observed sample and is not validated for predicting individual outcomes.
 
+### NHIS prediction study design and quality
+
+The target is a self-reported phone or video appointment in the **preceding 12 months** (`VIRAPP12M_A`). In 2024, 32,324 adults supplied valid outcome responses and 31,877 met the prediction study’s complete-case criteria. An outcome-stratified split assigned 25,500 to training and 6,377 to holdout evaluation. Five-fold cross-validation within training supported development. Variable screening, coding, and the outcome-proxy diagnostic preceded nested evaluation of the selection procedures. XGBoost tuning had its own cross-validation.
+
+The primary unweighted logistic regression retained 23 predictor terms through stepwise BIC. The comparison models include a training-prevalence baseline, Andersen-framework logistic models, group lasso, and XGBoost. All fitted models were held fixed for the 2025 evaluation. Of 23,987 adults with a valid outcome in 2025, 23,605 met the prediction sample criteria. Earlier development iterations examined both evaluation sets. This is a temporal evaluation by the development team in a subsequent NHIS sample. Selection uncertainty, performance in other settings, and calibration within specific demographic groups remain open questions.
+
+The descriptive series uses its own available-case denominators. For example, the 2024 adult use estimate draws on 32,324 valid responses, and the separate five-covariate association model uses 32,027 complete cases. Use the prediction sample only for model evaluation. [Model validation](./validation.html) · [2024 NHIS documentation](https://www.cdc.gov/nchs/nhis/documentation/2024-nhis.html) · [2025 NHIS documentation](https://www.cdc.gov/nchs/nhis/documentation/2025-nhis.html)
+
 ### MEPS sample, unknown modality, and payments
 
 HC-254G contains **145,818 visits**; HC-256 contains **19,140 persons**. Person identifiers are unique in HC-256, event identifiers are unique in HC-254G, and every event matches a person. Linked weights, strata, and PSU identifiers agree. Excluding **1,612 zero-weight visits** leaves **144,206 visits from 14,198 sampled persons**. All analytical visits have known annual insurance and nonnegative released payment values.
@@ -279,7 +289,7 @@ The independent numerical audit on November 11, 2026 checked the verified snapsh
 - **MEPS:** an independent raw-file audit reproduces **70 share/payment metrics**, including standard errors and interval limits, with a maximum absolute discrepancy of **4.9973 × 10⁻⁷** in the corresponding metric's units. Linkage, identifiers, weight/design agreement, payment values, and modality totals reconcile. Weighted office visits round to **2,410.1 million**; mean total payment/SE round to **$308/$7.9**, and family payment/SE to **$57/$3.0**, matching official rounded benchmarks.
 - **MEPS display support:** the audit identified only **26 distinct uninsured people contributing telehealth visits**. The overall uninsured telehealth share is now withheld using that numerator support, consistently with the sparse-modality display rule. Numerical estimates remain available in aggregate JSON for reproducibility, accompanied by counts and caution flags.
 
-These checks are not external validation of every subgroup or proof that the data are unbiased. Recall error, nonresponse, survey coverage, imputation, residual confounding, and policy or measurement changes remain. Overlapping confidence intervals are not a formal test of a group difference. These numerical checks do not evaluate task-based usability, model specification sensitivity, or predictive performance.
+These checks are not external validation of every subgroup or proof that the data are unbiased. Recall error, nonresponse, survey coverage, imputation, residual confounding, and policy or measurement changes remain. Overlapping confidence intervals are not a formal test of a group difference. The source audit above covers descriptive estimates and association-model calculations. The NHIS prediction study evaluates discrimination, probability error, and calibration using held-out observations.
 
 ### Reproduction and updates
 
@@ -320,6 +330,15 @@ The numerical audit used the retained official raw files and separate calculatio
 NHIS source and outcome counts agree with its codebook. MEPS identifiers, event-to-person linkage, weight/design agreement, positive-weight counts, and modality totals reconcile. The official rounded MEPS benchmarks also match: 2,410.1 million weighted office visits, total payment mean/SE of $308/$7.9, and family payment mean/SE of $57/$3.0.
 
 These results verify numerical implementation and source consistency. They do not certify model adequacy, establish causal validity, remove nonresponse or measurement bias, or replace sensitivity analysis.
+
+### NHIS prediction results
+
+| Evaluation sample        | Adults | Primary AUROC | Survey-weighted AUROC | Primary Brier score | Survey-weighted Brier score |
+| ------------------------ | -----: | ------------: | --------------------: | ------------------: | --------------------------: |
+| 2024 holdout             |  6,377 |        0.7128 |                0.7155 |              0.1696 |                      0.1647 |
+| 2025 temporal validation | 23,605 |        0.7173 |                0.7251 |              0.1722 |                      0.1683 |
+
+In 2025, the unweighted AUROC was 0.7039 for the full theory-based logistic model, 0.7217 for group lasso at the minimum-loss penalty, and 0.7214 for XGBoost. The primary logistic model combines 23 selected terms. Among eligible 2025 respondents the survey-weighted observed proportion was 26.26% and the average predicted probability was 25.62%. The mean difference, computed before rounding, was +0.65 percentage points (design-based 95% CI −0.15 to +1.44). Observed and predicted proportions can differ more within individual score bands. [Performance and calibration](./validation.html)
 
 ### MEPS display correction
 
@@ -363,7 +382,7 @@ Live records remain in browser memory. Errors or timeouts preserve the current v
 
 Direct `file://` execution was not exercised through the embedded browser because its local-file navigation is restricted. The bundled preview and module-based application were tested over HTTP. Successful remote deployment has not been verified by local checks.
 
-The checks do not establish task-based usability, robustness under alternative model specifications, absence of source bias, or predictive performance. Consult the [data quality note](./documentation.html#data-quality) and [data manual](./documentation.html#data-manual) for denominators, source-specific populations, display rules, and interpretation limits.
+These interface and calculation checks cover the descriptive dashboard. The prediction study reports performance for its specified evaluation samples; transfer to other settings requires separate evaluation. Consult the [data quality note](./documentation.html#data-quality) and [data manual](./documentation.html#data-manual) for denominators, source-specific populations, display rules, and interpretation limits.
 
 ### Code and report maintenance verification
 
@@ -427,7 +446,7 @@ The CMS CSV contains the displayed descriptive CMS estimates and same-year annua
 
 Keep these fields with the exported data. The acs_context_year column identifies the annual ACS estimates. Outside 2021–2024 the ACS fields are empty. Model CSV exports and aggregate JSON downloads continue to describe the verified analysis.
 
-The verified CMS series retain 2020–2025. The pinned source CSV also contains 2026 Q1, so a period newly displayed after an API check need not come from a newly released file. An unchanged response means only that the checked CMS view has not changed; it says nothing about the currency of the other sources. [NHIS 2025 documentation](https://www.cdc.gov/nchs/nhis/documentation/2025-nhis.html) is available while the dashboard’s NHIS analysis extends through 2024. ACS, NHIS, and MEPS refreshes require separate source selection and analytical processing.
+The verified CMS series retain 2020–2025. The pinned source CSV also contains 2026 Q1, so a period newly displayed after an API check need not come from a newly released file. An unchanged response means only that the checked CMS view has not changed; it says nothing about the currency of the other sources. [NHIS 2025 documentation](https://www.cdc.gov/nchs/nhis/documentation/2025-nhis.html) describes the temporal validation file. The descriptive series ends in 2024. ACS, NHIS, and MEPS refreshes require separate source selection and analytical processing.
 
 #### CMS annual-change CSV
 
@@ -600,6 +619,20 @@ The forest plot selects one covariate group from `terms[]` and plots `odds_ratio
 
 The model intercept is fitted but omitted from the displayed terms. The current references are private coverage, bachelor's or higher education, Internet access, and excellent health. Covariates measured at interview do not necessarily describe circumstances throughout the preceding telehealth recall period.
 
+### NHIS prediction measures and scoring inputs
+
+| Measure or field     | Interpretation                                                                                                                                                                                                                 |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Outcome              | `VIRAPP12M_A` equals 1 for a reported past-year phone/video appointment and 2 for no such appointment. Both values enter the analysis.                                                                                         |
+| AUROC                | Probability of assigning a higher score to a sampled user than to a nonuser, with half credit for ties. The 95% intervals shown for the unweighted primary AUROC resample PSUs within strata with the fitted model held fixed. |
+| Brier score          | Mean squared difference between predicted probabilities and binary outcomes. Smaller values indicate lower error.                                                                                                              |
+| Weighted metrics     | Calculated with final adult survey weights in the eligible evaluation sample. The primary model itself was fitted without survey weights.                                                                                      |
+| Calibration band     | Group defined by a range of predicted probabilities. Sample counts are unweighted. Weighted mean predictions and observed proportions refer to the same eligible people.                                                       |
+| Calibration gap      | Observed proportion minus average predicted probability, in percentage points. The overall 2025 interval incorporates the survey strata and PSUs.                                                                              |
+| Home Internet access | The primary model’s `ACCSSHOM_A` asks whether Internet access is available at home. The parent item `ACCSSINT_A` measures any Internet access. Home access is asked only when the parent response is yes.                      |
+
+To reuse a model, apply the released category labels, reference levels, skip and nonresponse rules, and training spline knots. Age is measured in years. The income-to-poverty ratio uses the first income imputation and is capped at 11 in both years. The regression models use log-odds coefficients. The XGBoost export has its own ordered input columns and fitted tree weights. [Full analysis output](./analysis/prediction/nhis_telehealth_prediction_final.html)
+
 ### MEPS source variables and recodes
 
 Sources: [HC-254G office-visit documentation](https://meps.ahrq.gov/data_stats/download_data/pufs/h254g/h254gdoc.shtml), [HC-256 person-file documentation](https://meps.ahrq.gov/data_stats/download_data/pufs/h256/h256doc.shtml).
@@ -668,7 +701,7 @@ Repeated visits by the same person remain visits in these estimates. Neither the
 
 ### Application architecture
 
-The application is a static HTML/CSS/JavaScript site with precomputed aggregate JSON. The browser loads the three verified datasets once, maintains filter selections separately, and renders SVG charts and HTML tables. No server-side database, API secret, or browser framework is required. Statistical estimation runs in the supplied Python/R analysis scripts, not inside chart rendering.
+The application is a static HTML/CSS/JavaScript site with precomputed aggregate JSON. The browser loads the verified annual aggregates, maintains filter selections separately, and renders SVG charts and HTML tables. No server-side database, API secret, or browser framework is required. Statistical estimation runs in the supplied Python/R analysis scripts, not inside chart rendering.
 
 `app.js` coordinates views and downloads; `charts.js` implements shared formatting and SVG rendering; `comparisons.js` implements annual differences and odds-ratio graphics; `cms-live.js` handles catalog discovery, bounded pagination, validation, and candidate construction. The live client returns a complete candidate without mutating the baseline. Only after success does the application select it for descriptive CMS views.
 
@@ -778,6 +811,12 @@ The CMS/ACS model gives each of the 51 states/DC equal weight and relates annual
 
 To adopt a new source release, review its documentation and variable definitions, update the source specification where necessary, inspect the new quality counts and fingerprints, and rerun the checks. A changed source hash or failed validation requires review before replacing the published aggregate files.
 
+#### Reproducing the NHIS prediction study
+
+The prediction analysis is maintained under `analysis/prediction/`. Its R Markdown notebook reads the official Sample Adult CSVs for 2024 and 2025, implements the screen and split, fits the candidate models, evaluates them, and checks probability scoring from the exported files. The study uses seed 2026 for its 80/20 split. A full knit takes approximately two hours on two to four cores. The static site serves the results without running the training pipeline during deployment. [Prediction analysis and reproduction guide](./analysis/prediction/guide.html) · [Completed analysis report](./analysis/prediction/nhis_telehealth_prediction_final.html)
+
+The study files include the design diagram, screening decisions, codebook verification, regression and penalized coefficients, factor levels, spline knots, coding dictionary, the R scoring function, and the fitted XGBoost model with its feature order and settings. The scoring helper expects already coded inputs. Raw respondent records remain local to the analyst.
+
 #### Browser update implementation
 
 The CMS check discovers the Medicare Telehealth Trends series through the [official CMS catalog](https://data.cms.gov/data.json) and reads the selected version’s public data API without an API key. A returned reporting period can already exist in the pinned source file but be outside the verified dashboard’s retained years: the pinned CMS CSV contains 2026 Q1, while the verified series deliberately retain 2020–2025. A newly displayed period alone is not evidence of a newly released file.
@@ -786,10 +825,14 @@ The CMS check discovers the Medicare Telehealth Trends series through the [offic
 
 ### Project structure
 
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```text
 telehealth-dashboard/
   index.html                 Dashboard page
   documentation.html         Data quality note and data manual
+  validation.html            NHIS prediction and temporal validation
+  analysis/prediction/       Reproducible study, report, model exports, and supplementary files
   styles.css                 Layout and visual design
   app.js                     Filters, views, and data loading
   charts.js                  Chart rendering
@@ -947,13 +990,13 @@ The WCM-TI mark is a project-specific design, not a reproduction of the institut
 
 ### Wordmark construction
 
-The current project mark draws on the [WCM wordmark’s soft edges, beveled forms, and red/orange relationship](https://brand.weill.cornell.edu/brand-guidelines/our-logos/wordmark-and-seal). WCM uses Cornell Red `#B31B1B`; TI uses Bright Orange `#E7751D`. The hyphen is a restrained red connector. The letters are original filled vector outlines, with a rounded C, substantial W/M diagonals, and subtly beveled terminals. They do not depend on an installed font. This is a project wordmark, not an official institutional lock-up.
+The current project mark draws on the [WCM wordmark’s soft edges, beveled forms, and red/orange relationship](https://brand.weill.cornell.edu/brand-guidelines/our-logos/wordmark-and-seal). WCM uses Cornell Red `#B31B1B`; TI uses Bright Orange `#E7751D`. The letters are original filled vector outlines, with a rounded C, substantial W/M diagonals, and subtly beveled terminals. They do not depend on an installed font.
 
 The primary horizontal wordmark appears at 208 CSS pixels wide in the desktop sidebar and 152 pixels wide on small screens. The compact icon reuses the T and I outlines in white on Cornell Red, so it remains legible at favicon sizes. Keep at least one stem-width of clear space around the artwork. Preserve the wordmark’s aspect ratio; use the supplied stacked alternative when a square placement requires it.
 
 ### Sidebar hierarchy
 
-The WCM-TI product mark and full name appear first, followed by the introduction and four research navigation entries. The CHERY Lab mark sits directly below that navigation as attribution. **Data documentation** is a separate lower-sidebar resource link, opening the shared data quality note and data manual page; it is not a fifth research module. The former duplicate Data quality note sidebar link is removed.
+The WCM-TI product mark and full name precede the research navigation. The CHERY Lab mark sits directly below that navigation as attribution. **Data documentation** is a separate lower-sidebar resource link, opening the shared data quality note and data manual page.
 
 The original CHERY Lab mark combines two research nodes with a shared branching stem. Its paired fruit forms connect to the lab name, while the linked nodes suggest collaboration. Its geometry is retained in the smaller attribution position.
 
@@ -976,7 +1019,7 @@ The digital values follow the [Weill Cornell Medicine color palette](https://bra
 | Map scale                      | Yellow `#FFC72C` → Bright Orange `#E7751D` → Dark Orange `#CF4520` → Cornell Red `#B31B1B` |
 | National comparison            | Gray `#666666`                                                                             |
 
-Light interface tints are supporting surfaces: navigation `#F1F1F1`, selected state `#FBEAEA`, notes `#F4F4F4`, and uncertainty badges `#FFF2CC`. The official `#F7F7F7` swatch is designated for print only and is not used here. Small accent text uses Cornell Red; dark orange appears on white chart panels.
+Light interface tints are supporting surfaces: navigation `#F1F1F1`, selected state `#FBEAEA`, notes `#F4F4F4`, and uncertainty badges `#FFF2CC`. Small accent text uses Cornell Red; dark orange appears on white chart panels.
 
 The map's warm colors encode increasing telehealth use, not adverse outcomes. Labels choose white or deep ink using actual tile luminance, and the legend has the same four stops as the renderer. Uncertainty is also conveyed with intervals, text, and asterisks. Changes are signed numerical differences; odds ratios use a labelled logarithmic axis and a reference at 1.
 
@@ -994,15 +1037,15 @@ November 11, 2026 · Weill Cornell Medicine Telehealth Insights, CHERY Lab
 - **Moments:** The state tile map and survey estimates with visible uncertainty.
 - **Signature:** CHERY Lab’s original paired cherry-node mark, alongside a numbered research index.
 
-The established Georgia headings, left-hand research navigation, and module order are retained. The original CHERY Lab geometry remains in the attribution mark; the current product identity is the WCM-TI wordmark. This is a refinement of the established editorial style.
+The established Georgia headings, left-hand research navigation, and module order are retained. The original CHERY Lab geometry remains in the attribution mark; the current product identity is the WCM-TI wordmark.
 
 ### Statistical continuity
 
-The underlying aggregate data, definitions, estimates, model outputs, export schemas, and sparse-cell withholding rules remain intact. Chart axes display fractional tick values accurately rather than rounding a 12.5% tick to 13%. The scatterplot now names its y-axis directly and identifies the selected state with a text abbreviation.
+Chart axes display fractional tick values accurately rather than rounding a 12.5% tick to 13%. The scatterplot now names its y-axis directly and identifies the selected state with a text abbreviation.
 
 ### Source status
 
-The interface distinguishes the verified snapshot from optional CMS data loaded for the current session. The CMS check shows its scope and validation status directly; it does not imply that the ACS context, association models, NHIS, or MEPS update with it. Research documentation explains the boundary and identifies the provenance columns attached to CMS CSV exports.
+The interface distinguishes the verified snapshot from optional CMS data loaded for the current session. The live check updates descriptive CMS series for the current session. Research documentation explains the boundary and identifies the provenance columns attached to CMS CSV exports.
 
 <a id="interpretation"></a>
 
@@ -1010,7 +1053,7 @@ The interface distinguishes the verified snapshot from optional CMS data loaded 
 
 The dashboard supports comparison within each source's defined population. CMS measures use of telehealth-eligible services among Medicare Part B fee-for-service service users; NHIS measures adult self-reported use over the preceding 12 months; MEPS measures office-visit modality and payments. A difference across these modules can reflect population, unit, recall, or measurement differences rather than a contradiction.
 
-State-level broadband/income associations are ecological. NHIS adjusted odds ratios describe associations under the stated complete-case survey model. Neither adjustment removes all confounding, and neither model was evaluated as a prediction system. Confidence intervals and project instability flags communicate sampling uncertainty, but do not address all measurement or selection biases.
+State-level broadband/income associations are ecological. NHIS adjusted odds ratios describe associations under the stated complete-case survey model. Residual confounding can affect both association models. For the separate NHIS prediction model, the 2025 evaluation addresses transfer to the next year of the same survey. Confidence intervals and project instability flags communicate sampling uncertainty, but do not address all measurement or selection biases.
 
 Future analytical updates should review release definitions, compare source fingerprints, reproduce recodes and denominators, validate uncertainty calculations, and inspect sparse domains before replacing verified aggregates. A successful CMS browser check is narrower: it establishes structural and arithmetic compatibility for descriptive display, not a newly validated research release.
 
@@ -1021,4 +1064,5 @@ Future analytical updates should review release definitions, compare source fing
 - [CMS Medicare Telehealth Trends](https://data.cms.gov/summary-statistics-on-use-and-payments/medicare-medicaid-service-type-reports/medicare-telehealth-trends)
 - [ACS 2024 B28002 Internet subscriptions](https://api.census.gov/data/2024/acs/acs1/groups/B28002.html) and [B19013 median household income](https://api.census.gov/data/2024/acs/acs1/groups/B19013.html)
 - [NHIS 2024 data and documentation](https://www.cdc.gov/nchs/nhis/documentation/2024-nhis.html)
+- [NHIS 2025 Sample Adult data and documentation](https://www.cdc.gov/nchs/nhis/documentation/2025-nhis.html)
 - [MEPS HC-254G office-based visits](https://meps.ahrq.gov/data_stats/download_data/pufs/h254g/h254gdoc.shtml) and [HC-256 consolidated person file](https://meps.ahrq.gov/data_stats/download_data/pufs/h256/h256doc.shtml)

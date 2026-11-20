@@ -1,6 +1,5 @@
 ---
 title: "Predicting Past-Year Telehealth Use: NHIS 2024 Development and 2025 Temporal Validation"
-author: "Team 1: CHERY Lab (prediction analysis: Yao Yao)"
 date: "`r Sys.Date()`"
 output:
   html_document:
@@ -9,12 +8,32 @@ output:
     number_sections: true
 ---
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+<nav aria-label="Research navigation"><a href="../../">Dashboard home</a> &nbsp;·&nbsp; <a href="../../validation.html">Model validation</a></nav>
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+<p class="edition">Verified snapshot · NHIS 2024–2025</p>
+<p class="snapshot-finding">The primary logistic model identified adults reporting past-year telehealth use with an unweighted AUROC of 0.7128 in the 2024 holdout and 0.7173 in the 2025 evaluation. In 2025, the full Andersen model reached 0.7039, group lasso at minimum loss reached 0.7217, and XGBoost reached 0.7214.</p>
+
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r setup, include=FALSE}
+# author: Yao Yao(yay4008@med.cornell.edu)
 # Warnings stay visible so convergence or rank-deficiency problems show up.
 # Cached chunks are invalidated when either input file changes.
+input_dir <- Sys.getenv("NHIS_DATA_DIR", unset = ".")
+# Keep source credits in code and Markdown comments, including after a fresh knit.
+source_html <- knitr::knit_hooks$get("source")
+knitr::knit_hooks$set(source = function(x, options) {
+  lines <- strsplit(paste(x, collapse = "\n"), "\n", fixed = TRUE)[[1]]
+  code <- lines[!grepl("^\\s*# author: Yao Yao\\(", lines, perl = TRUE)]
+  source_html(paste(code, collapse = "\n"), options)
+})
 knitr::opts_chunk$set(
   echo = TRUE, message = FALSE, warning = TRUE, autodep = TRUE,
-  cache.extra = unname(tools::md5sum(c("adult24.csv", "adult25.csv")))
+  cache.extra = unname(tools::md5sum(file.path(input_dir, c("adult24.csv", "adult25.csv"))))
 )
 
 library(splines)
@@ -36,6 +55,7 @@ Sys.setenv(OMP_NUM_THREADS = "1", OPENBLAS_NUM_THREADS = "1",
 
 # Stop if any parallel task failed or returned nothing (mclapply otherwise
 # returns the error object silently).
+# author: Yao Yao(yay4008@med.cornell.edu)
 check_workers <- function(results) {
   failed <- vapply(results, function(r) is.null(r) || inherits(r, "try-error"),
                    logical(1))
@@ -49,7 +69,11 @@ check_workers <- function(results) {
 }
 ```
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r package-versions}
+# author: Yao Yao(yay4008@med.cornell.edu)
 # Results were produced with these versions; other versions (especially
 # xgboost >= 2.0) may give slightly different numbers.
 print(sapply(c("xgboost", "PRROC", "survey", "grpreg"),
@@ -128,12 +152,7 @@ earlier analyses had already shown it to be a strong predictor, this
 addition was not made blind to the data.
 
 **Primary model.** The main-effects stepwise BIC model was fixed as the
-primary model before any test-set or 2025 evaluation. It is a compromise
-between parsimony and predictive performance, not the best-predicting
-model: BIC does not directly optimize out-of-sample log loss, stepwise
-search finds a good model along its search path rather than a guaranteed
-optimum, and fewer items do not by themselves make a model easier to use
-in practice. More flexible models (group lasso, including its sparser
+primary model before any test-set or 2025 evaluation. BIC balances model fit against the number of parameters. More flexible models (group lasso, including its sparser
 1-SE version, and gradient boosting) are reported for comparison.
 Interaction and borderline-item analyses are exploratory and do not change
 the primary model.
@@ -161,7 +180,11 @@ parallel steps run on macOS and Linux.
 The same function prepares both survey years, so the 2025 validation data
 use the 2024 coding rules.
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r prepare-function}
+# author: Yao Yao(yay4008@med.cornell.edu)
 raw_fields <- c(
   "VIRAPP12M_A", "AGEP_A", "NOTCOV_A", "PRIVATE_A", "EDUCP_A",
   "ACCSSINT_A", "PHSTAT_A", "SEX_A", "HISPALLP_A", "REGION", "MARITAL_A",
@@ -181,17 +204,20 @@ added_predictors <- c(
 expanded_predictors <- c(dashboard_predictors, added_predictors)
 
 # Yes (1) / No (2) items; refused, not ascertained, don't know -> NA.
+# author: Yao Yao(yay4008@med.cornell.edu)
 yes_no <- function(x) {
   factor(x, levels = c(2, 1), labels = c("No", "Yes"))
 }
 
 # Items with >= 1% "not ascertained" keep an explicit Unknown category.
+# author: Yao Yao(yay4008@med.cornell.edu)
 with_unknown <- function(x, codes, labels) {
   out <- rep("Unknown", length(x))
   for (i in seq_along(codes)) out[x %in% codes[i]] <- labels[i]
   factor(out, levels = c(labels, "Unknown"))
 }
 
+# author: Yao Yao(yay4008@med.cornell.edu)
 prepare_nhis <- function(raw) {
   stopifnot(all(raw_fields %in% names(raw)))
   rows <- which(raw$VIRAPP12M_A %in% c(1, 2))
@@ -272,7 +298,11 @@ codebooks (codes, labels, universes, question wording; page references in
 the codes used for screening coverage; their analysis coding is done in
 `prepare_nhis()`.
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r screening-rules}
+# author: Yao Yao(yay4008@med.cornell.edu)
 # Item labels, screening rules and the coding dictionary for the NHIS
 # telehealth prediction analysis.
 #
@@ -311,7 +341,7 @@ variable_labels <- c(
   INCSSISSDI_A = "SSI/SSDI income", INCWELF_A = "Public assistance income",
   INCRETIRE_A = "Retirement/pension income", INCOTHR_A = "Other income",
   CEVOTELC_A = "Voted in last local election", CEMMETNG_A = "Attended public meeting",
-  CEVOLUN1_A = "Volunteered", ACCSSHOM_A = "Uses the Internet at home",
+  CEVOLUN1_A = "Volunteered", ACCSSHOM_A = "Has Internet access at home",
   # New candidates: insurance detail
   MEDICARE_A = "Medicare", MEDICAID_A = "Medicaid", MILITARY_A = "Military coverage",
   CHIP_A = "CHIP", OTHPUB_A = "State-sponsored health plan",
@@ -441,6 +471,7 @@ too_rare_raw <- c("CHIP_A")  # 3 "yes" answers among 2024 respondents
 # how nonresponse is handled, and the reference category. Nonresponse gets
 # its own "Missing" category when it is about 1% or more of 2024
 # respondents; otherwise it is assigned to the most common category.
+# author: Yao Yao(yay4008@med.cornell.edu)
 item <- function(groups, missing = c(7, 8, 9), skip = NULL,
                  nonresponse = "Missing", ref = names(groups)[1],
                  type = "categorical", note = "") {
@@ -449,10 +480,12 @@ item <- function(groups, missing = c(7, 8, 9), skip = NULL,
   list(groups = groups, missing = missing, skip = skip,
        nonresponse = nonresponse, ref = ref, type = type, note = note)
 }
+# author: Yao Yao(yay4008@med.cornell.edu)
 yes_no_item <- function(nonresponse = "No", ref = "No", yes = 1, no = 2, ...) {
   item(setNames(list(yes, no), c("Yes", "No")), nonresponse = nonresponse,
        ref = ref, type = "binary", ...)
 }
+# author: Yao Yao(yay4008@med.cornell.edu)
 difficulty_item <- function(merge_cannot = FALSE, ...) {
   groups <- if (merge_cannot) {
     list("No difficulty" = 1, "Some difficulty" = 2,
@@ -463,6 +496,7 @@ difficulty_item <- function(merge_cannot = FALSE, ...) {
   }
   item(groups, nonresponse = "No difficulty", type = "ordinal", ...)
 }
+# author: Yao Yao(yay4008@med.cornell.edu)
 frequency_item <- function(...) {
   item(list("Never" = 5, "Daily" = 1, "Weekly" = 2, "Monthly" = 3,
             "A few times a year" = 4), type = "ordinal", ...)
@@ -560,10 +594,10 @@ coding_dictionary <- list(
   CEVOTELC_A = yes_no_item(nonresponse = "Missing"),
   CEMMETNG_A = yes_no_item(nonresponse = "Missing"),
   CEVOLUN1_A = yes_no_item(nonresponse = "Missing"),
-  # Asked only of Internet users; non-users are coded "No" (no Internet use
-  # at home) so the item does not duplicate the Internet access variable.
+  # Asked when ACCSSINT_A=1. Complete cases have a valid parent response,
+  # so a structural skip corresponds to ACCSSINT_A=2 in the scored cohort.
   ACCSSHOM_A = yes_no_item(ref = "Yes", nonresponse = "Yes", skip = "No",
-                           note = "blank = not an Internet user, coded No"),
+                           note = "In the complete-case cohort a structural skip is coded No when ACCSSINT_A=2. An unknown parent is outside this cohort. Observed child codes 7/8/9 are assigned Yes by the project."),
 
   # Insurance detail
   MEDICARE_A = yes_no_item(yes = 1:2, no = 3, note = "2 = yes, no detail"),
@@ -658,9 +692,11 @@ coding_dictionary <- list(
   SHTPNUEV_A = yes_no_item(nonresponse = "Missing")
 )
 
+# author: Yao Yao(yay4008@med.cornell.edu)
 dictionary_codes <- function(entry) unlist(entry$groups, use.names = FALSE)
 
 # Dictionary in long form, for review against the codebooks.
+# author: Yao Yao(yay4008@med.cornell.edu)
 dictionary_table <- function() {
   do.call(rbind, lapply(names(coding_dictionary), function(v) {
     e <- coding_dictionary[[v]]
@@ -683,6 +719,7 @@ dictionary_table <- function() {
 # Coverage: share of respondents with a substantive answer. Dictionary codes
 # are used when available; other items fall back to NHIS reserve-code
 # conventions (7/8/9, 97/98/99, ...), which is approximate.
+# author: Yao Yao(yay4008@med.cornell.edu)
 reserve_codes <- function(x) {
   v <- x[!is.na(x)]
   if (!length(v)) return(numeric(0))
@@ -692,6 +729,7 @@ reserve_codes <- function(x) {
   if (length(others) && max(others) >= 10^d - 3) numeric(0) else top
 }
 
+# author: Yao Yao(yay4008@med.cornell.edu)
 item_coverage <- function(v, x) {
   e <- coding_dictionary[[v]]
   if (!is.null(e)) {
@@ -706,6 +744,7 @@ item_coverage <- function(v, x) {
 
 # Screening uses the 2024 data and only the *names* of the 2025 variables
 # (which items were fielded in 2025). No 2025 values or outcomes are read.
+# author: Yao Yao(yay4008@med.cornell.edu)
 screen_variables <- function(raw_2024, names_2025, min_coverage = 0.90) {
   outcome_24 <- raw_2024$VIRAPP12M_A %in% c(1, 2)
   vars <- setdiff(names(raw_2024), "VIRAPP12M_A")
@@ -757,6 +796,7 @@ screen_variables <- function(raw_2024, names_2025, min_coverage = 0.90) {
 # ---- Coding --------------------------------------------------------------------
 # Apply the dictionary. The rules are fixed in advance and are not learned
 # from the data, so the same coding applies inside every CV fold and in 2025.
+# author: Yao Yao(yay4008@med.cornell.edu)
 code_item <- function(x, e, v = "", on_unknown = c("error", "warning")) {
   on_unknown <- match.arg(on_unknown)
   unknown <- !is.na(x) & !(x %in% c(dictionary_codes(e), e$missing))
@@ -778,6 +818,7 @@ code_item <- function(x, e, v = "", on_unknown = c("error", "warning")) {
   factor(out, levels = levels)
 }
 
+# author: Yao Yao(yay4008@med.cornell.edu)
 code_items <- function(raw, vars, on_unknown = "error") {
   as.data.frame(lapply(setNames(vars, vars), function(v) {
     code_item(raw[[v]], coding_dictionary[[v]], v, on_unknown)
@@ -787,6 +828,7 @@ code_items <- function(raw, vars, on_unknown = "error") {
 # Every recode applied to a dataset: several NHIS codes combined into one
 # category, nonresponse assigned to a category, and codes not in the
 # dictionary (treated as nonresponse).
+# author: Yao Yao(yay4008@med.cornell.edu)
 describe_recodes <- function(raw, vars) {
   do.call(rbind, lapply(vars, function(v) {
     e <- coding_dictionary[[v]]
@@ -834,8 +876,12 @@ describe_recodes <- function(raw, vars) {
 
 ## 2024 sample, missingness and split
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r prepare-2024}
-nhis_2024 <- read.csv("adult24.csv")
+# author: Yao Yao(yay4008@med.cornell.edu)
+nhis_2024 <- read.csv(file.path(input_dir, "adult24.csv"))
 model_data <- prepare_nhis(nhis_2024)
 
 print(c(raw_n = nrow(nhis_2024), valid_outcome_n = nrow(model_data)))
@@ -884,12 +930,17 @@ respondents; the only 2025 information used is the list of variable names
 (whether an item was fielded in 2025). The screen never uses the outcome
 or any 2025 values. The full table is written to `variable_screening.csv`.
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r screen-items}
+# author: Yao Yao(yay4008@med.cornell.edu)
 # Header row only: the list of items fielded in 2025.
-names_2025 <- names(read.csv("adult25.csv", nrows = 0))
+names_2025 <- names(read.csv(file.path(input_dir, "adult25.csv"), nrows = 0))
 
 screening <- screen_variables(nhis_2024[train_data$source_row, ], names_2025)
-write.csv(dictionary_table(), "coding_dictionary.csv", row.names = FALSE)
+dir.create("model_export", showWarnings = FALSE)
+write.csv(dictionary_table(), "model_export/coding_dictionary.csv", row.names = FALSE)
 print(as.data.frame(table(decision = screening$decision)), row.names = FALSE)
 
 # Candidate items beyond the theory-based set, and uncertain items that go
@@ -922,6 +973,7 @@ cat("Exclusions resting on approximate coverage:",
     if (nrow(approximate)) paste(approximate$variable, collapse = ", ") else "none",
     "\n")
 
+# author: Yao Yao(yay4008@med.cornell.edu)
 add_pool <- function(data, raw, on_unknown = "error") {
   cbind(data, code_items(raw[data$source_row, ], pool_items, on_unknown))
 }
@@ -947,7 +999,11 @@ separately below. A code that the dictionary does not list stops the
 analysis in 2024 and triggers a warning in 2025. Every recode in the
 training data:
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r recodes-2024}
+# author: Yao Yao(yay4008@med.cornell.edu)
 print(describe_recodes(nhis_2024[train_data$source_row, ], pool_items),
       row.names = FALSE)
 ```
@@ -956,19 +1012,26 @@ print(describe_recodes(nhis_2024[train_data$source_row, ], pool_items),
 
 ## Metrics
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r metric-functions}
+# author: Yao Yao(yay4008@med.cornell.edu)
+# author: Yao Yao(yay4008@med.cornell.edu)
 log_loss <- function(y, p) {
   p <- pmin(pmax(p, 1e-15), 1 - 1e-15)
   -mean(y * log(p) + (1 - y) * log1p(-p))
 }
 
 # Mann-Whitney AUROC; tied scores receive average ranks.
+# author: Yao Yao(yay4008@med.cornell.edu)
 auroc <- function(p, y) {
   n1 <- sum(y == 1)
   n0 <- sum(y == 0)
   (sum(rank(p)[y == 1]) - n1 * (n1 + 1) / 2) / (n1 * n0)
 }
 
+# author: Yao Yao(yay4008@med.cornell.edu)
 evaluate_prob <- function(prob, y) {
   auprc <- if (length(unique(prob)) == 1L) {
     mean(y)
@@ -981,6 +1044,7 @@ evaluate_prob <- function(prob, y) {
 }
 
 # Calibration-in-the-large (intercept with slope fixed at 1) and slope.
+# author: Yao Yao(yay4008@med.cornell.edu)
 calibration_stats <- function(prob, y) {
   lp <- qlogis(pmin(pmax(prob, 1e-6), 1 - 1e-6))
   c(
@@ -994,6 +1058,7 @@ calibration_stats <- function(prob, y) {
 # Stop on non-convergence, aliased coefficients or non-finite predictions.
 # A factor level absent from a fold's training part makes predict() stop
 # with a "new levels" error, which is also surfaced rather than ignored.
+# author: Yao Yao(yay4008@med.cornell.edu)
 check_fit <- function(fit, label) {
   if (!fit$converged) stop(label, ": glm did not converge", call. = FALSE)
   if (anyNA(coef(fit))) {
@@ -1003,6 +1068,7 @@ check_fit <- function(fit, label) {
   invisible(fit)
 }
 
+# author: Yao Yao(yay4008@med.cornell.edu)
 cv_logistic <- function(formula) {
   vapply(seq_len(k), function(fold) {
     fit <- glm(formula, data = train_data[fold_id != fold, ],
@@ -1018,7 +1084,11 @@ cv_logistic <- function(formula) {
 
 ## Candidate model formulas
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r formulas}
+# author: Yao Yao(yay4008@med.cornell.edu)
 # The theory-based (Andersen) set: 22 items, including the five covariates
 # used in the project dashboard's association model and urban-rural
 # classification. None of them has a special status: in every selection
@@ -1051,11 +1121,17 @@ sensitivity analysis. The diagnostic uses training outcomes and is not
 repeated inside the nested cross-validation folds; it can show that an item
 is suspicious but cannot prove that it is safe.
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r outcome-proxy-check, cache=TRUE}
+# author: Yao Yao(yay4008@med.cornell.edu)
+# author: Yao Yao(yay4008@med.cornell.edu)
 fit_terms <- function(terms_) {
   glm(reformulate(terms_, response = "telehealth"), data = train_data,
       family = binomial())
 }
+# author: Yao Yao(yay4008@med.cornell.edu)
 lr_per_df <- function(terms_full, term) {
   full <- fit_terms(terms_full)
   reduced <- fit_terms(setdiff(terms_full, term))
@@ -1096,7 +1172,11 @@ print(transform(proxy_check, cv_logloss_gain = round(cv_logloss_gain, 5),
                 lr_per_df = round(lr_per_df, 1)), row.names = FALSE)
 ```
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r candidate-pool}
+# author: Yao Yao(yay4008@med.cornell.edu)
 flagged_items <- proxy_check$item[proxy_check$flagged]
 passed_items <- proxy_check$item[!proxy_check$flagged]
 
@@ -1107,7 +1187,8 @@ screening$decision[screening$variable %in% flagged_items] <-
   "Excluded: outcome-proxy diagnostic"
 screening$decision[screening$variable %in% borderline_candidates] <-
   "Candidate: borderline (sensitivity only)"
-write.csv(screening, "variable_screening.csv", row.names = FALSE)
+dir.create("supplementary", showWarnings = FALSE)
+write.csv(screening, "supplementary/variable_screening.csv", row.names = FALSE)
 
 cat("Excluded by the diagnostic:",
     if (length(flagged_items)) paste(flagged_items, collapse = ", ") else "none", "\n")
@@ -1134,14 +1215,13 @@ for (f in list(f_pool, update(f_pool, paste(". ~ . +",
 Bidirectional stepwise search starting from the intercept-only model, with
 every candidate (theory-based items included) free to enter or leave. The BIC
 penalty is log(n) per parameter, with each item entering or leaving as a
-whole (all of its levels together). This main-effects model was fixed as
-the primary model before any evaluation, as a compromise between
-parsimony and predictive performance rather than as the best-predicting
-model. BIC does not directly optimize out-of-sample log loss, and the
-stepwise search returns a good model along its path, not a guaranteed
-global optimum.
+whole (all of its levels together). The search selects the lowest BIC encountered along its path.
+
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
 
 ```{r stepwise-bic, cache=TRUE}
+# author: Yao Yao(yay4008@med.cornell.edu)
 n_train <- nrow(train_data)
 fit_null <- glm(f_null, data = train_data, family = binomial())
 fit_bic <- step(fit_null, scope = list(lower = f_null, upper = f_pool),
@@ -1171,7 +1251,11 @@ with the full theory-based model, it shows whether that set can be
 simplified; compared with the primary model, it isolates the contribution
 of the wider candidate pool.
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r stepwise-bic-theory, cache=TRUE}
+# author: Yao Yao(yay4008@med.cornell.edu)
 fit_bic_theory <- step(fit_null, scope = list(lower = f_null, upper = f_theory),
                        direction = "both", k = log(n_train), trace = 0)
 bic_theory_terms <- attr(terms(fit_bic_theory), "term.labels")
@@ -1189,10 +1273,15 @@ every group is penalized. The penalty is tuned with the same 5 folds. Both
 the lambda.min fit and the sparser 1-SE fit are carried forward to the
 test-set and 2025 comparisons.
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r group-lasso, cache=TRUE}
+# author: Yao Yao(yay4008@med.cornell.edu)
 # Build the design from a given set of rows. The terms object carries the
 # spline knots of those rows ("predvars"), so any other data get the same
 # basis.
+# author: Yao Yao(yay4008@med.cornell.edu)
 build_design <- function(fit_data) {
   terms_object <- terms(model.frame(reformulate(pool_terms), data = fit_data))
   mm <- model.matrix(terms_object, model.frame(terms_object, data = fit_data))
@@ -1221,6 +1310,7 @@ cv_glasso <- cv.grpreg(x_train, train_data$telehealth, group = group_id,
 i_min <- which.min(cv_glasso$cve)
 i_1se <- min(which(cv_glasso$cve <= cv_glasso$cve[i_min] + cv_glasso$cvse[i_min]))
 
+# author: Yao Yao(yay4008@med.cornell.edu)
 selected_groups <- function(i) {
   b <- cv_glasso$fit$beta[-1, i]
   unique(term_of_column[b != 0])
@@ -1248,7 +1338,12 @@ does a different method favour?* Group lasso at the 1-SE penalty is refit on
 two methods reflects their different penalties and is not evidence that
 either is wrong.
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r bic-half-sample, cache=TRUE}
+# author: Yao Yao(yay4008@med.cornell.edu)
+# author: Yao Yao(yay4008@med.cornell.edu)
 run_parallel <- function(x, fun) {
   if (.Platform$OS.type == "unix") {
     check_workers(mclapply(x, fun, mc.cores = n_workers))
@@ -1262,6 +1357,7 @@ set.seed(2026)
 bic_subsample_rows <- lapply(seq_len(n_bic_subsamples),
                              function(b) sample.int(n_train, floor(n_train / 2)))
 
+# author: Yao Yao(yay4008@med.cornell.edu)
 bic_on_rows <- function(rows) {
   half <- train_data[rows, ]
   lower <- f_null
@@ -1279,7 +1375,11 @@ cat("Terms selected per half-sample:",
     paste(range(lengths(bic_subsample_terms)), collapse = " to "), "\n")
 ```
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r glasso-subsampling, cache=TRUE}
+# author: Yao Yao(yay4008@med.cornell.edu)
 set.seed(2026)
 n_subsamples <- 50L
 lambda_path <- cv_glasso$lambda[seq_len(i_1se)]
@@ -1316,7 +1416,12 @@ method can extract from the screened items. The tuning scores below come from th
 same folds used to choose depth, learning rate and number of rounds, so
 they are not unbiased performance estimates.
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r xgboost-cv, cache=TRUE}
+# author: Yao Yao(yay4008@med.cornell.edu)
+# author: Yao Yao(yay4008@med.cornell.edu)
 xgb_matrix <- function(data, vars) {
   x <- model.matrix(reformulate(vars), data = data)
   x[, colnames(x) != "(Intercept)", drop = FALSE]
@@ -1325,6 +1430,7 @@ xgb_matrix <- function(data, vars) {
 xgb_grid <- expand.grid(max_depth = 1:3, eta = c(0.05, 0.10))
 max_rounds <- 8000L
 
+# author: Yao Yao(yay4008@med.cornell.edu)
 tune_xgb <- function(vars) {
   x <- xgb_matrix(train_data, vars)
   dtrain <- xgb.DMatrix(x, label = train_data$telehealth)
@@ -1377,7 +1483,12 @@ done once beforehand and are not repeated inside folds, and the inner CV
 of group lasso uses the spline basis of the outer training part. It is
 therefore not an evaluation of the complete pipeline from the raw file.
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r nested-cv, cache=TRUE}
+# author: Yao Yao(yay4008@med.cornell.edu)
+# author: Yao Yao(yay4008@med.cornell.edu)
 run_folds <- function(fun) {
   if (.Platform$OS.type == "unix") {
     check_workers(mclapply(seq_len(k), fun, mc.cores = min(k, n_workers)))
@@ -1386,6 +1497,7 @@ run_folds <- function(fun) {
   }
 }
 
+# author: Yao Yao(yay4008@med.cornell.edu)
 nested_bic_fold <- function(fold, upper_formula) {
   inner <- train_data[fold_id != fold, ]
   outer <- train_data[fold_id == fold, ]
@@ -1403,6 +1515,7 @@ nested_bic_fold <- function(fold, upper_formula) {
        terms = attr(terms(fit), "term.labels"))
 }
 
+# author: Yao Yao(yay4008@med.cornell.edu)
 nested_glasso_fold <- function(fold) {
   inner <- train_data[fold_id != fold, ]
   outer <- train_data[fold_id == fold, ]
@@ -1418,6 +1531,7 @@ nested_glasso_fold <- function(fold) {
   j_min <- which.min(cv_in$cve)
   j_1se <- min(which(cv_in$cve <= cv_in$cve[j_min] + cv_in$cvse[j_min]))
   x_out <- design$matrix_for(outer)
+  # author: Yao Yao(yay4008@med.cornell.edu)
   score <- function(j) {
     log_loss(outer$telehealth,
              as.numeric(predict(cv_in$fit, x_out, lambda = cv_in$lambda[j],
@@ -1458,7 +1572,11 @@ tuning scores are shown in a separate column and are not ranked against
 the other models. The 2024 test set gives the final comparison of all
 models, including XGBoost.
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r cv-comparison, cache=TRUE}
+# author: Yao Yao(yay4008@med.cornell.edu)
 cv_table <- data.frame(
   model = c("Theory-based, all 22 items", "Theory-based, stepwise BIC",
             "Full screened pool, no selection", "Stepwise BIC, full pool (primary)",
@@ -1497,7 +1615,11 @@ as a fixed formula, so the reported CV log loss is an *apparent* value,
 not comparable with the nested estimates above. It does not change the
 primary model.
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r borderline-sensitivity, cache=TRUE}
+# author: Yao Yao(yay4008@med.cornell.edu)
 f_bic_border_upper <- reformulate(c(bic_terms, borderline_candidates),
                                   response = "telehealth")
 fit_border <- step(fit_bic, scope = list(lower = f_bic, upper = f_bic_border_upper),
@@ -1516,12 +1638,17 @@ if (length(border_added)) {
 
 ## Final fits on the full training set
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r final-fits}
+# author: Yao Yao(yay4008@med.cornell.edu)
 fit_theory <- glm(f_theory, data = train_data, family = binomial())
 fit_theory_bic <- glm(f_bic_theory, data = train_data, family = binomial())
 fit_primary <- glm(f_bic, data = train_data, family = binomial())
 
 set.seed(2026)
+# author: Yao Yao(yay4008@med.cornell.edu)
 xgb_fit <- function(tuned) {
   xgb.train(tuned$params,
             xgb.DMatrix(xgb_matrix(train_data, tuned$vars),
@@ -1533,6 +1660,7 @@ xgb_pool_fit <- xgb_fit(xgb_pool)
 baseline_prob <- mean(train_data$telehealth)
 primary_model <- "Stepwise BIC logistic"
 
+# author: Yao Yao(yay4008@med.cornell.edu)
 predict_all <- function(data) {
   stopifnot(identical(colnames(design_matrix(data)), colnames(x_train)))
   list(
@@ -1555,7 +1683,11 @@ predict_all <- function(data) {
 
 # 2024 held-out test set
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r evaluate-test}
+# author: Yao Yao(yay4008@med.cornell.edu)
 y_test <- test_data$telehealth
 test_prob <- predict_all(test_data)
 
@@ -1568,10 +1700,15 @@ population represented by the complete-case test respondents (weights are
 the original NHIS adult weights; complete-case exclusion is not
 reweighted).
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r weighted-metrics-function}
+# author: Yao Yao(yay4008@med.cornell.edu)
 # Weighted Mann-Whitney AUROC: sum over positive-negative pairs of
 # w_i * w_j * [p_i > p_j] (ties count one half), divided by the product of
 # the positive and negative weight totals.
+# author: Yao Yao(yay4008@med.cornell.edu)
 weighted_auroc <- function(p, y, w) {
   g <- match(p, sort(unique(p)))
   w_pos <- tapply(w * (y == 1), g, sum)
@@ -1580,6 +1717,7 @@ weighted_auroc <- function(p, y, w) {
   sum(w_pos * (below + 0.5 * w_neg)) / (sum(w_pos) * sum(w_neg))
 }
 
+# author: Yao Yao(yay4008@med.cornell.edu)
 weighted_metrics <- function(prob, y, w) {
   p <- pmin(pmax(prob, 1e-15), 1 - 1e-15)
   w <- w / sum(w)
@@ -1608,8 +1746,13 @@ selection, and they are not a full design-based inference for weighted
 metrics (which would use replicate weights or linearization). Gains are
 positive when the primary model is better.
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r bootstrap-function}
+# author: Yao Yao(yay4008@med.cornell.edu)
 # Row indices grouped by PSU within stratum.
+# author: Yao Yao(yay4008@med.cornell.edu)
 psu_index <- function(data) {
   key <- paste(data$survey_stratum, data$survey_psu)
   rows_by_psu <- split(seq_len(nrow(data)), key)
@@ -1617,12 +1760,14 @@ psu_index <- function(data) {
   split(rows_by_psu, stratum_of_psu)
 }
 
+# author: Yao Yao(yay4008@med.cornell.edu)
 draw_psu_sample <- function(index) {
   unlist(lapply(index, function(psus) {
     psus[sample.int(length(psus), length(psus), replace = TRUE)]
   }), use.names = FALSE)
 }
 
+# author: Yao Yao(yay4008@med.cornell.edu)
 bootstrap_compare <- function(prob, y, index, B = 1000, seed = 2026) {
   set.seed(seed)
   primary <- prob[[primary_model]]
@@ -1650,10 +1795,15 @@ print(round(bootstrap_compare(test_prob, y_test, test_psu_index), 4))
 
 ## Calibration
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r calibration-test}
+# author: Yao Yao(yay4008@med.cornell.edu)
 print(round(t(vapply(test_prob[-1], calibration_stats, numeric(4),
                      y = y_test)), 4))
 
+# author: Yao Yao(yay4008@med.cornell.edu)
 calibration_by_band <- function(prob, y, weight = rep(1, length(y))) {
   band <- cut(prob, breaks = seq(0, 1, by = 0.10), include.lowest = TRUE)
   do.call(rbind, lapply(split(seq_along(prob), band, drop = TRUE),
@@ -1680,8 +1830,12 @@ from the 2025 file are read; nothing below changes a model.
 
 ## Availability and coding checks
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r load-2025}
-nhis_2025 <- read.csv("adult25.csv")
+# author: Yao Yao(yay4008@med.cornell.edu)
+nhis_2025 <- read.csv(file.path(input_dir, "adult25.csv"))
 valid_2025 <- nhis_2025$VIRAPP12M_A %in% c(1, 2)
 print(c(raw_n = nrow(nhis_2025), valid_outcome_n = sum(valid_2025)))
 
@@ -1696,6 +1850,7 @@ raw_item_map <- c(
   arthritis = "ARTHEV_A", depression = "DEPEV_A", anxiety = "ANXEV_A",
   disability = "DISAB3_A"
 )
+# author: Yao Yao(yay4008@med.cornell.edu)
 raw_items_of <- function(vars) {
   items <- ifelse(vars %in% names(raw_item_map), raw_item_map[vars], vars)
   unique(c(items, if ("insurance" %in% vars) "PRIVATE_A"))
@@ -1727,7 +1882,12 @@ handling; for theory-based items it becomes missing and the
 respondent drops out of the complete-case sample. Codes listed in the
 dictionary but absent in 2025 are also reported.
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r coding-check-2025}
+# author: Yao Yao(yay4008@med.cornell.edu)
+# author: Yao Yao(yay4008@med.cornell.edu)
 check_coding <- function(item) {
   e <- coding_dictionary[[item]]
   x25 <- nhis_2025[[item]][valid_2025]
@@ -1770,7 +1930,11 @@ print(head(primary_check[order(primary_check$coverage_2025), ], 5),
 
 ## Validation sample and distribution shift
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r prepare-2025}
+# author: Yao Yao(yay4008@med.cornell.edu)
 validation_all <- prepare_nhis(nhis_2025)
 print(c(valid_outcome_n = nrow(validation_all),
         use_pct = round(100 * mean(validation_all$telehealth), 2)))
@@ -1807,7 +1971,11 @@ for (v in intersect(bic_terms, new_candidates)) {
 
 ## Discrimination and overall performance
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r evaluate-2025}
+# author: Yao Yao(yay4008@med.cornell.edu)
 prob_2025 <- predict_all(validation_2025)
 
 results_2025 <- t(vapply(prob_2025, evaluate_prob, numeric(4), y = y_2025))
@@ -1830,7 +1998,11 @@ print(round(t(vapply(prob_2025[-1], calibration_stats, numeric(4),
 
 Open symbols mark probability bands with fewer than 30 respondents.
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r plot-calibration-years, fig.width=6, fig.height=6}
+# author: Yao Yao(yay4008@med.cornell.edu)
 cal_2025 <- calibration_by_band(prob_2025[[primary_model]], y_2025)
 print(round(cal_2025, 4))
 
@@ -1853,7 +2025,11 @@ legend("topleft", bty = "n",
 
 ## Survey-weighted calibration in 2025
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r weighted-calibration-2025, fig.width=6, fig.height=6}
+# author: Yao Yao(yay4008@med.cornell.edu)
 weighted_cal_2025 <- calibration_by_band(prob_2025[[primary_model]], y_2025,
                                          weight_2025)
 print(round(weighted_cal_2025, 4))
@@ -1872,13 +2048,18 @@ Design-based 95% CI for the weighted calibration gap (observed minus
 predicted, percentage points). The full survey design is built first and
 the validation sample is then treated as a domain.
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r weighted-gap-ci-2025}
+# author: Yao Yao(yay4008@med.cornell.edu)
 design_rows <- validation_2025$source_row
 stopifnot(all(nhis_2025$WTFA_A[design_rows] == weight_2025))
 
 nhis_2025$in_validation <- FALSE
 nhis_2025$in_validation[design_rows] <- TRUE
 
+# author: Yao Yao(yay4008@med.cornell.edu)
 weighted_gap <- function(model_name) {
   nhis_2025$gap_pp <- NA_real_
   nhis_2025$gap_pp[design_rows] <- 100 * (y_2025 - prob_2025[[model_name]])
@@ -1910,11 +2091,16 @@ The primary formula is refit with the NHIS adult weights (rescaled to mean
 likelihood). Variable selection is not repeated. Both versions are scored
 unweighted and weighted in the 2024 test set and in 2025.
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r weighted-fit}
+# author: Yao Yao(yay4008@med.cornell.edu)
 train_w <- train_data$survey_weight / mean(train_data$survey_weight)
 fit_primary_weighted <- glm(f_bic, data = train_data, family = quasibinomial(),
                             weights = train_w)
 
+# author: Yao Yao(yay4008@med.cornell.edu)
 score_versions <- function(data, y, w) {
   p_unw <- unname(predict(fit_primary, data, type = "response"))
   p_w <- unname(predict(fit_primary_weighted, data, type = "response"))
@@ -1950,7 +2136,12 @@ correlation of the coefficient estimates as in `car::vif()`. For an item
 with df parameters, GVIF^(1/(2·df)) is comparable to the square root of a
 classic VIF; values above about 2.2 (VIF > 5) deserve attention.
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r collinearity-gvif}
+# author: Yao Yao(yay4008@med.cornell.edu)
+# author: Yao Yao(yay4008@med.cornell.edu)
 gvif_table <- function(fit) {
   R <- cov2cor(vcov(fit)[-1, -1])
   assign <- attr(model.matrix(fit), "assign")[-1]
@@ -1977,9 +2168,14 @@ unascertained on several of these items; the cross-tabulation below checks
 how much these categories overlap. This is a diagnostic, not a proof of
 the source of the inflation.
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r missing-overlap}
+# author: Yao Yao(yay4008@med.cornell.edu)
 # Respondents in the Missing/Unknown category of at least one item, and of
 # every item, in each group of items with high GVIF.
+# author: Yao Yao(yay4008@med.cornell.edu)
 missing_overlap <- function(data, items, level) {
   flags <- vapply(items, function(v) data[[v]] == level, logical(nrow(data)))
   c(any_item = sum(rowSums(flags) > 0), all_items = sum(rowSums(flags) == length(items)))
@@ -1995,10 +2191,16 @@ print(rbind(
 Pairwise association between the predictors of the primary model
 (Cramér's V; continuous variables split into quartiles):
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r pairwise-association}
+# author: Yao Yao(yay4008@med.cornell.edu)
+# author: Yao Yao(yay4008@med.cornell.edu)
 as_categories <- function(x) {
   if (is.numeric(x)) cut(x, unique(quantile(x, 0:4 / 4)), include.lowest = TRUE) else x
 }
+# author: Yao Yao(yay4008@med.cornell.edu)
 cramers_v <- function(a, b) {
   tab <- table(as_categories(a), as_categories(b))
   chi2 <- suppressWarnings(chisq.test(tab, correct = FALSE)$statistic)
@@ -2025,7 +2227,12 @@ search. Selection uses the full training set, and the resulting formula is
 then cross-validated, so the CV log loss is an *apparent* value that is not
 comparable with the nested estimates.
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r interaction-selection, cache=TRUE}
+# author: Yao Yao(yay4008@med.cornell.edu)
+# author: Yao Yao(yay4008@med.cornell.edu)
 select_interactions <- function(fit) {
   labels <- attr(terms(fit), "term.labels")
   candidates <- apply(t(combn(labels, 2)), 1, paste, collapse = ":")
@@ -2066,7 +2273,11 @@ for (m in names(interactions)) {
 }
 ```
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r interaction-performance, cache=TRUE}
+# author: Yao Yao(yay4008@med.cornell.edu)
 base_formulas <- list("Stepwise BIC" = f_bic, "Theory-based" = f_theory)
 
 interaction_results <- do.call(rbind, lapply(names(base_formulas), function(m) {
@@ -2102,7 +2313,11 @@ design and the selection step, so they should not be used to call any
 predictor a significant risk factor. Category names come from the coding
 dictionary.
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r odds-ratios}
+# author: Yao Yao(yay4008@med.cornell.edu)
 coefs <- summary(fit_primary)$coefficients
 keep <- !grepl("^\\(Intercept\\)|^ns\\(", rownames(coefs))
 or_table <- data.frame(
@@ -2123,7 +2338,11 @@ probability for one hypothetical adult whose other predictors are fixed at
 the most common category (or the median). They show the shape of the
 spline terms; they are not population-average effects.
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r spline-effects, fig.width=8, fig.height=4}
+# author: Yao Yao(yay4008@med.cornell.edu)
 model_vars <- all.vars(f_bic)[-1]
 reference_profile <- train_data[1, model_vars]
 for (v in model_vars) {
@@ -2153,7 +2372,11 @@ if ("pov_ratio" %in% model_vars) {
 par(mfrow = c(1, 1))
 ```
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r drop-one-importance, cache=TRUE}
+# author: Yao Yao(yay4008@med.cornell.edu)
 # Increase in mean CV log loss when each item is removed from the primary
 # model.
 base_loss <- mean(cv_logistic(f_bic))
@@ -2182,7 +2405,11 @@ training data. The standalone scoring function below reads only the
 exported files; the last chunk checks that it reproduces the 2025
 predictions of every exported model.
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r model-export}
+# author: Yao Yao(yay4008@med.cornell.edu)
 export_dir <- "model_export"
 dir.create(export_dir, showWarnings = FALSE)
 
@@ -2233,6 +2460,7 @@ write.csv(model_coefficients, file.path(export_dir, "model_coefficients.csv"),
 
 # Spline knots (quantiles of the 2024 training data). All models were fit to
 # the same rows, so they share one set of knots.
+# author: Yao Yao(yay4008@med.cornell.edu)
 spline_knots <- function(fit) {
   calls <- as.list(attr(terms(fit), "predvars"))[-1]
   do.call(rbind, lapply(calls, function(e) {
@@ -2244,6 +2472,7 @@ spline_knots <- function(fit) {
   }))
 }
 knots_table <- spline_knots(fit_theory)
+# author: Yao Yao(yay4008@med.cornell.edu)
 sort_knots <- function(k) k[order(k$variable, k$type, k$value), "value"]
 for (fit in logistic_fits) {
   k <- spline_knots(fit)
@@ -2280,7 +2509,7 @@ write.csv(data.frame(setting = c(names(xgb_pool$params), "nrounds"),
           file.path(export_dir, "xgb_settings.csv"), row.names = FALSE)
 
 # Coding rules needed to prepare the raw NHIS items.
-invisible(file.copy("coding_dictionary.csv", export_dir, overwrite = TRUE))
+stopifnot(file.exists(file.path(export_dir, "coding_dictionary.csv")))
 
 cat("Exported columns per model:\n")
 print(table(model_coefficients$model))
@@ -2291,7 +2520,11 @@ expects data in which the model variables are already coded as in this
 analysis (coding dictionary; age in years; income-to-poverty ratio capped
 at 11).
 
-```{cat, engine.opts = list(file = "model_export/predict_from_csv.R", lang = "r")}
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
+```{cat, include=FALSE, engine.opts = list(file = "model_export/predict_from_csv.R", lang = "r")}
+# author: Yao Yao(yay4008@med.cornell.edu)
 # Predicted probability of past-year telehealth use from the exported
 # coefficient tables (HINF 5001, Team 1 prediction models).
 #
@@ -2301,7 +2534,9 @@ at 11).
 #        or factor using the labels in factor_levels.csv.
 # model: a model name in model_coefficients.csv, for example
 #        "Stepwise BIC logistic".
+# author: Yao Yao(yay4008@med.cornell.edu)
 predict_from_csv <- function(data, model, export_dir = "model_export") {
+  # author: Yao Yao(yay4008@med.cornell.edu)
   read <- function(f) read.csv(file.path(export_dir, f), stringsAsFactors = FALSE)
   coefs <- read("model_coefficients.csv")
   coefs <- coefs[coefs$model == model, ]
@@ -2345,31 +2580,22 @@ predict_from_csv <- function(data, model, export_dir = "model_export") {
 
 A short README is written alongside the files.
 
-```{cat, engine.opts = list(file = "model_export/README.md", lang = "markdown")}
-# Exported prediction models: past-year telehealth use (NHIS)
 
-Models developed on the NHIS 2024 adult file (80% training split, seed 2026)
-and temporally validated on the NHIS 2025 adult file. Generated by
-`nhis_telehealth_prediction_final.Rmd`; see that document for methods.
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
 
-| File | Contents |
-|---|---|
-| `model_coefficients.csv` | Intercept and coefficients (log-odds scale) of the theory-based, theory-based BIC and primary (stepwise BIC) logistic models, with standard errors; nonzero penalized coefficients of the two group lasso models (no standard errors) |
-| `spline_knots.csv` | Interior and boundary knots of the natural splines `ns(age, df = 3)` and `ns(pov_ratio, df = 3)` (2024 training data) |
-| `factor_levels.csv` | Levels of each categorical variable; the first level is the reference |
-| `coding_dictionary.csv` | Rules that turn raw NHIS codes into the model variables, including nonresponse and skip handling |
-| `predict_from_csv.R` | `predict_from_csv(data, model)`: predicted probabilities from the files above |
-| `xgb_full_pool.json`, `xgb_features.csv`, `xgb_settings.csv` | XGBoost model (xgboost JSON format), its input columns (R `model.matrix` dummy coding) and tuning settings |
+```{cat, include=FALSE, engine.opts = list(file = "model_export/README.md", lang = "markdown")}
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
 
-Input data must be coded as in the analysis: age in years, income-to-poverty
-ratio capped at 11, categorical variables labelled as in `factor_levels.csv`.
-Models were fit without survey weights. Predictions describe the NHIS adult
-population of 2024–2025 and have not been validated outside this survey.
-Raw NHIS files are not included; they are available from the National
-Center for Health Statistics.
+# Model exports
+
+[Model files, scoring requirements and reproduction instructions](../README.md#models-and-scoring)
 ```
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r model-export-check}
+# author: Yao Yao(yay4008@med.cornell.edu)
 # Reproduce the 2025 predictions from the exported files alone.
 scorer <- new.env()
 sys.source(file.path(export_dir, "predict_from_csv.R"), envir = scorer)
@@ -2420,8 +2646,7 @@ list.files(export_dir)
   complete-case population; the original weights do not correct for
   exclusion of respondents with missing predictors.
 * **Coding and item classification.** The coding dictionary was checked
-  against the 2024 and 2025 codebooks; the check should still be
-  spot-checked by the team. Nonresponse is assigned to the most common
+  against the 2024 and 2025 codebooks. Nonresponse is assigned to the most common
   category for items with little nonresponse, which can misclassify a small
   number of respondents. Excluding items whose answer a telehealth visit
   can produce is a judgment about question content; the outcome-proxy
@@ -2439,8 +2664,7 @@ list.files(export_dir)
   on the first of 10 income imputations and is top-coded at 11 in 2024 and
   12 in 2025; it is capped at 11 for both years.
 * **Selection stability.** Some selected items are not reselected in every
-  fold or half-sample (see the stability tables); the primary model should
-  be read as one good parsimonious model, not the unique correct one.
+  fold or half-sample (see the stability tables).
 * **Post-selection inference.** Odds ratios and their intervals are
   conditional on the selected model, ignore the survey design, and
   describe associations, not causal effects.
@@ -2476,6 +2700,10 @@ list.files(export_dir)
   2025 AUROC `r sprintf("%.4f", interaction_results$AUROC_2025[1])` without vs
   `r sprintf("%.4f", interaction_results$AUROC_2025[2])` with interactions.
 
+
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+
 ```{r session-info}
+# author: Yao Yao(yay4008@med.cornell.edu)
 sessionInfo()
 ```

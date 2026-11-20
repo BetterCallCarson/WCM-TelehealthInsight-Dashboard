@@ -1,0 +1,682 @@
+<!doctype html>
+<!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta
+      name="description"
+      content="Development and temporal validation of an NHIS model of reported past-year telehealth use."
+    />
+    <title>Prediction — Weill Cornell Medicine Telehealth Insights</title>
+    <link rel="icon" href="./assets/wcm-ti-icon.svg" />
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./validation.css" />
+  </head>
+  <body class="validation-page">
+    <a class="skip" href="#main">Skip to model validation</a
+    ><!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+    <header class="site-header">
+      <div class="masthead">
+        <a
+          class="project-brand"
+          href="./"
+          aria-label="Weill Cornell Medicine Telehealth Insights home"
+          ><svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 336 76"
+            fill="none"
+            aria-hidden="true"
+          >
+            <g fill="#B31B1B">
+              <path
+                d="M4 8H17L27 46L38 10Q38.6 8 40.5 8H51.5Q53.4 8 54 10L65 46L75 8H88L73 64Q72.5 66 70.5 66H60Q58.5 66 58 64L46 27L34 64Q33.5 66 32 66H21.5Q19.5 66 19 64Z"
+              />
+              <path
+                d="M145 14L139 26C135 21 130 19 124 19C114 19 108 26 108 37C108 48 114 55 124 55C130 55 135 52 139 48L147 59C141 66 134 69 124 69C105 69 93 56 93 37C93 18 106 6 124 6C133 6 140 9 145 14Z"
+              />
+              <path
+                d="M155 66V8H169Q171 8 172 10L186 38L200 10Q201 8 203 8H217V66H203V33L192 54H180L169 33V66Z"
+              />
+            </g>
+            <path d="M228 33H246V41H226V35Z" fill="#B31B1B" />
+            <g fill="#E7751D">
+              <path d="M254 8H306L302 22H288V66H272V22H254Z" />
+              <path d="M316 8H332V62L328 66H316Z" />
+            </g></svg
+        ></a>
+        <p class="site-name">
+          Weill Cornell Medicine <strong>Telehealth Insights</strong>
+        </p>
+      </div>
+      <nav class="site-nav" aria-label="Research modules">
+        <a href="./index.html#states">States</a>
+        <a href="./index.html#people">Population</a>
+        <a href="./index.html#visits">Visits</a>
+        <!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+        <a href="./validation.html" class="active" aria-current="page"
+          >Prediction</a
+        >
+        <a href="./index.html#quality">Methods</a>
+        <a class="documentation-link" href="./documentation.html"
+          >Data documentation</a
+        >
+      </nav>
+    </header>
+    <main id="main">
+      <!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+      <section class="overview" aria-labelledby="model-title">
+        <div class="hero">
+          <span class="eyebrow">NHIS prediction study</span>
+          <h1 id="model-title">Predicting past-year telehealth use</h1>
+          <p class="edition">Verified snapshot · NHIS 2024–2025</p>
+          <!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+          <p class="snapshot-finding">
+            In 2025, the primary model ranked a telehealth user above a nonuser
+            about 72% of the time. Its unweighted AUROC of
+            <strong>0.7173</strong> exceeded the full Andersen model by 0.0134.
+            Group lasso (minimum loss) and XGBoost scored only 0.0044 and 0.0041
+            higher than the primary model.
+          </p>
+        </div>
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="metric-label">2025 AUROC</div>
+            <div class="metric-value">0.717</div>
+            <div class="metric-sub">Unweighted</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">2025 adults</div>
+            <div class="metric-value">23,605</div>
+            <div class="metric-sub">Temporal validation</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Calibration gap</div>
+            <div class="metric-value">+0.65 <small>pp</small></div>
+            <div class="metric-sub">Survey-weighted</div>
+          </div>
+        </div>
+      </section>
+      <!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+      <section class="panel">
+        <h2>AUROC by model and year</h2>
+        <figure class="auroc-figure">
+          <figcaption>
+            <strong>Unweighted AUROC</strong> · Higher scores indicate better
+            discrimination.
+          </figcaption>
+          <p class="auroc-key">○ 2024 test &nbsp; ◆ 2025 validation</p>
+          <div class="auroc-axis" aria-hidden="true">
+            <span>0.69</span><span>0.70</span><span>0.71</span><span>0.72</span
+            ><span>0.73</span>
+          </div>
+          <ol>
+            <li>
+              <strong>Primary · Stepwise BIC</strong>
+              <div
+                class="auroc-track"
+                aria-hidden="true"
+                style="
+                  --test: 56.999999999999936%;
+                  --validation: 68.2500000000001%;
+                  --start: 56.999999999999936%;
+                  --length: 11.250000000000163%;
+                "
+              >
+                <i></i><b></b>
+              </div>
+              <div class="auroc-values">
+                <span aria-label="2024 test 0.7128"
+                  ><i aria-hidden="true">○</i> 0.7128</span
+                ><span aria-label="2025 validation 0.7173"
+                  ><i aria-hidden="true">◆</i> 0.7173</span
+                ><span>Δ +0.0045</span>
+              </div>
+            </li>
+            <li>
+              <strong>Andersen · Full model</strong>
+              <div
+                class="auroc-track"
+                aria-hidden="true"
+                style="
+                  --test: 18.49999999999994%;
+                  --validation: 34.749999999999844%;
+                  --start: 18.49999999999994%;
+                  --length: 16.249999999999904%;
+                "
+              >
+                <i></i><b></b>
+              </div>
+              <div class="auroc-values">
+                <span aria-label="2024 test 0.6974"
+                  ><i aria-hidden="true">○</i> 0.6974</span
+                ><span aria-label="2025 validation 0.7039"
+                  ><i aria-hidden="true">◆</i> 0.7039</span
+                ><span>Δ +0.0065</span>
+              </div>
+            </li>
+            <li>
+              <strong>Group lasso · Minimum loss</strong>
+              <div
+                class="auroc-track"
+                aria-hidden="true"
+                style="
+                  --test: 66.74999999999999%;
+                  --validation: 79.25000000000003%;
+                  --start: 66.74999999999999%;
+                  --length: 12.500000000000043%;
+                "
+              >
+                <i></i><b></b>
+              </div>
+              <div class="auroc-values">
+                <span aria-label="2024 test 0.7167"
+                  ><i aria-hidden="true">○</i> 0.7167</span
+                ><span aria-label="2025 validation 0.7217"
+                  ><i aria-hidden="true">◆</i> 0.7217</span
+                ><span>Δ +0.0050</span>
+              </div>
+            </li>
+            <li>
+              <strong>Group lasso · One standard error</strong>
+              <div
+                class="auroc-track"
+                aria-hidden="true"
+                style="
+                  --test: 58.25000000000008%;
+                  --validation: 71.75%;
+                  --start: 58.25000000000008%;
+                  --length: 13.499999999999922%;
+                "
+              >
+                <i></i><b></b>
+              </div>
+              <div class="auroc-values">
+                <span aria-label="2024 test 0.7133"
+                  ><i aria-hidden="true">○</i> 0.7133</span
+                ><span aria-label="2025 validation 0.7187"
+                  ><i aria-hidden="true">◆</i> 0.7187</span
+                ><span>Δ +0.0054</span>
+              </div>
+            </li>
+            <li>
+              <strong>XGBoost</strong>
+              <div
+                class="auroc-track"
+                aria-hidden="true"
+                style="
+                  --test: 66.74999999999999%;
+                  --validation: 78.50000000000011%;
+                  --start: 66.74999999999999%;
+                  --length: 11.750000000000128%;
+                "
+              >
+                <i></i><b></b>
+              </div>
+              <div class="auroc-values">
+                <span aria-label="2024 test 0.7167"
+                  ><i aria-hidden="true">○</i> 0.7167</span
+                ><span aria-label="2025 validation 0.7214"
+                  ><i aria-hidden="true">◆</i> 0.7214</span
+                ><span>Δ +0.0047</span>
+              </div>
+            </li>
+          </ol>
+          <p class="caption">
+            The axis spans 0.69–0.73. Δ is the difference between scores in two
+            separate survey samples (2025 minus 2024).
+          </p>
+        </figure>
+      </section>
+      <!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+      <section class="panel">
+        <h2>From one survey year to the next</h2>
+        <div class="study-grid">
+          <div>
+            <h3>2024 · Develop and test</h3>
+            <p>
+              31,877 adults met the completeness criteria. An outcome-stratified
+              split assigned 25,500 to training and 6,377 to testing. Stepwise
+              BIC selected 23 predictor terms for the primary logistic model.
+            </p>
+          </div>
+          <div>
+            <h3>2025 · Evaluate the fixed model</h3>
+            <p>
+              A new NHIS sample provided 23,605 eligible adults. Each respondent
+              reported their own past-year use. The team applied the 2024 model
+              without refitting.
+            </p>
+          </div>
+        </div>
+      </section>
+      <!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+      <section class="panel">
+        <h2>Discrimination and probability error</h2>
+        <p>
+          AUROC measures how often a user ranks above a nonuser, with ties
+          receiving half credit. Lower Brier scores indicate smaller squared
+          probability errors.
+        </p>
+        <div
+          class="table-wrap"
+          role="region"
+          aria-label="Primary model performance"
+          tabindex="0"
+        >
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">Evaluation</th>
+                <th scope="col">Adults</th>
+                <th scope="col">AUROC</th>
+                <th scope="col">95% CI¹</th>
+                <th scope="col">Weighted AUROC</th>
+                <th scope="col">Brier</th>
+                <th scope="col">Weighted Brier</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">2024 holdout</th>
+                <td>6,377</td>
+                <td>0.713</td>
+                <td>0.700–0.726</td>
+                <td>0.716</td>
+                <td>0.1696</td>
+                <td>0.1647</td>
+              </tr>
+              <tr>
+                <th scope="row">2025 temporal validation</th>
+                <td>23,605</td>
+                <td>0.717</td>
+                <td>0.709–0.726</td>
+                <td>0.725</td>
+                <td>0.1722</td>
+                <td>0.1683</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="caption">
+          ¹ Unweighted AUROC intervals resample primary sampling units within
+          strata and hold the model fixed. Weighted estimates use annual survey
+          weights among complete cases. Model fitting used unweighted data.
+        </p>
+        <details>
+          <summary>Compare the models</summary>
+          <div
+            class="table-wrap"
+            role="region"
+            aria-label="Unweighted model comparisons"
+            tabindex="0"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Model</th>
+                  <th scope="col">2024 test AUROC</th>
+                  <th scope="col">2025 AUROC</th>
+                  <th scope="col">2025 Brier</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Constant baseline</th>
+                  <td>0.500</td>
+                  <td>0.500</td>
+                  <td>0.1968</td>
+                </tr>
+                <tr>
+                  <th scope="row">Theory-based logistic</th>
+                  <td>0.697</td>
+                  <td>0.704</td>
+                  <td>0.1754</td>
+                </tr>
+                <tr>
+                  <th scope="row">Theory-based BIC logistic</th>
+                  <td>0.698</td>
+                  <td>0.704</td>
+                  <td>0.1754</td>
+                </tr>
+                <tr>
+                  <th scope="row">Stepwise BIC logistic</th>
+                  <td>0.713</td>
+                  <td>0.717</td>
+                  <td>0.1722</td>
+                </tr>
+                <tr>
+                  <th scope="row">Group lasso (lambda.min)</th>
+                  <td>0.717</td>
+                  <td>0.722</td>
+                  <td>0.1714</td>
+                </tr>
+                <tr>
+                  <th scope="row">Group lasso (lambda.1se)</th>
+                  <td>0.713</td>
+                  <td>0.719</td>
+                  <td>0.1725</td>
+                </tr>
+                <tr>
+                  <th scope="row">Full pool XGBoost</th>
+                  <td>0.717</td>
+                  <td>0.721</td>
+                  <td>0.1712</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="caption">
+            The constant model uses training prevalence. Against the full
+            Andersen theory-based model, the primary model's 2025 AUROC gain has
+            a paired 95% bootstrap interval of +0.0100 to +0.0166.
+          </p>
+        </details>
+      </section>
+      <!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+      <section class="panel">
+        <h2>Calibration in 2025</h2>
+        <div class="calibration-layout">
+          <div>
+            <p>
+              The weighted share reporting use was <strong>26.26%</strong>. The
+              model predicted <strong>25.62%</strong> on average. The gap was
+              <strong>+0.65 percentage points</strong> (design-based 95% CI
+              −0.15 to +1.44).
+            </p>
+            <p class="caption">
+              Each bar compares observed and predicted shares in one ten-point
+              probability band. A positive gap indicates underprediction. The
+              uppermost occupied band contains 47 sampled adults.
+            </p>
+          </div>
+          <figure class="gap-figure" aria-labelledby="gap-title">
+            <figcaption id="gap-title">Observed minus predicted use</figcaption>
+            <div class="gap-row gap-heading">
+              <span>Score band</span
+              ><span class="gap-axis"
+                ><span>−4</span><span>0</span><span>+4</span></span
+              ><span>Gap (pp)</span>
+            </div>
+            <div class="gap-row">
+              <span>0–10%</span
+              ><span class="gap-track" aria-hidden="true"
+                ><i style="left: 49.31%; width: 0.69%"></i></span
+              ><span>−0.06</span>
+            </div>
+            <div class="gap-row">
+              <span>10–20%</span
+              ><span class="gap-track" aria-hidden="true"
+                ><i style="left: 50%; width: 5.44125%"></i></span
+              ><span>+0.44</span>
+            </div>
+            <div class="gap-row">
+              <span>20–30%</span
+              ><span class="gap-track" aria-hidden="true"
+                ><i style="left: 50%; width: 9.60375%"></i></span
+              ><span>+0.77</span>
+            </div>
+            <div class="gap-row">
+              <span>30–40%</span
+              ><span class="gap-track" aria-hidden="true"
+                ><i
+                  style="left: 49.60875%; width: 0.39125000000000004%"
+                ></i></span
+              ><span>−0.03</span>
+            </div>
+            <div class="gap-row">
+              <span>40–50%</span
+              ><span class="gap-track" aria-hidden="true"
+                ><i style="left: 50%; width: 22.927500000000002%"></i></span
+              ><span>+1.83</span>
+            </div>
+            <div class="gap-row">
+              <span>50–60%</span
+              ><span class="gap-track" aria-hidden="true"
+                ><i style="left: 50%; width: 28.6875%"></i></span
+              ><span>+2.29</span>
+            </div>
+            <div class="gap-row">
+              <span>60–70%</span
+              ><span class="gap-track" aria-hidden="true"
+                ><i style="left: 50%; width: 41.24625%"></i></span
+              ><span>+3.30</span>
+            </div>
+            <div class="gap-row">
+              <span>70–80%</span
+              ><span class="gap-track" aria-hidden="true"
+                ><i style="left: 43.475%; width: 6.525%"></i></span
+              ><span>−0.52</span>
+            </div>
+            <div class="gap-row">
+              <span>80–90%</span
+              ><span class="gap-track" aria-hidden="true"
+                ><i
+                  style="left: 2.752500000000005%; width: 47.247499999999995%"
+                ></i></span
+              ><span>−3.78</span>
+            </div>
+          </figure>
+        </div>
+        <details>
+          <summary>View calibration values and sample sizes</summary>
+          <div
+            class="table-wrap"
+            role="region"
+            aria-label="Survey-weighted calibration by predicted probability"
+            tabindex="0"
+          >
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Predicted band</th>
+                  <th scope="col">Sample count</th>
+                  <th scope="col">Mean predicted</th>
+                  <th scope="col">Observed</th>
+                  <th scope="col">Gap (pp)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">0–10%</th>
+                  <td>2,802</td>
+                  <td>7.03%</td>
+                  <td>6.97%</td>
+                  <td>−0.06</td>
+                </tr>
+                <tr>
+                  <th scope="row">10–20%</th>
+                  <td>6,872</td>
+                  <td>14.98%</td>
+                  <td>15.41%</td>
+                  <td>+0.44</td>
+                </tr>
+                <tr>
+                  <th scope="row">20–30%</th>
+                  <td>5,821</td>
+                  <td>24.69%</td>
+                  <td>25.46%</td>
+                  <td>+0.77</td>
+                </tr>
+                <tr>
+                  <th scope="row">30–40%</th>
+                  <td>3,723</td>
+                  <td>34.67%</td>
+                  <td>34.64%</td>
+                  <td>−0.03</td>
+                </tr>
+                <tr>
+                  <th scope="row">40–50%</th>
+                  <td>2,181</td>
+                  <td>44.47%</td>
+                  <td>46.30%</td>
+                  <td>+1.83</td>
+                </tr>
+                <tr>
+                  <th scope="row">50–60%</th>
+                  <td>1,282</td>
+                  <td>54.59%</td>
+                  <td>56.89%</td>
+                  <td>+2.29</td>
+                </tr>
+                <tr>
+                  <th scope="row">60–70%</th>
+                  <td>628</td>
+                  <td>64.59%</td>
+                  <td>67.89%</td>
+                  <td>+3.30</td>
+                </tr>
+                <tr>
+                  <th scope="row">70–80%</th>
+                  <td>249</td>
+                  <td>74.18%</td>
+                  <td>73.66%</td>
+                  <td>−0.52</td>
+                </tr>
+                <tr>
+                  <th scope="row">80–90%</th>
+                  <td>47</td>
+                  <td>83.47%</td>
+                  <td>79.69%</td>
+                  <td>−3.78</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </section>
+      <!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+      <section class="panel">
+        <h2>Scope and limitations</h2>
+        <p>
+          The 2025 evaluation measures performance in a new sample from the same
+          survey. Earlier iterations examined both evaluation samples. Screening
+          and the outcome-proxy diagnostic preceded cross-validation, and
+          XGBoost tuning was outside the nested comparison.
+        </p>
+        <p>
+          Complete-case requirements differ from the population trends. The
+          survey weights do not correct for exclusions specific to this model.
+        </p>
+      </section>
+      <!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+      <section class="panel">
+        <h2>Analysis materials</h2>
+        <div class="resource-row">
+          <a href="./analysis/prediction/guide.html">Study guide</a
+          ><a href="./analysis/prediction/nhis_telehealth_prediction_final.html"
+            >Full analysis report</a
+          ><a href="./analysis/prediction/figures/study_design.pdf"
+            >Study design (PDF)</a
+          ><a
+            href="./analysis/prediction/model_export/model_coefficients.csv"
+            download
+            >Model coefficients (CSV)</a
+          ><a
+            href="./analysis/prediction/supplementary/codebook_verification.csv"
+            download
+            >Codebook checks (CSV)</a
+          >
+        </div>
+        <!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+        <details>
+          <summary>Download analysis and scoring files</summary>
+          <h3>Reproduce the analysis</h3>
+          <div class="resource-row">
+            <a
+              href="./analysis/prediction/nhis_telehealth_prediction_final.Rmd"
+              download
+              >Analysis notebook (R Markdown)</a
+            ><a href="./analysis/prediction/figures/study_design.png" download
+              >Study design (PNG)</a
+            ><a
+              href="./analysis/prediction/supplementary/variable_screening.csv"
+              download
+              >Variable screening (CSV)</a
+            >
+          </div>
+          <h3>Score the regression models</h3>
+          <div class="resource-row">
+            <a
+              href="./analysis/prediction/model_export/predict_from_csv.R"
+              download
+              >Scoring function (R)</a
+            ><a
+              href="./analysis/prediction/model_export/coding_dictionary.csv"
+              download
+              >Coding dictionary (CSV)</a
+            ><a
+              href="./analysis/prediction/model_export/factor_levels.csv"
+              download
+              >Factor levels (CSV)</a
+            ><a
+              href="./analysis/prediction/model_export/spline_knots.csv"
+              download
+              >Spline knots (CSV)</a
+            >
+          </div>
+          <h3>Recreate XGBoost predictions</h3>
+          <div class="resource-row">
+            <a
+              href="./analysis/prediction/model_export/xgb_full_pool.json"
+              download
+              >Fitted model (JSON)</a
+            ><a
+              href="./analysis/prediction/model_export/xgb_features.csv"
+              download
+              >Ordered features (CSV)</a
+            ><a
+              href="./analysis/prediction/model_export/xgb_settings.csv"
+              download
+              >Tuning settings (CSV)</a
+            >
+          </div>
+        </details>
+      </section>
+      <!-- author: Yao Yao(yay4008@med.cornell.edu) -->
+      <footer>
+        <div class="lab-credit">
+          <span class="brand-mark"
+            ><svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 64 64"
+              fill="none"
+              aria-hidden="true"
+            >
+              <rect width="64" height="64" rx="18" fill="#B31B1B" />
+              <g transform="translate(7 6) scale(.78)">
+                <path
+                  d="M19 34.5C20.4 25.9 26 21.2 34 15.5C34.2 24.1 39.2 27.8 44 34.5"
+                  stroke="white"
+                  stroke-width="4.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M34 15.5C35.2 8.5 40.7 5.3 48 6C47.4 12.6 42.6 16.9 34 15.5Z"
+                  fill="white"
+                />
+                <path
+                  d="M19.5 31C12.6 31 7.5 36.1 7.5 43C7.5 50.2 12.9 56 19.5 56C26.1 56 31.5 50.2 31.5 43C31.5 36.1 26.4 31 19.5 31Z"
+                  fill="white"
+                />
+                <path
+                  d="M44.5 31C37.6 31 32.5 36.1 32.5 43C32.5 50.2 37.9 56 44.5 56C51.1 56 56.5 50.2 56.5 43C56.5 36.1 51.4 31 44.5 31Z"
+                  fill="white"
+                />
+              </g>
+            </svg>
+          </span>
+          <div>
+            <span class="eyebrow">A research resource by</span
+            ><span class="brand-name"
+              >&nbsp;CHERY <span class="brand-lab">LAB</span></span
+            >
+          </div>
+        </div>
+        <a href="./index.html#quality">About the data ↗</a>
+      </footer>
+    </main>
+  </body>
+</html>
