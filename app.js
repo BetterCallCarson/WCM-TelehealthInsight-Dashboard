@@ -21,6 +21,7 @@ import {
 import {fetchCmsUpdates} from './cms-live.js';
 import {annualChanges, changeChart, oddsRatioChart} from './comparisons.js';
 const $ = (id) => document.getElementById(id);
+const phoneCharts = window.matchMedia('(max-width: 600px)');
 // UI selections are separate from source data; changing a filter never rewrites a dataset.
 const state = {
   view: 'states',
@@ -274,6 +275,7 @@ function renderCms() {
     )
     .join('');
   $('trend-chart').innerHTML = lineChart(series, {
+    narrow: phoneCharts.matches,
     title: `Quarterly telehealth use in ${s.name}, ${data.national.quarterly[0].period}–${data.national.quarterly.at(-1).period}`,
   });
   renderScatter();
@@ -322,6 +324,7 @@ function renderScatter() {
     y: s.annual.find((r) => r.year === year)?.telehealthPct,
   }));
   $('scatter-chart').innerHTML = scatterChart(points, {
+    narrow: phoneCharts.matches,
     year,
     selected: state.selected,
     xKey: income ? 'income' : 'broadbandPct',
@@ -393,6 +396,7 @@ function renderNhis() {
       `${number(nhis.quality.missing_outcome_n)} refused, unknown, or not ascertained`,
     );
   $('nhis-chart').innerHTML = dotChart(rows, {
+    narrow: phoneCharts.matches,
     compact: false,
     title: `Survey-weighted telehealth use by ${nhis.group_labels[state.nhisGroup]}`,
     max: Math.max(50, ...rows.map((r) => Math.ceil(r.ci_high / 10) * 10)),
@@ -541,6 +545,7 @@ function renderMeps() {
     {
       unit: 'dollars',
       compact: true,
+      narrow: phoneCharts.matches,
       title: `${total ? 'Total' : 'Out-of-pocket'} payments by modality, ${g.insurance}`,
     },
   );
@@ -892,6 +897,7 @@ async function start() {
     const draw = () =>
       renderSurveyTrend(survey, editions[survey], select.value);
     select.addEventListener('change', draw);
+    phoneCharts.addEventListener('change', draw);
     draw();
   }
   for (const survey of Object.keys(editions)) {
@@ -1060,6 +1066,12 @@ async function start() {
   renderNhis();
   renderMeps();
   renderQuality();
+  // Reflow the plotted coordinates only when crossing the phone breakpoint.
+  phoneCharts.addEventListener('change', () => {
+    renderCms();
+    renderNhis();
+    renderMeps();
+  });
   $('loading').hidden = true;
   navigate();
 }
@@ -1330,6 +1342,7 @@ function renderAnnualChanges() {
       a.name.localeCompare(b.name),
   );
   $('cms-change-chart').innerHTML = changeChart(shown, {
+    narrow: phoneCharts.matches,
     title: `Annual telehealth use change, ${state.changeFrom} to ${state.changeTo}`,
     selected: state.selected,
   });
@@ -1398,6 +1411,7 @@ function renderNhisForest() {
   );
   const reference = rows[0]?.reference || '';
   $('nhis-forest').innerHTML = oddsRatioChart(rows, {
+    narrow: phoneCharts.matches,
     title: `Adjusted telehealth associations: ${state.modelGroup}`,
     referenceLabel: reference,
   });
@@ -1449,7 +1463,11 @@ function renderSurveyTrend(survey, editions, measure) {
           ? 'Mean total payment'
           : 'Mean out-of-pocket payment') + ' per office visit (2024 USD)'
       : 'Telehealth share of office visits (%)';
-  $(survey + '-trend-chart').innerHTML = lineChart(series, {title, currency});
+  $(survey + '-trend-chart').innerHTML = lineChart(series, {
+    narrow: phoneCharts.matches,
+    title,
+    currency,
+  });
   $(survey + '-trend-legend').innerHTML = series
     .map(
       (s) =>
@@ -1489,6 +1507,7 @@ function renderMepsComparison() {
     groups.map((g) => ({...displayTelehealth(g), label: g.insurance})),
     {
       max: 20,
+      narrow: phoneCharts.matches,
       title:
         'Telehealth share of office-based visits by annual insurance coverage',
     },

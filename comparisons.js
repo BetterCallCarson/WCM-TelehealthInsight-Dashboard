@@ -133,22 +133,26 @@ function cmpChangeExtent(maximum) {
  * rates remain visible alongside differences to prevent relative-change confusion.
  *
  * @param {!Array<!Object>} rows Output from annualChanges, optionally filtered.
- * @param {{title: string, selected: string}=} options Accessible title and state.
+ * @param {{title: string, selected: string, narrow: boolean}=} options Accessible title and state.
  * @return {string} SVG markup, or an explicit empty-state message.
  */
 export function changeChart(
   rows,
-  {title = 'Change in annual telehealth use', selected = 'US'} = {},
+  {
+    title = 'Change in annual telehealth use',
+    selected = 'US',
+    narrow = false,
+  } = {},
 ) {
   if (!Array.isArray(rows) || rows.length === 0) {
     return '<div class="empty-state">Annual comparisons are unavailable.</div>';
   }
-  const width = 1320;
-  const left = 310;
-  const right = 380;
-  const top = 52;
-  const rowHeight = 44;
-  const bottom = 48;
+  const width = narrow ? 360 : 1320;
+  const left = narrow ? 24 : 310;
+  const right = narrow ? 24 : 380;
+  const top = narrow ? 60 : 52;
+  const rowHeight = narrow ? 50 : 40;
+  const bottom = narrow ? 48 : 66;
   const height = top + rows.length * rowHeight + bottom;
   const finite = rows
     .map((row) => row.change)
@@ -168,7 +172,7 @@ export function changeChart(
   let grid = '';
   for (const value of [-extent, -extent / 2, 0, extent / 2, extent]) {
     const position = x(value);
-    grid += `<line class="${value === 0 ? 'change-zero' : 'chart-grid'}" x1="${position}" x2="${position}" y1="32" y2="${plotBottom}"${value === 0 ? ' stroke="var(--ink, #000000)" stroke-width="1"' : ''}/><text class="chart-tick" x="${position}" y="${height - 27}" text-anchor="middle">${value > 0 ? '+' : ''}${cmpNumber(value, Number.isInteger(value) ? 0 : 1)}</text>`;
+    grid += `<line class="${value === 0 ? 'change-zero' : 'chart-grid'}" x1="${position}" x2="${position}" y1="32" y2="${plotBottom}"${value === 0 ? ' stroke="var(--ink, #000000)" stroke-width="1"' : ''}/><text class="chart-tick" x="${position}" y="${height - (narrow ? 27 : 39)}" text-anchor="middle">${value > 0 ? '+' : ''}${cmpNumber(value, Number.isInteger(value) ? 0 : 1)}</text>`;
   }
   const marks = rows
     .map((row, index) => {
@@ -187,10 +191,18 @@ export function changeChart(
           ? `<circle class="change-zero-point" cx="${zero}" cy="${y}" r="3" fill="${fill}"/>`
           : `<rect class="change-bar" data-value="${row.change}" x="${Math.min(x(row.change), zero)}" y="${y - 6}" width="${Math.abs(x(row.change) - zero)}" height="12" fill="${fill}"/>`
         : '';
-      return `<g class="change-row${isSelected ? ' is-selected' : ''}" data-state="${cmpEscape(row.abbr)}" role="button" aria-pressed="${isSelected}" tabindex="0" data-tip="${cmpEscape(label)}" aria-label="${cmpEscape(label)}">${isSelected ? `<rect class="change-selection" x="0" y="${y - 16}" width="${width}" height="32" fill="var(--selection, #fbeaea)"/>` : ''}<text class="chart-tick" style="fill:var(--ink, #000000);font-size:24px" x="8" y="${y + 5}">${cmpEscape(row.name)}</text>${bar}<text class="chart-tick" x="1050" y="${y + 5}" text-anchor="end">${cmpRate(row.fromRate)}</text><text class="chart-tick" x="1170" y="${y + 5}" text-anchor="end">${cmpRate(row.toRate)}</text><text class="chart-tick" x="1312" y="${y + 5}" text-anchor="end" style="fill:var(--ink, #000000)">${valid ? cmpSigned(row.change) : '—'}</text></g>`;
+      // Dates remain in the heading and each state's tooltip on narrow screens.
+      const labelY = narrow ? y - 13 : y + 5;
+      const rates = narrow
+        ? ''
+        : `<text class="chart-tick" x="1050" y="${labelY}" text-anchor="end">${cmpRate(row.fromRate)}</text><text class="chart-tick" x="1170" y="${labelY}" text-anchor="end">${cmpRate(row.toRate)}</text>`;
+      return `<g class="change-row${isSelected ? ' is-selected' : ''}" data-state="${cmpEscape(row.abbr)}" role="button" aria-pressed="${isSelected}" tabindex="0" data-tip="${cmpEscape(label)}" aria-label="${cmpEscape(label)}">${isSelected ? `<rect class="change-selection" x="0" y="${narrow ? y - 33 : y - 16}" width="${width}" height="${narrow ? 48 : 32}" fill="var(--selection, #fbeaea)"/>` : ''}<text class="chart-tick" style="fill:var(--ink, #000000);font-size:${narrow ? '16px' : 'var(--chart-label-size, 24px)'}" x="8" y="${labelY}">${cmpEscape(row.name)}</text>${bar}${rates}<text class="chart-tick" x="${width - 8}" y="${labelY}" text-anchor="end" style="fill:var(--ink, #000000)">${valid ? cmpSigned(row.change) : '—'}</text></g>`;
     })
     .join('');
-  return `<svg class="change-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${cmpEscape(title)}"><title>${cmpEscape(title)}</title><text class="chart-axis-title" x="8" y="26">State / D.C.</text><text class="chart-axis-title" x="1050" y="26" text-anchor="end">${headerFrom}</text><text class="chart-axis-title" x="1170" y="26" text-anchor="end">${headerTo}</text><text class="chart-axis-title" x="1312" y="26" text-anchor="end">Change</text>${grid}${marks}<text class="chart-axis-title" x="${zero}" y="${height - 5}" text-anchor="middle">Change in percentage points</text></svg>`;
+  const heading = narrow
+    ? `<text class="chart-axis-title" x="8" y="17">Change in use, ${headerFrom}–${headerTo}</text>`
+    : `<text class="chart-axis-title" x="8" y="26">State / D.C.</text><text class="chart-axis-title" x="1050" y="26" text-anchor="end">${headerFrom}</text><text class="chart-axis-title" x="1170" y="26" text-anchor="end">${headerTo}</text><text class="chart-axis-title" x="1312" y="26" text-anchor="end">Change</text>`;
+  return `<svg class="change-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${cmpEscape(title)}"><title>${cmpEscape(title)}</title>${heading}${grid}${marks}<text class="chart-axis-title" x="${zero}" y="${height - 5}" text-anchor="middle">Change in percentage points</text></svg>`;
 }
 
 /**
@@ -236,7 +248,7 @@ function cmpOddsTick(power, extent) {
  * Invalid intervals are labelled unavailable and never coerced to zero.
  *
  * @param {!Array<!Object>} rows Model terms with labels, odds ratios, and limits.
- * @param {{title: string, referenceLabel: string}=} options Title and reference.
+ * @param {{title: string, referenceLabel: string, narrow: boolean}=} options Title and reference.
  * @return {string} Accessible forest-plot SVG or an unavailable-data message.
  */
 export function oddsRatioChart(
@@ -244,17 +256,18 @@ export function oddsRatioChart(
   {
     title = 'Adjusted odds ratios with 95% confidence intervals',
     referenceLabel = 'Reference group',
+    narrow = false,
   } = {},
 ) {
   if (!Array.isArray(rows) || !rows.some(cmpOddsValid)) {
     return '<div class="empty-state">Adjusted estimates are unavailable.</div>';
   }
-  const width = 1320;
-  const left = 425;
-  const right = 420;
-  const rowHeight = 52;
-  const top = 46;
-  const height = rows.length * rowHeight + 92;
+  const width = narrow ? 360 : 1320;
+  const left = narrow ? 25 : 425;
+  const right = narrow ? 166 : 420;
+  const rowHeight = narrow ? 56 : 48;
+  const top = narrow ? 61 : 46;
+  const height = rows.length * rowHeight + (narrow ? 50 : 92);
   const values = rows
     .filter(cmpOddsValid)
     .flatMap((row) => [row.ci_low, row.ci_high]);
@@ -284,25 +297,27 @@ export function oddsRatioChart(
           ]),
         ].sort((a, b) => a - b);
   const ticks = tickExponents
+    .filter((power) => !narrow || power === 0 || Math.abs(power) === exponent)
     .map((power) => {
       const position =
         left + ((power + exponent) / (2 * exponent)) * (width - left - right);
-      return `<line class="${power === 0 ? 'odds-reference' : 'chart-grid'}" x1="${position}" x2="${position}" y1="26" y2="${yBottom}"${power === 0 ? ' stroke="var(--ink, #000000)" stroke-width="1.2" stroke-dasharray="4 4"' : ''}/><text class="chart-tick" x="${position}" y="${height - 42}" text-anchor="middle">${cmpOddsTick(power, exponent)}</text>`;
+      return `<line class="${power === 0 ? 'odds-reference' : 'chart-grid'}" x1="${position}" x2="${position}" y1="26" y2="${yBottom}"${power === 0 ? ' stroke="var(--ink, #000000)" stroke-width="1.2" stroke-dasharray="4 4"' : ''}/><text class="chart-tick" x="${position}" y="${height - (narrow ? 6 : 42)}" text-anchor="middle">${cmpOddsTick(power, exponent)}</text>`;
     })
     .join('');
   const marks = rows
     .map((row, index) => {
       const y = top + index * rowHeight;
       const label = cmpEscape(row.label);
+      const labelY = narrow ? y - 14 : y + 5;
       if (!cmpOddsValid(row)) {
-        return `<text class="chart-tick" x="0" y="${y + 5}" style="fill:var(--ink, #000000);font-size:24px">${label}</text><text class="chart-tick" x="${left}" y="${y + 5}">Not estimated</text>`;
+        return `<text class="chart-tick" x="0" y="${labelY}" style="fill:var(--ink, #000000);font-size:${narrow ? '16px' : 'var(--chart-label-size, 24px)'}">${label}</text><text class="chart-tick" x="${left}" y="${y + 5}">Not estimated</text>`;
       }
       const low = x(row.ci_low);
       const high = x(row.ci_high);
       const point = x(row.odds_ratio);
       const tooltip = `${row.label}: adjusted odds ratio ${cmpRatio(row.odds_ratio)}; 95% confidence interval ${cmpRatio(row.ci_low)} to ${cmpRatio(row.ci_high)}; reference ${row.reference || referenceLabel}`;
-      return `<g class="odds-row"><text class="chart-tick" x="0" y="${y + 5}" style="fill:var(--ink, #000000);font-size:24px">${label}</text><line class="odds-interval" x1="${low}" x2="${high}" y1="${y}" y2="${y}" stroke="var(--series, #cf4520)" stroke-width="2"/><path d="M${low} ${y - 5}v10 M${high} ${y - 5}v10" stroke="var(--series, #cf4520)"/><circle class="odds-point" cx="${point}" cy="${y}" r="5" fill="var(--accent, #b31b1b)" tabindex="0" data-tip="${cmpEscape(tooltip)}" aria-label="${cmpEscape(tooltip)}"/><text class="chart-tick" x="1312" y="${y + 5}" text-anchor="end" style="fill:var(--ink, #000000)">${cmpRatio(row.odds_ratio)} (${cmpRatio(row.ci_low)}–${cmpRatio(row.ci_high)})</text></g>`;
+      return `<g class="odds-row"><text class="chart-tick" x="0" y="${labelY}" style="fill:var(--ink, #000000);font-size:${narrow ? '16px' : 'var(--chart-label-size, 24px)'}">${label}</text><line class="odds-interval" x1="${low}" x2="${high}" y1="${y}" y2="${y}" stroke="var(--series, #cf4520)" stroke-width="2"/><path d="M${low} ${y - 5}v10 M${high} ${y - 5}v10" stroke="var(--series, #cf4520)"/><circle class="odds-point" cx="${point}" cy="${y}" r="5" fill="var(--accent, #b31b1b)" tabindex="0" data-tip="${cmpEscape(tooltip)}" aria-label="${cmpEscape(tooltip)}"/><text class="chart-tick" x="${width - 4}" y="${y + 5}" text-anchor="end" style="fill:var(--ink, #000000)">${cmpRatio(row.odds_ratio)} (${cmpRatio(row.ci_low)}–${cmpRatio(row.ci_high)})</text></g>`;
     })
     .join('');
-  return `<svg class="odds-ratio-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${cmpEscape(title)}"><title>${cmpEscape(title)}</title><text class="chart-axis-title" x="${left}" y="25">Adjusted odds ratio · log scale</text><text class="chart-axis-title" x="1312" y="25" text-anchor="end">Estimate (95% CI)</text>${ticks}${marks}<text class="chart-axis-title" x="0" y="${height - 12}">Reference: ${cmpEscape(referenceLabel)} · 1 = equal odds</text></svg>`;
+  return `<svg class="odds-ratio-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${cmpEscape(title)}"><title>${cmpEscape(title)}</title><text class="chart-axis-title" x="${narrow ? 0 : left}" y="25">${narrow ? 'Odds ratio · log scale' : 'Adjusted odds ratio · log scale'}</text><text class="chart-axis-title" x="${width - 4}" y="25" text-anchor="end">Estimate (95% CI)</text>${ticks}${marks}${narrow ? '' : `<text class="chart-axis-title" x="0" y="${height - 12}">Reference: ${cmpEscape(referenceLabel)} · 1 = equal odds</text>`}</svg>`;
 }

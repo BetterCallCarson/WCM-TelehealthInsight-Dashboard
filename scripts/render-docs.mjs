@@ -275,7 +275,7 @@ const documentHtml = documents
       doc,
     ) => `<section class="research-document" id="${doc.id}" aria-labelledby="${doc.id}-title">
  <div class="document-heading"><h2 id="${doc.id}-title">${doc.title}</h2><p>${doc.description}</p></div>
- <div class="document-layout"><aside class="document-contents"><details open><summary>On this page</summary><nav aria-label="${doc.title} contents">${doc.headings.map((h) => `<a href="#${h.id}"${h.level > 2 ? ' class="subsection"' : ''}>${inline(h.label)}</a>`).join('')}</nav></details></aside><article class="document-body" aria-label="${doc.title}">${doc.html}</article></div>
+ <div class="document-layout"><aside class="document-contents"><details><summary>On this page</summary><nav aria-label="${doc.title} contents">${doc.headings.map((h) => `<a href="#${h.id}"${h.level > 2 ? ' class="subsection"' : ''}>${inline(h.label)}</a>`).join('')}</nav></details></aside><article class="document-body" aria-label="${doc.title}">${doc.html}</article></div>
 </section>`,
   )
   .join('\n');
@@ -353,10 +353,10 @@ const credit = '<!-- author: Yao Yao(yay4008@med.cornell.edu) -->';
 const guideHtml = `<!doctype html>
 ${credit}
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${guideTitle} — Research guide</title><link rel="icon" href="../../assets/wcm-ti-icon.svg"><link rel="stylesheet" href="../../styles.css"><link rel="stylesheet" href="../../documentation.css"></head>
+<title>${guideTitle} — Research guide</title><link rel="icon" href="../../assets/wcm-ti-icon.svg"><link rel="stylesheet" href="../../styles.css"><link rel="stylesheet" href="../../documentation.css"><script defer src="../../documentation.js"></script></head>
 <body class="documentation-page"><a class="skip" href="#main">Skip to guide</a>${guideNav}
 <main id="main">${credit}<div class="hero"><a class="eyebrow" href="../../validation.html">Model validation</a><h1>${guideTitle}</h1><p class="edition">Verified snapshot · NHIS 2024–2025</p>${credit}<p class="snapshot-finding">The primary model achieved an unweighted AUROC of 0.717 in the 2025 survey. Its average predicted use was 25.62%, compared with 26.26% observed among eligible adults after survey weighting.</p></div>
-${credit}<div class="document-layout"><aside class="document-contents"><details open><summary>On this page</summary><nav aria-label="Guide contents">${guide.headings.map((h) => `<a href="#${h.id}">${inline(h.label)}</a>`).join('')}</nav></details></aside><article class="document-body">${guide.html}</article></div>
+${credit}<div class="document-layout"><aside class="document-contents"><details><summary>On this page</summary><nav aria-label="Guide contents">${guide.headings.map((h) => `<a href="#${h.id}">${inline(h.label)}</a>`).join('')}</nav></details></aside><article class="document-body">${guide.html}</article></div>
 <footer><span>A research resource by <strong>CHERY LAB</strong></span><a href="../../validation.html">Back to model validation</a></footer></main></body></html>`;
 await writeFile(
   path.join(studyDir, 'guide.html'),

@@ -16,7 +16,16 @@ if (location.protocol === 'file:') {
 }
 // Each document remains readable when JavaScript is disabled. With JavaScript,
 // hash links select the requested document and preserve shareable section links.
-document.body.classList.add('documentation-enhanced');
+// Show the outline alongside wide pages. On a phone, readers can expand it
+// when needed. Initialize once so rotating the device respects their choice.
+if (window.matchMedia('(min-width: 761px)').matches) {
+  for (const outline of document.querySelectorAll(
+    '.document-contents details',
+  )) {
+    outline.open = true;
+  }
+}
+
 const documents = [...document.querySelectorAll('.research-document')];
 const links = [...document.querySelectorAll('[data-document]')];
 /**
@@ -58,5 +67,8 @@ function showDocument() {
     requestAnimationFrame(() => window.scrollTo({top: 0, behavior: 'instant'}));
   }
 }
-window.addEventListener('hashchange', showDocument);
-showDocument();
+if (documents.length) {
+  document.body.classList.add('documentation-enhanced');
+  window.addEventListener('hashchange', showDocument);
+  showDocument();
+}

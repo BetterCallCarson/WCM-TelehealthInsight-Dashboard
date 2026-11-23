@@ -48,6 +48,8 @@ email: jic4015@med.cornell.edu */
         --sans: Arial, Helvetica, sans-serif;
         --ease: cubic-bezier(0.22, 1, 0.36, 1);
         --radius: 4px;
+        --body-size: clamp(1rem, 0.9rem + 0.42vw, 1.25rem);
+        --label-size: clamp(0.875rem, 0.8rem + 0.32vw, 1.0625rem);
       }
       * {
         box-sizing: border-box;
@@ -59,7 +61,7 @@ email: jic4015@med.cornell.edu */
         margin: 0;
         background: var(--paper);
         color: var(--ink);
-        font: 24px/1.6 var(--sans);
+        font: var(--body-size) / 1.6 var(--sans);
       }
       a {
         color: inherit;
@@ -192,7 +194,7 @@ email: jic4015@med.cornell.edu */
         gap: 10px;
       }
       .eyebrow {
-        font: 24px/1.4 var(--sans);
+        font: var(--label-size) / 1.4 var(--sans);
         color: var(--muted);
       }
       main {
@@ -206,7 +208,7 @@ email: jic4015@med.cornell.edu */
         color: var(--accent);
       }
       .hero h1 {
-        font: clamp(40px, 4.5vw, 68px) / 1.08 var(--serif);
+        font: clamp(2rem, 3.8vw, 3.5rem) / 1.08 var(--serif);
         font-weight: 400;
         letter-spacing: -0.035em;
         margin: 10px 0 12px;
@@ -214,7 +216,7 @@ email: jic4015@med.cornell.edu */
         max-width: 1000px;
       }
       .hero p {
-        font-size: 24px;
+        font-size: var(--body-size);
         line-height: 1.65;
         color: var(--secondary);
         max-width: 740px;
@@ -232,7 +234,7 @@ email: jic4015@med.cornell.edu */
         padding-left: 0.85rem;
         border-left: 4px solid var(--accent);
         color: var(--ink);
-        font-size: clamp(24px, 1.65vw, 30px);
+        font-size: clamp(1.0625rem, 0.96rem + 0.6vw, 1.5rem);
         line-height: 1.45;
       }
       .overview {
@@ -272,11 +274,11 @@ email: jic4015@med.cornell.edu */
         font-variant-numeric: tabular-nums;
       }
       .metric-value small {
-        font: 24px var(--sans);
+        font: var(--label-size) var(--sans);
         letter-spacing: 0;
       }
       .metric-sub {
-        font-size: 24px;
+        font-size: var(--label-size);
         color: var(--muted);
         line-height: 1.6;
       }
@@ -304,12 +306,12 @@ email: jic4015@med.cornell.edu */
         text-wrap: balance;
       }
       h3 {
-        font: 24px/1.3 var(--serif);
+        font: var(--body-size) / 1.3 var(--serif);
         font-weight: 400;
         margin: 8px 0 12px;
       }
       .text-button {
-        font-size: 24px;
+        font-size: var(--body-size);
         white-space: normal;
         border-bottom: 1px solid var(--line);
         padding: 8px 0;
@@ -336,7 +338,7 @@ email: jic4015@med.cornell.edu */
         min-width: 0;
         max-width: 100%;
         gap: 12px;
-        font-size: 24px;
+        font-size: var(--body-size);
         color: var(--secondary);
       }
       select {
@@ -346,7 +348,7 @@ email: jic4015@med.cornell.edu */
         border-radius: var(--radius);
         background: var(--white);
         padding: 8px 28px 8px 12px;
-        font-size: 24px;
+        font-size: var(--body-size);
       }
       .state-search {
         margin-left: auto;
@@ -362,7 +364,7 @@ email: jic4015@med.cornell.edu */
         padding: 4px 16px;
         min-height: 32px;
         border-radius: 2px;
-        font-size: 24px;
+        font-size: var(--body-size);
       }
       .segmented [aria-pressed='true'] {
         background: var(--ink);
@@ -389,12 +391,12 @@ email: jic4015@med.cornell.edu */
       .tile-map {
         display: grid;
         grid-template-columns: repeat(12, minmax(0, 1fr));
-        grid-template-rows: repeat(8, minmax(66px, auto));
+        grid-template-rows: repeat(8, minmax(60px, auto));
         gap: 4px;
         min-width: 816px;
         width: 100%;
         margin: 8px auto 24px;
-        min-height: 500px;
+        min-height: 460px;
       }
       .state-tile {
         grid-column: var(--col);
@@ -410,12 +412,12 @@ email: jic4015@med.cornell.edu */
         border: 1px solid transparent;
         border-radius: 2px;
         padding: 0;
-        font-size: 24px;
+        font-size: var(--body-size);
         font-variant-numeric: tabular-nums;
         position: relative;
       }
       .state-tile small {
-        font-size: 24px;
+        font-size: var(--body-size);
         line-height: 1.2;
       }
       .state-tile:hover {
@@ -436,7 +438,7 @@ email: jic4015@med.cornell.edu */
         justify-content: center;
         flex-wrap: wrap;
         gap: 8px;
-        font-size: 24px;
+        font-size: var(--label-size);
         color: var(--muted);
       }
       .map-legend > div {
@@ -460,7 +462,7 @@ email: jic4015@med.cornell.edu */
         margin-left: 8px;
       }
       .caption {
-        font-size: 24px;
+        font-size: var(--label-size);
         line-height: 1.65;
         color: var(--muted);
         margin: 16px 0 0;
@@ -476,7 +478,7 @@ email: jic4015@med.cornell.edu */
         min-width: 0;
       }
       .state-code {
-        font-size: 24px;
+        font-size: var(--label-size);
         color: var(--accent);
       }
       .state-detail .state-name {
@@ -490,11 +492,11 @@ email: jic4015@med.cornell.edu */
         font-variant-numeric: tabular-nums;
       }
       .state-detail .rate-label {
-        font-size: 24px;
+        font-size: var(--label-size);
         color: var(--secondary);
       }
       .state-detail .difference {
-        font-size: 24px;
+        font-size: var(--body-size);
         margin: 16px 0;
         padding-bottom: 16px;
         border-bottom: 1px solid var(--line);
@@ -504,7 +506,7 @@ email: jic4015@med.cornell.edu */
         display: grid;
         grid-template-columns: minmax(0, 1fr) auto;
         gap: 8px 12px;
-        font-size: 24px;
+        font-size: var(--body-size);
         margin: 0;
       }
       .state-detail dt {
@@ -519,7 +521,7 @@ email: jic4015@med.cornell.edu */
         border-top: 1px solid var(--line);
         padding-top: 16px;
         margin: 24px 0 0;
-        font-size: 24px;
+        font-size: var(--label-size);
         line-height: 1.7;
         color: var(--muted);
       }
@@ -555,7 +557,7 @@ email: jic4015@med.cornell.edu */
         flex-wrap: wrap;
         gap: 16px;
         min-height: 24px;
-        font-size: 24px;
+        font-size: var(--label-size);
         color: var(--secondary);
       }
       .chart-legend i {
@@ -572,7 +574,7 @@ email: jic4015@med.cornell.edu */
       .chart-tick,
       .chart-axis-title {
         fill: var(--secondary);
-        font: 24px var(--sans);
+        font: var(--chart-label-size, 24px) var(--sans);
         font-variant-numeric: tabular-nums;
       }
       .chart-grid {
@@ -618,21 +620,21 @@ email: jic4015@med.cornell.edu */
         color: var(--secondary);
       }
       .interpretation p {
-        font-size: 24px;
+        font-size: var(--body-size);
         line-height: 1.75;
         color: var(--secondary);
         margin: 0;
       }
       .section-intro,
       .model-intro {
-        font-size: 24px;
+        font-size: var(--body-size);
         line-height: 1.7;
         color: var(--secondary);
         max-width: 840px;
         margin: 0 0 24px;
       }
       .pill {
-        font-size: 24px;
+        font-size: var(--body-size);
         color: var(--secondary);
         margin-left: auto;
       }
@@ -647,11 +649,11 @@ email: jic4015@med.cornell.edu */
           );
         align-items: center;
         gap: 12px;
-        margin-bottom: 24px;
-        font-size: 24px;
+        margin-bottom: 20px;
+        font-size: var(--body-size);
       }
       .bar-track {
-        height: 20px;
+        height: 16px;
         background: var(--pale);
         border-radius: 2px;
         overflow: hidden;
@@ -685,13 +687,13 @@ email: jic4015@med.cornell.edu */
       .table-wrap table {
         width: 100%;
         border-collapse: collapse;
-        font-size: 24px;
+        font-size: var(--label-size);
         white-space: nowrap;
       }
       .table-wrap th {
         text-align: left;
         font-weight: 500;
-        font-size: 24px;
+        font-size: var(--label-size);
         color: var(--secondary);
         padding: 12px 16px;
         border-bottom: 1px solid var(--control-border);
@@ -739,13 +741,13 @@ email: jic4015@med.cornell.edu */
         margin: 0;
       }
       .quality-intro > p:not(.serif-lead) {
-        font-size: 24px;
+        font-size: var(--body-size);
         line-height: 1.8;
         color: var(--secondary);
         margin: 0;
       }
       .primary-link {
-        font-size: 24px;
+        font-size: var(--body-size);
         text-decoration: underline;
         text-underline-offset: 4px;
       }
@@ -769,7 +771,7 @@ email: jic4015@med.cornell.edu */
         font-size: 28px;
       }
       .quality-card dl {
-        font-size: 24px;
+        font-size: var(--body-size);
       }
       .quality-card dt {
         color: var(--muted);
@@ -791,7 +793,7 @@ email: jic4015@med.cornell.edu */
         font-size: 26px;
       }
       .methods-grid p {
-        font-size: 24px;
+        font-size: var(--body-size);
         color: var(--secondary);
         line-height: 1.8;
         margin-bottom: 8px;
@@ -800,7 +802,7 @@ email: jic4015@med.cornell.edu */
         display: flex;
         flex-wrap: wrap;
         gap: 16px 24px;
-        font-size: 24px;
+        font-size: var(--body-size);
         margin: 32px 0 40px;
       }
       .resource-row a {
@@ -818,7 +820,7 @@ email: jic4015@med.cornell.edu */
         padding: 4px 20px;
       }
       .model-stat > span {
-        font-size: 24px;
+        font-size: var(--body-size);
         color: var(--secondary);
       }
       .model-stat strong {
@@ -829,7 +831,7 @@ email: jic4015@med.cornell.edu */
         font-variant-numeric: tabular-nums;
       }
       .model-stat p {
-        font-size: 24px;
+        font-size: var(--body-size);
         color: var(--muted);
         margin: 0;
       }
@@ -839,7 +841,7 @@ email: jic4015@med.cornell.edu */
         margin-top: 24px;
       }
       .model-panel summary {
-        font-size: 24px;
+        font-size: var(--body-size);
         cursor: pointer;
         padding: 8px 0;
       }
@@ -850,13 +852,13 @@ email: jic4015@med.cornell.edu */
         margin-top: 16px;
       }
       .model-methods {
-        font-size: 24px;
+        font-size: var(--body-size);
         color: var(--secondary);
         line-height: 1.8;
         margin-top: 20px;
       }
       .model-methods code {
-        font-size: 24px;
+        font-size: var(--body-size);
         white-space: normal;
         overflow-wrap: anywhere;
       }
@@ -867,17 +869,17 @@ email: jic4015@med.cornell.edu */
         gap: 16px;
         border-top: 1px solid var(--line);
         padding: 24px 0 32px;
-        font-size: 24px;
+        font-size: var(--label-size);
         line-height: 1.5;
         color: var(--muted);
       }
       .loading,
       .notice {
         padding: 40px 0;
-        font: 24px var(--serif);
+        font: var(--body-size) var(--serif);
       }
       .notice {
-        font-size: 24px;
+        font-size: var(--body-size);
         color: var(--error);
       }
       .empty-state {
@@ -888,17 +890,17 @@ email: jic4015@med.cornell.edu */
         padding: 32px;
         text-align: center;
         color: var(--muted);
-        font-size: 24px;
+        font-size: var(--body-size);
       }
       .badge {
-        font-size: 24px;
+        font-size: var(--body-size);
         padding: 4px 8px;
         background: var(--warning-bg);
         color: var(--warning);
         border-radius: var(--radius);
       }
       .metric-value .badge {
-        font: 24px var(--sans);
+        font: var(--label-size) var(--sans);
         letter-spacing: 0;
         align-self: center;
       }
@@ -938,11 +940,11 @@ email: jic4015@med.cornell.edu */
         background: var(--ink);
         color: #fff;
         border-radius: var(--radius);
-        font-size: 24px;
+        font-size: var(--label-size);
         box-shadow: 0 4px 16px #0002;
       }
       .data-status {
-        font-size: 24px;
+        font-size: var(--label-size);
         color: var(--muted);
       }
 
@@ -997,12 +999,12 @@ email: jic4015@med.cornell.edu */
           border-left: 0;
         }
         .hero h1 {
-          font-size: 40px;
+          font-size: clamp(1.875rem, 7vw, 2.375rem);
           letter-spacing: -1.2px;
           margin: 12px 0 16px;
         }
         .hero p {
-          font-size: 24px;
+          font-size: var(--body-size);
           line-height: 1.7;
         }
         .panel {
@@ -1019,7 +1021,7 @@ email: jic4015@med.cornell.edu */
           font-size: 28px;
         }
         .text-button {
-          font-size: 24px;
+          font-size: var(--body-size);
           min-height: 40px;
         }
         .toolbar {
@@ -1027,13 +1029,13 @@ email: jic4015@med.cornell.edu */
           margin-bottom: 20px;
         }
         .toolbar label {
-          font-size: 24px;
+          font-size: var(--body-size);
           gap: 8px;
           flex-wrap: wrap;
         }
         select {
           min-height: 44px;
-          font-size: 24px;
+          font-size: var(--body-size);
         }
         .state-search {
           margin-left: 0;
@@ -1054,11 +1056,11 @@ email: jic4015@med.cornell.edu */
           margin: 0 auto 20px;
         }
         .state-tile {
-          font-size: 24px;
+          font-size: var(--body-size);
         }
         .map-legend {
           gap: 8px;
-          font-size: 24px;
+          font-size: var(--body-size);
         }
         .map-legend > div {
           width: 80px;
@@ -1074,13 +1076,13 @@ email: jic4015@med.cornell.edu */
         }
         .pill {
           margin-left: 0;
-          font-size: 24px;
+          font-size: var(--body-size);
         }
         .inner {
           gap: 24px;
         }
         .bar-row {
-          font-size: 24px;
+          font-size: var(--body-size);
           grid-template-columns: minmax(0, 1fr) auto;
           gap: 8px;
         }
@@ -1093,7 +1095,7 @@ email: jic4015@med.cornell.edu */
           font-size: 36px;
         }
         .quality-intro > p:not(.serif-lead) {
-          font-size: 24px;
+          font-size: var(--body-size);
         }
         .quality-card dl {
           grid-template-columns: 96px 1fr;
@@ -1110,7 +1112,7 @@ email: jic4015@med.cornell.edu */
           padding-left: 16px;
         }
         .source-line {
-          font-size: 24px;
+          font-size: var(--body-size);
         }
         footer {
           gap: 12px;
@@ -1147,12 +1149,12 @@ email: jic4015@med.cornell.edu */
         gap: 20px;
       }
       .update-heading h2 {
-        font: 500 24px/1.4 var(--sans);
+        font: 500 var(--body-size) / 1.4 var(--sans);
         letter-spacing: 0;
         margin: 0 0 8px;
       }
       .update-heading p {
-        font-size: 24px;
+        font-size: var(--body-size);
         line-height: 1.6;
         color: var(--secondary);
         margin: 0;
@@ -1163,7 +1165,7 @@ email: jic4015@med.cornell.edu */
         border-radius: var(--radius);
         background: var(--accent);
         color: #fff;
-        font-size: 24px;
+        font-size: var(--body-size);
         white-space: normal;
       }
       .primary-button:hover {
@@ -1174,7 +1176,7 @@ email: jic4015@med.cornell.edu */
         opacity: 0.7;
       }
       .update-status {
-        font-size: 24px;
+        font-size: var(--body-size);
         line-height: 1.7;
         color: var(--secondary);
         margin: 16px 0 12px;
@@ -1187,7 +1189,7 @@ email: jic4015@med.cornell.edu */
         align-items: center;
         flex-wrap: wrap;
         gap: 12px 24px;
-        font-size: 24px;
+        font-size: var(--body-size);
       }
       .update-links a {
         text-decoration: underline;
@@ -1201,7 +1203,7 @@ email: jic4015@med.cornell.edu */
         background: var(--warning-bg);
         border-left: 3px solid var(--series);
         padding: 16px 20px;
-        font-size: 24px;
+        font-size: var(--body-size);
         line-height: 1.7;
         color: var(--secondary);
         margin: 24px 0;
@@ -1244,7 +1246,7 @@ email: jic4015@med.cornell.edu */
         margin-top: 24px;
       }
       .comparison-details summary {
-        font-size: 24px;
+        font-size: var(--body-size);
         cursor: pointer;
         padding: 8px 0;
       }
@@ -1315,6 +1317,225 @@ email: jic4015@med.cornell.edu */
         }
         html {
           scroll-padding-top: 4rem;
+        }
+      }
+
+      /* On phones, pair each summary value with its denominator and keep navigation
+   and filters touch-friendly even when the surrounding type gets smaller. */
+      @media (max-width: 760px) {
+        main {
+          padding-inline: clamp(12px, 3.8vw, 24px);
+        }
+        .masthead {
+          flex-wrap: nowrap;
+          padding: 10px clamp(12px, 3.8vw, 24px);
+        }
+        .project-brand {
+          width: clamp(90px, 22vw, 124px);
+          flex-shrink: 0;
+        }
+        .site-name {
+          font-size: var(--label-size);
+          padding-left: 12px;
+          border-left: 1px solid var(--line);
+        }
+        .site-nav a {
+          display: flex;
+          align-items: center;
+          font-size: var(--label-size);
+        }
+        .overview {
+          padding: 20px 0;
+          gap: 12px;
+        }
+        .edition {
+          margin: 8px 0 0;
+          font-size: var(--label-size);
+        }
+        .panel {
+          padding: 16px 12px;
+          margin-bottom: 16px;
+        }
+        .section-heading {
+          align-items: center;
+          gap: 4px 12px;
+          margin-bottom: 12px;
+        }
+        .section-heading h2,
+        .two-column h2 {
+          font-size: 1.5rem;
+        }
+        .text-button,
+        .segmented button {
+          min-height: 44px;
+        }
+        .toolbar {
+          align-items: end;
+          gap: 10px 14px;
+          margin-bottom: 16px;
+          padding-block: 12px;
+        }
+        .toolbar label {
+          display: grid;
+          gap: 2px;
+          font-size: var(--label-size);
+        }
+        .segmented {
+          padding: 2px;
+        }
+        .tile-map {
+          min-width: 0;
+          min-height: 0;
+          grid-template-rows: repeat(8, clamp(30px, 7.5vw, 48px));
+          gap: 2px;
+          margin: 0 auto 8px;
+        }
+        .state-tile {
+          font-size: clamp(0.69rem, 3vw, 1rem);
+          font-weight: 600;
+        }
+        .state-tile small {
+          font-size: 0.75rem;
+        }
+        .state-detail .big-rate {
+          font-size: 2.25rem;
+          margin: 12px 0 4px;
+        }
+        .map-legend,
+        .source-line {
+          font-size: var(--label-size);
+        }
+        .table-wrap th,
+        .table-wrap td {
+          padding: 9px 10px;
+        }
+        .quality-card,
+        .interpretation {
+          padding: 16px;
+        }
+      }
+      @media (max-width: 600px) {
+        .metric {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          align-items: center;
+          gap: 2px 10px;
+          padding: 10px 12px;
+        }
+        .metric-label {
+          color: var(--ink);
+          font-weight: 600;
+        }
+        .metric-value {
+          grid-column: 2;
+          grid-row: 1 / 3;
+          justify-content: flex-end;
+          max-width: 9ch;
+          font-size: clamp(1.35rem, 5.5vw, 2rem);
+          margin: 0;
+        }
+        .metric-sub {
+          grid-column: 1;
+          line-height: 1.4;
+        }
+        /* Each tile identifies its state; the selected value appears in the detail card. */
+        .state-tile small {
+          display: none;
+        }
+        .state-detail dl {
+          grid-template-columns: minmax(0, 1fr) minmax(0, auto);
+          font-size: var(--label-size);
+        }
+        .state-detail dd {
+          text-align: right;
+        }
+        .chart {
+          min-height: 0;
+        }
+        .comparison-chart svg text {
+          font-size: 16px;
+        }
+        .chart svg,
+        #nhis-chart svg,
+        #payment-chart svg,
+        #meps-insurance-chart svg,
+        .comparison-chart .change-chart-svg,
+        .comparison-chart .odds-ratio-chart-svg {
+          min-width: 0;
+        }
+      }
+
+      /* At tablet widths the 12-column map has room for the rate below each code. */
+      @media (min-width: 761px) and (max-width: 1100px) {
+        .tile-map {
+          min-width: 0;
+          min-height: 0;
+          grid-template-rows: repeat(8, minmax(50px, auto));
+          gap: 3px;
+        }
+      }
+      @media (min-width: 601px) and (max-width: 1100px) {
+        .chart svg,
+        #nhis-chart svg,
+        #payment-chart svg,
+        #meps-insurance-chart svg {
+          min-width: 0;
+        }
+        .comparison-chart .change-chart-svg,
+        .comparison-chart .odds-ratio-chart-svg {
+          min-width: 860px;
+        }
+      }
+
+      /* A modest desktop reduction keeps headings, findings and annotations distinct. */
+      @media (min-width: 1024px) {
+        :root {
+          --body-size: clamp(1.0625rem, 0.89rem + 0.32vw, 1.1875rem);
+          --label-size: clamp(0.9375rem, 0.81rem + 0.23vw, 1rem);
+          --chart-label-size: 22px;
+        }
+        .hero h1 {
+          font-size: clamp(2rem, 3.55vw, 3.25rem);
+        }
+        main .snapshot-finding {
+          font-size: clamp(1.125rem, 0.95rem + 0.5vw, 1.375rem);
+        }
+        h2 {
+          font-size: clamp(1.75rem, 2.32vw, 2.3125rem);
+        }
+        .two-column h2,
+        .quality-card h3,
+        .state-detail .state-name {
+          font-size: 1.625rem;
+        }
+        .metric-value {
+          font-size: 2.5625rem;
+        }
+        .state-detail .big-rate {
+          font-size: 3rem;
+        }
+        .model-stat strong {
+          font-size: 2.125rem;
+        }
+      }
+
+      /* Cap supporting figures on wide panels; phone plots use the available width. */
+      @media (min-width: 1024px) {
+        .chart,
+        .dot-chart,
+        .bar-chart,
+        .map-scroll,
+        .map-legend {
+          width: 96%;
+          max-width: 74rem;
+        }
+        .comparison-chart {
+          width: 96%;
+          max-width: 80rem;
+        }
+        .comparison-chart .change-chart-svg,
+        .comparison-chart .odds-ratio-chart-svg {
+          min-width: min(100%, 70rem);
         }
       }
     </style>
@@ -30294,7 +30515,9 @@ email: jic4015@med.cornell.edu */
         }
         const tooltip = (label) =>
           `data-tip="${escapeHtml(label)}" aria-label="${escapeHtml(label)}" tabindex="0"`;
-        const tickStyle = 'style="font-size:24px"';
+        // Font and margins use viewBox units so chart labels scale with their panel.
+        const axisStyle = (narrow) =>
+          `style="font-size:${narrow ? '16px' : 'var(--chart-label-size, 24px)'}"`;
 
         /**
          * Renders ordered quarterly series on a shared zero-based percent axis.
@@ -30304,19 +30527,24 @@ email: jic4015@med.cornell.edu */
          * Colors are trusted application constants, never remote source text.
          *
          * @param {!Array<!Object>} series Labels, colors, and values of {period, value}.
-         * @param {{title: string, height: number}=} options Accessible title and height.
+         * @param {{title: string, height: number, currency: boolean, narrow: boolean}=} options Axis units, accessible title and layout.
          * @return {string} Accessible SVG markup or an unavailable-data message.
          */
         function lineChart(
           series,
           {
             title = 'Quarterly telehealth use',
-            height = 340,
+            height,
             currency = false,
+            narrow = false,
           } = {},
         ) {
-          const width = 720;
-          const m = {l: 90, r: 38, t: 28, b: 54};
+          const width = narrow ? 360 : 720;
+          height ??= narrow ? 198 : 320;
+          const tickStyle = axisStyle(narrow);
+          const m = narrow
+            ? {l: 55, r: 24, t: 14, b: 34}
+            : {l: 90, r: 38, t: 28, b: 54};
           const all = series
             .flatMap((s) => s.values)
             .filter((v) => Number.isFinite(v.value));
@@ -30338,8 +30566,17 @@ email: jic4015@med.cornell.edu */
             const v = (ymax * i) / 4;
             grid += `<line class="chart-grid" x1="${m.l}" x2="${width - m.r}" y1="${y(v)}" y2="${y(v)}"/><text class="chart-tick" ${tickStyle} x="${m.l - 8}" y="${y(v) + 4}" text-anchor="end">${currency ? dollars(v) : number(v, Number.isInteger(v) ? 0 : 1) + '%'}</text>`;
           }
+          // Keep annual tick labels separated if the live series spans additional years.
+          const annualTicks = periods.filter(
+            (p) => p.length === 4 || p.endsWith('Q1'),
+          );
+          const tickStride = Math.max(
+            1,
+            Math.ceil(annualTicks.length / (narrow ? 6 : 10)),
+          );
           periods.forEach((p, i) => {
-            if (p.length === 4 || p.endsWith('Q1')) {
+            const tickIndex = annualTicks.indexOf(p);
+            if (tickIndex >= 0 && tickIndex % tickStride === 0) {
               grid += `<text class="chart-tick" ${tickStyle} x="${x(i)}" y="${height - 12}" text-anchor="middle">${p.slice(0, 4)}</text>`;
             }
           });
@@ -30372,7 +30609,7 @@ email: jic4015@med.cornell.edu */
          * The caller must use the verified matched-year data even during live updates.
          *
          * @param {!Array<!Object>} points State records with x, y, name, and abbr.
-         * @param {{xKey: string, selected: string, xlabel: string}=} options Axis and selection.
+         * @param {{xKey: string, selected: string, xlabel: string, narrow: boolean}=} options Axis and selection.
          * @return {string} Accessible SVG markup or an unavailable-data message.
          */
         function scatterChart(
@@ -30381,12 +30618,16 @@ email: jic4015@med.cornell.edu */
             year = 2024,
             xKey = 'broadbandPct',
             selected = 'US',
+            narrow = false,
             xlabel = 'Households with broadband (%)',
           } = {},
         ) {
-          const width = 720;
-          const height = 370;
-          const m = {l: 90, r: 60, t: 52, b: 90};
+          const width = narrow ? 360 : 720;
+          const height = narrow ? 234 : 348;
+          const tickStyle = axisStyle(narrow);
+          const m = narrow
+            ? {l: 53, r: 24, t: 42, b: 68}
+            : {l: 90, r: 60, t: 52, b: 90};
           const valid = points.filter(
             (p) => Number.isFinite(p.x) && Number.isFinite(p.y),
           );
@@ -30431,7 +30672,7 @@ email: jic4015@med.cornell.edu */
             const cx = x(chosen.x);
             const cy = y(chosen.y);
             const placeLeft = cx > width - m.r - 40;
-            selectedLabel = `<text class="chart-selection-label" style="font-size:24px;fill:var(--accent, #b31b1b)" x="${cx + (placeLeft ? -10 : 10)}" y="${Math.max(m.t + 12, cy - 12)}" text-anchor="${placeLeft ? 'end' : 'start'}">${escapeHtml(chosen.abbr)}</text>`;
+            selectedLabel = `<text class="chart-selection-label" style="font-size:${narrow ? '16px' : 'var(--chart-label-size, 24px)'};fill:var(--accent, #b31b1b)" x="${cx + (placeLeft ? -10 : 10)}" y="${Math.max(m.t + 12, cy - 12)}" text-anchor="${placeLeft ? 'end' : 'start'}">${escapeHtml(chosen.abbr)}</text>`;
           }
           return `<svg class="scatter-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${year} state telehealth use versus ${escapeHtml(xlabel)}"><title>${year} telehealth use versus ${escapeHtml(xlabel)}</title>${grid}${circles}${selectedLabel}<text class="chart-axis-title" ${tickStyle} x="${(width + m.l - m.r) / 2}" y="${height - 12}" text-anchor="middle">${escapeHtml(xlabel)}</text></svg>`;
         }
@@ -30444,7 +30685,7 @@ email: jic4015@med.cornell.edu */
          * Percentage axes remain within 0–100; missing estimates have no point mark.
          *
          * @param {!Array<!Object>} rows Labels, estimates, ci_low/ci_high, n, and flags.
-         * @param {{unit: string, compact: boolean, title: string, max: ?number}=} options
+         * @param {{unit: string, compact: boolean, narrow: boolean, title: string, max: ?number}=} options
          *     Units, responsive sizing, accessible title, and minimum axis maximum.
          * @return {string} Accessible SVG markup with uncertainty and missingness labels.
          */
@@ -30453,14 +30694,17 @@ email: jic4015@med.cornell.edu */
           {
             unit = 'percent',
             compact = false,
+            narrow = false,
             title = 'Weighted estimates with 95% confidence intervals',
             max = null,
           } = {},
         ) {
-          const width = compact ? 760 : 1080;
-          const left = compact ? 240 : 450;
-          const right = compact ? 125 : 145;
-          const rowH = compact ? 54 : 58;
+          // On phones the category and its estimate sit above the interval.
+          const width = narrow ? 360 : compact ? 760 : 1080;
+          const left = narrow ? 24 : compact ? 240 : 450;
+          const right = narrow ? 24 : compact ? 125 : 145;
+          const tickStyle = axisStyle(narrow);
+          const rowH = compact ? 50 : 54;
           const height = rows.length * rowH + 56;
           const vals = rows
             .flatMap((r) => [r.estimate, r.ci_high])
@@ -30474,20 +30718,21 @@ email: jic4015@med.cornell.edu */
           let grid = '';
           for (let i = 0; i <= 4; i++) {
             const v = (xmax * i) / 4;
-            grid += `<line class="chart-grid" x1="${x(v)}" x2="${x(v)}" y1="12" y2="${height - 36}"/><text class="chart-tick" style="font-size:24px" x="${x(v)}" y="${height - 12}" text-anchor="middle">${unit === 'percent' ? number(v, Number.isInteger(v) ? 0 : 1) + '%' : '$' + number(v)}</text>`;
+            grid += `<line class="chart-grid" x1="${x(v)}" x2="${x(v)}" y1="12" y2="${height - 36}"/><text class="chart-tick" ${tickStyle} x="${x(v)}" y="${height - 12}" text-anchor="middle">${unit === 'percent' ? number(v, Number.isInteger(v) ? 0 : 1) + '%' : '$' + number(v)}</text>`;
           }
           const marks = rows
             .map((r, i) => {
-              const y = 28 + i * rowH;
+              const y = (narrow ? 40 : 28) + i * rowH;
+              const labelY = narrow ? y - 16 : y + 4;
               const has = Number.isFinite(r.estimate);
               const f = unit === 'percent' ? percent : dollars;
               const label = escapeHtml(r.label);
-              const labelStyle = `style="font-size:24px;fill:var(--ink, #000000)"`;
+              const labelStyle = `style="font-size:${narrow ? '16px' : 'var(--chart-label-size, 24px)'};fill:var(--ink, #000000)"`;
               const interval =
                 Number.isFinite(r.ci_low) && Number.isFinite(r.ci_high)
                   ? `<line x1="${x(Math.max(0, r.ci_low))}" x2="${x(r.ci_high)}" y1="${y}" y2="${y}" stroke="var(--series, #cf4520)" stroke-width="2"/><path d="M${x(Math.max(0, r.ci_low))} ${y - 5}v10 M${x(r.ci_high)} ${y - 5}v10" stroke="var(--series, #cf4520)"/>`
                   : '';
-              return `<text class="chart-tick chart-row-label" x="0" y="${y + 4}" ${labelStyle}>${label}</text>${has ? `${interval}<circle class="estimate-point" cx="${x(r.estimate)}" cy="${y}" r="5" fill="${r.unstable ? 'var(--accent, #b31b1b)' : 'var(--series, #cf4520)'}" ${tooltip(`${r.label}: ${f(r.estimate)}; 95% CI ${ci(r.ci_low, r.ci_high, unit === 'percent' ? '%' : ' dollars')}; n=${number(r.n)}`)}/><text class="chart-tick chart-value" x="${width - 4}" y="${y + 4}" text-anchor="end" ${labelStyle}>${f(r.estimate)}${r.unstable ? ' *' : ''}</text>` : `<text class="chart-tick" style="font-size:24px" x="${left}" y="${y + 4}">${r.withheld ? 'Not shown' : 'Not estimated'}</text>`}`;
+              return `<text class="chart-tick chart-row-label" x="0" y="${labelY}" ${labelStyle}>${label}</text>${has ? `${interval}<circle class="estimate-point" cx="${x(r.estimate)}" cy="${y}" r="5" fill="${r.unstable ? 'var(--accent, #b31b1b)' : 'var(--series, #cf4520)'}" ${tooltip(`${r.label}: ${f(r.estimate)}; 95% CI ${ci(r.ci_low, r.ci_high, unit === 'percent' ? '%' : ' dollars')}; n=${number(r.n)}`)}/><text class="chart-tick chart-value" x="${width - 4}" y="${labelY}" text-anchor="end" ${labelStyle}>${f(r.estimate)}${r.unstable ? ' *' : ''}</text>` : `<text class="chart-tick" ${tickStyle} x="${left}" y="${y + 4}">${r.withheld ? 'Not shown' : 'Not estimated'}</text>`}`;
             })
             .join('');
           return `<svg class="dot-chart-svg${compact ? ' compact' : ''}" viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(title)}"><title>${escapeHtml(title)}</title>${grid}${marks}</svg>`;
@@ -30639,22 +30884,26 @@ email: jic4015@med.cornell.edu */
          * rates remain visible alongside differences to prevent relative-change confusion.
          *
          * @param {!Array<!Object>} rows Output from annualChanges, optionally filtered.
-         * @param {{title: string, selected: string}=} options Accessible title and state.
+         * @param {{title: string, selected: string, narrow: boolean}=} options Accessible title and state.
          * @return {string} SVG markup, or an explicit empty-state message.
          */
         function changeChart(
           rows,
-          {title = 'Change in annual telehealth use', selected = 'US'} = {},
+          {
+            title = 'Change in annual telehealth use',
+            selected = 'US',
+            narrow = false,
+          } = {},
         ) {
           if (!Array.isArray(rows) || rows.length === 0) {
             return '<div class="empty-state">Annual comparisons are unavailable.</div>';
           }
-          const width = 1320;
-          const left = 310;
-          const right = 380;
-          const top = 52;
-          const rowHeight = 44;
-          const bottom = 48;
+          const width = narrow ? 360 : 1320;
+          const left = narrow ? 24 : 310;
+          const right = narrow ? 24 : 380;
+          const top = narrow ? 60 : 52;
+          const rowHeight = narrow ? 50 : 40;
+          const bottom = narrow ? 48 : 66;
           const height = top + rows.length * rowHeight + bottom;
           const finite = rows
             .map((row) => row.change)
@@ -30678,7 +30927,7 @@ email: jic4015@med.cornell.edu */
           let grid = '';
           for (const value of [-extent, -extent / 2, 0, extent / 2, extent]) {
             const position = x(value);
-            grid += `<line class="${value === 0 ? 'change-zero' : 'chart-grid'}" x1="${position}" x2="${position}" y1="32" y2="${plotBottom}"${value === 0 ? ' stroke="var(--ink, #000000)" stroke-width="1"' : ''}/><text class="chart-tick" x="${position}" y="${height - 27}" text-anchor="middle">${value > 0 ? '+' : ''}${cmpNumber(value, Number.isInteger(value) ? 0 : 1)}</text>`;
+            grid += `<line class="${value === 0 ? 'change-zero' : 'chart-grid'}" x1="${position}" x2="${position}" y1="32" y2="${plotBottom}"${value === 0 ? ' stroke="var(--ink, #000000)" stroke-width="1"' : ''}/><text class="chart-tick" x="${position}" y="${height - (narrow ? 27 : 39)}" text-anchor="middle">${value > 0 ? '+' : ''}${cmpNumber(value, Number.isInteger(value) ? 0 : 1)}</text>`;
           }
           const marks = rows
             .map((row, index) => {
@@ -30698,10 +30947,18 @@ email: jic4015@med.cornell.edu */
                   ? `<circle class="change-zero-point" cx="${zero}" cy="${y}" r="3" fill="${fill}"/>`
                   : `<rect class="change-bar" data-value="${row.change}" x="${Math.min(x(row.change), zero)}" y="${y - 6}" width="${Math.abs(x(row.change) - zero)}" height="12" fill="${fill}"/>`
                 : '';
-              return `<g class="change-row${isSelected ? ' is-selected' : ''}" data-state="${cmpEscape(row.abbr)}" role="button" aria-pressed="${isSelected}" tabindex="0" data-tip="${cmpEscape(label)}" aria-label="${cmpEscape(label)}">${isSelected ? `<rect class="change-selection" x="0" y="${y - 16}" width="${width}" height="32" fill="var(--selection, #fbeaea)"/>` : ''}<text class="chart-tick" style="fill:var(--ink, #000000);font-size:24px" x="8" y="${y + 5}">${cmpEscape(row.name)}</text>${bar}<text class="chart-tick" x="1050" y="${y + 5}" text-anchor="end">${cmpRate(row.fromRate)}</text><text class="chart-tick" x="1170" y="${y + 5}" text-anchor="end">${cmpRate(row.toRate)}</text><text class="chart-tick" x="1312" y="${y + 5}" text-anchor="end" style="fill:var(--ink, #000000)">${valid ? cmpSigned(row.change) : '—'}</text></g>`;
+              // Dates remain in the heading and each state's tooltip on narrow screens.
+              const labelY = narrow ? y - 13 : y + 5;
+              const rates = narrow
+                ? ''
+                : `<text class="chart-tick" x="1050" y="${labelY}" text-anchor="end">${cmpRate(row.fromRate)}</text><text class="chart-tick" x="1170" y="${labelY}" text-anchor="end">${cmpRate(row.toRate)}</text>`;
+              return `<g class="change-row${isSelected ? ' is-selected' : ''}" data-state="${cmpEscape(row.abbr)}" role="button" aria-pressed="${isSelected}" tabindex="0" data-tip="${cmpEscape(label)}" aria-label="${cmpEscape(label)}">${isSelected ? `<rect class="change-selection" x="0" y="${narrow ? y - 33 : y - 16}" width="${width}" height="${narrow ? 48 : 32}" fill="var(--selection, #fbeaea)"/>` : ''}<text class="chart-tick" style="fill:var(--ink, #000000);font-size:${narrow ? '16px' : 'var(--chart-label-size, 24px)'}" x="8" y="${labelY}">${cmpEscape(row.name)}</text>${bar}${rates}<text class="chart-tick" x="${width - 8}" y="${labelY}" text-anchor="end" style="fill:var(--ink, #000000)">${valid ? cmpSigned(row.change) : '—'}</text></g>`;
             })
             .join('');
-          return `<svg class="change-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${cmpEscape(title)}"><title>${cmpEscape(title)}</title><text class="chart-axis-title" x="8" y="26">State / D.C.</text><text class="chart-axis-title" x="1050" y="26" text-anchor="end">${headerFrom}</text><text class="chart-axis-title" x="1170" y="26" text-anchor="end">${headerTo}</text><text class="chart-axis-title" x="1312" y="26" text-anchor="end">Change</text>${grid}${marks}<text class="chart-axis-title" x="${zero}" y="${height - 5}" text-anchor="middle">Change in percentage points</text></svg>`;
+          const heading = narrow
+            ? `<text class="chart-axis-title" x="8" y="17">Change in use, ${headerFrom}–${headerTo}</text>`
+            : `<text class="chart-axis-title" x="8" y="26">State / D.C.</text><text class="chart-axis-title" x="1050" y="26" text-anchor="end">${headerFrom}</text><text class="chart-axis-title" x="1170" y="26" text-anchor="end">${headerTo}</text><text class="chart-axis-title" x="1312" y="26" text-anchor="end">Change</text>`;
+          return `<svg class="change-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${cmpEscape(title)}"><title>${cmpEscape(title)}</title>${heading}${grid}${marks}<text class="chart-axis-title" x="${zero}" y="${height - 5}" text-anchor="middle">Change in percentage points</text></svg>`;
         }
 
         /**
@@ -30747,7 +31004,7 @@ email: jic4015@med.cornell.edu */
          * Invalid intervals are labelled unavailable and never coerced to zero.
          *
          * @param {!Array<!Object>} rows Model terms with labels, odds ratios, and limits.
-         * @param {{title: string, referenceLabel: string}=} options Title and reference.
+         * @param {{title: string, referenceLabel: string, narrow: boolean}=} options Title and reference.
          * @return {string} Accessible forest-plot SVG or an unavailable-data message.
          */
         function oddsRatioChart(
@@ -30755,17 +31012,18 @@ email: jic4015@med.cornell.edu */
           {
             title = 'Adjusted odds ratios with 95% confidence intervals',
             referenceLabel = 'Reference group',
+            narrow = false,
           } = {},
         ) {
           if (!Array.isArray(rows) || !rows.some(cmpOddsValid)) {
             return '<div class="empty-state">Adjusted estimates are unavailable.</div>';
           }
-          const width = 1320;
-          const left = 425;
-          const right = 420;
-          const rowHeight = 52;
-          const top = 46;
-          const height = rows.length * rowHeight + 92;
+          const width = narrow ? 360 : 1320;
+          const left = narrow ? 25 : 425;
+          const right = narrow ? 166 : 420;
+          const rowHeight = narrow ? 56 : 48;
+          const top = narrow ? 61 : 46;
+          const height = rows.length * rowHeight + (narrow ? 50 : 92);
           const values = rows
             .filter(cmpOddsValid)
             .flatMap((row) => [row.ci_low, row.ci_high]);
@@ -30798,28 +31056,32 @@ email: jic4015@med.cornell.edu */
                   ]),
                 ].sort((a, b) => a - b);
           const ticks = tickExponents
+            .filter(
+              (power) => !narrow || power === 0 || Math.abs(power) === exponent,
+            )
             .map((power) => {
               const position =
                 left +
                 ((power + exponent) / (2 * exponent)) * (width - left - right);
-              return `<line class="${power === 0 ? 'odds-reference' : 'chart-grid'}" x1="${position}" x2="${position}" y1="26" y2="${yBottom}"${power === 0 ? ' stroke="var(--ink, #000000)" stroke-width="1.2" stroke-dasharray="4 4"' : ''}/><text class="chart-tick" x="${position}" y="${height - 42}" text-anchor="middle">${cmpOddsTick(power, exponent)}</text>`;
+              return `<line class="${power === 0 ? 'odds-reference' : 'chart-grid'}" x1="${position}" x2="${position}" y1="26" y2="${yBottom}"${power === 0 ? ' stroke="var(--ink, #000000)" stroke-width="1.2" stroke-dasharray="4 4"' : ''}/><text class="chart-tick" x="${position}" y="${height - (narrow ? 6 : 42)}" text-anchor="middle">${cmpOddsTick(power, exponent)}</text>`;
             })
             .join('');
           const marks = rows
             .map((row, index) => {
               const y = top + index * rowHeight;
               const label = cmpEscape(row.label);
+              const labelY = narrow ? y - 14 : y + 5;
               if (!cmpOddsValid(row)) {
-                return `<text class="chart-tick" x="0" y="${y + 5}" style="fill:var(--ink, #000000);font-size:24px">${label}</text><text class="chart-tick" x="${left}" y="${y + 5}">Not estimated</text>`;
+                return `<text class="chart-tick" x="0" y="${labelY}" style="fill:var(--ink, #000000);font-size:${narrow ? '16px' : 'var(--chart-label-size, 24px)'}">${label}</text><text class="chart-tick" x="${left}" y="${y + 5}">Not estimated</text>`;
               }
               const low = x(row.ci_low);
               const high = x(row.ci_high);
               const point = x(row.odds_ratio);
               const tooltip = `${row.label}: adjusted odds ratio ${cmpRatio(row.odds_ratio)}; 95% confidence interval ${cmpRatio(row.ci_low)} to ${cmpRatio(row.ci_high)}; reference ${row.reference || referenceLabel}`;
-              return `<g class="odds-row"><text class="chart-tick" x="0" y="${y + 5}" style="fill:var(--ink, #000000);font-size:24px">${label}</text><line class="odds-interval" x1="${low}" x2="${high}" y1="${y}" y2="${y}" stroke="var(--series, #cf4520)" stroke-width="2"/><path d="M${low} ${y - 5}v10 M${high} ${y - 5}v10" stroke="var(--series, #cf4520)"/><circle class="odds-point" cx="${point}" cy="${y}" r="5" fill="var(--accent, #b31b1b)" tabindex="0" data-tip="${cmpEscape(tooltip)}" aria-label="${cmpEscape(tooltip)}"/><text class="chart-tick" x="1312" y="${y + 5}" text-anchor="end" style="fill:var(--ink, #000000)">${cmpRatio(row.odds_ratio)} (${cmpRatio(row.ci_low)}–${cmpRatio(row.ci_high)})</text></g>`;
+              return `<g class="odds-row"><text class="chart-tick" x="0" y="${labelY}" style="fill:var(--ink, #000000);font-size:${narrow ? '16px' : 'var(--chart-label-size, 24px)'}">${label}</text><line class="odds-interval" x1="${low}" x2="${high}" y1="${y}" y2="${y}" stroke="var(--series, #cf4520)" stroke-width="2"/><path d="M${low} ${y - 5}v10 M${high} ${y - 5}v10" stroke="var(--series, #cf4520)"/><circle class="odds-point" cx="${point}" cy="${y}" r="5" fill="var(--accent, #b31b1b)" tabindex="0" data-tip="${cmpEscape(tooltip)}" aria-label="${cmpEscape(tooltip)}"/><text class="chart-tick" x="${width - 4}" y="${y + 5}" text-anchor="end" style="fill:var(--ink, #000000)">${cmpRatio(row.odds_ratio)} (${cmpRatio(row.ci_low)}–${cmpRatio(row.ci_high)})</text></g>`;
             })
             .join('');
-          return `<svg class="odds-ratio-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${cmpEscape(title)}"><title>${cmpEscape(title)}</title><text class="chart-axis-title" x="${left}" y="25">Adjusted odds ratio · log scale</text><text class="chart-axis-title" x="1312" y="25" text-anchor="end">Estimate (95% CI)</text>${ticks}${marks}<text class="chart-axis-title" x="0" y="${height - 12}">Reference: ${cmpEscape(referenceLabel)} · 1 = equal odds</text></svg>`;
+          return `<svg class="odds-ratio-chart-svg" viewBox="0 0 ${width} ${height}" role="img" aria-label="${cmpEscape(title)}"><title>${cmpEscape(title)}</title><text class="chart-axis-title" x="${narrow ? 0 : left}" y="25">${narrow ? 'Odds ratio · log scale' : 'Adjusted odds ratio · log scale'}</text><text class="chart-axis-title" x="${width - 4}" y="25" text-anchor="end">Estimate (95% CI)</text>${ticks}${marks}${narrow ? '' : `<text class="chart-axis-title" x="0" y="${height - 12}">Reference: ${cmpEscape(referenceLabel)} · 1 = equal odds</text>`}</svg>`;
         }
 
         const esc = escapeHtml;
@@ -31494,6 +31756,7 @@ email: jic4015@med.cornell.edu */
          */
 
         const $ = (id) => document.getElementById(id);
+        const phoneCharts = window.matchMedia('(max-width: 600px)');
         // UI selections are separate from source data; changing a filter never rewrites a dataset.
         const state = {
           view: 'states',
@@ -31754,6 +32017,7 @@ email: jic4015@med.cornell.edu */
             )
             .join('');
           $('trend-chart').innerHTML = lineChart(series, {
+            narrow: phoneCharts.matches,
             title: `Quarterly telehealth use in ${s.name}, ${data.national.quarterly[0].period}–${data.national.quarterly.at(-1).period}`,
           });
           renderScatter();
@@ -31802,6 +32066,7 @@ email: jic4015@med.cornell.edu */
             y: s.annual.find((r) => r.year === year)?.telehealthPct,
           }));
           $('scatter-chart').innerHTML = scatterChart(points, {
+            narrow: phoneCharts.matches,
             year,
             selected: state.selected,
             xKey: income ? 'income' : 'broadbandPct',
@@ -31874,6 +32139,7 @@ email: jic4015@med.cornell.edu */
               `${number(nhis.quality.missing_outcome_n)} refused, unknown, or not ascertained`,
             );
           $('nhis-chart').innerHTML = dotChart(rows, {
+            narrow: phoneCharts.matches,
             compact: false,
             title: `Survey-weighted telehealth use by ${nhis.group_labels[state.nhisGroup]}`,
             max: Math.max(
@@ -32043,6 +32309,7 @@ email: jic4015@med.cornell.edu */
             {
               unit: 'dollars',
               compact: true,
+              narrow: phoneCharts.matches,
               title: `${total ? 'Total' : 'Out-of-pocket'} payments by modality, ${g.insurance}`,
             },
           );
@@ -32413,6 +32680,7 @@ email: jic4015@med.cornell.edu */
             const draw = () =>
               renderSurveyTrend(survey, editions[survey], select.value);
             select.addEventListener('change', draw);
+            phoneCharts.addEventListener('change', draw);
             draw();
           }
           for (const survey of Object.keys(editions)) {
@@ -32593,6 +32861,12 @@ email: jic4015@med.cornell.edu */
           renderNhis();
           renderMeps();
           renderQuality();
+          // Reflow the plotted coordinates only when crossing the phone breakpoint.
+          phoneCharts.addEventListener('change', () => {
+            renderCms();
+            renderNhis();
+            renderMeps();
+          });
           $('loading').hidden = true;
           navigate();
         }
@@ -32879,6 +33153,7 @@ email: jic4015@med.cornell.edu */
               a.name.localeCompare(b.name),
           );
           $('cms-change-chart').innerHTML = changeChart(shown, {
+            narrow: phoneCharts.matches,
             title: `Annual telehealth use change, ${state.changeFrom} to ${state.changeTo}`,
             selected: state.selected,
           });
@@ -32949,6 +33224,7 @@ email: jic4015@med.cornell.edu */
           );
           const reference = rows[0]?.reference || '';
           $('nhis-forest').innerHTML = oddsRatioChart(rows, {
+            narrow: phoneCharts.matches,
             title: `Adjusted telehealth associations: ${state.modelGroup}`,
             referenceLabel: reference,
           });
@@ -33010,6 +33286,7 @@ email: jic4015@med.cornell.edu */
                 ' per office visit (2024 USD)'
               : 'Telehealth share of office visits (%)';
           $(survey + '-trend-chart').innerHTML = lineChart(series, {
+            narrow: phoneCharts.matches,
             title,
             currency,
           });
@@ -33052,6 +33329,7 @@ email: jic4015@med.cornell.edu */
             groups.map((g) => ({...displayTelehealth(g), label: g.insurance})),
             {
               max: 20,
+              narrow: phoneCharts.matches,
               title:
                 'Telehealth share of office-based visits by annual insurance coverage',
             },
